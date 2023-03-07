@@ -1,12 +1,12 @@
-package com.example.server.product;
+package com.example.server.product.entity;
 
-import com.example.server.mealboxProduct.MealboxProduct;
+import com.example.server.image.Image;
+import com.example.server.mealboxProduct.entity.MealboxProduct;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -28,4 +28,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<MealboxProduct> mealboxProducts;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Image image;
 }

@@ -1,7 +1,8 @@
-package com.example.server.mealbox;
+package com.example.server.mealbox.entity;
 
-import com.example.server.mealboxProduct.MealboxProduct;
-import com.example.server.orderMealbox.OrderMealbox;
+import com.example.server.image.Image;
+import com.example.server.mealboxProduct.entity.MealboxProduct;
+import com.example.server.orderMealbox.entity.OrderMealbox;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,4 +41,7 @@ public class Mealbox {
 
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
     private List<OrderMealbox> orderMealboxes;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Image image;
 }

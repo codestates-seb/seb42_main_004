@@ -1,7 +1,7 @@
-package com.example.server.mealboxProduct;
+package com.example.server.mealboxProduct.entity;
 
-import com.example.server.mealbox.Mealbox;
-import com.example.server.product.Product;
+import com.example.server.mealbox.entity.Mealbox;
+import com.example.server.product.entity.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,6 +1,6 @@
-package com.example.server.orderMealbox;
+package com.example.server.orderMealbox.entity;
 
-import com.example.server.mealbox.Mealbox;
+import com.example.server.mealbox.entity.Mealbox;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
