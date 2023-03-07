@@ -2,12 +2,19 @@ package com.example.server.order.entity;
 
 import com.example.server.baseEntity.BaseEntity;
 import com.example.server.order.data.OrderStatus;
+import com.example.server.orderMealbox.entity.OrderMealbox;
+import com.example.server.user.entity.User;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,9 +44,16 @@ public class Order extends BaseEntity {
 
   private OrderStatus status; // 주문 상태
 
+  @ManyToOne
+  @JoinColumn(name = "USER_ID")
+  private User user;
 
-  // User 연관관계 매핑 필요 아직 User 엔티티가 없음
-  // OrderMealBoxy 연관관계 매핑 필요
-  // createdAt 추후 만들 필요있음
+  public void addUser(User user) {
+    this.user = user;
+  }
+
+  @OneToMany(mappedBy = "order")
+  private List<OrderMealbox> orderMealboxes = new ArrayList<>();
+
 
 }
