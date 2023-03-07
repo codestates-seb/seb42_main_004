@@ -3,6 +3,7 @@ package com.example.server.user.entity;
 import static javax.persistence.EnumType.STRING;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.example.server.baseEntity.BaseEntity;
 import com.example.server.user.data.UserRole;
 import com.example.server.user.data.UserStatus;
 import javax.persistence.Column;
@@ -23,7 +24,8 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
-public class User {
+public class User extends BaseEntity {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
@@ -33,7 +35,6 @@ public class User {
   private String name;
   private String phoneNumber;
   private String address;
-  private String mailKey;
   private Long imageId;
   @Enumerated(STRING)
   @Default
@@ -43,6 +44,10 @@ public class User {
   @Default
   @Setter
   private UserStatus status = UserStatus.USER_TMP;
+
+  //이메일 인증이 되었는지 확인하는 키
+  @Default
+  private Boolean mailKey = false;
 
 
 }
