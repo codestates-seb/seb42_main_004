@@ -2,8 +2,6 @@ package com.example.server.user.dto;
 
 import com.example.server.user.data.UserStatus;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -17,6 +15,7 @@ public class UserResponseDto {
   private String name;
   private String phoneNumber;
   private String address;
+//  private Image image;
   private UserStatus status;
   private LocalDateTime createdDate;
   private LocalDateTime lastModifiedDate;
