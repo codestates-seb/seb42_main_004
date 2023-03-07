@@ -8,9 +8,10 @@ import org.springframework.data.annotation.LastModifiedBy;
 public abstract class baseEntityWithBy extends BaseEntity {
 
   @CreatedBy
-  @Column(updatable = false)
+  @Column(updatable = false, name = "created_by")
   private String createdBy;
 
   @LastModifiedBy
+  @Column(name = "modified_by")
   private String lastModifiedBy;
 }

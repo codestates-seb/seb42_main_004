@@ -33,9 +33,9 @@ public class User extends BaseEntity {
   private String email;
   private String password;
   private String name;
+  @Column(name = "phone_number")
   private String phoneNumber;
   private String address;
-  private Long imageId;
   @Enumerated(STRING)
   @Default
   @Setter
@@ -44,6 +44,11 @@ public class User extends BaseEntity {
   @Default
   @Setter
   private UserStatus status = UserStatus.USER_TMP;
+  //연관관계
+
+
+// 이미지 객체 구현시 풀기
+//  private Image image;
 
   //이메일 인증이 되었는지 확인하는 키
   @Default
