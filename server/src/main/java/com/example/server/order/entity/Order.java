@@ -1,11 +1,20 @@
 package com.example.server.order.entity;
 
+import com.example.server.baseEntity.BaseEntity;
+import com.example.server.order.data.OrderStatus;
+import com.example.server.orderMealbox.entity.OrderMealbox;
+import com.example.server.user.entity.User;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,45 +23,37 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Order {
+public class Order extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long Id;
 
   @Column(nullable = false, unique = true)
-  private String orderNumber;
+  private String orderNumber; // 주문 번호
 
-  private int totalPrice;
+  private int totalPrice; // 주문 총액
 
-  private LocalDateTime deliveryDate;
+  private LocalDateTime deliveryDate; // 지정 배송일
 
-  private String addressee;
+  private String addressee; // 받는 사람
 
-  private String address;
+  private String address; // 받는 주소
 
-  private String phoneNumber;
+  private String phoneNumber; // 수령인 전화번호
 
-  private OrderStatus status;
+  private OrderStatus status; // 주문 상태
 
-  public enum OrderStatus {
-    ORDER_COMPLETED("주문완료"),
-    ORDER_CANCELED("주문취소"),
-    DELIVERY_IN_PROGRESS("배송중"),
-    DELIVERY_COMPLETED("배송완료"),
-    REFUND_APPLIED("환불대기중"),
-    REFUNDED("환불완료");
+  @ManyToOne
+  @JoinColumn(name = "USER_ID")
+  private User user;
 
-    @Getter
-    private String status;
-
-    OrderStatus(String status) {
-      this.status = status;
-    }
+  public void addUser(User user) {
+    this.user = user;
   }
 
-  // User 연관관계 매핑 필요 아직 User 엔티티가 없음
-  // OrderMealBoxy 연관관계 매핑 필요
-  // createdAt 추후 만들 필요있음
+  @OneToMany(mappedBy = "order")
+  private List<OrderMealbox> orderMealboxes = new ArrayList<>();
+
 
 }
