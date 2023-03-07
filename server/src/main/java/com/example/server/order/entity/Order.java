@@ -1,6 +1,7 @@
 package com.example.server.order.entity;
 
 import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class Order {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long Id;
 
+  @Column(nullable = false, unique = true)
   private String orderNumber;
 
   private int totalPrice;
@@ -31,7 +33,9 @@ public class Order {
 
   private String phoneNumber;
 
-  public enum Status {
+  private OrderStatus status;
+
+  public enum OrderStatus {
     ORDER_COMPLETED("주문완료"),
     ORDER_CANCELED("주문취소"),
     DELIVERY_IN_PROGRESS("배송중"),
@@ -42,7 +46,7 @@ public class Order {
     @Getter
     private String status;
 
-    Status(String status) {
+    OrderStatus(String status) {
       this.status = status;
     }
   }
