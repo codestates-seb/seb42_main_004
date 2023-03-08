@@ -22,13 +22,13 @@ public class OrderController {
   }
 
   @PatchMapping("/{order-id}")
-  public ResponseEntity patchOrder(@PathVariable("order-id") long id) {
+  public ResponseEntity patchOrder(@PathVariable("order-id") long orderId) {
 
     return new ResponseEntity(HttpStatus.OK);
   }
 
   @GetMapping("/{order-id}")
-  public ResponseEntity getOrder(@PathVariable("order-id") long id) {
+  public ResponseEntity getOrder(@PathVariable("order-id") long orderId) {
 
     return new ResponseEntity(HttpStatus.OK);
   }
@@ -40,7 +40,7 @@ public class OrderController {
   }
 
   @DeleteMapping("/{order-id}")
-  public ResponseEntity deleteOrder(@PathVariable("order-id") long id) {
+  public ResponseEntity deleteOrder(@PathVariable("order-id") long orderId) {
 
     return new ResponseEntity(HttpStatus.NO_CONTENT);
   }
