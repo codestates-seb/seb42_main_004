@@ -1,0 +1,21 @@
+
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3307/main004db
+    password: tnthd*6682
+    username: root
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    #      ddl-auto: update #update the schema with the given values.
+    properties:
+      hibernate:
+        format_sql: true #To beautify or pretty print the SQL
+        show_sql: true #show sql
+
+
+logging:
+  level:
+    org.hibernate.sql: DEBUG
+    org.hibernate.type.descriptor.sql: DEBUG #show parameter binding
