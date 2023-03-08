@@ -1,5 +1,6 @@
-package com.example.server.mealboxProduct.entity;
+package com.example.server.mealbox.entity;
 
+import com.example.server.image.Image;
 import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.product.entity.Product;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 public class MealboxProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long mealboxProductId;
+    private Long mealboxProductId;
 
     private int quantity;
 
@@ -26,4 +27,5 @@ public class MealboxProduct {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="mealbox_id")
     private Mealbox mealbox;
+
 }

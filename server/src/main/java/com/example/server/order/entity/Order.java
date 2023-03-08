@@ -2,7 +2,6 @@ package com.example.server.order.entity;
 
 import com.example.server.baseEntity.BaseEntity;
 import com.example.server.order.data.OrderStatus;
-import com.example.server.orderMealbox.entity.OrderMealbox;
 import com.example.server.user.entity.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

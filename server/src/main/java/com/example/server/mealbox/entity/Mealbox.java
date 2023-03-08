@@ -1,8 +1,7 @@
 package com.example.server.mealbox.entity;
 
 import com.example.server.image.Image;
-import com.example.server.mealboxProduct.entity.MealboxProduct;
-import com.example.server.orderMealbox.entity.OrderMealbox;
+import com.example.server.order.entity.OrderMealbox;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +17,7 @@ import java.util.List;
 public class Mealbox {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long mealboxId;
+    private Long mealboxId;
 
     private String name;
 
@@ -42,6 +41,6 @@ public class Mealbox {
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
     private List<OrderMealbox> orderMealboxes;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @Embedded
     private Image image;
 }

@@ -1,7 +1,7 @@
 package com.example.server.product.entity;
 
 import com.example.server.image.Image;
-import com.example.server.mealboxProduct.entity.MealboxProduct;
+import com.example.server.mealbox.entity.MealboxProduct;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +17,7 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long productId;
+    private Long productId;
     private String name;
     private String details;
     private int unitWeight;
@@ -29,6 +29,6 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<MealboxProduct> mealboxProducts;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @Embedded
     private Image image;
 }
