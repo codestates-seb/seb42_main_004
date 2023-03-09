@@ -7,25 +7,33 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     font-size: 13px;
     font-family: 'Noto Serif KR', serif;
+    @media screen and (max-width: 480px) {
+      font-size: 11px;
+    }
   }
 
   h1 {
     font-size: 2rem !important;
     font-family: 'IBM Plex Sans KR', sans-serif;
     font-weight: 500;
+    margin-bottom: 1rem;
   }
 
   h2 {
     font-size: 1.5rem !important;
+    margin-bottom: 0.5rem;
   }
 
   .marginbase {
     display: flex;
     justify-content: center;
+    background-color: var(--body_beige);
   }
 
   .margininside {
-    width: 1100px;
+    display: flex;
+    width: 1056px;
+    padding: 0 16px 0;
   }
 
   .shadow {
