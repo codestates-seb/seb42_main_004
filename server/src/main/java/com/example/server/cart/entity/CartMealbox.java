@@ -30,5 +30,12 @@ public class CartMealbox {
   private Mealbox mealbox;
 
   private int quantity;
+
+  public void setCart(Cart cart) {
+    this.cart = cart;
+    if (!cart.getCartMealboxes().contains(this)) {
+      cart.getCartMealboxes().add(this);
+    }
+  }
 }
 
