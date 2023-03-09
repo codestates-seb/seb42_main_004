@@ -3,21 +3,19 @@ package com.example.server.mealbox.entity;
 import com.example.server.image.Image;
 import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.product.entity.Product;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MealboxProduct {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mealboxProductId;
 
+    @Setter
     private int quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,4 +26,10 @@ public class MealboxProduct {
     @JoinColumn(name="mealbox_id")
     private Mealbox mealbox;
 
+    @Builder
+    public MealboxProduct(int quantity, Product product, Mealbox mealbox) {
+        this.quantity = quantity;
+        this.product = product;
+        this.mealbox = mealbox;
+    }
 }

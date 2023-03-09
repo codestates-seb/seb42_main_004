@@ -1,7 +1,6 @@
 package com.example.server.user.entity;
 
 import static javax.persistence.EnumType.STRING;
-import static lombok.AccessLevel.PROTECTED;
 
 import com.example.server.baseEntity.BaseEntity;
 import com.example.server.image.Image;
@@ -10,18 +9,12 @@ import com.example.server.user.data.UserStatus;
 
 import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.*;
 import lombok.Builder.Default;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
-//@NoArgsConstructor(access = PROTECTED)
-//@AllArgsConstructor(access = PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
   @Id
@@ -53,6 +46,7 @@ public class User extends BaseEntity {
   private String mailKey;
 
   @Embedded
+  @Setter
   private Image image;
 
 
