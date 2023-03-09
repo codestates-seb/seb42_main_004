@@ -3,6 +3,7 @@ package com.example.server.user.entity;
 import static javax.persistence.EnumType.STRING;
 
 import com.example.server.baseEntity.BaseEntity;
+import com.example.server.cart.entity.Cart;
 import com.example.server.image.Image;
 import com.example.server.user.data.UserRole;
 import com.example.server.user.data.UserStatus;
