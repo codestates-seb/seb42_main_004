@@ -48,5 +48,8 @@ public class User extends BaseEntity {
   @Setter
   private Image image;
 
+  @OneToOne(mappedBy = "user")
+  private Cart cart;
+
 
 }
