@@ -14,7 +14,6 @@ import lombok.Builder.Default;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
   @Id

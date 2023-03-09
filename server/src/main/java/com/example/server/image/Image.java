@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Embeddable
 public class Image {
-    private String name;
+    private String ImageName;
     private String originalName;
     private String path;
 }

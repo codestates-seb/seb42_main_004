@@ -1,6 +1,5 @@
 package com.example.server.order.entity;
 
-import com.example.server.image.Image;
 import com.example.server.mealbox.entity.Mealbox;
 import lombok.*;
 
@@ -9,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderMealbox {
+public class OrdersMealbox {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderMealboxId;
@@ -22,13 +21,13 @@ public class OrderMealbox {
     private Mealbox mealbox;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name = "orders_id")
+    private Orders orders;
 
     @Builder
-    public OrderMealbox(int quantity, Mealbox mealbox, Order order) {
+    public OrdersMealbox(int quantity, Mealbox mealbox, Orders orders) {
         this.quantity = quantity;
         this.mealbox = mealbox;
-        this.order = order;
+        this.orders = orders;
     }
 }

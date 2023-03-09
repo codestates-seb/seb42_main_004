@@ -15,7 +15,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
-    private String name;
+    private String productName;
     private String details;
     private int unitWeight;
     private int unitKcal;
@@ -29,9 +29,9 @@ public class Product {
     private Image image;
 
     @Builder
-    public Product(Long productId, String name, String details, int unitWeight, int unitKcal, int unitPrice) {
+    public Product(Long productId, String productName, String details, int unitWeight, int unitKcal, int unitPrice) {
         this.productId = productId;
-        this.name = name;
+        this.productName = productName;
         this.details = details;
         this.unitWeight = unitWeight;
         this.unitKcal = unitKcal;

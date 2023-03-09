@@ -22,14 +22,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Order extends BaseEntity {
+public class Orders extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long Id;
 
   @Column(nullable = false, unique = true)
-  private String orderNumber; // 주문 번호
+  private String ordersNumber; // 주문 번호
 
   private int totalPrice; // 주문 총액
 
@@ -51,8 +51,8 @@ public class Order extends BaseEntity {
     this.user = user;
   }
 
-  @OneToMany(mappedBy = "order")
-  private List<OrderMealbox> orderMealboxes = new ArrayList<>();
+  @OneToMany(mappedBy = "orders")
+  private List<OrdersMealbox> ordersMealboxes = new ArrayList<>();
 
 
 }
