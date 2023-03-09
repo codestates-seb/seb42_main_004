@@ -1,6 +1,31 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import MealBoxCard from '../components/allboxes/MealBoxCard';
 import Pagination from '../components/commons/Pagination';
+
+function AllBoxes() {
+  const [nextPage, setNextPage] = useState();
+  // TODO GET
+  // const [mealboxes, error] = useGET(nextPage)
+  console.log(nextPage);
+
+  return (
+    <MealBoxexWrapDiv className="margininside">
+      <h1>{'맹쥬'}님 오늘도 건강한 하루되세요(｡•̀ᴗ-)✧</h1>
+      <MealBoxexUl>
+        <MealBoxCard />
+        <MealBoxCard />
+        <MealBoxCard />
+        <MealBoxCard />
+        <MealBoxCard />
+        <MealBoxCard />
+      </MealBoxexUl>
+      <Pagination nowpage={8} totalpage={10} setNextPage={setNextPage} />
+    </MealBoxexWrapDiv>
+  );
+}
+
+export default AllBoxes;
 
 const MealBoxexWrapDiv = styled.div`
   flex-direction: column;
@@ -23,22 +48,3 @@ const MealBoxexUl = styled.ul`
     row-gap: 2rem;
   }
 `;
-
-function AllBoxes() {
-  return (
-    <MealBoxexWrapDiv className="margininside">
-      <h1>{'맹쥬'}님 오늘도 건강한 하루되세요(｡•̀ᴗ-)✧</h1>
-      <MealBoxexUl>
-        <MealBoxCard />
-        <MealBoxCard />
-        <MealBoxCard />
-        <MealBoxCard />
-        <MealBoxCard />
-        <MealBoxCard />
-      </MealBoxexUl>
-      <Pagination nowpage={1} totalpage={5} />
-    </MealBoxexWrapDiv>
-  );
-}
-
-export default AllBoxes;
