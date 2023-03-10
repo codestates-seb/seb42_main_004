@@ -107,6 +107,10 @@ const NavDiv = styled.div`
   position: fixed;
   padding-top: 70px;
   background-color: var(--head_brown);
+
+  @media (min-width: 768px) {
+    display: none;
+  }
 `;
 const NavUl = styled.ul`
   display: flex;
