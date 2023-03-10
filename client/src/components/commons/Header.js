@@ -1,10 +1,11 @@
-import styled from 'styled-components';
-import { FaShoppingCart } from 'react-icons/fa';
-// import { BsFillPersonFill } from 'react-icons/bs';
-import { TfiMenu } from 'react-icons/tfi';
-import logo from '../../assets/logo.png';
-import MainButton from './MainButton';
 import { useState } from 'react';
+import styled from 'styled-components';
+import MainButton from './MainButton';
+import logo from '../../assets/logo.png';
+import { FaShoppingCart } from 'react-icons/fa';
+import { BsFillPersonFill } from 'react-icons/bs';
+import { TfiMenu } from 'react-icons/tfi';
+import { IoIosArrowForward } from 'react-icons/io';
 
 function Header() {
   const [isNav, setIsNav] = useState(false);
@@ -45,7 +46,12 @@ function Header() {
       {isNav ? (
         <NavDiv>
           <NavUl>
-            <li>로그인 해주세요</li>
+            {/* <li>로그인 해주세요</li> */}
+            <li>
+              <BsFillPersonFill size={25} />
+              <IdDiv>맹쥬님</IdDiv>
+              <IoIosArrowForward size={15} />
+            </li>
             <li>한끼밀 추천받기</li>
             <li>커스텀 밀박스 만들기</li>
             <li>전체 상품 보기</li>
@@ -81,7 +87,6 @@ const HeaderDiv = styled.div`
   z-index: 1;
 
   > nav {
-    display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
@@ -125,6 +130,8 @@ const NavUl = styled.ul`
     justify-content: center;
 
     &:first-child {
+      align-items: center;
+      flex-basis: 120px;
       padding: 40px;
       border-bottom: 1px solid var(--black);
       font-size: 1.5rem;
@@ -161,4 +168,9 @@ const IconsUl = styled.ul`
       display: none;
     }
   }
+`;
+const IdDiv = styled.div`
+  padding: 0px 1rem;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 1.5rem;
 `;
