@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-function MealBoxCard() {
+function MealBoxCardDiv() {
   const [showDes, setShowDes] = useState(false);
 
   return (
-    <MealBoxCardLi className="shadow">
-      <MealBoxImgUlDiv
+    <MealBoxCardContainerDiv className="shadow">
+      <MealBoxImgDiv
         className="shadow"
         showDes={showDes && 1}
         onClick={() => setShowDes(!showDes)}
@@ -24,27 +24,28 @@ function MealBoxCard() {
             src="https://www.shinsegaegroupnewsroom.com/wp-content/uploads/2022/06/%EC%8B%A0%EC%84%B8%EA%B3%84%ED%91%B8%EB%93%9C_%EB%B3%B8%EB%AC%B8-1.jpg"
           />
         )}
-      </MealBoxImgUlDiv>
+      </MealBoxImgDiv>
       <MealBoxH3>{'밀박스A'}</MealBoxH3>
-      <div>
-        <Button>커스텀하기</Button>
-        <Button>장바구니 추가</Button>
-        <Button>가격</Button>
-      </div>
-    </MealBoxCardLi>
+      <MealBoxCardButtonDiv>
+        <button>커스텀하기</button>
+        <button>장바구니 추가</button>
+        <button>가격</button>
+      </MealBoxCardButtonDiv>
+    </MealBoxCardContainerDiv>
   );
 }
 
-export default MealBoxCard;
+export default MealBoxCardDiv;
 
-const MealBoxCardLi = styled.li`
+export const MealBoxCardContainerDiv = styled.div`
+  width: 100%;
   display: inline-flex;
   flex-direction: column;
   border-radius: 4px;
   padding: 5%;
   background-color: var(--head_brown);
 `;
-const MealBoxImgUlDiv = styled.div`
+export const MealBoxImgDiv = styled.div`
   display: flex;
   align-items: center;
   position: relative;
@@ -54,7 +55,7 @@ const MealBoxImgUlDiv = styled.div`
   background-color: var(${(props) => (props.showDes ? '--gray' : '--white')});
   padding-bottom: 100%;
 `;
-const MealBoxImg = styled.img`
+export const MealBoxImg = styled.img`
   max-width: 100%;
   position: absolute;
   top: 50%;
@@ -79,6 +80,8 @@ const MealBoxDesUl = styled.div`
 const MealBoxH3 = styled.h3`
   font-size: 1.3rem;
 `;
-const Button = styled.button`
+const MealBoxCardButtonDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
   border: none;
 `;
