@@ -12,6 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor // 더미데이터를 위한 것 -> 삭제요망
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
