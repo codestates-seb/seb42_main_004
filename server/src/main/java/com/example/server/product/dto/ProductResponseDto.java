@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 @Getter
 public class ProductResponseDto {
     private long productId;
+    private long mealboxProductId;
     private String productName;
     private String details;
     private int unitWeight;

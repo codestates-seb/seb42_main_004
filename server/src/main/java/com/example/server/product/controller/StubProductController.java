@@ -16,6 +16,7 @@ import java.util.List;
 @Slf4j
 @Validated
 @RestController
+@RequestMapping
 public class StubProductController {
 
     //관리자가 개별상품 생성하기
