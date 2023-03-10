@@ -156,6 +156,12 @@ const MenuUl = styled.ul`
   justify-content: space-around;
   flex-grow: 1;
 
+  > li {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
   @media (max-width: 768px) {
     display: none;
   }
@@ -168,6 +174,13 @@ const IconsUl = styled.ul`
 
   > * {
     margin: 0px 8px;
+  }
+
+  > li:last-child {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   button {
