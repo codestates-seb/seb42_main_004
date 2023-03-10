@@ -24,6 +24,10 @@ const GlobalStyle = createGlobalStyle`
     margin-bottom: 0.5rem;
   }
 
+  .bodymargin {
+    padding-top: 70px;
+  }
+
   .marginbase {
     display: flex;
     justify-content: center;
