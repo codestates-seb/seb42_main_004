@@ -1,6 +1,7 @@
 package com.example.server.product.controller;
 
 import com.example.server.dto.MultiResponseDto;
+import com.example.server.dto.PageInfo;
 import com.example.server.product.dto.ProductResponseDto;
 import com.example.server.product.entity.Product;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Positive;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +37,8 @@ public class ProductController {
     }
 
     @GetMapping("/admin/products")
-    public ResponseEntity getAdminProductList() {
+    public ResponseEntity getAdminProductList (@Positive @RequestParam int page,
+                                               @Positive @RequestParam int size) {
         log.info("------getProductList-------");
         ProductResponseDto productResponseDto1 = ProductResponseDto.builder()
                 .productId(1)
@@ -56,13 +59,33 @@ public class ProductController {
         List<ProductResponseDto> list = new ArrayList<>();
         list.add(productResponseDto1);
         list.add(productResponseDto2);
-        new MultiResponseDto<ProductResponseDto>(list, );
-        return new ResponseEntity(HttpStatus.OK);
+        PageInfo pageInfo = new PageInfo(1,9,1,2);
+        return new ResponseEntity(new MultiResponseDto(list, pageInfo), HttpStatus.OK);
     }
 
     @GetMapping("/products")
-    public ResponseEntity getProductList() {
-        log.info("------getProductList-------");
-        return new ResponseEntity(HttpStatus.OK);
+        public ResponseEntity getProductList() {
+            log.info("------getProductList-------");
+            ProductResponseDto productResponseDto1 = ProductResponseDto.builder()
+                .productId(1)
+                .productName("사과")
+                .details("국산")
+                .unitKcal(100)
+                .unitPrice(1000)
+                .unitWeight(200)
+                .build();
+        ProductResponseDto productResponseDto2 = ProductResponseDto.builder()
+                .productId(2)
+                .productName("배")
+                .details("국산")
+                .unitKcal(150)
+                .unitPrice(1500)
+                .unitWeight(200)
+                .build();
+        List<ProductResponseDto> list = new ArrayList<>();
+        list.add(productResponseDto1);
+        list.add(productResponseDto2);
+        PageInfo pageInfo = new PageInfo(1,9,1,2);
+        return new ResponseEntity(new MultiResponseDto(list, pageInfo), HttpStatus.OK);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 @Getter
+@AllArgsConstructor // 더미데이터용 롬복 -> 이후삭제요망
 public class MultiResponseDto <T> {
     private List<T> data;
     private PageInfo pageInfo;
