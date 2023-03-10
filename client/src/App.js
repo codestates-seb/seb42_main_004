@@ -12,7 +12,7 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <div className="marginbase">
+      <div className="marginbase bodymargin">
         <Routes>
           <Route path="/" element={<AllBoxes />} />
           <Route path="/survey/recommend" element={<RecommendedBox />} />
