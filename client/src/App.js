@@ -1,8 +1,11 @@
-// import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Header from './components/commons/Header';
 import GlobalStyle from './global/globalstyles';
 import Footer from './components/commons/Footer';
 import AllBoxes from './pages/AllBoxes';
+import RecommendedBox from './pages/RecommendedBox';
+import Custom from './pages/Custom';
+import Cart from './pages/Cart';
 
 function App() {
   return (
@@ -10,10 +13,12 @@ function App() {
       <GlobalStyle />
       <Header />
       <div className="marginbase">
-        <AllBoxes />
-        {/* <Routes>
-        <Route path="" element={ } />
-      </Routes> */}
+        <Routes>
+          <Route path="/" element={<AllBoxes />} />
+          <Route path="/survey/recommend" element={<RecommendedBox />} />
+          <Route path="/custom" element={<Custom />} />
+          <Route path="/cart" element={<Cart />} />
+        </Routes>
       </div>
       <Footer />
     </>
