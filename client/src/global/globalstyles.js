@@ -32,6 +32,7 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     justify-content: center;
     background-color: var(--body_beige);
+    min-width: 480px;
   }
 
   .margininside {
@@ -39,6 +40,7 @@ const GlobalStyle = createGlobalStyle`
     width: 1056px;
     padding: 0 16px 0;
   }
+
 
   .shadow {
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
