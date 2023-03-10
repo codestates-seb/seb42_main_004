@@ -32,7 +32,7 @@ function CartItemLi() {
 
 export default CartItemLi;
 
-const CheckBoxAndCartItemLi = styled.li`
+export const CheckBoxAndCartItemLi = styled.li`
   display: flex;
   align-items: flex-start;
   width: 100%;
@@ -54,7 +54,7 @@ const MobileCheckBoxInput = styled.input`
   }
 `;
 
-const CartItemWrapperDiv = styled.div`
+export const CartItemWrapperDiv = styled.div`
   display: flex;
   flex-direction: column;
   width: 70%;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import CartItemLi from '../components/CartPage/CartItemLi';
-import TotalPaymentBoxDiv from '../components/CartPage/TotalPaymentBoxDiv';
+import CartItemLi from '../components/cartPage/CartItemLi';
+import TotalPaymentBoxDiv from '../components/cartPage/TotalPaymentBoxDiv';
 
 function Cart() {
   return (
@@ -37,7 +37,7 @@ const CartPageContent = styled.div`
   width: 100%;
 `;
 
-const CartItemListUl = styled.ul`
+export const CartItemListUl = styled.ul`
   flex-grow: 1;
   > li {
     margin-bottom: 10px;
