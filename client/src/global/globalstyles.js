@@ -50,6 +50,17 @@ const GlobalStyle = createGlobalStyle`
     border-radius: 4px;
   }
 
+  .inputstyle {
+    padding: 0.5rem;
+    border: 1px solid var(--black);
+    border-radius: 4px;
+
+    &:focus {
+      border: none;
+      outline: 2px solid var(--signature);
+    }
+  }
+
   .errorstyle {
     color: var(--red);
   }
