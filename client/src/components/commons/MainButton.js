@@ -17,6 +17,7 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
   border: none;
+  cursor: pointer;
   background-color: ${({ name }) =>
     name.includes('Log') ? `var(--product_cocoa)` : `var(--bucket_brown)`};
 `;
