@@ -4,14 +4,21 @@ import { FaShoppingCart } from 'react-icons/fa';
 import { TfiMenu } from 'react-icons/tfi';
 import logo from '../../assets/logo.png';
 import MainButton from './MainButton';
+import { useState } from 'react';
 
 function Header() {
+  const [isNav, setIsNav] = useState(false);
+
+  const handleClick = () => {
+    setIsNav(!isNav);
+  };
+
   return (
-    <header>
+    <ContainerHeader>
       <HeaderDiv className="marginbase shadow">
         <nav className="margininside">
           <MenuDiv>
-            <MenuIcon size={30} />
+            <MenuIcon size={25} onClick={handleClick} />
             <img src={logo} alt="logo" />
           </MenuDiv>
           <MenuUl>
@@ -27,24 +34,46 @@ function Header() {
             </li>
             <li>
               <MainButton name="Signup" />
-              {/* <BsFillPersonFill size={30} /> */}
+              {/* <BsFillPersonFill size={25} /> */}
             </li>
             <li>
-              <FaShoppingCart size={30} />
+              <FaShoppingCart size={25} />
             </li>
           </IconsUl>
         </nav>
       </HeaderDiv>
-      <NavDiv>cds</NavDiv>
-    </header>
+      {isNav ? (
+        <NavDiv>
+          <NavUl>
+            <li>로그인 해주세요</li>
+            <li>한끼밀 추천받기</li>
+            <li>커스텀 밀박스 만들기</li>
+            <li>전체 상품 보기</li>
+            <li>구성품 알아보기</li>
+            <li>로그아웃</li>
+          </NavUl>
+        </NavDiv>
+      ) : null}
+    </ContainerHeader>
   );
 }
 
 export default Header;
 
+const ContainerHeader = styled.header`
+  ul {
+    padding: 0;
+    list-style: none;
+
+    > li {
+      cursor: pointer;
+      font-family: 'IBM Plex Sans KR', sans-serif;
+    }
+  }
+`;
 const HeaderDiv = styled.div`
   height: 70px;
-  background-color: var(--head_brown);
+  background-color: var(--head_brown) !important;
   position: fixed;
   top: 0;
   left: 0;
@@ -56,23 +85,14 @@ const HeaderDiv = styled.div`
     flex-direction: row;
     justify-content: space-between;
   }
-
-  img {
-    cursor: pointer;
-  }
-
-  ul {
-    padding: 0;
-    list-style: none;
-
-    > li {
-      cursor: pointer;
-    }
-  }
 `;
 const MenuDiv = styled.div`
   display: flex;
   align-items: center;
+
+  > * {
+    cursor: pointer;
+  }
 `;
 const MenuIcon = styled(TfiMenu)`
   margin: 0px 20px;
@@ -82,10 +102,34 @@ const MenuIcon = styled(TfiMenu)`
   }
 `;
 const NavDiv = styled.div`
-  width: 300px;
+  width: 50vw;
   height: 100vh;
   position: fixed;
+  padding-top: 70px;
   background-color: var(--head_brown);
+`;
+const NavUl = styled.ul`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+
+  > li {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+
+    &:first-child {
+      padding: 40px;
+      border-bottom: 1px solid var(--black);
+      font-size: 1.5rem;
+    }
+
+    &:last-child {
+      margin: 40px 0px;
+    }
+  }
 `;
 const MenuUl = styled.ul`
   display: flex;
@@ -93,15 +137,6 @@ const MenuUl = styled.ul`
   align-items: center;
   justify-content: space-around;
   flex-grow: 1;
-
-  > li {
-    font-family: 'IBM Plex Sans KR', sans-serif;
-    font-size: 1.2em;
-
-    @media (max-width: 821px) {
-      font-size: 1em;
-    }
-  }
 
   @media (max-width: 768px) {
     display: none;

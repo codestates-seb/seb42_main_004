@@ -11,8 +11,8 @@ const MainButton = ({ name }) => {
 export default MainButton;
 
 const Button = styled.button`
-  width: 100px;
-  height: 35px;
+  width: 90px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
