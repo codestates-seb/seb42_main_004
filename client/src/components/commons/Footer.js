@@ -37,32 +37,89 @@ const FooterWrapper = styled.footer`
   height: 280px;
   background-color: var(--signature);
   color: var(--white);
+
+  @media (max-width: 768px) {
+    height: 230px;
+  }
+
+  @media (max-width: 480px) {
+    height: 180px;
+    padding-left: 16px;
+  }
 `;
 
 const FooterContent = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
+  @media (max-width: 768px) {
+    align-items: center;
+  }
+  @media (max-width: 480px) {
+    align-items: flex-start;
+  }
 `;
 
 const LogoImg = styled.img`
-  width: 50px;
-  height: 50px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 40px;
+  width: 60px;
+  height: 60px;
+
+  @media (max-width: 480px) {
+    top: 10px;
+    left: 10%;
+  }
 `;
 
 const MemberNameDiv = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding-top: 40px;
 
   span {
-    margin: 0 10px;
+    margin: 0 40px;
+  }
+
+  @media (max-width: 768px) {
+    display: block;
+    padding-top: 100px;
+  }
+
+  @media (max-width: 480px) {
+    padding-top: 60px;
+
+    > div {
+      span {
+        margin: 0 20px;
+      }
+
+      > span:first-child {
+        margin-left: 0;
+      }
+    }
   }
 `;
 
 const LineHr = styled.hr`
   height: 1px;
   background: var(--black);
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Detail = styled.div`
   text-align: center;
+
+  @media (max-width: 480px) {
+    text-align: left;
+
+    > div:first-child {
+      margin-bottom: 8px;
+    }
+  }
 `;
