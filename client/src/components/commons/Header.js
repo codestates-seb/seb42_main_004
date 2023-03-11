@@ -19,7 +19,9 @@ function Header() {
       <HeaderDiv className="marginbase shadow">
         <nav className="margininside">
           <MenuDiv>
-            <MenuIcon size={25} onClick={handleClick} />
+            <MenuIcon onClick={handleClick}>
+              <TfiMenu size={25} />
+            </MenuIcon>
             <img src={logo} alt="logo" />
           </MenuDiv>
           <MenuUl>
@@ -84,7 +86,7 @@ const HeaderDiv = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 30;
 
   > nav {
     flex-direction: row;
@@ -99,8 +101,12 @@ const MenuDiv = styled.div`
     cursor: pointer;
   }
 `;
-const MenuIcon = styled(TfiMenu)`
-  margin: 0px 20px;
+const MenuIcon = styled.div`
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media (min-width: 768px) {
     display: none;
@@ -110,6 +116,7 @@ const NavDiv = styled.div`
   width: 50vw;
   height: 100vh;
   position: fixed;
+  z-index: 29;
   padding-top: 70px;
   background-color: var(--head_brown);
 
@@ -149,6 +156,12 @@ const MenuUl = styled.ul`
   justify-content: space-around;
   flex-grow: 1;
 
+  > li {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
   @media (max-width: 768px) {
     display: none;
   }
@@ -161,6 +174,13 @@ const IconsUl = styled.ul`
 
   > * {
     margin: 0px 8px;
+  }
+
+  > li:last-child {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   button {
