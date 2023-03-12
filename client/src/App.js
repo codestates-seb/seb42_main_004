@@ -7,6 +7,7 @@ import AllBoxes from './pages/AllBoxes';
 // import Custom from './pages/Custom';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
+import Explain from './pages/Explain';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/custom" element={<Custom />} /> */}
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/explain" element={<Explain />} />
         </Routes>
       </div>
       <Footer />
