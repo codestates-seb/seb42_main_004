@@ -121,14 +121,14 @@ export const ElementsInBucketAside = styled.aside`
     }
   }
 
-  @media (max-width: 768px) {
+  /* @media (max-width: 768px) {
     z-index: 999;
     position: fixed;
     top: auto;
     bottom: 0;
     width: 100%;
     margin: 0 -16px;
-  }
+  } */
 `;
 export const AsideSignatureButton = styled.button`
   width: 100%;

@@ -32,13 +32,13 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     justify-content: center;
     background-color: var(--body_beige);
-    min-width: 480px;
+    min-width: 360px;
   }
 
   .margininside {
     display: flex;
     width: 1056px;
-    padding: 0 16px 0;
+    padding: 0 16px;
   }
 
 
@@ -50,6 +50,17 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'IBM Plex Sans KR', sans-serif;
     font-size: 1.1rem !important;
     border-radius: 4px;
+  }
+
+  .inputstyle {
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--black);
+    border-radius: 4px;
+
+    &:focus {
+      border: none;
+      outline: 2px solid var(--signature);
+    }
   }
 
   .errorstyle {

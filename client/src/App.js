@@ -5,8 +5,9 @@ import Footer from './components/commons/Footer';
 import AllBoxes from './pages/AllBoxes';
 import RecommendedBox from './pages/RecommendedBox';
 import Custom from './pages/Custom';
-import Cart from './pages/Cart';
 import OrderHistory from './components/orderHistory/OrderHistory';
+import Cart from './pages/Cart';
+import Login from './components/member/Login';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/custom" element={<Custom />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/orderhistory" element={<OrderHistory />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
       <Footer />
