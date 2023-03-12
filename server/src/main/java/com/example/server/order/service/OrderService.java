@@ -22,7 +22,8 @@ public class OrderService {
     return orderRepository.save(order);
   }
 
-  public Orders cancelOrder(Orders order) {
+  public Orders cancelOrder(long orderId) {
+    Orders order = findVerifiedOrder(orderId);
     order.applyRefund();
     return orderRepository.save(order);
   }

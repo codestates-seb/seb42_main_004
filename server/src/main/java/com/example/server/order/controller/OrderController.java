@@ -1,5 +1,7 @@
 package com.example.server.order.controller;
 
+import com.example.server.order.service.OrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/orders")
 @Validated
+@RequiredArgsConstructor
 public class OrderController {
+  private final OrderService orderService;
   @PostMapping
   public ResponseEntity postOrder() { //주문하기
 
@@ -41,7 +45,7 @@ public class OrderController {
 
   @DeleteMapping("/{order-id}")
   public ResponseEntity deleteOrder(@PathVariable("order-id") long orderId) {
-
+    orderService.cancelOrder(orderId);
     return new ResponseEntity(HttpStatus.NO_CONTENT);
   }
 }
