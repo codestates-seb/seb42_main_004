@@ -39,6 +39,7 @@ const CartPageContent = styled.div`
 
 export const CartItemListUl = styled.ul`
   flex-grow: 1;
+
   > li {
     margin-bottom: 10px;
   }

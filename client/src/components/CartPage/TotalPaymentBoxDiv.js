@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {
   ElementsInBucketAside,
-  ASideSignatureButton,
+  AsideSignatureButton,
 } from '../../pages//Custom.js';
 
 function TotalPaymentBoxDiv() {
@@ -16,7 +16,7 @@ function TotalPaymentBoxDiv() {
         <h3>총 결제 금액</h3>
         <Amount>34,000원</Amount>
       </div>
-      <ASideSignatureButton>구매하기</ASideSignatureButton>
+      <AsideSignatureButton>구매하기</AsideSignatureButton>
     </Div>
   );
 }
