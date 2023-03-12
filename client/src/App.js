@@ -6,7 +6,7 @@ import AllBoxes from './pages/AllBoxes';
 // import RecommendedBox from './pages/RecommendedBox';
 // import Custom from './pages/Custom';
 import Cart from './pages/Cart';
-import Login from './components/login/Login';
+import Login from './pages/Login';
 
 function App() {
   return (
