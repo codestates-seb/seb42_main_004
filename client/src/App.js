@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Header from './components/commons/Header';
 import GlobalStyle from './global/globalstyles';
 import Footer from './components/commons/Footer';
@@ -8,8 +8,12 @@ import Custom from './pages/Custom';
 import OrderHistory from './components/orderHistory/OrderHistory';
 import Cart from './pages/Cart';
 import Login from './components/member/Login';
+import styled from 'styled-components';
 
 function App() {
+  let { pathname } = useLocation();
+  console.log(pathname);
+
   return (
     <>
       <GlobalStyle />
@@ -24,7 +28,7 @@ function App() {
           <Route path="/login" element={<Login />} />
         </Routes>
       </div>
-      <Footer />
+      {pathname !== '/cart' && pathname !== '/custom' ? <Footer /> : null}
     </>
   );
 }

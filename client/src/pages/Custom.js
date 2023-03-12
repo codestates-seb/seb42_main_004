@@ -30,26 +30,29 @@ function Custom() {
             <BoxElementCardDiv />
           </li>
         </BoxElementsUl>
-        <ElementsInBucketAside>
-          <Div>
-            <h2>Custom</h2>
-            <ul>
-              <li>
-                <span>{`${'오렌지주스'} ${1}`}</span>
-                <button>&#10005;</button>
-              </li>
-              <li>
-                <span>{`${'오렌지주스'} ${1}`}</span>
-                <button>&#10005;</button>
-              </li>
-            </ul>
-            <div>
-              <span>합계</span>
-              <span>{`${'19,900'}원`}</span>
-            </div>
-          </Div>
+        <AsideWrapper>
+          <ShowDetail>
+            <Triangle />
+            <ElementsInBucketDiv>
+              <h2>Custom</h2>
+              <ul>
+                <li>
+                  <span>{`${'오렌지주스'} ${1}`}</span>
+                  <button>&#10005;</button>
+                </li>
+                <li>
+                  <span>{`${'오렌지주스'} ${1}`}</span>
+                  <button>&#10005;</button>
+                </li>
+              </ul>
+              <div>
+                <span>합계</span>
+                <span>{`${'19,900'}원`}</span>
+              </div>
+            </ElementsInBucketDiv>
+          </ShowDetail>
           <AsideSignatureButton>장바구니 담기</AsideSignatureButton>
-        </ElementsInBucketAside>
+        </AsideWrapper>
       </CustomSelectDiv>
     </MealBoxesWrapDiv>
   );
@@ -70,14 +73,12 @@ const BoxElementsUl = styled.ul`
 const CustomSelectDiv = styled.div`
   display: flex;
   justify-content: space-between;
-
-  /* @media (max-width: 768px) {
-    flex-direction: column;
-  } */
 `;
 
-const Div = styled.div`
+export const ElementsInBucketDiv = styled.div`
+  background-color: var(--bucket_brown);
   padding: 1rem;
+  border-radius: 10px 10px 0 0;
 
   h2 {
     color: var(--white);
@@ -101,34 +102,21 @@ const Div = styled.div`
     font-weight: bold;
     color: var(--white);
   }
-`;
-
-export const ElementsInBucketAside = styled.aside`
-  float: right;
-  position: sticky;
-  top: calc(70px + 2rem);
-
-  min-width: 30%;
-  height: fit-content;
-  border-radius: 10px;
-  background-color: var(--bucket_brown);
-  box-shadow: 0 0 0 2px var(--bucket_brown) inset,
-    2px 2px 2px rgba(0, 0, 0, 0.4);
 
   @media (max-width: 480px) {
-    > div {
+    > h2,
+    ul {
       display: none;
+    }
+
+    > div {
+      margin: 0;
     }
   }
 
-  /* @media (max-width: 768px) {
-    z-index: 999;
-    position: fixed;
-    top: auto;
-    bottom: 0;
-    width: 100%;
-    margin: 0 -16px;
-  } */
+  @media (max-width: 480px) {
+    border-radius: 0;
+  }
 `;
 export const AsideSignatureButton = styled.button`
   width: 100%;
@@ -137,4 +125,51 @@ export const AsideSignatureButton = styled.button`
   font-weight: bold;
   background-color: var(--signature);
   border-radius: 0 0 10px 10px;
+
+  @media (max-width: 480px) {
+    border-radius: 0;
+  }
+`;
+
+const Triangle = styled.div`
+  display: none;
+  width: 0;
+  height: 0;
+  border-bottom: calc(4px * 1.732) solid var(--bucket_brown);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+
+  @media (max-width: 480px) {
+    display: block;
+  }
+`;
+
+const AsideWrapper = styled.aside`
+  float: right;
+  position: sticky;
+  top: calc(70px + 2rem);
+  min-width: 30%;
+  height: fit-content;
+  box-shadow: var(--bucket_brown) inset, 2px 2px 2px rgba(0, 0, 0, 0.4);
+
+  @media (max-width: 768px) {
+    z-index: 999;
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    margin: 0 -16px;
+  }
+`;
+
+const ShowDetail = styled.div`
+  :hover {
+    h2,
+    ul {
+      display: block;
+    }
+  }
 `;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import CartItemLi from '../components/cartPage/CartItemLi';
-import TotalPaymentBoxDiv from '../components/cartPage/TotalPaymentBoxDiv';
+// import TotalPaymentBoxDiv from '../components/cartPage/TotalPaymentBoxDiv';
 
 function Cart() {
   return (
@@ -19,7 +19,7 @@ function Cart() {
           <CartItemLi />
           <CartItemLi />
         </CartItemListUl>
-        <TotalPaymentBoxDiv />
+        {/* <TotalPaymentBoxDiv /> */}
       </CartPageContent>
     </CartPageWrapper>
   );

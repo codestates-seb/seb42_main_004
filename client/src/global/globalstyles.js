@@ -32,7 +32,7 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     justify-content: center;
     background-color: var(--body_beige);
-    min-width: 360px;
+    /* min-width: 360px; */
   }
 
   .margininside {
