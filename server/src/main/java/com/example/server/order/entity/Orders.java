@@ -31,7 +31,7 @@ public class Orders extends BaseEntity {
   private Long orderId;
 
   @Column(nullable = false, unique = true)
-  private String ordersNumber; // 주문 번호
+  private String orderNumber; // 주문 번호
 
   private int totalPrice; // 주문 총액
 
