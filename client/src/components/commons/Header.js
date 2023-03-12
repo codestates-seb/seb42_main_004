@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import MainButton from './MainButton';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/hankkimealLogo.png';
 import { FaShoppingCart } from 'react-icons/fa';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { TfiMenu } from 'react-icons/tfi';
@@ -22,7 +22,7 @@ function Header() {
             <MenuIcon onClick={handleClick}>
               <TfiMenu size={25} />
             </MenuIcon>
-            <img src={logo} alt="logo" />
+            <LogoImg src={logo} alt="logo" />
           </MenuDiv>
           <MenuUl>
             <li>한끼밀 추천받기</li>
@@ -111,6 +111,10 @@ const MenuIcon = styled.div`
   @media (min-width: 768px) {
     display: none;
   }
+`;
+const LogoImg = styled.img`
+  width: 70px;
+  height: 70px;
 `;
 const NavDiv = styled.div`
   width: 50vw;
