@@ -71,6 +71,7 @@ const ContainerDiv = styled.div`
   justify-content: center;
 `;
 const LoginUl = styled.ul`
+  width: 300px;
   height: 85%;
   display: flex;
   flex-direction: column;
@@ -79,7 +80,6 @@ const LoginUl = styled.ul`
   list-style: none;
 
   > li {
-    width: 300px;
     height: 80px;
     display: flex;
     align-items: center;
