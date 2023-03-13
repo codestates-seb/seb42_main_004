@@ -4,7 +4,8 @@ import static javax.persistence.EnumType.STRING;
 
 import com.example.server.baseEntity.BaseEntity;
 import com.example.server.cart.entity.Cart;
-import com.example.server.image.Image;
+import com.example.server.image.entity.Image;
+import com.example.server.image.entity.UserImage;
 import com.example.server.user.data.UserRole;
 import com.example.server.user.data.UserStatus;
 
@@ -20,7 +21,7 @@ public class User extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
-  private long userId;
+  private Long id;
   private String email;
   private String password;
   private String name;
@@ -37,20 +38,15 @@ public class User extends BaseEntity {
   private UserStatus status = UserStatus.USER_TMP;
   //연관관계
 
-
-// 이미지 객체 구현시 풀기
-//  private Image image;
-
   //이메일 인증이 되었는지 확인하는 키
   @Default
   private String mailKey;
 
-  @Embedded
-  @Setter
-  private Image image;
+  @OneToOne
+  @JoinColumn(name = "USER_IMAGE_ID")
+  private UserImage image;
 
   @OneToOne(mappedBy = "user")
   private Cart cart;
-
 
 }
