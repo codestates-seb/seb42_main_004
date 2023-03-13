@@ -1,26 +1,23 @@
 package com.example.server.mealbox.entity;
 
-import com.example.server.image.Image;
-import com.example.server.mealboxProduct.entity.MealboxProduct;
-import com.example.server.orderMealbox.entity.OrderMealbox;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.example.server.image.entity.Image;
+import com.example.server.image.entity.MealboxImage;
+import com.example.server.order.entity.OrdersMealbox;
+import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
-@Setter
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Mealbox {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long mealboxId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "MEALBOX_ID")
+    private Long id;
 
-    private String name;
+    private String mealboxName;
 
     private String details;
 
@@ -32,16 +29,41 @@ public class Mealbox {
 
     private boolean createdByAdmin;
 
-    private Timestamp createdAt;
-
-    private Timestamp modifiedAt;
 
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
     private List<MealboxProduct> mealboxProducts;
 
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
-    private List<OrderMealbox> orderMealboxes;
+    private List<OrdersMealbox> ordersMealboxes;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private Image image;
+    @OneToOne
+    @JoinColumn(name = "MEALBOX_IMAGE_ID")
+    private MealboxImage image;
+
+    @Builder
+    public Mealbox(String mealboxName, String details, int totalPrice, int totalKcal, int totalWeight,
+                   boolean createdByAdmin) {
+        this.mealboxName = mealboxName;
+        this.details = details;
+        this.totalPrice = totalPrice;
+        this.totalKcal = totalKcal;
+        this.totalWeight = totalWeight;
+        this.createdByAdmin = createdByAdmin;
+    }
+
+    public void changeMealbox(String mealboxName, String details, int totalPrice, int totalKcal, int totalWeight) {
+        this.mealboxName = mealboxName;
+        this.details = details;
+        this.totalPrice = totalPrice;
+        this.totalKcal = totalKcal;
+        this. totalWeight = totalWeight;
+    }
+
+    public void addMealboxProduct(MealboxProduct mealboxProduct) {
+        mealboxProducts.add(mealboxProduct);
+    }
+
+    public void addOrderMealbox(OrdersMealbox ordersMealbox) {
+        ordersMealboxes.add(ordersMealbox);
+    }
 }
