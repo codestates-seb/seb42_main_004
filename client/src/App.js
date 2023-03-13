@@ -10,6 +10,7 @@ import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Explain from './pages/Explain';
 import Signup from './pages/Signup';
+import SignupOauth from './pages/SignupOauth';
 
 function App() {
   let { pathname } = useLocation();
@@ -28,6 +29,7 @@ function App() {
           <Route path="/orderhistory" element={<OrderHistory />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/signupoauth" element={<SignupOauth />} />
           <Route path="/explain" element={<Explain />} />
         </Routes>
       </div>
