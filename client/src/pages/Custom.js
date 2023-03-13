@@ -1,58 +1,68 @@
 import styled from 'styled-components';
+import PaginationUl from '../components/commons/PaginationUl';
 import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
 import { MealBoxesWrapDiv } from './AllBoxes';
+import CartAside from '../components/commons/CartAside';
+// import ModalDiv from '../components/commons/ModalDiv';
 
 function Custom() {
   return (
     <MealBoxesWrapDiv className="margininside">
+      {/* <ModalDiv /> */}
       <h1>커스텀 밀박스</h1>
       <CustomSelectDiv>
-        <BoxElementsUl>
-          <li>
-            <BoxElementCardDiv />
-          </li>
-          <li>
-            <BoxElementCardDiv />
-          </li>
-          <li>
-            <BoxElementCardDiv />
-          </li>
-          <li>
-            <BoxElementCardDiv />
-          </li>
-          <li>
-            <BoxElementCardDiv />
-          </li>
-          <li>
-            <BoxElementCardDiv />
-          </li>
-          <li>
-            <BoxElementCardDiv />
-          </li>
-        </BoxElementsUl>
-        <AsideWrapper>
-          <ShowDetailDiv>
-            <TriangleDiv />
-            <ElementsInBucketDiv>
-              <h2>Custom</h2>
-              <ul>
-                <li>
-                  <span>{`${'오렌지주스'} ${1}`}</span>
-                  <button>&#10005;</button>
-                </li>
-                <li>
-                  <span>{`${'오렌지주스'} ${1}`}</span>
-                  <button>&#10005;</button>
-                </li>
-              </ul>
-              <div>
+        <ElementsContainerDiv>
+          <ul>
+            <li>
+              <BoxElementCardDiv />
+            </li>
+            <li>
+              <BoxElementCardDiv />
+            </li>
+            <li>
+              <BoxElementCardDiv />
+            </li>
+            <li>
+              <BoxElementCardDiv />
+            </li>
+            <li>
+              <BoxElementCardDiv />
+            </li>
+            <li>
+              <BoxElementCardDiv />
+            </li>
+          </ul>
+          <PaginationUl nowpage={1} totalpage={1} />
+        </ElementsContainerDiv>
+        <CartAside
+          open={<TriangleDiv />}
+          type="custom"
+          inDiv={
+            <>
+              <InAsideH2>Custom</InAsideH2>
+              <InAsideUl>
+                <ElementInBucketLi>
+                  <span>{`${'오렌지주스'}`}</span>
+                  <span>
+                    {`${1}`}
+                    <button>&#10005;</button>
+                  </span>
+                </ElementInBucketLi>
+                <ElementInBucketLi>
+                  <span>{`${'오렌지주스'}`}</span>
+                  <span>
+                    {`${1}`}
+                    <button className="linkstyle">&#10005;</button>
+                  </span>
+                </ElementInBucketLi>
+              </InAsideUl>
+              <InAsideDiv>
                 <span>합계</span>
                 <span>{`${'19,900'}원`}</span>
-              </div>
-            </ElementsInBucketDiv>
-          </ShowDetailDiv>
-          <AsideSignatureButton>장바구니 담기</AsideSignatureButton>
-        </AsideWrapper>
+              </InAsideDiv>
+            </>
+          }
+        ></CartAside>
       </CustomSelectDiv>
     </MealBoxesWrapDiv>
   );
@@ -60,78 +70,24 @@ function Custom() {
 
 export default Custom;
 
-const BoxElementsUl = styled.ul`
-  list-style: none;
-  width: 60%;
+const CustomSelectDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const ElementsContainerDiv = styled.div`
+  display: flex;
+  flex-direction: column;
   float: left;
+  width: 60%;
+
+  > ul {
+    list-style: none;
+  }
 
   @media screen and (max-width: 480px) {
     width: 100%;
   }
 `;
-
-const CustomSelectDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const ElementsInBucketDiv = styled.div`
-  background-color: var(--bucket_brown);
-  padding: 1rem;
-  border-radius: 10px 10px 0 0;
-
-  h2 {
-    color: var(--white);
-  }
-
-  li,
-  div {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  div {
-    margin-top: 1rem;
-    margin-bottom: -1rem;
-    font-weight: bold;
-  }
-
-  button {
-    border: none;
-    background-color: inherit;
-    font-weight: bold;
-    color: var(--white);
-  }
-
-  @media (max-width: 480px) {
-    > h2,
-    ul {
-      display: none;
-    }
-
-    > div {
-      margin: 0;
-    }
-  }
-
-  @media (max-width: 480px) {
-    border-radius: 0;
-  }
-`;
-
-const AsideSignatureButton = styled.button`
-  width: 100%;
-  border: none;
-  padding: 1rem 0;
-  font-weight: bold;
-  background-color: var(--signature);
-  border-radius: 0 0 10px 10px;
-
-  @media (max-width: 480px) {
-    border-radius: 0;
-  }
-`;
-
 const TriangleDiv = styled.div`
   display: none;
   width: 0;
@@ -147,30 +103,44 @@ const TriangleDiv = styled.div`
     display: block;
   }
 `;
+const InAsideH2 = styled.h2`
+  color: var(--white);
+  list-style: none;
+  min-height: 1vh;
 
-const AsideWrapper = styled.aside`
-  float: right;
-  position: sticky;
-  top: calc(70px + 2rem);
-  min-width: 30%;
-  height: fit-content;
-  box-shadow: var(--bucket_brown) inset, 2px 2px 2px rgba(0, 0, 0, 0.4);
-
-  @media (max-width: 768px) {
-    z-index: 999;
-    position: fixed;
-    top: auto;
-    bottom: 0;
-    width: 100%;
-    margin: 0 -16px;
+  @media (max-width: 480px) {
+    display: none;
   }
 `;
+const InAsideUl = styled.ul`
+  @media (max-width: 480px) {
+    display: none;
+  }
+`;
+const InAsideDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  margin-bottom: -0.5rem;
+`;
 
-const ShowDetailDiv = styled.div`
-  :hover {
-    h2,
-    ul {
-      display: block;
+const ElementInBucketLi = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  > span {
+    font-size: 0.8rem;
+    > button {
+      border: none;
+      background-color: inherit;
+      font-weight: bold;
+      /* color: var(--white); */
+      margin-left: 0.5rem;
     }
+  }
+
+  @media (max-width: 480px) {
+    border-radius: 0;
   }
 `;
