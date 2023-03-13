@@ -1,0 +1,23 @@
+
+spring:
+  datasource:
+    url: ${RDS_URL}
+    username: ${RDS_USERNAME}
+    password: ${RDS_PW}
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    #      ddl-auto: update #update the schema with the given values.
+    properties:
+      hibernate:
+        format_sql: true #To beautify or pretty print the SQL
+        show_sql: true #show sql
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+logging:
+  level:
+    org.hibernate.sql: DEBUG
+    org.hibernate.type.descriptor.sql: DEBUG #show parameter binding

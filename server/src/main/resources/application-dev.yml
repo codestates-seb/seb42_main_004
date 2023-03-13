@@ -1,9 +1,9 @@
 
 spring:
   datasource:
-    url:
-    password:
-    username:
+    url: jdbc:mariadb://codestates-main.c2eyuthvn0kf.ap-northeast-2.rds.amazonaws.com:3306/test?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: admin
+    password: xodid12!
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
