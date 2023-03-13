@@ -80,7 +80,7 @@ const ContainerHeader = styled.header`
   }
 `;
 const HeaderDiv = styled.div`
-  height: 70px;
+  height: 50px;
   background-color: var(--head_brown) !important;
   position: fixed;
   top: 0;

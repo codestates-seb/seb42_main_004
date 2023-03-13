@@ -5,14 +5,10 @@ import Footer from './components/commons/Footer';
 import AllBoxes from './pages/AllBoxes';
 import RecommendedBox from './pages/RecommendedBox';
 import Custom from './pages/Custom';
-import OrderHistory from './components/orderHistory/OrderHistory';
 import Cart from './pages/Cart';
-<<<<<<< Updated upstream
 import Login from './pages/Login';
 import Explain from './pages/Explain';
-=======
-import Login from './components/member/Login';
->>>>>>> Stashed changes
+import OrderHistory from './pages/OrderHistory';
 
 function App() {
   let { pathname } = useLocation();

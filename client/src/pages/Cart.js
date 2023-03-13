@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import CartItemLi from '../components/cartPage/CartItemLi';
-// import TotalPaymentBoxDiv from '../components/cartPage/TotalPaymentBoxDiv';
 
 function Cart() {
   return (
@@ -19,7 +18,6 @@ function Cart() {
           <CartItemLi />
           <CartItemLi />
         </CartItemListUl>
-        {/* <TotalPaymentBoxDiv /> */}
       </CartPageContent>
     </CartPageWrapper>
   );
@@ -32,9 +30,9 @@ const CartPageWrapper = styled.div`
 `;
 
 const CartPageContent = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
+  /* display: flex;
+  justify-content: center; */
+  /* width: 100%; */
 `;
 
 export const CartItemListUl = styled.ul`
@@ -42,5 +40,6 @@ export const CartItemListUl = styled.ul`
 
   > li {
     margin-bottom: 10px;
+    list-style: none;
   }
 `;
