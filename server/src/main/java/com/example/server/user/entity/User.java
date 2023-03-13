@@ -23,9 +23,8 @@ import lombok.Setter;
 @Getter
 @Builder
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor(access = PROTECTED)
+@AllArgsConstructor
 public class User extends BaseEntity {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
@@ -51,8 +50,8 @@ public class User extends BaseEntity {
 //  private Image image;
 
   //이메일 인증이 되었는지 확인하는 키
-  @Default
-  private Boolean mailKey = false;
+
+  private String mailKey;
 
 
 }
