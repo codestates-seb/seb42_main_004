@@ -1,7 +1,9 @@
 package com.example.server.order.mapper;
 
+import com.example.server.order.dto.OrderMealboxResponseDto;
 import com.example.server.order.dto.OrderResponseDto;
 import com.example.server.order.entity.Orders;
+import com.example.server.order.entity.OrdersMealbox;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
@@ -16,6 +18,16 @@ public interface OrderMapper {
       orderResponseDto.setOrderNumber(order.getOrderNumber());
       orderResponseDto.setCreatedAt(order.getCreatedDate());
       orderResponseDto.setOrderStatus(order.getStatus().getStatus());
+      List<OrdersMealbox> ordersMealboxList = order.getOrdersMealboxes();
+      List<OrderMealboxResponseDto> orderMealboxResponseList = ordersMealboxList.stream().map(ordersMealbox -> {
+        OrderMealboxResponseDto orderMealboxResponseDto = new OrderMealboxResponseDto();
+        orderMealboxResponseDto.setMealboxName(ordersMealbox.getMealbox().getMealboxName());
+        orderMealboxResponseDto.setMealboxPrice(ordersMealbox.getMealbox().getTotalPrice());
+        orderMealboxResponseDto.setMealboxQuantity(ordersMealbox.getQuantity());
+        // 재료, 수량 추가해야함
+        return orderMealboxResponseDto;
+      }).collect(Collectors.toList());
+      orderResponseDto.setMealboxes(orderMealboxResponseList);
       //밀박스 내용 + 재료 내용 채워야함
       return orderResponseDto;
     }).collect(Collectors.toList());
