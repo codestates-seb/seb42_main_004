@@ -9,6 +9,7 @@ import OrderHistory from './components/orderHistory/OrderHistory';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Explain from './pages/Explain';
+import Signup from './pages/Signup';
 
 function App() {
   let { pathname } = useLocation();
@@ -26,6 +27,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/orderhistory" element={<OrderHistory />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/explain" element={<Explain />} />
         </Routes>
       </div>
