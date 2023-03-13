@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -29,24 +30,23 @@ public class UserController {
   @PostMapping
   public ResponseEntity createUser(@RequestBody UserPostDto postDto) {
     log.info("##### CREATE USER #####");
-    //TODO createUser 구현
 
     User user = mapper.userPostDtoToUser(postDto);
     User savedUser = userService.createUser(user);
     URI location = UriCreator.createUri(MEMBER_DEFAULT_URL,savedUser.getId());
-
-
 
     return ResponseEntity.created(location).build();
   }
 
   //회원 삭제
   @DeleteMapping("/{id}")
-  public ResponseEntity deleteUser() {
+  public ResponseEntity deleteUser(@PathVariable Long id) {
     log.info("##### DELETE USER #####");
-    //TODO deleteUser 구현
+    log.trace("### MEMBER ID = {}",id);
+    userService.deleteUser(id);
 
-    return null;
+//    return new ResponseEntity(HttpStatus.NO_CONTENT);
+    return ResponseEntity.noContent().build();
   }
 
   //회원 정보 수정

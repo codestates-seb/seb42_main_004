@@ -28,6 +28,12 @@ public class UserService {
 
     return save;
   }
+  public void deleteUser(Long userId) {
+    User findUser = userRepository.findById(userId).orElseThrow(() -> new BusinessLogicException(UserException.MEMBER_NOT_FOUND));
+
+    //지금은 완전삭제
+    userRepository.delete(findUser);
+  }
 
 
 
