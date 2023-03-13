@@ -56,7 +56,6 @@ public class UserController {
   @PatchMapping("/{id}")
   public ResponseEntity updateUser(@RequestBody UserPatchDto patchDto) {
     log.info("##### UPDATE USER #####");
-    //TODO updateUser 구현
     User user = mapper.userPatchDtoToUser(patchDto);
     User patchedUser = userService.updatedMember(user);
     URI location = UriCreator.createUri(USER_DEFAULT_URL,patchedUser.getId());
@@ -66,9 +65,10 @@ public class UserController {
 
   //회원 상세 정보 조회
   @GetMapping("/{id}")
-  public ResponseEntity getUser() {
+  public ResponseEntity getUser(@PathVariable Long id) {
     log.info("##### GET USER #####");
     //TODO getUser 구현
+
 
     return null;
   }
