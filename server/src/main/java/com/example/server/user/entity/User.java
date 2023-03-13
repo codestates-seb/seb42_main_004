@@ -23,7 +23,7 @@ import lombok.Setter;
 @Getter
 @Builder
 @NoArgsConstructor(access = PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = PROTECTED)
 public class User extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
