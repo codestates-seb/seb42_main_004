@@ -2,6 +2,10 @@ package com.example.server.user.entity;
 
 import static javax.persistence.EnumType.STRING;
 
+import static javax.persistence.FetchType.EAGER;
+import static lombok.AccessLevel.PROTECTED;
+
+
 import com.example.server.baseEntity.BaseEntity;
 import com.example.server.cart.entity.Cart;
 import com.example.server.image.entity.Image;
@@ -19,22 +23,28 @@ import lombok.Builder.Default;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor(access = PROTECTED)
+@AllArgsConstructor(access = PROTECTED)
 public class User extends BaseEntity {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
   private Long id;
   private String email;
+  @Setter
   private String password;
+  @Setter
   private String name;
   @Column(name = "phone_number")
-  private String phoneNumber;
-  private String address;
-  @Enumerated(STRING)
-  @Default
   @Setter
-  private UserRole role = UserRole.ROLE_USER;
+  private String phoneNumber;
+  @Setter
+  private String address;
+  @ElementCollection(fetch = EAGER)
+  @Setter
+  @Builder.Default
+  private List<String> roles = new ArrayList<>();
   @Enumerated(STRING)
   @Default
   @Setter
