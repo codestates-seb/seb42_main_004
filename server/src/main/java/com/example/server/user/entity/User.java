@@ -42,8 +42,7 @@ public class User extends BaseEntity {
   @Default
   private String mailKey;
 
-  @OneToOne
-  @JoinColumn(name = "USER_IMAGE_ID")
+  @OneToOne(mappedBy = "user")
   private UserImage image;
 
   @OneToOne(mappedBy = "user")

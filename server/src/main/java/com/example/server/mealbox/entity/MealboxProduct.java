@@ -7,7 +7,9 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class MealboxProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +17,7 @@ public class MealboxProduct {
     private Long id;
 
     @Setter
+    @Column(nullable = false)
     private int quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,10 +28,4 @@ public class MealboxProduct {
     @JoinColumn(name="mealbox_id")
     private Mealbox mealbox;
 
-    @Builder
-    public MealboxProduct(int quantity, Product product, Mealbox mealbox) {
-        this.quantity = quantity;
-        this.product = product;
-        this.mealbox = mealbox;
-    }
 }
