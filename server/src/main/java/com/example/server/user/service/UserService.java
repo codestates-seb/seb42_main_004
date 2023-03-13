@@ -47,6 +47,12 @@ public class UserService {
     return findUser;
   }
 
+  public User getUser(Long userId) {
+    User findUser = userRepository.findById(userId).orElseThrow(() -> new BusinessLogicException(UserException.MEMBER_NOT_FOUND));
+
+    return findUser;
+  }
+
 
 
 

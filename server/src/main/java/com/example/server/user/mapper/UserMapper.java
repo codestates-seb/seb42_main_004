@@ -2,6 +2,7 @@ package com.example.server.user.mapper;
 
 import com.example.server.user.dto.UserPatchDto;
 import com.example.server.user.dto.UserPostDto;
+import com.example.server.user.dto.UserResponseDto;
 import com.example.server.user.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -19,4 +20,6 @@ public interface UserMapper {
         .address(patchDto.getAddress())
         .build();
   }
+
+  UserResponseDto userToUserResponseDto(User user);
 }

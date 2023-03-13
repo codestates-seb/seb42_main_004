@@ -3,6 +3,7 @@ package com.example.server.user.controller;
 import com.example.server.auth.utils.UriCreator;
 import com.example.server.user.dto.UserPatchDto;
 import com.example.server.user.dto.UserPostDto;
+import com.example.server.user.dto.UserResponseDto;
 import com.example.server.user.entity.User;
 import com.example.server.user.mapper.UserMapper;
 import com.example.server.user.service.UserService;
@@ -68,9 +69,13 @@ public class UserController {
   public ResponseEntity getUser(@PathVariable Long id) {
     log.info("##### GET USER #####");
     //TODO getUser 구현
+    User findUser = userService.getUser(id);
+    UserResponseDto userResponseDto = mapper.userToUserResponseDto(findUser);
 
 
-    return null;
+    return ResponseEntity.ok(userResponseDto);
   }
+
+  //TODO getUsers 만들어야하나?
 
 }
