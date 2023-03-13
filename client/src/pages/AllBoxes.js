@@ -47,13 +47,13 @@ export default AllBoxes;
 
 export const MealBoxesWrapDiv = styled.div`
   flex-direction: column;
-  min-height: 100vh;
+  min-height: calc(100vh - 50px - 5rem);
 `;
 export const MealBoxesUl = styled.ul`
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   row-gap: 3rem;
-  column-gap: 4rem;
+  column-gap: 4vw;
   width: 100%;
   list-style: none;
 
