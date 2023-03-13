@@ -1,7 +1,5 @@
 package com.example.server.mealbox.entity;
 
-import com.example.server.image.Image;
-import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.product.entity.Product;
 import lombok.*;
 
@@ -13,7 +11,8 @@ import javax.persistence.*;
 public class MealboxProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long mealboxProductId;
+    @Column(name = "MEALBOX_PRODUCT_ID")
+    private Long id;
 
     @Setter
     private int quantity;

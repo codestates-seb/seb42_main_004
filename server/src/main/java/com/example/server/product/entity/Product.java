@@ -1,12 +1,11 @@
 package com.example.server.product.entity;
 
-import com.example.server.image.Image;
+import com.example.server.image.entity.Image;
+import com.example.server.image.entity.ProductImage;
 import com.example.server.mealbox.entity.MealboxProduct;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.List;
 
 @Entity
@@ -16,7 +15,8 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    @Column(name = "PRODUCT_ID")
+    private Long id;
     private String productName;
     private String details;
     private int unitWeight;
@@ -25,13 +25,13 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<MealboxProduct> mealboxProducts;
-    @Setter
-    @Embedded
-    private Image image;
+
+    @OneToOne
+    @JoinColumn(name = "PRODUCT_IMAGE_ID")
+    private ProductImage image;
 
     @Builder
-    public Product(Long productId, String productName, String details, int unitWeight, int unitKcal, int unitPrice) {
-        this.productId = productId;
+    public Product(String productName, String details, int unitWeight, int unitKcal, int unitPrice) {
         this.productName = productName;
         this.details = details;
         this.unitWeight = unitWeight;
