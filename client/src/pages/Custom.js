@@ -31,8 +31,8 @@ function Custom() {
           </li>
         </BoxElementsUl>
         <AsideWrapper>
-          <ShowDetail>
-            <Triangle />
+          <ShowDetailDiv>
+            <TriangleDiv />
             <ElementsInBucketDiv>
               <h2>Custom</h2>
               <ul>
@@ -50,7 +50,7 @@ function Custom() {
                 <span>{`${'19,900'}원`}</span>
               </div>
             </ElementsInBucketDiv>
-          </ShowDetail>
+          </ShowDetailDiv>
           <AsideSignatureButton>장바구니 담기</AsideSignatureButton>
         </AsideWrapper>
       </CustomSelectDiv>
@@ -63,19 +63,19 @@ export default Custom;
 const BoxElementsUl = styled.ul`
   list-style: none;
   width: 60%;
-
   float: left;
 
   @media screen and (max-width: 480px) {
     width: 100%;
   }
 `;
+
 const CustomSelectDiv = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 
-export const ElementsInBucketDiv = styled.div`
+const ElementsInBucketDiv = styled.div`
   background-color: var(--bucket_brown);
   padding: 1rem;
   border-radius: 10px 10px 0 0;
@@ -118,7 +118,8 @@ export const ElementsInBucketDiv = styled.div`
     border-radius: 0;
   }
 `;
-export const AsideSignatureButton = styled.button`
+
+const AsideSignatureButton = styled.button`
   width: 100%;
   border: none;
   padding: 1rem 0;
@@ -131,7 +132,7 @@ export const AsideSignatureButton = styled.button`
   }
 `;
 
-const Triangle = styled.div`
+const TriangleDiv = styled.div`
   display: none;
   width: 0;
   height: 0;
@@ -165,7 +166,7 @@ const AsideWrapper = styled.aside`
   }
 `;
 
-const ShowDetail = styled.div`
+const ShowDetailDiv = styled.div`
   :hover {
     h2,
     ul {

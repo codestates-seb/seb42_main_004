@@ -62,7 +62,7 @@ export const MealBoxImg = styled.img`
   transform: translateY(-50%);
   height: auto;
 `;
-const MealBoxDesUl = styled.div`
+const MealBoxDesUl = styled.ul`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

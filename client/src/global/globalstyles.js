@@ -24,15 +24,20 @@ const GlobalStyle = createGlobalStyle`
     margin-bottom: 0.5rem;
   }
 
+  button {
+    cursor: pointer;
+  }
+
   .bodymargin {
-    padding-top: 70px;
+    padding-top: calc(1rem + 50px);
+    padding-bottom: 4rem;
   }
 
   .marginbase {
     display: flex;
     justify-content: center;
     background-color: var(--body_beige);
-    /* min-width: 360px; */
+    min-width: 360px;
   }
 
   .margininside {
@@ -58,8 +63,9 @@ const GlobalStyle = createGlobalStyle`
     border-radius: 4px;
 
     &:focus {
-      border: none;
-      outline: 2px solid var(--signature);
+      border: 2px solid var(--input_blue);
+      margin: -0.8px;
+      outline: none;
     }
   }
 
@@ -77,12 +83,14 @@ const GlobalStyle = createGlobalStyle`
 
   :root {
     --black: rgba(0, 0, 0, 1);
-    --signature: rgba(59, 152, 185, 1);
-    --signature_070: rgba(59, 152, 185, 0.7);
+    --input_blue : rgba(59, 152, 185, 1);
+    --signature: rgba(88, 97, 92, 1);
+    --signature_070: rgba(88, 97, 92, 0.7);
     --bucket_brown: rgba(215, 184, 140, 1);
     --bucket_brown_070: rgba(215, 184, 140, 0.7);
     --product_cocoa: rgba(232, 213, 196, 1);
     --gray: rgba(238, 238, 238, 1);
+    --gray_070: rgba(171, 171, 171, 0.7);
     --head_brown: rgba(242, 233, 221, 1);
     --body_beige: rgba(252, 246, 236, 1);
     --white: rgba(255, 255, 255, 1);

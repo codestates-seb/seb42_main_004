@@ -1,6 +1,7 @@
 package com.example.server.mealbox.entity;
 
-import com.example.server.image.Image;
+import com.example.server.image.entity.Image;
+import com.example.server.image.entity.MealboxImage;
 import com.example.server.order.entity.OrdersMealbox;
 import lombok.*;
 
@@ -13,7 +14,8 @@ import java.util.List;
 public class Mealbox {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long mealboxId;
+    @Column(name = "MEALBOX_ID")
+    private Long id;
 
     private String mealboxName;
 
@@ -34,9 +36,9 @@ public class Mealbox {
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
     private List<OrdersMealbox> ordersMealboxes;
 
-    @Embedded
-    @Setter
-    private Image image;
+    @OneToOne
+    @JoinColumn(name = "MEALBOX_IMAGE_ID")
+    private MealboxImage image;
 
     @Builder
     public Mealbox(String mealboxName, String details, int totalPrice, int totalKcal, int totalWeight,

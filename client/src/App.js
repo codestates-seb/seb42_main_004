@@ -7,8 +7,12 @@ import RecommendedBox from './pages/RecommendedBox';
 import Custom from './pages/Custom';
 import OrderHistory from './components/orderHistory/OrderHistory';
 import Cart from './pages/Cart';
+<<<<<<< Updated upstream
+import Login from './pages/Login';
+import Explain from './pages/Explain';
+=======
 import Login from './components/member/Login';
-import styled from 'styled-components';
+>>>>>>> Stashed changes
 
 function App() {
   let { pathname } = useLocation();
@@ -26,6 +30,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/orderhistory" element={<OrderHistory />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/explain" element={<Explain />} />
         </Routes>
       </div>
       {pathname !== '/cart' && pathname !== '/custom' ? <Footer /> : null}

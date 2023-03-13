@@ -11,7 +11,8 @@ import javax.persistence.*;
 public class OrdersMealbox {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderMealboxId;
+    @Column(name = "ORDERS_MEALBOX_ID")
+    private Long id;
 
     @Setter
     private int quantity;
@@ -29,5 +30,12 @@ public class OrdersMealbox {
         this.quantity = quantity;
         this.mealbox = mealbox;
         this.orders = orders;
+    }
+
+    public void addOrders(Orders orders) {
+        this.orders = orders;
+        if(!orders.getOrdersMealboxes().contains(this)) {
+            orders.addOrdersMealbox(this);
+        }
     }
 }
