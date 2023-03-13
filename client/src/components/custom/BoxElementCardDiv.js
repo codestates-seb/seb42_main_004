@@ -4,17 +4,15 @@ import { MealBoxCardContainerDiv } from '../allboxes/MealBoxCardDiv';
 function BoxElementCardDiv() {
   return (
     <BoxElementContainerDiv className="shadow">
-      {/* <BoxElementImgDiv> */}
       <BoxElementImg
         alt=""
         src="https://kfcapi.inicis.com/kfcs_api_img/KFCS/goods/DL_1444648_20211125135829503.png"
       />
-      {/* </BoxElementImgDiv> */}
       <BoxElementTitle>오렌지 주스</BoxElementTitle>
       <div>
-        <span>-</span>
+        <button className="linkstyle">&#8722;</button>
         <span>1</span>
-        <span>+</span>
+        <button className="linkstyle">&#43;</button>
       </div>
     </BoxElementContainerDiv>
   );
@@ -34,7 +32,14 @@ const BoxElementContainerDiv = styled(MealBoxCardContainerDiv)`
   font-weight: bold;
 
   span {
-    margin: 2px;
+    margin: 4px;
+  }
+
+  button {
+    font-weight: bold;
+    border: none;
+    background: none;
+    padding: 2px;
   }
 `;
 const BoxElementImg = styled.img`
