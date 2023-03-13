@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import {
-  ElementsInBucketAside,
-  ASideSignatureButton,
-} from '../../pages//Custom.js';
+// import {
+//   ElementsInBucketAside,
+//   AsideSignatureButton,
+// } from '../../pages//Custom.js';
 
 function TotalPaymentBoxDiv() {
   return (
@@ -16,7 +16,7 @@ function TotalPaymentBoxDiv() {
         <h3>총 결제 금액</h3>
         <Amount>34,000원</Amount>
       </div>
-      <ASideSignatureButton>구매하기</ASideSignatureButton>
+      {/* <AsideSignatureButton>구매하기</AsideSignatureButton> */}
     </Div>
   );
 }
@@ -37,7 +37,7 @@ const Amount = styled.div`
   font-size: x-large;
 `;
 
-const Div = styled(ElementsInBucketAside)`
+const Div = styled()`
   background-color: var(--white_020);
   box-shadow: 0 0 0 2px var(--signature) inset, 2px 2px 2px rgba(0, 0, 0, 0.4);
 `;

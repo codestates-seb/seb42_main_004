@@ -44,7 +44,6 @@ const FooterWrapper = styled.footer`
 
   @media (max-width: 480px) {
     height: 180px;
-    padding-left: 16px;
   }
 `;
 
@@ -71,7 +70,7 @@ const LogoImg = styled.img`
 
   @media (max-width: 480px) {
     top: 10px;
-    left: 10%;
+    left: 46px;
   }
 `;
 
@@ -105,8 +104,7 @@ const MemberNameDiv = styled.div`
 `;
 
 const LineHr = styled.hr`
-  height: 1px;
-  background: var(--black);
+  background-color: var(--white);
   @media (max-width: 768px) {
     display: none;
   }

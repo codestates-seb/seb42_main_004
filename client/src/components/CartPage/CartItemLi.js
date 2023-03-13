@@ -32,7 +32,7 @@ function CartItemLi() {
 
 export default CartItemLi;
 
-const CheckBoxAndCartItemLi = styled.li`
+export const CheckBoxAndCartItemLi = styled.li`
   display: flex;
   align-items: flex-start;
   width: 100%;
@@ -54,7 +54,7 @@ const MobileCheckBoxInput = styled.input`
   }
 `;
 
-const CartItemWrapperDiv = styled.div`
+export const CartItemWrapperDiv = styled.div`
   display: flex;
   flex-direction: column;
   width: 70%;
@@ -69,7 +69,7 @@ const CartItemWrapperDiv = styled.div`
   }
 `;
 
-const CartItemTopDiv = styled.div`
+export const CartItemTopDiv = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
@@ -79,13 +79,13 @@ const CartItemTopDiv = styled.div`
   }
 `;
 
-const CartItemBottomDiv = styled.div`
+export const CartItemBottomDiv = styled.div`
   display: flex;
   justify-content: space-between;
   flex-grow: 1;
 `;
 
-const CartItemBottomButtonsDiv = styled.div`
+export const CartItemBottomButtonsDiv = styled.div`
   display: flex;
   align-items: flex-end;
 `;
