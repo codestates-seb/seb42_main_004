@@ -35,9 +35,12 @@ public class User extends BaseEntity {
   private String email;
   @Setter
   private String password;
+  @Setter
   private String name;
   @Column(name = "phone_number")
+  @Setter
   private String phoneNumber;
+  @Setter
   private String address;
   @ElementCollection(fetch = EAGER)
   @Setter

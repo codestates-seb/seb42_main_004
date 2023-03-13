@@ -34,14 +34,30 @@ public class UserService {
     //지금은 완전삭제
     userRepository.delete(findUser);
   }
+  public User updatedMember(User user) {
+    User findUser = checkUserExist(user.getId());
+    //검증 성공
+    Optional.ofNullable(user.getPassword()).ifPresent(findUser::setPassword);
+    Optional.ofNullable(user.getName()).ifPresent(findUser::setName);
+    Optional.ofNullable(user.getAddress()).ifPresent(findUser::setAddress);
+    Optional.ofNullable(user.getPhoneNumber()).ifPresent(findUser::setPhoneNumber);
+
+
+    userRepository.save(findUser);
+    return findUser;
+  }
 
 
 
 
-  // 회원이 존재하는지 검사
+  // 회원이 존재하는지 검사 , 존재하면 예외
   private void verifyExistsEmail(String email) {
     if (userRepository.findByEmail(email).isPresent())
       throw new BusinessLogicException(UserException.MEMBER_EXIST);
+  }
+// 회원이 존재하지 않으면 예외발생
+  public User checkUserExist(Long id) {
+    return userRepository.findById(id).orElseThrow(() -> new BusinessLogicException(UserException.MEMBER_NOT_FOUND));
   }
 
   private void setDefaultMemberInfo(User user) {

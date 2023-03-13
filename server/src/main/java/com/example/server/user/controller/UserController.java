@@ -1,6 +1,7 @@
 package com.example.server.user.controller;
 
 import com.example.server.auth.utils.UriCreator;
+import com.example.server.user.dto.UserPatchDto;
 import com.example.server.user.dto.UserPostDto;
 import com.example.server.user.entity.User;
 import com.example.server.user.mapper.UserMapper;
@@ -25,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
   private final UserMapper mapper;
   private final UserService userService;
-  private final static String MEMBER_DEFAULT_URL = "/users";
+  private final static String USER_DEFAULT_URL = "/users";
 
 
   // 회원 가입
@@ -35,7 +36,7 @@ public class UserController {
 
     User user = mapper.userPostDtoToUser(postDto);
     User savedUser = userService.createUser(user);
-    URI location = UriCreator.createUri(MEMBER_DEFAULT_URL,savedUser.getId());
+    URI location = UriCreator.createUri(USER_DEFAULT_URL,savedUser.getId());
 
     return ResponseEntity.created(location).build();
   }
@@ -53,11 +54,14 @@ public class UserController {
 
   //회원 정보 수정
   @PatchMapping("/{id}")
-  public ResponseEntity updateUser() {
+  public ResponseEntity updateUser(@RequestBody UserPatchDto patchDto) {
     log.info("##### UPDATE USER #####");
     //TODO updateUser 구현
+    User user = mapper.userPatchDtoToUser(patchDto);
+    User patchedUser = userService.updatedMember(user);
+    URI location = UriCreator.createUri(USER_DEFAULT_URL,patchedUser.getId());
 
-    return null;
+    return ResponseEntity.ok(location);
   }
 
   //회원 상세 정보 조회

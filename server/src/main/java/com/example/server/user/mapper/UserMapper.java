@@ -1,5 +1,6 @@
 package com.example.server.user.mapper;
 
+import com.example.server.user.dto.UserPatchDto;
 import com.example.server.user.dto.UserPostDto;
 import com.example.server.user.entity.User;
 import org.mapstruct.Mapper;
@@ -10,9 +11,12 @@ public interface UserMapper {
 
   User userPostDtoToUser(UserPostDto userPostDto);
 
-//  User userPatchDtoToUser(UserPatchDto userPatchDto) {
-//    return User.builder()
-//
-//  }
-
+  default User userPatchDtoToUser(UserPatchDto patchDto) {
+    return User.builder().id(patchDto.getId())
+        .name(patchDto.getName())
+        .password(patchDto.getPassword())
+        .phoneNumber(patchDto.getPhoneNumber())
+        .address(patchDto.getAddress())
+        .build();
+  }
 }
