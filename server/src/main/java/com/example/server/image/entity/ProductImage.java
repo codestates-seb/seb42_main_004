@@ -1,13 +1,12 @@
 package com.example.server.image.entity;
 
 import com.example.server.product.entity.Product;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.example.server.user.entity.User;
+import lombok.*;
 
 import javax.persistence.*;
 
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -20,6 +19,8 @@ public class ProductImage {
     @Embedded
     private Image image;
 
-    @OneToOne(mappedBy = "product_image")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PRODUCT_ID")
+    @Setter
     private Product product;
 }
