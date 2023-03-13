@@ -1,5 +1,8 @@
 package com.example.server.user.controller;
 
+import com.example.server.user.dto.UserPostDto;
+import com.example.server.user.entity.User;
+import com.example.server.user.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -7,21 +10,24 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 //@RestController
 //@RequestMapping("/users")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
+  private final UserMapper mapper;
 
 
   // 회원 가입
   @PostMapping
-  public ResponseEntity createUser() {
+  public ResponseEntity createUser(@RequestBody UserPostDto postDto) {
     log.info("##### CREATE USER #####");
     //TODO createUser 구현
+
+    User user = mapper.userPostDtoToUser(postDto);
+
 
     return null;
   }
