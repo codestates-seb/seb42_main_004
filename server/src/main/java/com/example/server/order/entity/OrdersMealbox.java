@@ -31,4 +31,11 @@ public class OrdersMealbox {
         this.mealbox = mealbox;
         this.orders = orders;
     }
+
+    public void addOrders(Orders orders) {
+        this.orders = orders;
+        if(!orders.getOrdersMealboxes().contains(this)) {
+            orders.addOrdersMealbox(this);
+        }
+    }
 }
