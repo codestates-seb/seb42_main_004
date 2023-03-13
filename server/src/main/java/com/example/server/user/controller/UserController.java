@@ -1,8 +1,11 @@
 package com.example.server.user.controller;
 
+import com.example.server.auth.utils.UriCreator;
 import com.example.server.user.dto.UserPostDto;
 import com.example.server.user.entity.User;
 import com.example.server.user.mapper.UserMapper;
+import com.example.server.user.service.UserService;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Slf4j
 public class UserController {
   private final UserMapper mapper;
+  private final UserService userService;
+  private final static String MEMBER_DEFAULT_URL = "/users";
 
 
   // 회원 가입
@@ -27,9 +32,12 @@ public class UserController {
     //TODO createUser 구현
 
     User user = mapper.userPostDtoToUser(postDto);
+    User savedUser = userService.createUser(user);
+    URI location = UriCreator.createUri(MEMBER_DEFAULT_URL,savedUser.getId());
 
 
-    return null;
+
+    return ResponseEntity.created(location).build();
   }
 
   //회원 삭제

@@ -19,3 +19,7 @@ logging:
   level:
     org.hibernate.sql: DEBUG
     org.hibernate.type.descriptor.sql: DEBUG #show parameter binding
+
+mail:
+  address:
+    admin: admin@gmail.com

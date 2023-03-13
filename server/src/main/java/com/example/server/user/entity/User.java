@@ -1,12 +1,15 @@
 package com.example.server.user.entity;
 
 import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.EAGER;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.example.server.baseEntity.BaseEntity;
-import com.example.server.user.data.UserRole;
 import com.example.server.user.data.UserStatus;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -30,15 +33,16 @@ public class User extends BaseEntity {
   @Column(name = "user_id")
   private Long id;
   private String email;
+  @Setter
   private String password;
   private String name;
   @Column(name = "phone_number")
   private String phoneNumber;
   private String address;
-  @Enumerated(STRING)
-  @Default
+  @ElementCollection(fetch = EAGER)
   @Setter
-  private UserRole role = UserRole.ROLE_USER;
+  @Builder.Default
+  private List<String> roles = new ArrayList<>();
   @Enumerated(STRING)
   @Default
   @Setter
