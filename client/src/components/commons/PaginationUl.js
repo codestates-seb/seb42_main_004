@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-function Pagination({ nowpage, totalpage, setNextPage }) {
+function PaginationUl({ nowpage, totalpage, setNextPage }) {
   const total = totalpage <= 5 ? totalpage : 5;
   let now;
   if (nowpage < 4) now = 1;
@@ -9,7 +9,7 @@ function Pagination({ nowpage, totalpage, setNextPage }) {
   const totalLi = new Array(total).fill(now).map((el, i) => el + i);
 
   return (
-    <PaginationUl>
+    <PaginationContainerUl>
       {!totalLi.includes(1) && (
         <PaginationLi onClick={() => setNextPage(1)}>{'<<'}</PaginationLi>
       )}
@@ -27,16 +27,16 @@ function Pagination({ nowpage, totalpage, setNextPage }) {
           {'>>'}
         </PaginationLi>
       )}
-    </PaginationUl>
+    </PaginationContainerUl>
   );
 }
 
-export default Pagination;
+export default PaginationUl;
 
-const PaginationUl = styled.ul`
+const PaginationContainerUl = styled.ul`
   list-style: none;
   display: flex;
-  margin: 2rem -0.5rem;
+  margin: 0.5rem -0.5rem 0;
   align-self: end;
 `;
 const PaginationLi = styled.li`

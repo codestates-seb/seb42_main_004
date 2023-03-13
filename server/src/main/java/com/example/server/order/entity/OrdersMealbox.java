@@ -26,4 +26,19 @@ public class OrdersMealbox {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "orders_id")
     private Orders orders;
+
+
+    @Builder
+    public OrdersMealbox(int quantity, Mealbox mealbox, Orders orders) {
+        this.quantity = quantity;
+        this.mealbox = mealbox;
+        this.orders = orders;
+    }
+
+    public void addOrders(Orders orders) {
+        this.orders = orders;
+        if(!orders.getOrdersMealboxes().contains(this)) {
+            orders.addOrdersMealbox(this);
+        }
+    }
 }

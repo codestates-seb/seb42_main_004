@@ -6,6 +6,7 @@ import com.example.server.user.entity.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +31,7 @@ public class Orders extends BaseEntity {
   private Long orderId;
 
   @Column(nullable = false, unique = true)
-  private String ordersNumber; // 주문 번호
+  private String orderNumber; // 주문 번호
 
   private int totalPrice; // 주문 총액
 
@@ -42,7 +43,7 @@ public class Orders extends BaseEntity {
 
   private String phoneNumber; // 수령인 전화번호
 
-  private OrderStatus status; // 주문 상태
+  private OrderStatus status = OrderStatus.ORDER_COMPLETED; // 주문 상태
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "USER_ID")
@@ -50,10 +51,22 @@ public class Orders extends BaseEntity {
 
   public void addUser(User user) {
     this.user = user;
+    if (!user.getOrders().contains(this)) {
+      user.addOrders(this);
+    }
   }
 
-  @OneToMany(mappedBy = "orders")
+  @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
   private List<OrdersMealbox> ordersMealboxes = new ArrayList<>();
 
+  public void addOrdersMealbox (OrdersMealbox ordersMealbox) {
+    ordersMealboxes.add(ordersMealbox);
+    if(ordersMealbox.getOrders() != this) {
+      ordersMealbox.addOrders(this);
+    }
+  }
 
+  public void applyRefund() {
+    this.status = OrderStatus.REFUND_APPLIED;
+  }
 }

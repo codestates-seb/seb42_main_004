@@ -6,9 +6,12 @@ import com.example.server.baseEntity.BaseEntity;
 import com.example.server.cart.entity.Cart;
 import com.example.server.image.entity.Image;
 import com.example.server.image.entity.UserImage;
+import com.example.server.order.entity.Orders;
 import com.example.server.user.data.UserRole;
 import com.example.server.user.data.UserStatus;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 
 import lombok.*;
@@ -47,5 +50,15 @@ public class User extends BaseEntity {
 
   @OneToOne(mappedBy = "user")
   private Cart cart;
+
+  @OneToMany(mappedBy = "user")
+  private List<Orders> orders = new ArrayList();
+
+  public void addOrders(Orders orders) {
+    this.orders.add(orders);
+    if(orders.getUser() != this) {
+      orders.addUser(this);
+    }
+  }
 
 }
