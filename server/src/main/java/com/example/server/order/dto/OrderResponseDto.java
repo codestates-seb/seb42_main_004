@@ -11,5 +11,5 @@ public class OrderResponseDto {
   private String orderNumber;
   private LocalDateTime createdAt;
   private String orderStatus;
-//  private List<OrdersMealboxResponseDto> mealboxes; // 추후 만들어져야함
+  private List<OrderMealboxResponseDto> mealboxes;
 }
