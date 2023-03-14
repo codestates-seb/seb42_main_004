@@ -22,13 +22,12 @@ public interface OrderMapper {
       List<OrderMealboxResponseDto> orderMealboxResponseList = ordersMealboxList.stream().map(ordersMealbox -> {
         OrderMealboxResponseDto orderMealboxResponseDto = new OrderMealboxResponseDto();
         orderMealboxResponseDto.setMealboxName(ordersMealbox.getMealbox().getMealboxName());
-        orderMealboxResponseDto.setMealboxPrice(ordersMealbox.getMealbox().getTotalPrice());
+        orderMealboxResponseDto.setMealboxPrice(ordersMealbox.getPrice());
         orderMealboxResponseDto.setMealboxQuantity(ordersMealbox.getQuantity());
         // 재료, 수량 추가해야함
         return orderMealboxResponseDto;
       }).collect(Collectors.toList());
       orderResponseDto.setMealboxes(orderMealboxResponseList);
-      //밀박스 내용 + 재료 내용 채워야함
       return orderResponseDto;
     }).collect(Collectors.toList());
     return orderResponseDtos;

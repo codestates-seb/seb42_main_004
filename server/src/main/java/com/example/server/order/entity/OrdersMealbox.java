@@ -19,6 +19,8 @@ public class OrdersMealbox {
     @Setter
     private int quantity;
 
+    private int price;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mealbox_id")
     private Mealbox mealbox;

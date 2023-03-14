@@ -3,7 +3,7 @@ package com.example.server.order.entity;
 import com.example.server.baseEntity.BaseEntity;
 import com.example.server.order.data.OrderStatus;
 import com.example.server.user.entity.User;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -35,7 +35,7 @@ public class Orders extends BaseEntity {
 
   private int totalPrice; // 주문 총액
 
-  private LocalDateTime deliveryDate; // 지정 배송일
+  private LocalDate deliveryDate; // 배송 완료일
 
   private String addressee; // 받는 사람
 
@@ -68,5 +68,12 @@ public class Orders extends BaseEntity {
 
   public void applyRefund() {
     this.status = OrderStatus.REFUND_APPLIED;
+  }
+  public void completeDelivery() {
+    this.status = OrderStatus.DELIVERY_COMPLETED;
+    deliveryDate = LocalDate.now();
+  }
+  public void cancelOrder() {
+    this.status = OrderStatus.ORDER_CANCELED;
   }
 }
