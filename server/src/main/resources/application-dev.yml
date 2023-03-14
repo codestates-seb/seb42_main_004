@@ -1,9 +1,8 @@
-
 spring:
   datasource:
-    url: jdbc:mariadb://codestates-main.c2eyuthvn0kf.ap-northeast-2.rds.amazonaws.com:3306/test?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
-    username: admin
-    password: xodid12!
+    url:
+    username:
+    password:
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
@@ -13,13 +12,23 @@ spring:
       hibernate:
         format_sql: true #To beautify or pretty print the SQL
         show_sql: true #show sql
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 logging:
   level:
     org.hibernate.sql: DEBUG
     org.hibernate.type.descriptor.sql: DEBUG #show parameter binding
 
+image:
+  path: sss
+
 mail:
   address:
     admin: admin@gmail.com
+
+jwt:
+  key: 4FizXKCsqLU4lKXNtWLnyMBax57eVryor6zmf7wPUhF5SGc25Tk7VzKhm5KiPgj
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420

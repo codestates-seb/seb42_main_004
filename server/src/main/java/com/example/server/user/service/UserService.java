@@ -32,6 +32,7 @@ public class UserService {
   public User createUser(User user) {
     log.info("user = {}", user);
     verifyExistsEmail(user.getEmail());
+
     setDefaultMemberInfo(user);
     User save = userRepository.save(user);
 
@@ -80,9 +81,11 @@ public class UserService {
   }
 
   private void setDefaultMemberInfo(User user) {
+    // 패스워드 암호화
     String encryptedPassword = Optional.ofNullable(passwordEncoder.encode(user.getPassword()))
         .get();
     user.setPassword(encryptedPassword);
+    // db에 유저 role 저장
 //    TODO 시큐리티 비활성화
     List<String> roles = authorityUtils.createRoles(user.getEmail());
     user.setRoles(roles);
