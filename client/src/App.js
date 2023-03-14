@@ -9,6 +9,7 @@ import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Explain from './pages/Explain';
 import OrderHistory from './pages/OrderHistory';
+import Survey from './pages/Survey';
 
 function App() {
   let { pathname } = useLocation();
@@ -27,6 +28,7 @@ function App() {
           <Route path="/orderhistory" element={<OrderHistory />} />
           <Route path="/login" element={<Login />} />
           <Route path="/explain" element={<Explain />} />
+          <Route path="/survey/:page" element={<Survey />} />
         </Routes>
       </div>
       {pathname !== '/cart' && pathname !== '/custom' ? <Footer /> : null}

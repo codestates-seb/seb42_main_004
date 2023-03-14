@@ -34,7 +34,7 @@ const CheckBoxInput = styled.input`
 `;
 
 export const CartItemWrapperLi = styled.li`
-  /* width: 100%; */
+  /* width: 60%%; */
   /* max-width: 645px; */
   height: fit-content;
   border-radius: 10px;

@@ -1,13 +1,18 @@
+import styled from 'styled-components';
 import { CartItemListUl } from '../../pages/Cart';
 import OrderHistoryItemLi from './OrderHistoryItemLi';
 
 function OrderHistoryUl() {
   return (
-    <CartItemListUl>
+    <HistoryUl>
       <OrderHistoryItemLi />
       <OrderHistoryItemLi />
-    </CartItemListUl>
+    </HistoryUl>
   );
 }
 
 export default OrderHistoryUl;
+
+const HistoryUl = styled(CartItemListUl)`
+  width: 100%;
+`;
