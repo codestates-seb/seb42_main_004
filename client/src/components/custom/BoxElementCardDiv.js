@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { TextButton } from '../../pages/Custom';
 import { MealBoxCardContainerDiv } from '../allboxes/MealBoxCardDiv';
+import { TextButton } from '../commons/ModalDiv';
 
 function BoxElementCardDiv() {
   return (
