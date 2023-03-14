@@ -1,6 +1,11 @@
 package com.example.server.order.controller;
 
+import com.example.server.order.dto.OrderPostDto;
+import com.example.server.order.entity.Orders;
+import com.example.server.order.mapper.OrderMapper;
 import com.example.server.order.service.OrderService;
+import com.siot.IamportRestClient.exception.IamportResponseException;
+import java.io.IOException;
 import javax.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,9 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class OrderController {
   private final OrderService orderService;
+  private final OrderMapper mapper;
   @PostMapping
-  public ResponseEntity postOrder() { //주문하기
-
+  public ResponseEntity postOrder(@RequestBody OrderPostDto orderPostDto)
+      throws IamportResponseException, IOException { //주문하기
+    Orders order = mapper.orderPostDtoToOrders(orderPostDto);
+    orderService.createOrder(order);
     return new ResponseEntity(HttpStatus.CREATED);
   }
 
