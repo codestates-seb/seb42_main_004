@@ -12,7 +12,8 @@ import Explain from './pages/Explain';
 import Signup from './pages/Signup';
 import SignupOauth from './pages/SignupOauth';
 import MyInfo from './pages/MyInfo';
-import Pay from './pages/Pay';
+import Payment from './pages/Payment';
+import ModifyMyInfo from './pages/ModifyMyInfo';
 
 function App() {
   let { pathname } = useLocation();
@@ -34,7 +35,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/signupoauth" element={<SignupOauth />} />
           <Route path="/myinfo" element={<MyInfo />} />
-          <Route path="/pay" element={<Pay />} />
+          <Route path="/modifymyinfo" element={<ModifyMyInfo />} />
+          <Route path="/payment" element={<Payment />} />
         </Routes>
       </div>
       {pathname !== '/cart' && pathname !== '/custom' ? <Footer /> : null}
