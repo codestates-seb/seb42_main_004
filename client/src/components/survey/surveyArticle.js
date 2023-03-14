@@ -1,7 +1,7 @@
-import SurveyPage0 from './surveyPage0';
-import SurveyPage1 from './surveyPage1';
-import SurveyPage2 from './surveyPage2';
-import SurveyPage3 from './surveyPage3';
+import SurveyPage0 from './SurveyPage0';
+import SurveyPage1 from './SurveyPage1';
+import SurveyPage2 from './SurveyPage2';
+import SurveyPage3 from './SurveyPage3';
 
 function SurveyArticle({ page }) {
   switch (page) {

@@ -1,19 +1,49 @@
 import styled from 'styled-components';
 import InputLabelDiv from '../commons/InputLabelDiv';
-import { Link } from 'react-router-dom';
+import MainButton from '../commons/MainButton';
+import PreAndNextButtons from './preAndNextButtons';
 
 function SurveyPage1() {
+  let maleHandler = (e) => {
+    console.log(e.target);
+  };
+
+  let femaleHandler = (e) => {
+    console.log(e.target);
+  };
+
   return (
     <Article>
-      <InputLabelDiv
-        label="생년월일"
-        id="name"
-        value=""
-        placeholder="example@email.com"
-      />
-      <InputLabelDiv label="신장" id="name" value="" placeholder="0" />
-      <InputLabelDiv label="체중" id="name" value="" placeholder="0" />
-      <Link to="/survey/2">링크링</Link>
+      <h3>밀박스 추천을 위해 정보를 입력해주세요.</h3>
+      <SurveyContentDiv>
+        <InputLabelDiv
+          label="생년월일"
+          id="name"
+          // value={productInfo.name}
+          // onChange={inputHandler('name')}
+          placeholder="2000.01.01"
+        />
+        <div>성별</div>
+        <GenderOptionDiv>
+          <MainButton name="남성" handler={maleHandler} />
+          <MainButton name="여성" handler={femaleHandler} />
+        </GenderOptionDiv>
+        <InputLabelDiv
+          label="신장"
+          id="name"
+          value=""
+          placeholder="0"
+          unit="cm"
+        />
+        <InputLabelDiv
+          label="체중"
+          id="name"
+          value=""
+          placeholder="0"
+          unit="kg"
+        />
+        <PreAndNextButtons />
+      </SurveyContentDiv>
     </Article>
   );
 }
@@ -22,4 +52,14 @@ export default SurveyPage1;
 
 const Article = styled.article`
   flex-direction: column;
+`;
+
+const SurveyContentDiv = styled.div`
+  width: 200px;
+  margin: 0 auto;
+`;
+
+const GenderOptionDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;

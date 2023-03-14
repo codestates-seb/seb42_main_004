@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import SurveyArticle from '../components/survey/surveyArticle';
-
+import SurveyArticle from '../components/survey/SurveyArticle.js';
 import { BsFillCircleFill as Dot } from 'react-icons/bs';
+
 function Survey() {
   let { page } = useParams();
   return (

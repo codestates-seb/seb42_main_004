@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-const MainButton = ({ name }) => {
+const MainButton = ({ name, handler }) => {
   return (
-    <Button className="buttonstyle shadow" name={name}>
+    <Button className="buttonstyle shadow" name={name} onClick={handler}>
       {name}
     </Button>
   );

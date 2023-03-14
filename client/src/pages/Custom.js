@@ -4,7 +4,7 @@ import PaginationUl from '../components/commons/PaginationUl';
 import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
 import CartAside from '../components/commons/CartAside';
 import ModalDiv, { TextButton } from '../components/commons/ModalDiv';
-import SearchBarDiv from '../components/commons/SearchBarDiv';
+// import SearchBarDiv from '../components/commons/SearchBarDiv';
 import { MealBoxesWrapDiv } from './AllBoxes';
 
 function Custom() {
@@ -14,7 +14,7 @@ function Custom() {
     <MealBoxesWrapDiv className="margininside">
       {openModal && <ModalDiv closeModal={() => setOpenModal(false)} />}
       <h1>커스텀 밀박스</h1>
-      <SearchBarDiv />
+      {/* <SearchBarDiv /> */}
       <CustomSelectDiv>
         <ElementsContainerDiv>
           <ul>
