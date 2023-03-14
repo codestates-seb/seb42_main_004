@@ -10,25 +10,28 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Mealbox {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEALBOX_ID")
     private Long id;
-
-    private String mealboxName;
-
-    private String details;
-
+    @Column(name = "MEALBOX_NAME", nullable = false)
+    @Setter
+    private String name;
+    @Column(nullable = false)
+    @Setter
     private int totalPrice;
-
+    @Column(nullable = false)
+    @Setter
     private int totalKcal;
-
+    @Column(nullable = false)
+    @Setter
     private int totalWeight;
-
+    @Column(nullable = false)
     private boolean createdByAdmin;
-
 
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
     private List<MealboxProduct> mealboxProducts;
@@ -36,28 +39,8 @@ public class Mealbox {
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
     private List<OrdersMealbox> ordersMealboxes;
 
-    @OneToOne
-    @JoinColumn(name = "MEALBOX_IMAGE_ID")
+    @OneToOne(mappedBy = "mealbox")
     private MealboxImage image;
-
-    @Builder
-    public Mealbox(String mealboxName, String details, int totalPrice, int totalKcal, int totalWeight,
-                   boolean createdByAdmin) {
-        this.mealboxName = mealboxName;
-        this.details = details;
-        this.totalPrice = totalPrice;
-        this.totalKcal = totalKcal;
-        this.totalWeight = totalWeight;
-        this.createdByAdmin = createdByAdmin;
-    }
-
-    public void changeMealbox(String mealboxName, String details, int totalPrice, int totalKcal, int totalWeight) {
-        this.mealboxName = mealboxName;
-        this.details = details;
-        this.totalPrice = totalPrice;
-        this.totalKcal = totalKcal;
-        this. totalWeight = totalWeight;
-    }
 
     public void addMealboxProduct(MealboxProduct mealboxProduct) {
         mealboxProducts.add(mealboxProduct);

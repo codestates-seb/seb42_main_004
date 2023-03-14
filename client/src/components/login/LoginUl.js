@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+import LoginButton from './LoginButton';
+import InputDiv from '../signup/InputDiv';
 import { FcGoogle } from 'react-icons/fc';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
@@ -18,19 +20,10 @@ function LoginUl() {
         </Title>
       </li>
       <li>
-        <Button className="buttonstyle">
-          <FcGoogle size={25} />
-          <div>Sign in with Google</div>
-        </Button>
+        <InputDiv name="이메일" id="email" placeholder="example@email.com" />
       </li>
       <li>
-        <InputDiv>
-          <label htmlFor="email">이메일</label>
-          <input className="inputstyle" id="email" placeholder="email"></input>
-        </InputDiv>
-      </li>
-      <li>
-        <InputDiv>
+        <PasswordDiv>
           <label htmlFor="password">비밀번호</label>
           <input
             className="inputstyle"
@@ -47,12 +40,28 @@ function LoginUl() {
               <AiOutlineEyeInvisible size={20} />
             </IconDiv>
           )}
-        </InputDiv>
+        </PasswordDiv>
       </li>
       <li>
-        <Button className="buttonstyle" name="login">
-          로그인
-        </Button>
+        <CheckboxDiv>
+          <input type="checkbox" id="auto"></input>
+          <label htmlFor="auto">자동로그인</label>
+        </CheckboxDiv>
+      </li>
+      <li>
+        <LoginButton name="로그인"></LoginButton>
+      </li>
+      <li>
+        <Div>
+          <div>비밀번호 찾기</div>
+          <div>회원가입</div>
+        </Div>
+      </li>
+      <li>
+        <GoogleButton className="buttonstyle">
+          <FcGoogle size={25} />
+          <div>Sign in with Google</div>
+        </GoogleButton>
       </li>
     </ContainerUl>
   );
@@ -70,29 +79,36 @@ const ContainerUl = styled.ul`
   list-style: none;
 
   > li {
-    height: 80px;
+    margin-bottom: 0.8rem;
     display: flex;
     align-items: center;
-    justify-content: center;
 
     > * {
       width: 100%;
     }
+  }
+
+  > li:last-child {
+    margin-top: 0.5rem;
   }
 `;
 const Title = styled.title`
   display: flex;
   justify-content: center;
 `;
-const InputDiv = styled.div`
-  height: 100%;
+const PasswordDiv = styled.div`
+  height: 80px;
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
+
+  > label {
+    height: 20px;
+  }
 
   > input {
-    height: 60%;
+    height: 48px;
     padding-right: 3rem;
   }
 `;
@@ -101,24 +117,46 @@ const IconDiv = styled.div`
   position: absolute;
   display: flex;
   align-items: center;
-  bottom: 13px;
+  bottom: 10px;
   right: 13px;
   cursor: pointer;
 `;
-const Button = styled.button`
-  height: 60%;
+const CheckboxDiv = styled.div`
+  display: flex;
+  align-items: flex-end;
+
+  > * {
+    cursor: pointer;
+  }
+
+  > input {
+    width: 15px;
+    height: 15px;
+  }
+
+  > label {
+    margin-left: 0.3rem;
+  }
+`;
+const Div = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  > div {
+    cursor: pointer;
+
+    &:hover {
+      color: var(--input_blue);
+    }
+  }
+`;
+const GoogleButton = styled.button`
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid var(--black);
   background-color: var(--white);
-
-  ${({ name }) =>
-    name &&
-    css`
-      background-color: var(--black);
-      color: var(--white);
-    `}
 
   > div {
     margin-left: 0.5rem;
