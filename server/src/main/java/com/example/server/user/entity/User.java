@@ -34,9 +34,11 @@ import lombok.Setter;
 @AllArgsConstructor(access = PROTECTED)
 public class User extends BaseEntity {
   @Id
+  @Setter
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
   private Long id;
+  @Setter
   private String email;
   @Setter
   private String password;
