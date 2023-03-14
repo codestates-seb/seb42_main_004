@@ -35,7 +35,7 @@ public class PayInfo {
   public void addOrder(Orders order) {
     this.order = order;
     if(order.getPayInfo() != this) {
-      order.addPayment(this);
+      order.addPayInfo(this);
     }
   }
 }
