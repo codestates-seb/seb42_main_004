@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { MealBoxCardContainerDiv } from '../allboxes/MealBoxCardDiv';
+import { TextButton } from '../commons/ModalDiv';
 
 function BoxElementCardDiv() {
   return (
@@ -16,11 +17,11 @@ function BoxElementCardDiv() {
           <span>99,999원</span>
         </BoxElementDetailDiv>
       </BoxElementInfoDiv>
-      <BoxElementButtonDiv>
-        <button className="linkstyle">&#8722;</button>
-        <span>1</span>
-        <button className="linkstyle">&#43;</button>
-      </BoxElementButtonDiv>
+      <div>
+        <TextButton className="linkstyle">&#8722;</TextButton>
+        <BoxElementQuantitySpan>1</BoxElementQuantitySpan>
+        <TextButton className="linkstyle">&#43;</TextButton>
+      </div>
     </BoxElementContainerDiv>
   );
 }
@@ -65,16 +66,7 @@ const BoxElementDetailDiv = styled.div`
     font-size: 0.8rem;
   }
 `;
-const BoxElementButtonDiv = styled.div`
-  span {
-    font-weight: bold;
-    margin: 4px;
-  }
-
-  button {
-    font-weight: bold;
-    border: none;
-    background: none;
-    padding: 2px;
-  }
+const BoxElementQuantitySpan = styled.span`
+  font-weight: bold;
+  margin: 4px;
 `;
