@@ -11,6 +11,14 @@ function MealBoxItemsDiv() {
         <div>고구마</div>
         <div>X1</div>
       </div>
+      <div>
+        <div>고구마</div>
+        <div>X1</div>
+      </div>
+      <div>
+        <div>고구마</div>
+        <div>X1</div>
+      </div>
     </ItemsDiv>
   );
 }

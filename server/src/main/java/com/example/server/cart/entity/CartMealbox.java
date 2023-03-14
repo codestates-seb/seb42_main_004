@@ -1,21 +1,16 @@
 package com.example.server.cart.entity;
 
 import com.example.server.mealbox.entity.Mealbox;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import javax.persistence.*;
+
+import lombok.*;
 
 @Entity
-@Setter
 @Getter
-@NoArgsConstructor
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartMealbox {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +24,7 @@ public class CartMealbox {
   @JoinColumn(name = "mealbox_id")
   private Mealbox mealbox;
 
+  @Column(nullable = false)
   private int quantity;
 
   public void setCart(Cart cart) {

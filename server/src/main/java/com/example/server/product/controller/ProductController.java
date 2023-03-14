@@ -32,6 +32,7 @@ public class ProductController {
         log.info("--------createProduct-------");
         Product product = mapper.productPostDtoToProduct(productPostDto);
 
+
         return new ResponseEntity(HttpStatus.OK);
     }
 

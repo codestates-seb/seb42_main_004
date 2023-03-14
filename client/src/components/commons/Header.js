@@ -80,7 +80,7 @@ const ContainerHeader = styled.header`
   }
 `;
 const HeaderDiv = styled.div`
-  height: 70px;
+  height: 50px;
   background-color: var(--head_brown) !important;
   position: fixed;
   top: 0;
@@ -102,8 +102,8 @@ const MenuDiv = styled.div`
   }
 `;
 const MenuIcon = styled.div`
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,8 +113,8 @@ const MenuIcon = styled.div`
   }
 `;
 const LogoImg = styled.img`
-  width: 70px;
-  height: 70px;
+  width: 50px;
+  height: 50px;
 `;
 const NavDiv = styled.div`
   width: 50vw;
