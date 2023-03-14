@@ -59,6 +59,15 @@ public class User extends BaseEntity {
   private UserStatus status = UserStatus.USER_TMP;
   //연관관계
 
+
+  public User(User user) {
+    this.id = user.getId();
+    this.email = user.getEmail();
+    this.password = user.getPassword();
+    this.name = user.getName();
+    this.roles = user.getRoles();
+  }
+
   //이메일 인증이 되었는지 확인하는 키
   @Default
   private String mailKey = "";
