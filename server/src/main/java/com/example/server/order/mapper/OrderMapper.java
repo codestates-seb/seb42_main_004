@@ -21,7 +21,7 @@ public interface OrderMapper {
       List<OrdersMealbox> ordersMealboxList = order.getOrdersMealboxes();
       List<OrderMealboxResponseDto> orderMealboxResponseList = ordersMealboxList.stream().map(ordersMealbox -> {
         OrderMealboxResponseDto orderMealboxResponseDto = new OrderMealboxResponseDto();
-        orderMealboxResponseDto.setMealboxName(ordersMealbox.getMealbox().getMealboxName());
+        orderMealboxResponseDto.setMealboxName(ordersMealbox.getMealbox().getName());
         orderMealboxResponseDto.setMealboxPrice(ordersMealbox.getPrice());
         orderMealboxResponseDto.setMealboxQuantity(ordersMealbox.getQuantity());
         // 재료, 수량 추가해야함

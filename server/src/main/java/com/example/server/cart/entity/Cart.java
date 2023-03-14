@@ -4,9 +4,20 @@ import com.example.server.baseEntity.BaseEntity;
 import com.example.server.user.entity.User;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
-
-import lombok.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -25,6 +36,7 @@ public class Cart extends BaseEntity {
   private User user;
 
   @OneToMany(mappedBy = "cart")
+  @Builder.Default
   private List<CartMealbox> cartMealboxes = new ArrayList<>();
 
   public void setCartMealbox(CartMealbox cartMealbox) {

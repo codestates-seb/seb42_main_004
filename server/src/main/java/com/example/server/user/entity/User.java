@@ -1,25 +1,31 @@
 package com.example.server.user.entity;
 
 import static javax.persistence.EnumType.STRING;
-
 import static javax.persistence.FetchType.EAGER;
 import static lombok.AccessLevel.PROTECTED;
 
-
 import com.example.server.baseEntity.BaseEntity;
 import com.example.server.cart.entity.Cart;
-import com.example.server.image.entity.Image;
 import com.example.server.image.entity.UserImage;
 import com.example.server.order.entity.Orders;
-import com.example.server.user.data.UserRole;
 import com.example.server.user.data.UserStatus;
-
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
-
-import lombok.*;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Builder.Default;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -53,7 +59,7 @@ public class User extends BaseEntity {
 
   //이메일 인증이 되었는지 확인하는 키
   @Default
-  private String mailKey;
+  private String mailKey = "";
 
   @OneToOne(mappedBy = "user")
   private UserImage image;
@@ -62,6 +68,7 @@ public class User extends BaseEntity {
   private Cart cart;
 
   @OneToMany(mappedBy = "user")
+  @Builder.Default
   private List<Orders> orders = new ArrayList();
 
   public void addOrders(Orders orders) {
