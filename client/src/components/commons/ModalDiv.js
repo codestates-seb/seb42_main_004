@@ -1,88 +1,86 @@
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import InputLabelDiv from './InputLabelDiv';
 import MainButton from './MainButton';
 
 function ModalDiv() {
-  const imgRef = useRef();
-  const [imgInput, setImgInput] = useState(imgRef.current?.value);
-  console.log(imgInput);
+  const [imgInput, setImgInput] = useState();
+  const [imgInputBuffer, setImgInputBuffer] = useState();
+  const [productInfo, setProductInfo] = useState({
+    name: '',
+    calorie: '',
+    capacity: '',
+    price: '',
+  });
+
+  const inputHandler = (key) => (e) => {
+    let value = e.target.value;
+    if (key !== 'name') {
+      let lastLetter = Number(e.target.value.slice(-1));
+      if (e.target.value === '0' || Number.isNaN(lastLetter)) return;
+      else {
+        value = Number(value.replaceAll(',', ''));
+      }
+    }
+    setProductInfo({ ...productInfo, [key]: value });
+  };
+  // console.log(imgInput[0]);
+
+  useEffect(() => {
+    let reader = new FileReader();
+    if (imgInput) {
+      reader.readAsDataURL(imgInput);
+      reader.onloadend = () => {
+        setImgInputBuffer(reader.result);
+      };
+    } else {
+      setImgInputBuffer(null);
+    }
+  }, [imgInput]);
 
   return (
     <ModalContainerDiv>
       <ModalContentDiv>
-        <ModalImgLabel htmlFor="file" className="shadow" img={imgInput}>
+        <ModalImgLabel htmlFor="file" className="shadow" img={imgInputBuffer}>
           이미지
           <br />
           추가
           <input
-            ref={imgRef}
             id="file"
             type="file"
-            accept=".jpg, .jpeg, .gif, .bmp, .png, .webp, .avif"
-            onInput={(e) => setImgInput(e.target.value)}
+            accept="image/*"
+            onInput={(e) => setImgInput(e.target.files[0])}
           />
         </ModalImgLabel>
-        {/* <div>
-          <label htmlFor="name">제품명</label>
-          <input id="name" className="inputstyle"></input>
-        </div>
-        <div>
-          <label htmlFor="calorie">열량(kcal/10g)</label>
-          <input id="calorie" className="inputstyle"></input>
-        </div>
-        <div>
-          <label htmlFor="capacity">용량</label>
-          <input id="capacity" className="inputstyle"></input>
-        </div>
-        <div>
-          <label htmlFor="price">금액</label>
-          <input id="price" className="inputstyle"></input>
-        </div>
-        <div>
-          <label htmlFor="des">설명(option)</label>
-          <input id="des" className="inputstyle"></input>
-        </div> */}
         <ModalTextDiv>
-          <label htmlFor="name">
-            제품명
-            <input
-              id="name"
-              className="inputstyle"
-              placeholder="예시 혹은 글자 제한"
-            ></input>
-          </label>
-          <label htmlFor="calorie">
-            열량(kcal/10g)
-            <input
-              id="calorie"
-              className="inputstyle"
-              placeholder="예시 혹은 글자 제한"
-            ></input>
-          </label>
-          <label htmlFor="capacity">
-            용량
-            <input
-              id="capacity"
-              className="inputstyle"
-              placeholder="예시 혹은 글자 제한"
-            ></input>
-          </label>
-          <label htmlFor="price">
-            금액
-            <input
-              id="price"
-              className="inputstyle"
-              placeholder="예시 혹은 글자 제한"
-            ></input>
-          </label>
-          <label htmlFor="des">
-            설명(option)
-            <input
-              id="des"
-              className="inputstyle"
-              placeholder="예시 혹은 글자 제한"
-            ></input>
-          </label>
+          <InputLabelDiv
+            label="제품명"
+            id="name"
+            value={productInfo.name}
+            onChange={inputHandler('name')}
+            placeholder="밀박스A"
+          />
+          <InputLabelDiv
+            label="열량"
+            id="calorie"
+            value={productInfo.calorie.toLocaleString('ko-KR')}
+            onChange={inputHandler('calorie')}
+            unit="kcal/10g"
+          />
+          <InputLabelDiv
+            label="용량"
+            id="capacity"
+            value={productInfo.capacity.toLocaleString('ko-KR')}
+            onChange={inputHandler('capacity')}
+            unit="g"
+          />
+          <InputLabelDiv
+            label="금액"
+            id="price"
+            value={productInfo.price.toLocaleString('ko-KR')}
+            onChange={inputHandler('price')}
+            unit="원"
+          />
           <MainButton name="밀박스 추가하기" />
         </ModalTextDiv>
       </ModalContentDiv>
@@ -138,23 +136,11 @@ const ModalImgLabel = styled.label`
 `;
 const ModalTextDiv = styled.div`
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
   align-items: center;
   min-width: 25%;
   min-height: 50%;
   margin: 2%;
-
-  > label {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 0.3rem;
-
-    > input {
-      padding: 0.2rem;
-    }
-  }
 
   > button {
     font-size: 1rem !important;
@@ -166,5 +152,10 @@ const ModalTextDiv = styled.div`
     word-break: keep-all;
     color: var(--white);
     font-weight: inherit;
+  }
+
+  > label {
+    width: 100%;
+    margin-bottom: 0.3rem;
   }
 `;

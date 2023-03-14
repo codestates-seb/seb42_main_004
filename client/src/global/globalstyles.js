@@ -46,7 +46,6 @@ const GlobalStyle = createGlobalStyle`
     padding: 0 16px;
   }
 
-
   .shadow {
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
   }
@@ -62,9 +61,8 @@ const GlobalStyle = createGlobalStyle`
     border: 1px solid var(--black);
     border-radius: 4px;
 
-    &:focus {
+    &:focus, :focus-within {
       border: 2px solid var(--input_blue);
-      margin: -0.8px;
       outline: none;
     }
   }
