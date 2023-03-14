@@ -1,33 +1,23 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import PaginationUl from '../components/commons/PaginationUl';
 import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
-import { MealBoxesWrapDiv } from './AllBoxes';
 import CartAside from '../components/commons/CartAside';
-// import ModalDiv from '../components/commons/ModalDiv';
+import ModalDiv, { TextButton } from '../components/commons/ModalDiv';
+import SearchBarDiv from '../components/commons/SearchBarDiv';
+import { MealBoxesWrapDiv } from './AllBoxes';
 
 function Custom() {
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <MealBoxesWrapDiv className="margininside">
-      {/* <ModalDiv /> */}
+      {openModal && <ModalDiv closeModal={() => setOpenModal(false)} />}
       <h1>커스텀 밀박스</h1>
       <CustomSelectDiv>
         <ElementsContainerDiv>
+          <SearchBarDiv />
           <ul>
-            <li>
-              <BoxElementCardDiv />
-            </li>
-            <li>
-              <BoxElementCardDiv />
-            </li>
-            <li>
-              <BoxElementCardDiv />
-            </li>
-            <li>
-              <BoxElementCardDiv />
-            </li>
-            <li>
-              <BoxElementCardDiv />
-            </li>
             <li>
               <BoxElementCardDiv />
             </li>
@@ -35,8 +25,8 @@ function Custom() {
           <PaginationUl nowpage={1} totalpage={1} />
         </ElementsContainerDiv>
         <CartAside
-          open={<TriangleDiv />}
           type="custom"
+          buttonClick={() => setOpenModal(true)}
           inDiv={
             <>
               <InAsideH2>Custom</InAsideH2>
@@ -45,14 +35,14 @@ function Custom() {
                   <span>{`${'오렌지주스'}`}</span>
                   <span>
                     {`${1}`}
-                    <button>&#10005;</button>
+                    <TextButton className="linkstyle">&#10005;</TextButton>
                   </span>
                 </ElementInBucketLi>
                 <ElementInBucketLi>
                   <span>{`${'오렌지주스'}`}</span>
                   <span>
                     {`${1}`}
-                    <button className="linkstyle">&#10005;</button>
+                    <TextButton className="linkstyle">&#10005;</TextButton>
                   </span>
                 </ElementInBucketLi>
               </InAsideUl>
@@ -62,7 +52,7 @@ function Custom() {
               </InAsideDiv>
             </>
           }
-        ></CartAside>
+        />
       </CustomSelectDiv>
     </MealBoxesWrapDiv>
   );
@@ -88,21 +78,6 @@ const ElementsContainerDiv = styled.div`
     width: 100%;
   }
 `;
-const TriangleDiv = styled.div`
-  display: none;
-  width: 0;
-  height: 0;
-  border-bottom: calc(4px * 1.732) solid var(--bucket_brown);
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-
-  @media (max-width: 480px) {
-    display: block;
-  }
-`;
 const InAsideH2 = styled.h2`
   color: var(--white);
   list-style: none;
@@ -112,12 +87,14 @@ const InAsideH2 = styled.h2`
     display: none;
   }
 `;
+
 const InAsideUl = styled.ul`
   @media (max-width: 480px) {
     display: none;
   }
 `;
-const InAsideDiv = styled.div`
+
+export const InAsideDiv = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 1rem;
@@ -131,11 +108,9 @@ const ElementInBucketLi = styled.li`
 
   > span {
     font-size: 0.8rem;
+    margin-right: -2px;
+
     > button {
-      border: none;
-      background-color: inherit;
-      font-weight: bold;
-      /* color: var(--white); */
       margin-left: 0.5rem;
     }
   }

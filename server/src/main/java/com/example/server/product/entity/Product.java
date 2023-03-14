@@ -10,34 +10,32 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor // 더미데이터를 위한 것 -> 삭제요망
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRODUCT_ID")
     private Long id;
-    private String productName;
-    private String details;
+    @Setter
+    @Column(name = "PRODUCT_NAME", nullable = false)
+    private String name;
+    @Setter
+    @Column(nullable = false)
     private int unitWeight;
+    @Setter
+    @Column(nullable = false)
     private int unitKcal;
+    @Setter
+    @Column(nullable = false)
     private int unitPrice;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<MealboxProduct> mealboxProducts;
 
-    @OneToOne
-    @JoinColumn(name = "PRODUCT_IMAGE_ID")
+    @OneToOne(mappedBy = "product")
     private ProductImage image;
-
-    @Builder
-    public Product(String productName, String details, int unitWeight, int unitKcal, int unitPrice) {
-        this.productName = productName;
-        this.details = details;
-        this.unitWeight = unitWeight;
-        this.unitKcal = unitKcal;
-        this.unitPrice = unitPrice;
-    }
 
     public void addMealboxProduct(MealboxProduct mealboxProduct){
         mealboxProducts.add(mealboxProduct);

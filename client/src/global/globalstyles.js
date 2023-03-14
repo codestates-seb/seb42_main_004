@@ -46,7 +46,6 @@ const GlobalStyle = createGlobalStyle`
     padding: 0 16px;
   }
 
-
   .shadow {
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
   }
@@ -55,6 +54,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'IBM Plex Sans KR', sans-serif;
     font-size: 1.1rem !important;
     border-radius: 4px;
+
+    :active{
+      box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4), inset 2px 2px 2px rgba(0, 0, 0, 0.4);
+    }
   }
 
   .inputstyle {
@@ -62,9 +65,8 @@ const GlobalStyle = createGlobalStyle`
     border: 1px solid var(--signature);
     border-radius: 4px;
 
-    &:focus {
+    &:focus, :focus-within {
       border: 2px solid var(--input_blue);
-      margin: -0.8px;
       outline: none;
     }
   }

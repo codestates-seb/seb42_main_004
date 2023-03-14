@@ -1,17 +1,10 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
 
 function MealBoxCardDiv() {
-  const [showDes, setShowDes] = useState(false);
-
   return (
     <MealBoxCardContainerDiv className="shadow">
-      <MealBoxImgDiv
-        className="shadow"
-        // showDes={showDes && 1}
-        onClick={() => setShowDes(!showDes)}
-      >
+      <MealBoxImgDiv className="shadow">
         <p>
           <span>500g</span>
           <span>500kcal</span>
@@ -20,21 +13,21 @@ function MealBoxCardDiv() {
           alt=""
           src="https://www.shinsegaegroupnewsroom.com/wp-content/uploads/2022/06/%EC%8B%A0%EC%84%B8%EA%B3%84%ED%91%B8%EB%93%9C_%EB%B3%B8%EB%AC%B8-1.jpg"
         />
-        {showDes && (
-          <MealBoxDesUl>
-            <li>
-              <span>케일주스</span>
-              <span>100ml</span>
-              <span>100kcal</span>
-            </li>
-          </MealBoxDesUl>
-        )}
+        {/* {showDes && ( */}
+        <MealBoxDesUl>
+          <li>
+            <span>케일주스</span>
+            <span>100ml</span>
+            <span>100kcal</span>
+          </li>
+        </MealBoxDesUl>
+        {/* )} */}
       </MealBoxImgDiv>
       <MealBoxH3>{'밀박스A'}</MealBoxH3>
       <MealBoxCardButtonDiv>
         <MainButton name="커스텀 하기" />
         <MainButton name="장바구니 추가" />
-        <MainButton name="가격" />
+        <MainButton name="가격" className="disabled" />
       </MealBoxCardButtonDiv>
     </MealBoxCardContainerDiv>
   );
@@ -95,11 +88,16 @@ const MealBoxDesUl = styled.ul`
   display: flex;
   align-items: center;
   padding: 0 7.5%;
+  opacity: 0;
 
   > li {
     width: 100%;
     display: flex;
     justify-content: space-between;
+  }
+
+  :hover {
+    opacity: 1;
   }
 `;
 const MealBoxH3 = styled.h3`
@@ -118,5 +116,13 @@ const MealBoxCardButtonDiv = styled.div`
     height: auto;
     max-height: 3.5rem;
     word-break: keep-all;
+  }
+
+  button:last-child {
+    cursor: default;
+
+    :active {
+      box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
+    }
   }
 `;

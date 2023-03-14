@@ -5,10 +5,11 @@ import Footer from './components/commons/Footer';
 import AllBoxes from './pages/AllBoxes';
 import RecommendedBox from './pages/RecommendedBox';
 import Custom from './pages/Custom';
-import OrderHistory from './components/orderHistory/OrderHistory';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Explain from './pages/Explain';
+import OrderHistory from './pages/OrderHistory';
+import Survey from './pages/Survey';
 import Signup from './pages/Signup';
 import SignupOauth from './pages/SignupOauth';
 import MyInfo from './pages/MyInfo';
@@ -37,6 +38,8 @@ function App() {
           <Route path="/myinfo" element={<MyInfo />} />
           <Route path="/modifymyinfo" element={<ModifyMyInfo />} />
           <Route path="/payment" element={<Payment />} />
+          <Route path="/explain" element={<Explain />} />
+          <Route path="/survey/:page" element={<Survey />} />
         </Routes>
       </div>
       {pathname !== '/cart' && pathname !== '/custom' ? <Footer /> : null}

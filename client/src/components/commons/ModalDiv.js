@@ -1,88 +1,91 @@
-import { useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import InputLabelDiv from './InputLabelDiv';
 import MainButton from './MainButton';
 
-function ModalDiv() {
-  const imgRef = useRef();
-  const [imgInput, setImgInput] = useState(imgRef.current?.value);
-  console.log(imgInput);
+function ModalDiv({ closeModal }) {
+  const [imgInput, setImgInput] = useState();
+  const [imgInputBuffer, setImgInputBuffer] = useState();
+  const [productInfo, setProductInfo] = useState({
+    name: '',
+    calorie: '',
+    capacity: '',
+    price: '',
+  });
+
+  const inputHandler = (key) => (e) => {
+    let value = e.target.value;
+    if (key !== 'name') {
+      let lastLetter = Number(e.target.value.slice(-1));
+      if (e.target.value === '0' || Number.isNaN(lastLetter)) return;
+      else {
+        value = Number(value.replaceAll(',', ''));
+      }
+    }
+    setProductInfo({ ...productInfo, [key]: value });
+  };
+  // console.log(imgInput[0]);
+
+  useEffect(() => {
+    let reader = new FileReader();
+    if (imgInput) {
+      reader.readAsDataURL(imgInput);
+      reader.onloadend = () => {
+        setImgInputBuffer(reader.result);
+      };
+    } else {
+      setImgInputBuffer(null);
+    }
+  }, [imgInput]);
 
   return (
-    <ModalContainerDiv>
-      <ModalContentDiv>
-        <ModalImgLabel htmlFor="file" className="shadow" img={imgInput}>
+    <ModalContainerDiv onClick={closeModal}>
+      <ModalContentDiv onClick={(e) => e.stopPropagation()}>
+        <ModalCloseButton onClick={closeModal}>&#10005;</ModalCloseButton>
+        <ModalImgLabel htmlFor="file" className="shadow" img={imgInputBuffer}>
           이미지
           <br />
           추가
           <input
-            ref={imgRef}
             id="file"
             type="file"
-            accept=".jpg, .jpeg, .gif, .bmp, .png, .webp, .avif"
-            onInput={(e) => setImgInput(e.target.value)}
+            accept="image/*"
+            onInput={(e) => setImgInput(e.target.files[0])}
           />
         </ModalImgLabel>
-        {/* <div>
-          <label htmlFor="name">제품명</label>
-          <input id="name" className="inputstyle"></input>
-        </div>
-        <div>
-          <label htmlFor="calorie">열량(kcal/10g)</label>
-          <input id="calorie" className="inputstyle"></input>
-        </div>
-        <div>
-          <label htmlFor="capacity">용량</label>
-          <input id="capacity" className="inputstyle"></input>
-        </div>
-        <div>
-          <label htmlFor="price">금액</label>
-          <input id="price" className="inputstyle"></input>
-        </div>
-        <div>
-          <label htmlFor="des">설명(option)</label>
-          <input id="des" className="inputstyle"></input>
-        </div> */}
         <ModalTextDiv>
-          <label htmlFor="name">
-            제품명
-            <input
-              id="name"
-              className="inputstyle"
-              placeholder="예시 혹은 글자 제한"
-            ></input>
-          </label>
-          <label htmlFor="calorie">
-            열량(kcal/10g)
-            <input
-              id="calorie"
-              className="inputstyle"
-              placeholder="예시 혹은 글자 제한"
-            ></input>
-          </label>
-          <label htmlFor="capacity">
-            용량
-            <input
-              id="capacity"
-              className="inputstyle"
-              placeholder="예시 혹은 글자 제한"
-            ></input>
-          </label>
-          <label htmlFor="price">
-            금액
-            <input
-              id="price"
-              className="inputstyle"
-              placeholder="예시 혹은 글자 제한"
-            ></input>
-          </label>
-          <label htmlFor="des">
-            설명(option)
-            <input
-              id="des"
-              className="inputstyle"
-              placeholder="예시 혹은 글자 제한"
-            ></input>
-          </label>
+          <InputLabelDiv
+            label="제품명"
+            id="name"
+            value={productInfo.name}
+            onChange={inputHandler('name')}
+            placeholder="밀박스A"
+            maxLength={20}
+          />
+          <InputLabelDiv
+            label="열량"
+            id="calorie"
+            value={productInfo.calorie.toLocaleString('ko-KR')}
+            onChange={inputHandler('calorie')}
+            unit="kcal/10g"
+            maxLength={5}
+          />
+          <InputLabelDiv
+            label="용량"
+            id="capacity"
+            value={productInfo.capacity.toLocaleString('ko-KR')}
+            onChange={inputHandler('capacity')}
+            unit="g"
+            maxLength={5}
+          />
+          <InputLabelDiv
+            label="금액"
+            id="price"
+            value={productInfo.price.toLocaleString('ko-KR')}
+            onChange={inputHandler('price')}
+            unit="원"
+            maxLength={6}
+          />
           <MainButton name="밀박스 추가하기" />
         </ModalTextDiv>
       </ModalContentDiv>
@@ -105,6 +108,7 @@ const ModalContainerDiv = styled.div`
   height: 100vh;
 `;
 const ModalContentDiv = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,13 +118,37 @@ const ModalContentDiv = styled.div`
   padding: 1rem;
   border-radius: 10px;
   font-weight: bold;
+
+  @media (max-width: 480px) {
+    padding: 50px 0 0;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+  }
+`;
+export const TextButton = styled.button`
+  font-weight: bold;
+  border: none;
+  background: none;
+  padding: 2px;
+`;
+const ModalCloseButton = styled(TextButton)`
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: normal;
 `;
 const ModalImgLabel = styled.label`
   display: flex;
   justify-content: ${(props) => (props.img ? 'end' : 'center')};
   align-items: ${(props) => (props.img ? 'end' : 'center')};
   text-align: ${(props) => (props.img ? 'right' : 'center')};
-  width: 20%;
+  min-width: 100px;
+  min-height: 100px;
+  width: 12vw;
   height: 12vw;
   border-radius: 4px;
   margin: 2%;
@@ -135,26 +163,19 @@ const ModalImgLabel = styled.label`
     position: absolute;
     width: 0;
   }
+
+  @media (max-width: 480px) {
+    width: 35vw;
+    height: 35vw;
+  }
 `;
 const ModalTextDiv = styled.div`
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
   align-items: center;
   min-width: 25%;
   min-height: 50%;
   margin: 2%;
-
-  > label {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 0.3rem;
-
-    > input {
-      padding: 0.2rem;
-    }
-  }
 
   > button {
     font-size: 1rem !important;
@@ -166,5 +187,10 @@ const ModalTextDiv = styled.div`
     word-break: keep-all;
     color: var(--white);
     font-weight: inherit;
+  }
+
+  > label {
+    width: 100%;
+    margin-bottom: 0.3rem;
   }
 `;

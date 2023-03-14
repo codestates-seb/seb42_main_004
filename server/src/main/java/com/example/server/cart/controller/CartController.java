@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class CartController {
 
   //장바구니에 추천밀박스추가
-  @PatchMapping("/{user-id}/{mealbox-id}")
+  @PatchMapping("/{user-id}/{mealbox-id}/add")
   public ResponseEntity patchCart(@PathVariable("user-id") long userId, @PathVariable("mealbox-id") long mealboxId){
     // 비즈니스 로직 작성해야함
     return new ResponseEntity(HttpStatus.OK);
   }
 
   //장바구니에 커스텀밀박스 생성 후 추가
-  @PatchMapping("/{user-id}/{mealbox-id}")
+  @PatchMapping("/{user-id}/{mealbox-id}/post")
   public ResponseEntity addCustomMealbox(@PathVariable("user-id") long userId, @PathVariable("mealbox-id") long mealboxId){
     // 비즈니스 로직 작성해야함
     return new ResponseEntity(HttpStatus.OK);
@@ -32,14 +32,14 @@ public class CartController {
 
   //장바구니에서 밀박스 삭제 -> 커스텀밀박스면(createdByAdmin==false) mealboxProduct와 mealbox삭제
   //                        추천조합 밀박스면 mealboxProduct만 삭제
-  @PatchMapping("/{user-id}/{mealbox-id}")
+  @PatchMapping("/{user-id}/{mealbox-id}/delete")
   public ResponseEntity removeMealbox(@PathVariable("user-id") long userId, @PathVariable("mealbox-id") long mealboxId){
     // 비즈니스 로직 작성해야함
     return new ResponseEntity(HttpStatus.OK);
   }
 
   //밀박스 수량 변경 -> mealboxProduct의 quantity 바꾸기
-  @PatchMapping("/{user-id}/{mealbox-id}")
+  @PatchMapping("/{user-id}/{mealbox-id}/patch")
   public ResponseEntity changeMealboxCount(@PathVariable("user-id") long userId, @PathVariable("mealbox-id") long mealboxId){
     // 비즈니스 로직 작성해야함
     return new ResponseEntity(HttpStatus.OK);

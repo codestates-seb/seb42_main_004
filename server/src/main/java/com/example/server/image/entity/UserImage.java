@@ -1,13 +1,11 @@
 package com.example.server.image.entity;
 
 import com.example.server.user.entity.User;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -20,8 +18,9 @@ public class UserImage {
     @Embedded
     private Image image;
 
-    @OneToOne(mappedBy = "user_image")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
+    @Setter
     private User user;
-
 
 }
