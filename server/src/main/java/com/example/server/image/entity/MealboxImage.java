@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class MealboxImage {
+public class MealboxImage /*extends JpaBase*/{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEALBOX_IMAGE_ID")
