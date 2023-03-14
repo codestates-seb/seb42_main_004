@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import logo from '../../assets/hankkimealLogo.png';
+import ContentDiv from './ContentDiv';
 
 function MyInfoUl() {
   return (
@@ -10,50 +11,29 @@ function MyInfoUl() {
           <ImgDiv>
             <img src={logo} alt="logo" />
           </ImgDiv>
-          <div>
-            <InfoDiv>
-              <TitleDiv>프로필 사진</TitleDiv>
-              <div>첨부하기</div>
-            </InfoDiv>
-            <InfoDiv>
-              <TitleDiv>이름</TitleDiv>
-              <div>강명주</div>
-            </InfoDiv>
-            <InfoDiv>
-              <TitleDiv>닉네임</TitleDiv>
-              <div>맹쥬</div>
-            </InfoDiv>
-            <InfoDiv>
-              <TitleDiv>이메일</TitleDiv>
-              <div>myungju030@gmail.com</div>
-            </InfoDiv>
-            <InfoDiv>
-              <TitleDiv>연락처</TitleDiv>
-              <div>01012345678</div>
-            </InfoDiv>
-            <InfoDiv>
-              <TitleDiv>주소</TitleDiv>
-              <div>주소</div>
-            </InfoDiv>
-          </div>
+          <InfoDiv>
+            <ContentDiv name="프로필 사진" content="첨부하기" />
+            <ContentDiv name="닉네임" content="맹쥬" />
+            <ContentDiv name="이메일" content="myungju030@gmail.com" />
+            <ContentDiv name="연락처" content="01012345678" />
+            <ContentDiv name="주소" content="주소" />
+          </InfoDiv>
         </OrderDiv>
       </li>
       <li>
         <h2>배송지 정보</h2>
         <DeliveryDiv>
-          <InfoDiv>
-            <TitleDiv>받는분</TitleDiv>
-            <div>강명주</div>
-          </InfoDiv>
-          <InfoDiv>
-            <TitleDiv>연락처</TitleDiv>
-            <div>01012345678</div>
-          </InfoDiv>
-          <InfoDiv>
-            <TitleDiv>주소</TitleDiv>
-            <div>주소</div>
-          </InfoDiv>
+          <ContentDiv name="받는분" content="강명주" />
+          <ContentDiv name="연락처" content="01012345678" />
+          <ContentDiv name="주소" content="주소" />
         </DeliveryDiv>
+      </li>
+      <li>
+        <ButtonDiv>
+          <div>내 정보 수정</div>
+          <div>비밀번호 수정</div>
+          <div>회원 탈퇴</div>
+        </ButtonDiv>
       </li>
     </ContainerUl>
   );
@@ -62,30 +42,34 @@ function MyInfoUl() {
 export default MyInfoUl;
 
 const ContainerUl = styled.ul`
-  min-width: 80%;
+  min-width: 70%;
   padding: 0;
   list-style: none;
 `;
 const OrderDiv = styled.div`
   display: flex;
-  padding-bottom: 50px;
   margin-bottom: 2rem;
   border-bottom: 1px solid var(--black);
-
-  > div:last-child {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-left: 3rem;
-    word-break: break-all;
-  }
 
   @media (max-width: 768px) {
     flex-direction: column;
   }
 `;
+const InfoDiv = styled.div`
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 2rem;
+  padding-bottom: 50px;
+  word-break: break-all;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+`;
 const ImgDiv = styled.div`
+  padding-bottom: 50px;
   display: flex;
   justify-content: center;
 
@@ -93,17 +77,6 @@ const ImgDiv = styled.div`
     width: 300px;
     height: 300px;
   }
-`;
-const InfoDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-const TitleDiv = styled.div`
-  flex-basis: 75px;
-  margin-right: 1.5rem;
-  display: flex;
-  justify-content: flex-end;
-  font-family: 'IBM Plex Sans KR', sans-serif;
 `;
 const DeliveryDiv = styled.div`
   height: 150px;
@@ -115,4 +88,22 @@ const DeliveryDiv = styled.div`
   justify-content: space-between;
   word-break: break-all;
   border-bottom: 1px solid var(--black);
+`;
+const ButtonDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  > div {
+    width: 100px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    &:hover {
+      cursor: pointer;
+      color: var(--input_blue);
+    }
+  }
 `;
