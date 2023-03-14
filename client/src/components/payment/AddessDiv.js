@@ -38,13 +38,10 @@ function AddressDiv() {
             value={enroll_company.zonecode}
           />
           <button onClick={handleComplete}>주소검색</button>
-          {popup && (
-            <Post
-              company={enroll_company}
-              setcompany={setEnroll_company}
-            ></Post>
-          )}
         </ButtonDiv>
+        {popup && (
+          <Post company={enroll_company} setcompany={setEnroll_company}></Post>
+        )}
         <input
           className="inputstyle"
           placeholder="주소"
@@ -83,7 +80,6 @@ const TitleDiv = styled.div`
   font-family: 'IBM Plex Sans KR', sans-serif;
 `;
 const InputDiv = styled.div`
-  height: 110px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;

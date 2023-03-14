@@ -51,7 +51,7 @@ function ModifyMyInfoUl() {
 export default ModifyMyInfoUl;
 
 const ContainerUl = styled.ul`
-  min-width: 70%;
+  min-width: 80%;
   padding: 0;
   list-style: none;
 `;
@@ -88,7 +88,6 @@ const ImgDiv = styled.div`
   }
 `;
 const DeliveryDiv = styled.div`
-  height: 255px;
   margin-top: 2rem;
   padding-bottom: 50px;
   margin-bottom: 2rem;
