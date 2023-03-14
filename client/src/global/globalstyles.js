@@ -54,6 +54,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'IBM Plex Sans KR', sans-serif;
     font-size: 1.1rem !important;
     border-radius: 4px;
+
+    :active{
+      box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4), inset 2px 2px 2px rgba(0, 0, 0, 0.4);
+    }
   }
 
   .inputstyle {
