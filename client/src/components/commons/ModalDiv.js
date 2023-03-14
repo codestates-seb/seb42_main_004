@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { TextButton } from '../../pages/Custom';
 import InputLabelDiv from './InputLabelDiv';
 import MainButton from './MainButton';
 
@@ -126,6 +125,12 @@ const ModalContentDiv = styled.div`
     height: 100vh;
     flex-direction: column;
   }
+`;
+export const TextButton = styled.button`
+  font-weight: bold;
+  border: none;
+  background: none;
+  padding: 2px;
 `;
 const ModalCloseButton = styled(TextButton)`
   position: absolute;

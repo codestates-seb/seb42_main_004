@@ -1,10 +1,11 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import PaginationUl from '../components/commons/PaginationUl';
 import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
-import { MealBoxesWrapDiv } from './AllBoxes';
 import CartAside from '../components/commons/CartAside';
-import ModalDiv from '../components/commons/ModalDiv';
-import { useState } from 'react';
+import ModalDiv, { TextButton } from '../components/commons/ModalDiv';
+import SearchBarDiv from '../components/commons/SearchBarDiv';
+import { MealBoxesWrapDiv } from './AllBoxes';
 
 function Custom() {
   const [openModal, setOpenModal] = useState(false);
@@ -13,6 +14,7 @@ function Custom() {
     <MealBoxesWrapDiv className="margininside">
       {openModal && <ModalDiv closeModal={() => setOpenModal(false)} />}
       <h1>커스텀 밀박스</h1>
+      <SearchBarDiv />
       <CustomSelectDiv>
         <ElementsContainerDiv>
           <ul>
@@ -133,10 +135,4 @@ const ElementInBucketLi = styled.li`
   @media (max-width: 480px) {
     border-radius: 0;
   }
-`;
-export const TextButton = styled.button`
-  font-weight: bold;
-  border: none;
-  background: none;
-  padding: 2px;
 `;
