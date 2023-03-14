@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import MainButton from './MainButton';
-import logo from '../../assets/hankkimealLogo.png';
+import logo from '../../assets/logo_black.png';
 import { FaShoppingCart } from 'react-icons/fa';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { TfiMenu } from 'react-icons/tfi';

@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import Logo from '../../assets/hankkimealLogo.png';
+import LogoBlack from '../../assets/logo_black.png';
 function Footer() {
   return (
     <FooterWrapper className="marginbase">
       <FooterContent className="margininside">
-        <LogoImg src={Logo} alt="logo" />
+        <LogoImg src={LogoBlack} alt="logo" />
         <MemberNameDiv>
           <div>
             <span>맹쥬</span>

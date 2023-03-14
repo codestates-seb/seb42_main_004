@@ -1,13 +1,12 @@
+import { useParams } from 'react-router-dom';
+import SurveyPage0 from '../components/survey/surveyPage0';
 function Survey() {
-  return (
-    <div className="margininside">
-      <img src="#" alt="#"></img>
-      <div></div>
-      <div></div>
-      <a href="https://www.moyoplan.com/">s</a>
-      <a href="https://www.moyoplan.com/">s</a>
-    </div>
-  );
+  let { page } = useParams();
+  console.log(page);
+  switch (page) {
+    case '1':
+      return <SurveyPage0 />;
+  }
 }
 
 export default Survey;
