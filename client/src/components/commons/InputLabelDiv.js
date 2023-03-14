@@ -1,13 +1,21 @@
 import styled from 'styled-components';
 
-function InputLabelDiv({ label, id, value, onChange, placeholder, unit }) {
+function InputLabelDiv({
+  label,
+  id,
+  value,
+  onChange,
+  placeholder,
+  unit,
+  maxLength,
+}) {
   return (
     <>
       <label htmlFor={id}>{label}</label>
       <ModalInputDiv className="inputstyle">
         <input
           id={id}
-          maxLength={5}
+          maxLength={maxLength}
           value={value}
           onChange={onChange}
           placeholder={placeholder && placeholder}

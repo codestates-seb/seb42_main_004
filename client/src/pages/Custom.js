@@ -3,31 +3,19 @@ import PaginationUl from '../components/commons/PaginationUl';
 import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
 import { MealBoxesWrapDiv } from './AllBoxes';
 import CartAside from '../components/commons/CartAside';
-// import ModalDiv from '../components/commons/ModalDiv';
+import ModalDiv from '../components/commons/ModalDiv';
+import { useState } from 'react';
 
 function Custom() {
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <MealBoxesWrapDiv className="margininside">
-      {/* <ModalDiv /> */}
+      {openModal && <ModalDiv closeModal={() => setOpenModal(false)} />}
       <h1>커스텀 밀박스</h1>
       <CustomSelectDiv>
         <ElementsContainerDiv>
           <ul>
-            <li>
-              <BoxElementCardDiv />
-            </li>
-            <li>
-              <BoxElementCardDiv />
-            </li>
-            <li>
-              <BoxElementCardDiv />
-            </li>
-            <li>
-              <BoxElementCardDiv />
-            </li>
-            <li>
-              <BoxElementCardDiv />
-            </li>
             <li>
               <BoxElementCardDiv />
             </li>
@@ -37,6 +25,7 @@ function Custom() {
         <CartAside
           open={<TriangleDiv />}
           type="custom"
+          buttonClick={() => setOpenModal(true)}
           inDiv={
             <>
               <InAsideH2>Custom</InAsideH2>
@@ -45,14 +34,14 @@ function Custom() {
                   <span>{`${'오렌지주스'}`}</span>
                   <span>
                     {`${1}`}
-                    <button>&#10005;</button>
+                    <TextButton className="linkstyle">&#10005;</TextButton>
                   </span>
                 </ElementInBucketLi>
                 <ElementInBucketLi>
                   <span>{`${'오렌지주스'}`}</span>
                   <span>
                     {`${1}`}
-                    <button className="linkstyle">&#10005;</button>
+                    <TextButton className="linkstyle">&#10005;</TextButton>
                   </span>
                 </ElementInBucketLi>
               </InAsideUl>
@@ -62,7 +51,7 @@ function Custom() {
               </InAsideDiv>
             </>
           }
-        ></CartAside>
+        />
       </CustomSelectDiv>
     </MealBoxesWrapDiv>
   );
@@ -134,11 +123,9 @@ const ElementInBucketLi = styled.li`
 
   > span {
     font-size: 0.8rem;
+    margin-right: -2px;
+
     > button {
-      border: none;
-      background-color: inherit;
-      font-weight: bold;
-      /* color: var(--white); */
       margin-left: 0.5rem;
     }
   }
@@ -146,4 +133,10 @@ const ElementInBucketLi = styled.li`
   @media (max-width: 480px) {
     border-radius: 0;
   }
+`;
+export const TextButton = styled.button`
+  font-weight: bold;
+  border: none;
+  background: none;
+  padding: 2px;
 `;

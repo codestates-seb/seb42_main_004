@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { TextButton } from '../../pages/Custom';
 import InputLabelDiv from './InputLabelDiv';
 import MainButton from './MainButton';
 
-function ModalDiv() {
+function ModalDiv({ closeModal }) {
   const [imgInput, setImgInput] = useState();
   const [imgInputBuffer, setImgInputBuffer] = useState();
   const [productInfo, setProductInfo] = useState({
@@ -39,8 +40,9 @@ function ModalDiv() {
   }, [imgInput]);
 
   return (
-    <ModalContainerDiv>
-      <ModalContentDiv>
+    <ModalContainerDiv onClick={closeModal}>
+      <ModalContentDiv onClick={(e) => e.stopPropagation()}>
+        <ModalCloseButton onClick={closeModal}>&#10005;</ModalCloseButton>
         <ModalImgLabel htmlFor="file" className="shadow" img={imgInputBuffer}>
           이미지
           <br />
@@ -59,6 +61,7 @@ function ModalDiv() {
             value={productInfo.name}
             onChange={inputHandler('name')}
             placeholder="밀박스A"
+            maxLength={20}
           />
           <InputLabelDiv
             label="열량"
@@ -66,6 +69,7 @@ function ModalDiv() {
             value={productInfo.calorie.toLocaleString('ko-KR')}
             onChange={inputHandler('calorie')}
             unit="kcal/10g"
+            maxLength={5}
           />
           <InputLabelDiv
             label="용량"
@@ -73,6 +77,7 @@ function ModalDiv() {
             value={productInfo.capacity.toLocaleString('ko-KR')}
             onChange={inputHandler('capacity')}
             unit="g"
+            maxLength={5}
           />
           <InputLabelDiv
             label="금액"
@@ -80,6 +85,7 @@ function ModalDiv() {
             value={productInfo.price.toLocaleString('ko-KR')}
             onChange={inputHandler('price')}
             unit="원"
+            maxLength={6}
           />
           <MainButton name="밀박스 추가하기" />
         </ModalTextDiv>
@@ -103,6 +109,7 @@ const ModalContainerDiv = styled.div`
   height: 100vh;
 `;
 const ModalContentDiv = styled.div`
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,13 +119,31 @@ const ModalContentDiv = styled.div`
   padding: 1rem;
   border-radius: 10px;
   font-weight: bold;
+
+  @media (max-width: 480px) {
+    padding: 50px 0 0;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+  }
+`;
+const ModalCloseButton = styled(TextButton)`
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 3rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: normal;
 `;
 const ModalImgLabel = styled.label`
   display: flex;
   justify-content: ${(props) => (props.img ? 'end' : 'center')};
   align-items: ${(props) => (props.img ? 'end' : 'center')};
   text-align: ${(props) => (props.img ? 'right' : 'center')};
-  width: 20%;
+  min-width: 100px;
+  min-height: 100px;
+  width: 12vw;
   height: 12vw;
   border-radius: 4px;
   margin: 2%;
@@ -132,6 +157,11 @@ const ModalImgLabel = styled.label`
   > input {
     position: absolute;
     width: 0;
+  }
+
+  @media (max-width: 480px) {
+    width: 35vw;
+    height: 35vw;
   }
 `;
 const ModalTextDiv = styled.div`
