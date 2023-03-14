@@ -63,7 +63,7 @@ public class SecurityConfiguration {
       AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);  // (2-3)
 
       JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);  // (2-4)
-//      jwtAuthenticationFilter.setFilterProcessesUrl("/v11/auth/login");          // (2-5)
+//      jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");          // (2-5)
 //TODO default login request URL 변경?
       builder.addFilter(jwtAuthenticationFilter);  // (2-6)
     }

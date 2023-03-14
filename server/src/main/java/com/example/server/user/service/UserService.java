@@ -50,10 +50,13 @@ public class UserService {
   public User updatedMember(User user) {
     User findUser = checkUserExist(user.getId());
     //검증 성공
-    Optional.ofNullable(user.getPassword()).ifPresent(findUser::setPassword);
     Optional.ofNullable(user.getName()).ifPresent(findUser::setName);
     Optional.ofNullable(user.getAddress()).ifPresent(findUser::setAddress);
     Optional.ofNullable(user.getPhoneNumber()).ifPresent(findUser::setPhoneNumber);
+
+    String encryptedPassword = Optional.ofNullable(passwordEncoder.encode(user.getPassword()))
+        .get();
+    findUser.setPassword(encryptedPassword);
 
     userRepository.save(findUser);
     return findUser;
