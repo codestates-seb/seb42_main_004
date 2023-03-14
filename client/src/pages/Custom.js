@@ -103,6 +103,7 @@ const TriangleDiv = styled.div`
     display: block;
   }
 `;
+
 const InAsideH2 = styled.h2`
   color: var(--white);
   list-style: none;
@@ -112,12 +113,14 @@ const InAsideH2 = styled.h2`
     display: none;
   }
 `;
+
 const InAsideUl = styled.ul`
   @media (max-width: 480px) {
     display: none;
   }
 `;
-const InAsideDiv = styled.div`
+
+export const InAsideDiv = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 1rem;

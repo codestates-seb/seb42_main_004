@@ -7,7 +7,9 @@ function CartAside({ open, inDiv, type }) {
       <AsideTotalPriceDiv type={type === 'custom' && 1}>
         {inDiv}
       </AsideTotalPriceDiv>
-      <AsideSignatureButton>장바구니 담기</AsideSignatureButton>
+      <AsideSignatureButton>
+        {type === 'custom' ? '장바구니 담기' : '구매하기'}
+      </AsideSignatureButton>
     </AsideWrapper>
   );
 }
@@ -29,6 +31,7 @@ const AsideWrapper = styled.aside`
     bottom: 0;
     width: 100%;
     margin: 0 -16px;
+    min-width: 360px;
   }
 `;
 const AsideTotalPriceDiv = styled.div`

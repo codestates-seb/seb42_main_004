@@ -5,10 +5,11 @@ import Footer from './components/commons/Footer';
 import AllBoxes from './pages/AllBoxes';
 import RecommendedBox from './pages/RecommendedBox';
 import Custom from './pages/Custom';
-import OrderHistory from './components/orderHistory/OrderHistory';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Explain from './pages/Explain';
+import OrderHistory from './pages/OrderHistory';
+import Survey from './pages/Survey';
 import Signup from './pages/Signup';
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/explain" element={<Explain />} />
+          <Route path="/survey/:page" element={<Survey />} />
         </Routes>
       </div>
       {pathname !== '/cart' && pathname !== '/custom' ? <Footer /> : null}

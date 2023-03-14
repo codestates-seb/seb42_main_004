@@ -10,7 +10,7 @@ const MainButton = ({ name }) => {
 
 export default MainButton;
 
-const Button = styled.button`
+export const Button = styled.button`
   width: 90px;
   height: 30px;
   display: flex;
