@@ -1,9 +1,8 @@
-
 spring:
   datasource:
     url: jdbc:mariadb://localhost:3307/main004db
     username: root
-    password: 1234
+    password: tnthd*6682
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
@@ -25,7 +24,11 @@ logging:
 image:
   path: sss
 
-  jwt:
-    key: 4FizXKCsqLU4lKXNtWLnyMBax57eVryor6zmf7wPUhF5SGc25Tk7VzKhm5KiPgj
-    access-token-expiration-minutes: 30
-    refresh-token-expiration-minutes: 420
+mail:
+  address:
+    admin: admin@gmail.com
+
+jwt:
+  key: 4FizXKCsqLU4lKXNtWLnyMBax57eVryor6zmf7wPUhF5SGc25Tk7VzKhm5KiPgj
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 420
