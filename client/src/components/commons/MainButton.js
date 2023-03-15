@@ -24,9 +24,12 @@ export const Button = styled.button`
   border: none;
   cursor: pointer;
   background-color: ${({ name }) =>
-    name.includes('Log') ? `var(--product_cocoa)` : `var(--bucket_brown)`};
+    name.includes('Log') || name.includes('추천 받기')
+      ? `var(--product_cocoa)`
+      : `var(--bucket_brown)`};
 
   > a {
+    width: 100%;
     text-decoration: none;
     color: var(--black);
     font-family: inherit;

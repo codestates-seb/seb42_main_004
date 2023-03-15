@@ -53,18 +53,16 @@ function SurveyPage1() {
 export default SurveyPage1;
 
 const Article = styled.article`
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; */
 `;
 
 const H3 = styled.h3`
   margin-bottom: 0.5rem;
 `;
 
-const SurveyContentDiv = styled.div`
-  width: 200px;
-`;
+const SurveyContentDiv = styled.div``;
 
 const GenderOptionDiv = styled.div`
   display: flex;
