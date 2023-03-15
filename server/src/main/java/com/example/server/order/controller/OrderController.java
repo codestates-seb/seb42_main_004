@@ -37,19 +37,19 @@ public class OrderController {
       throws IamportResponseException, IOException { //주문하기
     Orders order = mapper.orderPostDtoToOrders(orderPostDto);
     orderService.createOrder(order);
-    return new ResponseEntity(HttpStatus.CREATED);
+    return new ResponseEntity<>(HttpStatus.CREATED);
   }
 
   @PatchMapping("/orders/{order-id}")
   public ResponseEntity patchOrder(@PathVariable("order-id") @PositiveOrZero long orderId) {  //주문수정 (뭐 하는진 모름)
 
-    return new ResponseEntity(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @GetMapping("/orders/user/{user-id}")
   public ResponseEntity getOrdersUser(@PathVariable("user-id") @PositiveOrZero long userId, @RequestBody OrderGetDto orderGetDto) {  //유저별 주문 내역 확인, JWT 정보랑 비교해야할 듯
     List<Orders> orders = orderService.getOrdersByDateToList(orderGetDto, userId);
-    return new ResponseEntity(orders, HttpStatus.OK);
+    return new ResponseEntity<>(orders, HttpStatus.OK);
   }
 
   @GetMapping("/admin/orders")
@@ -63,6 +63,6 @@ public class OrderController {
   @DeleteMapping("/orders/{order-id}")
   public ResponseEntity deleteOrder(@PathVariable("order-id") @PositiveOrZero long orderId) {
     orderService.cancelOrder(orderId);
-    return new ResponseEntity(HttpStatus.NO_CONTENT);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }
