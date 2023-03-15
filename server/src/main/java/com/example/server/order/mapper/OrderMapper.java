@@ -35,6 +35,7 @@ public interface OrderMapper {
       orderResponseDto.setOrderNumber(order.getOrderNumber());
       orderResponseDto.setCreatedAt(order.getCreatedDate());
       orderResponseDto.setOrderStatus(order.getStatus().getStatus());
+      orderResponseDto.setDeliveryDate(order.getDeliveryDate());
       List<OrdersMealbox> ordersMealboxList = order.getOrdersMealboxes();
       List<OrderMealboxResponseDto> orderMealboxResponseList = ordersMealboxList.stream().map(ordersMealbox -> {
         OrderMealboxResponseDto orderMealboxResponseDto = new OrderMealboxResponseDto();
