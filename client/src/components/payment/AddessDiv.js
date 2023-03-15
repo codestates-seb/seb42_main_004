@@ -83,21 +83,40 @@ const TitleDiv = styled.div`
   justify-content: flex-end;
   font-family: 'IBM Plex Sans KR', sans-serif;
 
-  @media (max-width: 768px) {
+  @media (max-width: 480px) {
+    width: 80%;
+    margin: 0.5rem 0;
     flex-basis: 0px;
+    justify-content: flex-start;
+    margin-right: 0px;
+  }
+
+  @media (min-width: 481px) and (max-width: 768px) {
+    width: 60%;
+    margin: 0.5rem 0;
+    flex-basis: 0px;
+    justify-content: flex-start;
+    margin-right: 0px;
   }
 `;
 const InputDiv = styled.div`
-  flex-grow: 1;
+  width: 60%;
+  min-height: 110px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media (max-width: 480px) {
+    width: 80%;
+    min-height: 95px;
+  }
 `;
 const ButtonDiv = styled.div`
   display: flex;
   flex-direction: row;
 
   > input {
-    width: 145px;
+    width: 60%;
+    margin-right: 0.3rem;
   }
 `;

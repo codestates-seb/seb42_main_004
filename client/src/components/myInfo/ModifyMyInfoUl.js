@@ -42,6 +42,7 @@ function ModifyMyInfoUl() {
         <ButtonDiv>
           <div>비밀번호 수정</div>
           <div>회원 탈퇴</div>
+          <button>수정완료</button>
         </ButtonDiv>
       </li>
     </ContainerUl>
@@ -56,7 +57,7 @@ const ContainerUl = styled.ul`
   list-style: none;
 
   @media (max-width: 768px) {
-    min-width: 90%;
+    width: 100%;
   }
 `;
 const OrderDiv = styled.div`
@@ -100,6 +101,14 @@ const DeliveryDiv = styled.div`
   justify-content: space-between;
   word-break: break-all;
   border-bottom: 1px solid var(--black);
+
+  > div {
+    width: 60%;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
 `;
 const ButtonDiv = styled.div`
   display: flex;
