@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
 import blankbucket from '../../assets/blankbucket.png';
 
-function MealBoxCardDiv({ mealBox, custom }) {
+function MealBoxCardDiv({ mealBox, custom, admin }) {
   return (
     <MealBoxCardContainerDiv className="shadow">
       <MealBoxImgDiv className="shadow">
@@ -31,13 +31,13 @@ function MealBoxCardDiv({ mealBox, custom }) {
         )}
       </MealBoxImgDiv>
       <MealBoxH3 custom={custom && 1}>
-        {custom ? '커스텀 밀박스 만들기' : '밀박스A'}
+        {custom ? `${admin ? '새로운' : '나만의'} 밀박스 만들기` : '밀박스A'}
       </MealBoxH3>
       <MealBoxCardButtonDiv custom={custom && 1}>
-        <MainButton name="커스텀 하기" />
+        <MainButton name={admin ? '밀박스 수정' : '커스텀 하기'} />
         {!custom && (
           <>
-            <MainButton name="장바구니 추가" />
+            <MainButton name={admin ? '밀박스 삭제' : '장바구니 추가'} />
             <MainButton name="가격" />
           </>
         )}

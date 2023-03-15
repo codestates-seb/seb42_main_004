@@ -8,6 +8,7 @@ import Custom from './pages/Custom';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Explain from './pages/Explain';
+import Error from './pages/Error';
 import OrderHistory from './pages/OrderHistory';
 import Survey from './pages/Survey';
 import Signup from './pages/Signup';
@@ -37,6 +38,7 @@ function App() {
           <Route path="/payment" element={<Payment />} />
           <Route path="/explain" element={<Explain />} />
           <Route path="/survey/:page" element={<Survey />} />
+          <Route path="/*" element={<Error />} />
         </Routes>
       </div>
       <Footer />

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import MealBoxCardDiv from '../components/allboxes/MealBoxCardDiv';
+import BannerLink from '../components/commons/BannerLink';
 import PaginationUl from '../components/commons/PaginationUl';
 import SearchBarDiv from '../components/commons/SearchBarDiv';
 
@@ -12,6 +13,7 @@ function AllBoxes() {
 
   return (
     <MealBoxesWrapDiv className="margininside">
+      <BannerLink />
       <h1>{'맹쥬'}님 오늘도 건강한 하루되세요(｡•̀ᴗ-)✧</h1>
       <SearchBarDiv />
       <MealBoxesUl>
