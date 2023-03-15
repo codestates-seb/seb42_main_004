@@ -1,5 +1,7 @@
 package com.example.server.order.mapper;
 
+import com.example.server.mealbox.dto.MealboxProductResponseDto;
+import com.example.server.mealbox.entity.MealboxProduct;
 import com.example.server.order.dto.OrderMealboxResponseDto;
 import com.example.server.order.dto.OrderPageResponseDto;
 import com.example.server.order.dto.OrderPostDto;
@@ -42,7 +44,14 @@ public interface OrderMapper {
         orderMealboxResponseDto.setMealboxName(ordersMealbox.getMealbox().getName());
         orderMealboxResponseDto.setMealboxPrice(ordersMealbox.getPrice());
         orderMealboxResponseDto.setMealboxQuantity(ordersMealbox.getQuantity());
-        // 재료, 수량 추가해야함
+        List<MealboxProduct> mealboxProductList = ordersMealbox.getMealbox().getMealboxProducts();
+        List<MealboxProductResponseDto> mealboxProductResponseDtoList = mealboxProductList.stream().map(mealboxProduct -> {
+          MealboxProductResponseDto mealboxProductResponseDto = new MealboxProductResponseDto();
+          mealboxProductResponseDto.setProductName(mealboxProduct.getProduct().getName());
+          mealboxProductResponseDto.setProductQuantity(mealboxProduct.getQuantity());
+          return mealboxProductResponseDto;
+        }).collect(Collectors.toList());
+        orderMealboxResponseDto.setProducts(mealboxProductResponseDtoList);
         return orderMealboxResponseDto;
       }).collect(Collectors.toList());
       orderResponseDto.setMealboxes(orderMealboxResponseList);
