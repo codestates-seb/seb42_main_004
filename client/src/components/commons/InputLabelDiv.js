@@ -8,18 +8,20 @@ function InputLabelDiv({
   placeholder,
   unit,
   maxLength,
+  disabled,
 }) {
   return (
     <>
       <label htmlFor={id}>{label}</label>
-      <ModalInputDiv className="inputstyle">
+      <ModalInputDiv className="inputstyle" disabled={disabled}>
         <input
+          disabled={disabled}
           id={id}
           maxLength={maxLength && maxLength}
           value={value}
-          onChange={onChange}
+          onChange={onChange && onChange}
           placeholder={placeholder && placeholder}
-        ></input>
+        />
         {unit && <span>{unit}</span>}
       </ModalInputDiv>
     </>
@@ -33,7 +35,7 @@ const ModalInputDiv = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background-color: var(--white);
+  background-color: var(${(props) => (props.disabled ? '--gray' : '--white')});
   padding: 0.4rem;
   margin-bottom: 0.3rem;
   font-weight: 400;

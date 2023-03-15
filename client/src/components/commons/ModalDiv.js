@@ -3,15 +3,16 @@ import styled from 'styled-components';
 import InputLabelDiv from './InputLabelDiv';
 import MainButton from './MainButton';
 
-function ModalDiv({ closeModal }) {
+function ModalDiv({ closeModal, mealBox, boxElement }) {
   const [imgInput, setImgInput] = useState();
   const [imgInputBuffer, setImgInputBuffer] = useState();
   const [productInfo, setProductInfo] = useState({
     name: '',
-    calorie: '',
-    capacity: '',
+    kcal: '',
+    weight: '',
     price: '',
   });
+  const subject = mealBox ? mealBox : boxElement;
 
   const inputHandler = (key) => (e) => {
     let value = e.target.value;
@@ -44,8 +45,14 @@ function ModalDiv({ closeModal }) {
         <ModalCloseButton onClick={closeModal}>&#10005;</ModalCloseButton>
         <ModalImgLabel htmlFor="file" className="shadow" img={imgInputBuffer}>
           이미지
-          <br />
-          추가
+          {imgInputBuffer ? (
+            ' 수정'
+          ) : (
+            <>
+              <br />
+              추가
+            </>
+          )}
           <input
             id="file"
             type="file"
@@ -64,29 +71,36 @@ function ModalDiv({ closeModal }) {
           />
           <InputLabelDiv
             label="열량"
-            id="calorie"
-            value={productInfo.calorie.toLocaleString('ko-KR')}
-            onChange={inputHandler('calorie')}
+            id="kcal"
+            value={productInfo.kcal.toLocaleString('ko-KR')}
+            onChange={boxElement && inputHandler('kcal')}
             unit="kcal/10g"
             maxLength={5}
+            disabled={mealBox && 1}
           />
           <InputLabelDiv
             label="용량"
-            id="capacity"
-            value={productInfo.capacity.toLocaleString('ko-KR')}
-            onChange={inputHandler('capacity')}
+            id="weight"
+            value={productInfo.weight.toLocaleString('ko-KR')}
+            onChange={boxElement && inputHandler('weight')}
             unit="g"
             maxLength={5}
+            disabled={mealBox && 1}
           />
           <InputLabelDiv
             label="금액"
             id="price"
             value={productInfo.price.toLocaleString('ko-KR')}
-            onChange={inputHandler('price')}
+            onChange={boxElement && inputHandler('price')}
             unit="원"
             maxLength={6}
+            disabled={mealBox && 1}
           />
-          <MainButton name="밀박스 추가하기" />
+          <MainButton
+            name={`${mealBox ? '밀박스' : '구성품'} ${
+              subject?.id ? '수정' : '추가'
+            }하기`}
+          />
         </ModalTextDiv>
       </ModalContentDiv>
     </ModalContainerDiv>
@@ -143,9 +157,9 @@ const ModalCloseButton = styled(TextButton)`
 `;
 const ModalImgLabel = styled.label`
   display: flex;
-  justify-content: ${(props) => (props.img ? 'end' : 'center')};
-  align-items: ${(props) => (props.img ? 'end' : 'center')};
-  text-align: ${(props) => (props.img ? 'right' : 'center')};
+  justify-content: ${(props) => (props.img ? 'start' : 'center')};
+  align-items: ${(props) => (props.img ? 'start' : 'center')};
+  text-align: ${(props) => (props.img ? 'left' : 'center')};
   min-width: 100px;
   min-height: 100px;
   width: 12vw;

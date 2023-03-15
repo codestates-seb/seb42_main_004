@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 
-function CartAside({ inDiv, type, buttonClick }) {
+function CartAside({ children, type, buttonClick }) {
   return (
     <AsideWrapper>
-      <AsideTotalPriceDiv custom={type === 'custom' && 1}>
-        {type === 'custom' && <TriangleDiv />}
-        {inDiv}
+      <AsideTotalPriceDiv custom={type && 1}>
+        {type && <TriangleDiv />}
+        {children}
       </AsideTotalPriceDiv>
       <AsideSignatureButton onClick={buttonClick}>
-        {type === 'custom' ? '장바구니 담기' : '구매하기'}
+        {type ? type : '구매하기'}
       </AsideSignatureButton>
     </AsideWrapper>
   );
