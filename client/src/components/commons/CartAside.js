@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-function CartAside({ open, inDiv, type, buttonClick }) {
+function CartAside({ inDiv, type, buttonClick }) {
   return (
     <AsideWrapper>
-      {open && open}
-      <AsideTotalPriceDiv type={type === 'custom' && 1}>
+      <AsideTotalPriceDiv custom={type === 'custom' && 1}>
+        {type === 'custom' && <TriangleDiv />}
         {inDiv}
       </AsideTotalPriceDiv>
       <AsideSignatureButton onClick={buttonClick}>
@@ -36,27 +36,48 @@ const AsideWrapper = styled.aside`
 `;
 const AsideTotalPriceDiv = styled.div`
   background-color: var(
-    ${(props) => (props.type ? '--bucket_brown' : '--white_020')}
+    ${(props) => (props.custom ? '--bucket_brown' : '--white_020')}
   );
   padding: 1rem;
   border-radius: 10px 10px 0 0;
   box-shadow: 0 0 0 2px
-      var(${(props) => (props.type ? '--bucket_brown' : '--signature')}) inset,
+      var(${(props) => (props.custom ? '--bucket_brown' : '--signature')}) inset,
     2px 2px 2px rgba(0, 0, 0, 0.4);
 
   @media (max-width: 480px) {
     border-radius: 0;
 
     :hover {
+      border-radius: 10px 10px 0 0;
+
       > h2,
       > ul {
         display: block;
+      }
+
+      div:first-child {
+        display: none;
       }
     }
 
     > div {
       margin: 0;
     }
+  }
+`;
+const TriangleDiv = styled.div`
+  display: none;
+  width: 0;
+  height: 0;
+  border-bottom: calc(4px * 1.732) solid var(--bucket_brown);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  position: absolute;
+  top: -6.4px;
+  left: 50%;
+
+  @media (max-width: 480px) {
+    display: block;
   }
 `;
 const AsideSignatureButton = styled.button`

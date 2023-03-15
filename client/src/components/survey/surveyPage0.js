@@ -15,7 +15,7 @@ function SurveyPage0() {
       <BottomSection>
         <div>다이어트용 밀박스를</div>
         <div>추천 받으시겠습니까?</div>
-        <Link to="/">추천 받기</Link>
+        <Link to="/survey/1">추천 받기</Link>
         <Link to="/">건너뛰기</Link>
       </BottomSection>
     </Article>

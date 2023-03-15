@@ -34,9 +34,11 @@ import lombok.Setter;
 @AllArgsConstructor(access = PROTECTED)
 public class User extends BaseEntity {
   @Id
+  @Setter
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "user_id")
   private Long id;
+  @Setter
   private String email;
   @Setter
   private String password;
@@ -56,6 +58,15 @@ public class User extends BaseEntity {
   @Setter
   private UserStatus status = UserStatus.USER_TMP;
   //연관관계
+
+
+  public User(User user) {
+    this.id = user.getId();
+    this.email = user.getEmail();
+    this.password = user.getPassword();
+    this.name = user.getName();
+    this.roles = user.getRoles();
+  }
 
   //이메일 인증이 되었는지 확인하는 키
   @Default

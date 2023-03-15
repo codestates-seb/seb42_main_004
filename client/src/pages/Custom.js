@@ -14,9 +14,9 @@ function Custom() {
     <MealBoxesWrapDiv className="margininside">
       {openModal && <ModalDiv closeModal={() => setOpenModal(false)} />}
       <h1>커스텀 밀박스</h1>
-      {/* <SearchBarDiv /> */}
       <CustomSelectDiv>
         <ElementsContainerDiv>
+          {/* <SearchBarDiv /> */}
           <ul>
             <li>
               <BoxElementCardDiv />
@@ -25,7 +25,6 @@ function Custom() {
           <PaginationUl nowpage={1} totalpage={1} />
         </ElementsContainerDiv>
         <CartAside
-          open={<TriangleDiv />}
           type="custom"
           buttonClick={() => setOpenModal(true)}
           inDiv={
@@ -79,22 +78,6 @@ const ElementsContainerDiv = styled.div`
     width: 100%;
   }
 `;
-const TriangleDiv = styled.div`
-  display: none;
-  width: 0;
-  height: 0;
-  border-bottom: calc(4px * 1.732) solid var(--bucket_brown);
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-
-  @media (max-width: 480px) {
-    display: block;
-  }
-`;
-
 const InAsideH2 = styled.h2`
   color: var(--white);
   list-style: none;

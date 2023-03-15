@@ -14,7 +14,7 @@ function SurveyPage1() {
 
   return (
     <Article>
-      <h3>밀박스 추천을 위해 정보를 입력해주세요.</h3>
+      <H3>밀박스 추천을 위해 정보를 입력해주세요.</H3>
       <SurveyContentDiv>
         <InputLabelDiv
           label="생년월일"
@@ -23,11 +23,13 @@ function SurveyPage1() {
           // onChange={inputHandler('name')}
           placeholder="2000.01.01"
         />
-        <div>성별</div>
-        <GenderOptionDiv>
-          <MainButton name="남성" handler={maleHandler} />
-          <MainButton name="여성" handler={femaleHandler} />
-        </GenderOptionDiv>
+        <div>
+          <div>성별</div>
+          <GenderOptionDiv>
+            <MainButton name="남성" handler={maleHandler} />
+            <MainButton name="여성" handler={femaleHandler} />
+          </GenderOptionDiv>
+        </div>
         <InputLabelDiv
           label="신장"
           id="name"
@@ -54,6 +56,10 @@ const Article = styled.article`
   flex-direction: column;
 `;
 
+const H3 = styled.h3`
+  margin-bottom: 0.5rem;
+`;
+
 const SurveyContentDiv = styled.div`
   width: 200px;
   margin: 0 auto;
@@ -62,4 +68,7 @@ const SurveyContentDiv = styled.div`
 const GenderOptionDiv = styled.div`
   display: flex;
   justify-content: space-between;
+  *:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
 `;

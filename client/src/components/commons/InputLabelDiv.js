@@ -15,7 +15,7 @@ function InputLabelDiv({
       <ModalInputDiv className="inputstyle">
         <input
           id={id}
-          maxLength={maxLength}
+          maxLength={maxLength && maxLength}
           value={value}
           onChange={onChange}
           placeholder={placeholder && placeholder}
