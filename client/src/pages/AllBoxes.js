@@ -15,7 +15,7 @@ function AllBoxes() {
     <MealBoxesWrapDiv className="margininside">
       <BannerLink />
       <h1>{'맹쥬'}님 오늘도 건강한 하루되세요(｡•̀ᴗ-)✧</h1>
-      <SearchBarDiv />
+      <SearchBarDiv placeholder="healthy day 밀박스" />
       <MealBoxesUl>
         <li>
           <MealBoxCardDiv custom={1} />

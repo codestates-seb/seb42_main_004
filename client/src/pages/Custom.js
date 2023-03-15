@@ -7,6 +7,7 @@ import CartAside from '../components/commons/CartAside';
 import SearchBarDiv from '../components/commons/SearchBarDiv';
 import ModalDiv, { TextButton } from '../components/commons/ModalDiv';
 import { MealBoxesWrapDiv } from './AllBoxes';
+import FilterSelect from '../components/commons/FilterSelect';
 
 function Custom({ admin, mealBox }) {
   const [openModal, setOpenModal] = useState(false);
@@ -25,7 +26,10 @@ function Custom({ admin, mealBox }) {
       <h1>커스텀 밀박스</h1>
       <CustomSelectDiv>
         <ElementsContainerDiv>
-          <SearchBarDiv />
+          <FilterSearchDiv>
+            <FilterSelect />
+            <SearchBarDiv placeholder="고구마" />
+          </FilterSearchDiv>
           <BoxElementCardUl>
             <li>
               <BoxElementCardDiv />
@@ -85,6 +89,11 @@ const ElementsContainerDiv = styled.div`
   @media screen and (max-width: 480px) {
     width: 100%;
   }
+`;
+const FilterSearchDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 const BoxElementCardUl = styled.ul`
   list-style: none;
