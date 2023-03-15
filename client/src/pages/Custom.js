@@ -17,11 +17,11 @@ function Custom() {
       <CustomSelectDiv>
         <ElementsContainerDiv>
           <SearchBarDiv />
-          <ul>
+          <BoxElementCardUl>
             <li>
               <BoxElementCardDiv />
             </li>
-          </ul>
+          </BoxElementCardUl>
           <PaginationUl nowpage={1} totalpage={1} />
         </ElementsContainerDiv>
         <CartAside
@@ -70,13 +70,13 @@ const ElementsContainerDiv = styled.div`
   float: left;
   width: 60%;
 
-  > ul {
-    list-style: none;
-  }
-
   @media screen and (max-width: 480px) {
     width: 100%;
   }
+`;
+const BoxElementCardUl = styled.ul`
+  list-style: none;
+  margin-bottom: -10px;
 `;
 const InAsideH2 = styled.h2`
   color: var(--white);
