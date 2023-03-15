@@ -7,12 +7,12 @@ function OrderHistoryByDateDiv() {
     <HistoryByDateDiv>
       <H3>2023.04.18</H3>
       <TopMenuDiv>
-        <div>2304189829</div>
+        <div>23041898292304189829</div>
         <UserTopMenuDiv>
           <OrderHistoryPageButton text={'주문 취소'} />
           <div>주문 완료</div>
         </UserTopMenuDiv>
-        <ManagerTopMenuDiv>
+        <AdminTopMenuDiv>
           <div>맹쥬님</div>
           <select name="#">
             <option value="주문 완료">주문 완료</option>
@@ -25,7 +25,7 @@ function OrderHistoryByDateDiv() {
             <option value="반품 완료">반품 완료</option>
           </select>
           <button>확인</button>
-        </ManagerTopMenuDiv>
+        </AdminTopMenuDiv>
       </TopMenuDiv>
       <OrderHistoryUl />
       <BottomMenuDiv>
@@ -53,7 +53,7 @@ const TopMenuDiv = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-
+  white-space: nowrap;
   > div:first-child {
     flex-grow: 1;
     color: gray;
@@ -91,4 +91,4 @@ const UserTopMenuDiv = styled.div`
   }
 `;
 
-const ManagerTopMenuDiv = styled(UserTopMenuDiv)``;
+const AdminTopMenuDiv = styled(UserTopMenuDiv)``;

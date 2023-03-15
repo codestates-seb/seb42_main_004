@@ -1,22 +1,22 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import LogoWhite from '../../assets/logo_white.png';
-
+import MainButton from '../commons/MainButton';
 function SurveyPage0() {
   return (
     <Article>
-      <section>
+      <TopSection>
         <LogoImg src={LogoWhite} alt="logo" />
         <div>
-          <span>당신의 소중한 시간과</span>
+          <span>당신의 소중한 시간과 </span>
           <span>건강을 위한 밀박스</span>
         </div>
-      </section>
+      </TopSection>
       <BottomSection>
         <div>다이어트용 밀박스를</div>
-        <div>추천 받으시겠습니까?</div>
-        <Link to="/survey/1">추천 받기</Link>
-        <Link to="/">건너뛰기</Link>
+        <div>추천받으시겠습니까?</div>
+        <SurveyLink name="추천받기" url="/survey/1" />
+        <SkipLink to="/">건너뛰기</SkipLink>
       </BottomSection>
     </Article>
   );
@@ -35,6 +35,11 @@ const Article = styled.article`
   background-color: var(--signature);
   color: var(--white);
 
+  span,
+  div {
+    font-size: 1.2rem;
+  }
+
   @media (max-width: 480px) {
     height: 100vh;
   }
@@ -48,12 +53,24 @@ const LogoImg = styled.img`
   height: 80px;
 `;
 
+const TopSection = styled.section``;
+
 const BottomSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  > *:not(:first-child) {
-    margin: 0.3rem 0;
+  > button {
+    margin: 30px 0 25px;
   }
+
+  > a {
+    color: var(--white);
+  }
+`;
+
+const SurveyLink = styled(MainButton)``;
+
+const SkipLink = styled(Link)`
+  text-decoration: none;
 `;

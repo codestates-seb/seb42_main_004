@@ -18,7 +18,6 @@ import ModifyMyInfo from './pages/ModifyMyInfo';
 
 function App() {
   let { pathname } = useLocation();
-  console.log(pathname);
 
   return (
     <>

@@ -5,7 +5,6 @@ import MainButton from '../commons/MainButton';
 function PreAndNextButtons() {
   let { page } = useParams();
   page = Number(page);
-
   let navigate = useNavigate();
 
   let preHandler = () => {
@@ -13,7 +12,7 @@ function PreAndNextButtons() {
   };
 
   let nextHandler = () => {
-    navigate(`/survey/${page + 1}`);
+    navigate(page !== 3 ? `/survey/${page + 1}` : `/survey/recommend`);
   };
 
   return (
