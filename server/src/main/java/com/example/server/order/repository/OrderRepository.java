@@ -13,7 +13,6 @@ import org.springframework.data.jpa.repository.Query;
 public interface OrderRepository extends JpaRepository<Orders, Long> {
   //나중에 테스트 해봐야함
   Page<Orders> findAllByCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
-//  @Query(value = "SELECT o FROM Orders o WHERE o.createdDate between :startDate and :endDate")
   List<Orders> findByCreatedDateBetweenAndUserOrderByCreatedDateDesc(LocalDateTime startDate, LocalDateTime endDate, User user);
   Optional<Orders> findByOrderNumber(String orderNumber);
 }
