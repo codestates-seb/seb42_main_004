@@ -21,13 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/orders")
 @Validated
 @RequiredArgsConstructor
 public class OrderController {
   private final OrderService orderService;
   private final OrderMapper mapper;
-  @PostMapping
+  @PostMapping("/orders")
   public ResponseEntity postOrder(@RequestBody OrderPostDto orderPostDto)
       throws IamportResponseException, IOException { //주문하기
     Orders order = mapper.orderPostDtoToOrders(orderPostDto);
@@ -35,25 +34,25 @@ public class OrderController {
     return new ResponseEntity(HttpStatus.CREATED);
   }
 
-  @PatchMapping("/{order-id}")
+  @PatchMapping("/orders/{order-id}")
   public ResponseEntity patchOrder(@PathVariable("order-id") @PositiveOrZero long orderId) {  //주문수정 (뭐 하는진 모름)
 
     return new ResponseEntity(HttpStatus.OK);
   }
 
-  @GetMapping("user/{user-id}")
+  @GetMapping("/orders/user/{user-id}")
   public ResponseEntity getOrder(@PathVariable("user-id") @PositiveOrZero long userId) {  //유저별 주문 내역 확인, JWT 정보랑 비교해야할 듯
 
     return new ResponseEntity(HttpStatus.OK);
   }
 
-  @GetMapping
+  @GetMapping("/admin/orders")
   public ResponseEntity getOrders() {
 
     return new ResponseEntity(HttpStatus.OK);
   }
 
-  @DeleteMapping("/{order-id}")
+  @DeleteMapping("/orders/{order-id}")
   public ResponseEntity deleteOrder(@PathVariable("order-id") @PositiveOrZero long orderId) {
     orderService.cancelOrder(orderId);
     return new ResponseEntity(HttpStatus.NO_CONTENT);
