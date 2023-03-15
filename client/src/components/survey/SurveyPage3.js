@@ -25,7 +25,7 @@ function SurveyPage3() {
           group="page3"
           title="Hard"
           info={<DietInfo kcal="800" weight="00.0kg" target="2.9" />}
-          detail="다이어트에 대한 강한 의지나 다가오는 중요한 일정이 있으신가요? 강도가 높아 지키기 힘들 수도 있어요."
+          detail="다이어트에 대한 강한 의지나 다가오는 중요한 일정이 있으신가요? 강도가 높아 지키기 힘들 수도 있어요. "
         />
       </Option>
       <PreAndNextButtons />
