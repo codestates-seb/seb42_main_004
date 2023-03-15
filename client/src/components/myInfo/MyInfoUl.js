@@ -42,7 +42,7 @@ function MyInfoUl() {
 export default MyInfoUl;
 
 const ContainerUl = styled.ul`
-  min-width: 70%;
+  min-width: 80%;
   padding: 0;
   list-style: none;
 `;
