@@ -1,9 +1,14 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const MainButton = ({ name, handler }) => {
+const MainButton = ({ name, url, handler }) => {
   return (
-    <Button className="buttonstyle shadow" name={name} onClick={handler}>
-      {name}
+    <Button
+      className="buttonstyle shadow"
+      name={name}
+      onClick={handler && handler}
+    >
+      {url ? <Link to={url}>{name}</Link> : name}
     </Button>
   );
 };
@@ -20,4 +25,10 @@ export const Button = styled.button`
   cursor: pointer;
   background-color: ${({ name }) =>
     name.includes('Log') ? `var(--product_cocoa)` : `var(--bucket_brown)`};
+
+  > a {
+    text-decoration: none;
+    color: var(--black);
+    font-family: inherit;
+  }
 `;

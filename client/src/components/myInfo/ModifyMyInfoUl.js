@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import ContentDiv from './ContentDiv';
+// import ContentDiv from './ContentDiv';
 import logo from '../../assets/logo_black.png';
 import ContentInputDiv from './ContentInputDiv';
 import AddressDiv from '../payment/AddessDiv';
@@ -14,7 +14,7 @@ function ModifyMyInfoUl() {
             <img src={logo} alt="logo" />
           </ImgDiv>
           <InfoDiv>
-            <ContentDiv name="프로필 사진" content="첨부하기" />
+            <ContentInputDiv name="프로필 사진" content="첨부하기" />
             <ContentInputDiv id="nickname" name="닉네임" content="맹쥬" />
             <ContentInputDiv
               id="name"
@@ -51,9 +51,13 @@ function ModifyMyInfoUl() {
 export default ModifyMyInfoUl;
 
 const ContainerUl = styled.ul`
-  min-width: 70%;
+  min-width: 80%;
   padding: 0;
   list-style: none;
+
+  @media (max-width: 768px) {
+    min-width: 90%;
+  }
 `;
 const OrderDiv = styled.div`
   display: flex;
@@ -88,7 +92,6 @@ const ImgDiv = styled.div`
   }
 `;
 const DeliveryDiv = styled.div`
-  height: 255px;
   margin-top: 2rem;
   padding-bottom: 50px;
   margin-bottom: 2rem;

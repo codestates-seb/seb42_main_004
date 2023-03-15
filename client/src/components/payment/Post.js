@@ -36,7 +36,4 @@ const Post = (props) => {
 
 export default Post;
 
-const Postcode = styled(DaumPostcode)`
-  background: rgba(0, 0, 0, 0.25);
-  position: fixed;
-`;
+const Postcode = styled(DaumPostcode)``;

@@ -36,7 +36,7 @@ export default PaginationUl;
 const PaginationContainerUl = styled.ul`
   list-style: none;
   display: flex;
-  margin: 0.5rem -0.5rem 0;
+  margin: 2rem -0.5rem 0;
   align-self: end;
 `;
 const PaginationLi = styled.li`

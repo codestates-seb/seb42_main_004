@@ -38,13 +38,10 @@ function AddressDiv() {
             value={enroll_company.zonecode}
           />
           <button onClick={handleComplete}>주소검색</button>
-          {popup && (
-            <Post
-              company={enroll_company}
-              setcompany={setEnroll_company}
-            ></Post>
-          )}
         </ButtonDiv>
+        {popup && (
+          <Post company={enroll_company} setcompany={setEnroll_company}></Post>
+        )}
         <input
           className="inputstyle"
           placeholder="주소"
@@ -74,6 +71,10 @@ const ContainerDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 const TitleDiv = styled.div`
   flex-basis: 75px;
@@ -81,9 +82,12 @@ const TitleDiv = styled.div`
   display: flex;
   justify-content: flex-end;
   font-family: 'IBM Plex Sans KR', sans-serif;
+
+  @media (max-width: 768px) {
+    flex-basis: 0px;
+  }
 `;
 const InputDiv = styled.div`
-  height: 110px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;

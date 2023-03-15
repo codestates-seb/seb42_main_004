@@ -16,28 +16,10 @@ function AllBoxes() {
       <SearchBarDiv />
       <MealBoxesUl>
         <li>
-          <MealBoxCardDiv />
+          <MealBoxCardDiv custom={1} />
         </li>
         <li>
-          <MealBoxCardDiv />
-        </li>
-        <li>
-          <MealBoxCardDiv />
-        </li>
-        <li>
-          <MealBoxCardDiv />
-        </li>
-        <li>
-          <MealBoxCardDiv />
-        </li>
-        <li>
-          <MealBoxCardDiv />
-        </li>
-        <li>
-          <MealBoxCardDiv />
-        </li>
-        <li>
-          <MealBoxCardDiv />
+          <MealBoxCardDiv mealBox={1} />
         </li>
       </MealBoxesUl>
       <PaginationUl nowpage={4} totalpage={7} setNextPage={setNextPage} />

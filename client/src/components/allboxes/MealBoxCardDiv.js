@@ -1,33 +1,46 @@
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
+import blankbucket from '../../assets/blankbucket.png';
 
-function MealBoxCardDiv() {
+function MealBoxCardDiv({ mealBox, custom }) {
   return (
     <MealBoxCardContainerDiv className="shadow">
       <MealBoxImgDiv className="shadow">
-        <p>
-          <span>500g</span>
-          <span>500kcal</span>
-        </p>
+        {mealBox && (
+          <p>
+            <span>500g</span>
+            <span>500kcal</span>
+          </p>
+        )}
         <MealBoxImg
           alt=""
-          src="https://www.shinsegaegroupnewsroom.com/wp-content/uploads/2022/06/%EC%8B%A0%EC%84%B8%EA%B3%84%ED%91%B8%EB%93%9C_%EB%B3%B8%EB%AC%B8-1.jpg"
+          src={
+            custom
+              ? blankbucket
+              : 'https://www.shinsegaegroupnewsroom.com/wp-content/uploads/2022/06/%EC%8B%A0%EC%84%B8%EA%B3%84%ED%91%B8%EB%93%9C_%EB%B3%B8%EB%AC%B8-1.jpg'
+          }
         />
-        {/* {showDes && ( */}
-        <MealBoxDesUl>
-          <li>
-            <span>케일주스</span>
-            <span>100ml</span>
-            <span>100kcal</span>
-          </li>
-        </MealBoxDesUl>
-        {/* )} */}
+        {mealBox && (
+          <MealBoxDesUl>
+            <li>
+              <span>케일주스</span>
+              <span>100ml</span>
+              <span>100kcal</span>
+            </li>
+          </MealBoxDesUl>
+        )}
       </MealBoxImgDiv>
-      <MealBoxH3>{'밀박스A'}</MealBoxH3>
-      <MealBoxCardButtonDiv>
+      <MealBoxH3 custom={custom && 1}>
+        {custom ? '커스텀 밀박스 만들기' : '밀박스A'}
+      </MealBoxH3>
+      <MealBoxCardButtonDiv custom={custom && 1}>
         <MainButton name="커스텀 하기" />
-        <MainButton name="장바구니 추가" />
-        <MainButton name="가격" className="disabled" />
+        {!custom && (
+          <>
+            <MainButton name="장바구니 추가" />
+            <MainButton name="가격" />
+          </>
+        )}
       </MealBoxCardButtonDiv>
     </MealBoxCardContainerDiv>
   );
@@ -52,7 +65,6 @@ const MealBoxImgDiv = styled.div`
   margin-bottom: 1rem;
   background-color: var(--white);
   padding-bottom: 100%;
-  cursor: pointer;
 
   > p {
     z-index: 10;
@@ -75,6 +87,7 @@ const MealBoxImg = styled.img`
   top: 50%;
   transform: translateY(-50%);
   height: auto;
+  padding: 2rem;
 `;
 const MealBoxDesUl = styled.ul`
   z-index: 9;
@@ -103,11 +116,13 @@ const MealBoxDesUl = styled.ul`
 const MealBoxH3 = styled.h3`
   font-size: 1.3rem;
   margin-bottom: 0.5rem;
+  text-align: ${(props) => props.custom && 'center'};
 `;
 const MealBoxCardButtonDiv = styled.div`
-  display: grid;
+  display: ${(props) => (props.custom ? 'flex' : 'grid')};
   grid-template-columns: repeat(3, auto);
   column-gap: 0.5rem;
+  width: 100%;
 
   > button {
     font-size: 1rem !important;
@@ -118,7 +133,7 @@ const MealBoxCardButtonDiv = styled.div`
     word-break: keep-all;
   }
 
-  button:last-child {
+  button:nth-child(3) {
     cursor: default;
 
     :active {
