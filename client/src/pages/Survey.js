@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import SurveyArticle from '../components/survey/SurveyArticle.js';
+import SurveyArticle from '../components/survey/SurveyArticle';
 import { BsFillCircleFill as Dot } from 'react-icons/bs';
 
 function Survey() {

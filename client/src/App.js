@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import Header from './components/commons/Header';
 import GlobalStyle from './global/globalstyles';
 import Footer from './components/commons/Footer';
@@ -8,6 +8,7 @@ import Custom from './pages/Custom';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Explain from './pages/Explain';
+import Error from './pages/Error';
 import OrderHistory from './pages/OrderHistory';
 import Survey from './pages/Survey';
 import Signup from './pages/Signup';
@@ -17,8 +18,6 @@ import Payment from './pages/Payment';
 import ModifyMyInfo from './pages/ModifyMyInfo';
 
 function App() {
-  let { pathname } = useLocation();
-
   return (
     <>
       <GlobalStyle />
@@ -39,9 +38,10 @@ function App() {
           <Route path="/payment" element={<Payment />} />
           <Route path="/explain" element={<Explain />} />
           <Route path="/survey/:page" element={<Survey />} />
+          <Route path="/*" element={<Error />} />
         </Routes>
       </div>
-      {pathname !== '/cart' && pathname !== '/custom' ? <Footer /> : null}
+      <Footer />
     </>
   );
 }
