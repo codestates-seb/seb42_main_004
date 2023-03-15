@@ -10,7 +10,7 @@ function SignupUl() {
     const getElements = async () => {
       try {
         const response = await axios.post(
-          'ec2-3-39-191-52.ap-northeast-2.compute.amazonaws.com:8080/user',
+          'ec2-3-39-191-52.ap-northeast-2.compute.amazonaws.com:8080/users',
           JSON.stringify({
             email: 'myungju030@gmail.com',
             password: '1234',
