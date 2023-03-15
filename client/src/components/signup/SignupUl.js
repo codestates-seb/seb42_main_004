@@ -1,9 +1,37 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 import LoginButton from '../login/LoginButton';
 import EmailInputDiv from './EmailInputDiv';
 import InputDiv from './InputDiv';
 
 function SignupUl() {
+  useEffect(() => {
+    const getElements = async () => {
+      try {
+        const response = await axios.post(
+          'ec2-3-39-191-52.ap-northeast-2.compute.amazonaws.com:8080/user',
+          JSON.stringify({
+            email: 'myungju030@gmail.com',
+            password: '1234',
+            name: '강명주',
+          }),
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          }
+        );
+        const { data } = response;
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getElements();
+  }, []);
+
   return (
     <ContainerUl>
       <li>
