@@ -16,6 +16,7 @@ import SignupOauth from './pages/SignupOauth';
 import MyInfo from './pages/MyInfo';
 import Payment from './pages/Payment';
 import ModifyMyInfo from './pages/ModifyMyInfo';
+import ModifyPassword from './pages/ModifyPassword';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path="/signupoauth" element={<SignupOauth />} />
           <Route path="/myinfo" element={<MyInfo />} />
           <Route path="/modifymyinfo" element={<ModifyMyInfo />} />
+          <Route path="/modifypassword" element={<ModifyPassword />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/explain" element={<Explain />} />
           <Route path="/survey/:page" element={<Survey />} />

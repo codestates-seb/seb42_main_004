@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import ContentDiv from './ContentDiv';
 import logo from '../../assets/logo_black.png';
+import PasswordInputDiv from './PasswordInputDiv';
 
-function MyInfoUl() {
+function MyInfoUl({ pathName }) {
   return (
     <ContainerUl>
       <li>
@@ -28,11 +29,25 @@ function MyInfoUl() {
           <ContentDiv name="주소" content="주소" />
         </DeliveryDiv>
       </li>
+      {pathName ? (
+        <li>
+          <PasswordDiv>
+            <PasswordInputDiv id="password" name="비밀번호" content="" />
+            <PasswordInputDiv id="newPassword" name="새 비밀번호" content="" />
+            <PasswordInputDiv
+              id="confirmNewPassword"
+              name="새 비밀번호 확인"
+              content=""
+            />
+          </PasswordDiv>
+        </li>
+      ) : null}
       <li>
         <ButtonDiv>
           <div>내 정보 수정</div>
-          <div>비밀번호 수정</div>
+          {pathName ? null : <div>비밀번호 수정</div>}
           <div>회원 탈퇴</div>
+          {pathName ? <button>확인</button> : null}
         </ButtonDiv>
       </li>
     </ContainerUl>
@@ -87,6 +102,11 @@ const DeliveryDiv = styled.div`
   flex-direction: column;
   justify-content: space-between;
   word-break: break-all;
+  border-bottom: 1px solid var(--black);
+`;
+const PasswordDiv = styled.div`
+  padding-bottom: 50px;
+  margin-bottom: 2rem;
   border-bottom: 1px solid var(--black);
 `;
 const ButtonDiv = styled.div`
