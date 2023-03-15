@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import OrderHistoryPageButton from '../components/orderHistory/OrderHistoryPageButton';
 import OrderHistoryByDateDiv from '../components/orderHistory/OrderHistoryByDateDiv';
+import PaginationUl from '../components/commons/PaginationUl';
+
 function OrderHistory() {
   return (
     <OrderHistoryPageWrapper className="margininside">
@@ -11,6 +13,7 @@ function OrderHistory() {
       <OrderHistoryByDateDiv />
       <OrderHistoryByDateDiv />
       <OrderHistoryByDateDiv />
+      <PaginationUl nowpage={1} totalpage={1} />
     </OrderHistoryPageWrapper>
   );
 }
