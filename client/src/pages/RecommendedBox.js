@@ -8,15 +8,15 @@ function RecommendedBox() {
       <MealBoxesUl>
         <li>
           <h2>아침</h2>
-          <MealBoxCardDiv />
+          <MealBoxCardDiv mealBox={1} />
         </li>
         <li>
           <h2>점심</h2>
-          <MealBoxCardDiv />
+          <MealBoxCardDiv mealBox={1} />
         </li>
         <li>
           <h2>저녁</h2>
-          <MealBoxCardDiv />
+          <MealBoxCardDiv mealBox={1} />
         </li>
       </MealBoxesUl>
     </MealBoxesWrapDiv>

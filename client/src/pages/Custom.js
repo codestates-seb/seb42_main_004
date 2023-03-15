@@ -1,22 +1,31 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import PaginationUl from '../components/commons/PaginationUl';
 import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
 import CartAside from '../components/commons/CartAside';
+import SearchBarDiv from '../components/commons/SearchBarDiv';
 import ModalDiv, { TextButton } from '../components/commons/ModalDiv';
-// import SearchBarDiv from '../components/commons/SearchBarDiv';
 import { MealBoxesWrapDiv } from './AllBoxes';
 
-function Custom() {
+function Custom({ admin, mealBox }) {
   const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <MealBoxesWrapDiv className="margininside">
-      {openModal && <ModalDiv closeModal={() => setOpenModal(false)} />}
+      {/* <ModalDiv
+        mealBox={0}
+        boxElement={1}
+        closeModal={() => setOpenModal(false)}
+      /> */}
+      {admin && openModal && (
+        <ModalDiv closeModal={() => setOpenModal(false)} />
+      )}
       <h1>커스텀 밀박스</h1>
       <CustomSelectDiv>
         <ElementsContainerDiv>
-          {/* <SearchBarDiv /> */}
+          <SearchBarDiv />
           <BoxElementCardUl>
             <li>
               <BoxElementCardDiv />
@@ -25,34 +34,37 @@ function Custom() {
           <PaginationUl nowpage={1} totalpage={1} />
         </ElementsContainerDiv>
         <CartAside
-          type="custom"
-          buttonClick={() => setOpenModal(true)}
-          inDiv={
-            <>
-              <InAsideH2>Custom</InAsideH2>
-              <InAsideUl>
-                <ElementInBucketLi>
-                  <span>{`${'오렌지주스'}`}</span>
-                  <span>
-                    {`${1}`}
-                    <TextButton className="linkstyle">&#10005;</TextButton>
-                  </span>
-                </ElementInBucketLi>
-                <ElementInBucketLi>
-                  <span>{`${'오렌지주스'}`}</span>
-                  <span>
-                    {`${1}`}
-                    <TextButton className="linkstyle">&#10005;</TextButton>
-                  </span>
-                </ElementInBucketLi>
-              </InAsideUl>
-              <InAsideDiv>
-                <span>합계</span>
-                <span>{`${'19,900'}원`}</span>
-              </InAsideDiv>
-            </>
+          type={
+            admin
+              ? '밀박스 생성 진행하기'
+              : mealBox?.id
+              ? '밀박스 수정 진행하기'
+              : '장바구니 담기'
           }
-        />
+          buttonClick={admin ? () => setOpenModal(true) : () => navigate('/')}
+        >
+          <InAsideH2>Custom</InAsideH2>
+          <InAsideUl>
+            <ElementInBucketLi>
+              <span>{`${'오렌지주스'}`}</span>
+              <span>
+                {`${1}`}
+                <TextButton className="linkstyle">&#10005;</TextButton>
+              </span>
+            </ElementInBucketLi>
+            <ElementInBucketLi>
+              <span>{`${'오렌지주스'}`}</span>
+              <span>
+                {`${1}`}
+                <TextButton className="linkstyle">&#10005;</TextButton>
+              </span>
+            </ElementInBucketLi>
+          </InAsideUl>
+          <InAsideDiv>
+            <span>합계</span>
+            <span>{`${'19,900'}원`}</span>
+          </InAsideDiv>
+        </CartAside>
       </CustomSelectDiv>
     </MealBoxesWrapDiv>
   );
