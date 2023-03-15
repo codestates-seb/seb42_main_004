@@ -25,7 +25,7 @@ function Custom({ admin, mealBox }) {
       <h1>커스텀 밀박스</h1>
       <CustomSelectDiv>
         <ElementsContainerDiv>
-          <SearchBarDiv />
+          <SearchBarDiv placeholder="고구마" />
           <BoxElementCardUl>
             <li>
               <BoxElementCardDiv />

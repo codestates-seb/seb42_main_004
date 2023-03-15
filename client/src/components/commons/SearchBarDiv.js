@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import { BiSearchAlt } from 'react-icons/bi';
 
-function SearchBarDiv() {
+function SearchBarDiv({ placeholder }) {
   return (
     <SearchBarContainerDiv>
       <input
         className="inputstyle"
         maxLength={20}
-        placeholder="healthy day 밀박스"
+        placeholder={placeholder && placeholder}
       />
       <button className="buttonstyle">검색</button>
       <BiSearchAlt />
