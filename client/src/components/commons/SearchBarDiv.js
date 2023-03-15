@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { BiSearchAlt } from 'react-icons/bi';
+import OrderHistoryPageButton from '../orderHistory/OrderHistoryPageButton';
 
 function SearchBarDiv({ placeholder }) {
   return (
@@ -9,7 +10,7 @@ function SearchBarDiv({ placeholder }) {
         maxLength={20}
         placeholder={placeholder && placeholder}
       />
-      <button className="buttonstyle">검색</button>
+      <OrderHistoryPageButton text="검색" />
       <BiSearchAlt />
     </SearchBarContainerDiv>
   );
@@ -19,18 +20,17 @@ export default SearchBarDiv;
 
 const SearchBarContainerDiv = styled.div`
   display: flex;
-  align-self: flex-end;
   position: relative;
   margin-bottom: 0.5rem;
   height: 2rem;
 
   > input {
-    width: 100%;
+    width: 150px;
     padding: 0.4rem;
     padding-left: 2rem;
 
     :focus {
-      margin: -0.8px;
+      border: 2px solid var(--signature);
     }
   }
 
@@ -48,20 +48,11 @@ const SearchBarContainerDiv = styled.div`
     word-break: keep-all;
     margin-left: 0.2rem;
     padding: 0.1rem 0.5rem;
-    font-size: 1rem !important;
-    border: none;
-    background-color: var(--bucket_brown);
-
-    :active {
-      box-shadow: inset 2px 2px 0px var(--gray_070),
-        inset -2px -2px 0px rgba(255, 255, 255, 0.5);
-    }
   }
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
     margin-bottom: 0.8rem;
-    width: 50%;
-    align-self: flex-start;
+    width: 49%;
     height: 3rem;
 
     > button {
@@ -76,6 +67,7 @@ const SearchBarContainerDiv = styled.div`
 
     > input {
       padding-left: 3rem;
+      width: 100%;
     }
   }
 `;
