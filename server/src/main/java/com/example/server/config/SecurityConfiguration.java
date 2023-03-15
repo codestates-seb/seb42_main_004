@@ -1,7 +1,5 @@
 package com.example.server.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import com.example.server.auth.filter.JwtAuthenticationFilter;
 import com.example.server.auth.jwt.JwtTokenizer;
 import java.util.Arrays;
@@ -30,7 +28,8 @@ public class SecurityConfiguration {
     http.headers().frameOptions().sameOrigin() // 동일출처만 랜더링
         .and()
         .csrf().disable()
-        .cors(withDefaults())
+        .cors()
+        .and()
         .formLogin().disable() //폼로그인 비활성화
         .httpBasic().disable() //request 전송때마다 헤더에 name pw 실어서 인증하는 방식 비활성화
         .apply(new CustomFilterConfigurer())
