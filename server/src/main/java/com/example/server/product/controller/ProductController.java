@@ -78,7 +78,7 @@ public class ProductController {
     }
 
     //소비자가 개별상품리스트 얻기 (커스텀밀박스 만들때)
-    @GetMapping("/products")
+    @GetMapping("/users/products")
     public ResponseEntity getProductList(@Positive @RequestParam int page,
                                          @Positive @RequestParam int size) {
         log.info("------getProductList-------");
