@@ -1,6 +1,7 @@
 package com.example.server.order.service;
 
 import com.example.server.exception.BusinessLogicException;
+import com.example.server.order.dto.OrderGetDto;
 import com.example.server.order.entity.Orders;
 import com.example.server.order.exception.OrderException;
 import com.example.server.order.repository.OrderMealboxRepository;
@@ -8,7 +9,6 @@ import com.example.server.order.repository.OrderRepository;
 import com.example.server.payment.controller.PaymentController;
 import com.example.server.payment.dto.PreparePostDto;
 import com.example.server.user.entity.User;
-import com.example.server.user.repository.UserRepository;
 import com.example.server.user.service.UserService;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import java.io.IOException;
@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -90,16 +91,24 @@ public class OrderService {
     return orderRepository.save(order);
   }
 
-  public Page<Orders> getOrdersByDateToPage(LocalDateTime ldt, int page) {
-    LocalDateTime startDate = ldt.toLocalDate().atStartOfDay();
-    LocalDateTime endDate = ldt.toLocalDate().atTime(LocalTime.MAX);
+  public Page<Orders> getOrdersByDateToPage(OrderGetDto orderGetDto, int page) {
+    // 관리자 검증 해야함
+    LocalDate localDate = changeStringToLocalDate(orderGetDto.getDate());
+    LocalDateTime startDate = localDate.atStartOfDay();
+    LocalDateTime endDate = localDate.atTime(LocalTime.MAX);
     return orderRepository.findAllByCreatedDateBetween(startDate, endDate, PageRequest.of(page, 5, Sort.by("createdDate").descending()));
   }
 
-  public List<Orders> getOrdersByDateToList(LocalDateTime ldt, long userId) {
-    LocalDateTime startDate = ldt.toLocalDate().atStartOfDay();
-    LocalDateTime endDate = ldt.toLocalDate().atTime(LocalTime.MAX);
+  public List<Orders> getOrdersByDateToList(OrderGetDto orderGetDto, long userId) {
+    // 본인이 맞는지 검증해야함
+    LocalDate localDate = changeStringToLocalDate(orderGetDto.getDate());
+    LocalDateTime startDate = localDate.atStartOfDay();
+    LocalDateTime endDate = localDate.atTime(LocalTime.MAX);
     User user = userService.getUser(userId);
     return orderRepository.findByCreatedDateBetweenAndUserOrderByCreatedDateDesc(startDate, endDate, user);
+  }
+
+  private LocalDate changeStringToLocalDate(String dateString) {
+    return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
   }
 }
