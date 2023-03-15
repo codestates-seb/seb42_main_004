@@ -4,7 +4,16 @@ function ContentInputDiv({ id, name, content }) {
   return (
     <ContainerDiv>
       <label htmlFor={id}>{name}</label>
-      <input id={id} className="inputstyle" type="text" value={content}></input>
+      {name && name === '프로필 사진' ? (
+        <button>첨부하기</button>
+      ) : (
+        <input
+          id={id}
+          className="inputstyle"
+          type="text"
+          value={content}
+        ></input>
+      )}
     </ContainerDiv>
   );
 }
@@ -27,5 +36,9 @@ const ContainerDiv = styled.div`
 
   > input {
     width: 200px;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
   }
 `;

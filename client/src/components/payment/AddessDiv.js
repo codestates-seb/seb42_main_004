@@ -71,6 +71,10 @@ const ContainerDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 const TitleDiv = styled.div`
   flex-basis: 75px;
@@ -78,6 +82,10 @@ const TitleDiv = styled.div`
   display: flex;
   justify-content: flex-end;
   font-family: 'IBM Plex Sans KR', sans-serif;
+
+  @media (max-width: 768px) {
+    flex-basis: 0px;
+  }
 `;
 const InputDiv = styled.div`
   flex-grow: 1;
