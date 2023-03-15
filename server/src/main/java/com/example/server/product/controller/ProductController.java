@@ -2,11 +2,17 @@ package com.example.server.product.controller;
 
 import com.example.server.dto.MultiResponseDto;
 import com.example.server.dto.PageInfo;
+import com.example.server.dto.SingleResponseDto;
+import com.example.server.product.dto.ProductOnlyResponseDto;
+import com.example.server.product.dto.ProductPatchDto;
 import com.example.server.product.dto.ProductPostDto;
 import com.example.server.product.dto.ProductResponseDto;
 import com.example.server.product.entity.Product;
 import com.example.server.product.mapper.ProductMapper;
+import com.example.server.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,9 +27,12 @@ import java.util.List;
 @RestController
 public class ProductController {
     private final ProductMapper mapper;
+    private final ProductService productService;
 
-    public ProductController(ProductMapper mapper) {
+
+    public ProductController(ProductMapper mapper, ProductService productService) {
         this.mapper = mapper;
+        this.productService = productService;
     }
 
     //관리자가 개별상품 생성하기
@@ -31,38 +40,66 @@ public class ProductController {
     public ResponseEntity createAdminProduct(@RequestBody ProductPostDto productPostDto){
         log.info("--------createProduct-------");
         Product product = mapper.productPostDtoToProduct(productPostDto);
-
-
-        return new ResponseEntity(HttpStatus.OK);
+        productService.createProduct(product);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     //관리자가 개별상품 수정하기
     @PatchMapping("/admin/products/{productId}")
-    public ResponseEntity updateAdminProduct(){
+    public ResponseEntity updateAdminProduct(@PathVariable("productId") Long productId,
+                                             @RequestBody ProductPatchDto productPatchDto){
         log.info("--------updateProduct-------");
-        return new ResponseEntity(HttpStatus.OK);
+        Product productPatcher = mapper.productPatchDtoToProduct(productPatchDto);
+        Product product = productService.updateProduct(productId, productPatcher);
+        return new ResponseEntity(new SingleResponseDto(product), HttpStatus.OK);
     }
 
     //관리자가 개별상품 삭제하기
     @DeleteMapping("/admin/products/{productId}")
-    public ResponseEntity deleteAdminProduct(){
+    public ResponseEntity deleteAdminProduct(@PathVariable("productId") Long productId){
         log.info("--------deleteProduct-------");
+        productService.deleteProduct(productId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     //관리자가 개별상품리스트 얻기 (추천조합 밀박스 만들때)
     @GetMapping("/admin/products")
     public ResponseEntity getAdminProductList (@Positive @RequestParam int page,
-                                               @Positive @RequestParam int size) {
+                                               @Positive @RequestParam int size,
+                                               @RequestParam String sort,
+                                               @RequestParam Sort.Direction dir) {//여기서 이넘타입을 받을수있는지 테스트해보기
         log.info("------getProductList-------");
+        Page<Product> productPage = productService.findProducts(page, size, sort, dir);
 
-        return new ResponseEntity(HttpStatus.OK);
+        List<Product> products = productPage.getContent();
+        List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
+
+        return new ResponseEntity(new MultiResponseDto(response,productPage), HttpStatus.OK);
     }
 
     //소비자가 개별상품리스트 얻기 (커스텀밀박스 만들때)
-    @GetMapping("/products")
-        public ResponseEntity getProductList() {
+    @GetMapping("/users/products")
+    public ResponseEntity getProductList(@Positive @RequestParam int page,
+                                         @Positive @RequestParam int size) {
+        log.info("------getProductList-------");
+        Page<Product> productPage = productService.findProducts(page,size,"productId", Sort.Direction.ASC);
 
-        return new ResponseEntity(HttpStatus.OK);
+        List<Product> products = productPage.getContent();
+        List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
+
+        return new ResponseEntity(new MultiResponseDto(response,productPage), HttpStatus.OK);
+    }
+
+    @GetMapping("/products")
+    public ResponseEntity searchProductList(@Positive @RequestParam int page,
+                                            @Positive @RequestParam int size,
+                                            @RequestParam String search) {
+        log.info("------searchProduct------");
+        Page<Product> productPage =
+                productService.searchProducts(search, page, size, "productId", Sort.Direction.ASC);
+        List<Product> products = productPage.getContent();
+        List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
+
+        return new ResponseEntity(new MultiResponseDto(response, productPage), HttpStatus.OK);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.server.order.mapper;
 
 import com.example.server.order.dto.OrderMealboxResponseDto;
+import com.example.server.order.dto.OrderPageResponseDto;
+import com.example.server.order.dto.OrderPostDto;
 import com.example.server.order.dto.OrderResponseDto;
 import com.example.server.order.entity.Orders;
 import com.example.server.order.entity.OrdersMealbox;
@@ -10,6 +12,21 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
+
+  default Orders orderPostDtoToOrders(OrderPostDto orderPostDto) {
+    return null;
+  }
+  default OrderPageResponseDto ordersToOrderPageResponseDto(Orders orders) {
+    OrderPageResponseDto orderPageResponseDto = new OrderPageResponseDto();
+    orderPageResponseDto.setEmail(orders.getUser().getEmail());
+    orderPageResponseDto.setUsername(orders.getUser().getName());
+    orderPageResponseDto.setUserAddress(orders.getUser().getName());
+    orderPageResponseDto.setUserPhoneNumber(orders.getUser().getPhoneNumber());
+    orderPageResponseDto.setTotalPrice(orders.getTotalPrice());
+    orderPageResponseDto.setOrderNumber(orders.getOrderNumber());
+    return orderPageResponseDto;
+  }
+
   default List<OrderResponseDto> OrdersToOrderResponseDtos(List<Orders> orders) {
     if(orders == null) return null;
     List<OrderResponseDto> orderResponseDtos = orders.stream().map(order -> {

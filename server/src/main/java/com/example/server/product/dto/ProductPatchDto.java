@@ -4,8 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class ProductPatchDto {
-    private String productName;
-    private String details;
+    private String name;
     private int unitWeight;
     private int unitKcal;
     private int unitPrice;

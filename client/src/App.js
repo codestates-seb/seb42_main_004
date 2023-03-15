@@ -11,6 +11,10 @@ import Explain from './pages/Explain';
 import OrderHistory from './pages/OrderHistory';
 import Survey from './pages/Survey';
 import Signup from './pages/Signup';
+import SignupOauth from './pages/SignupOauth';
+import MyInfo from './pages/MyInfo';
+import Payment from './pages/Payment';
+import ModifyMyInfo from './pages/ModifyMyInfo';
 
 function App() {
   let { pathname } = useLocation();
@@ -27,8 +31,13 @@ function App() {
           <Route path="/custom" element={<Custom />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/orderhistory" element={<OrderHistory />} />
+          <Route path="/explain" element={<Explain />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/signupoauth" element={<SignupOauth />} />
+          <Route path="/myinfo" element={<MyInfo />} />
+          <Route path="/modifymyinfo" element={<ModifyMyInfo />} />
+          <Route path="/payment" element={<Payment />} />
           <Route path="/explain" element={<Explain />} />
           <Route path="/survey/:page" element={<Survey />} />
         </Routes>

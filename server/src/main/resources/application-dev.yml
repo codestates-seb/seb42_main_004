@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url:
-    username:
-    password:
+    url: ${RDS_URL}
+    username: ${RDS_USERNAME}
+    password: ${RDS_PW}
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
