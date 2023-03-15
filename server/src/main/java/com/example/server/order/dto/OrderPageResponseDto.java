@@ -3,7 +3,7 @@ package com.example.server.order.dto;
 import lombok.Setter;
 
 @Setter
-public class OrderPageResponseDto {
+public class OrderPageResponseDto { // 주문 결제시 필요
   private String orderNumber;
   private String userAddress; // 주문자 주소
   private String username; // 주문자 이름
