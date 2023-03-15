@@ -6,7 +6,7 @@ const MainButton = ({ name, url, handler }) => {
     <Button
       className="buttonstyle shadow"
       name={name}
-      handler={handler && handler}
+      onClick={handler && handler}
     >
       {url ? <Link to={url}>{name}</Link> : name}
     </Button>

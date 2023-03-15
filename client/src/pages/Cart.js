@@ -23,7 +23,7 @@ function Cart() {
           inDiv={
             <InnerDiv>
               <div>총 결제금액</div>
-              <div>{`${'56,900'}원`}</div>
+              <div>56,900원</div>
             </InnerDiv>
           }
         />

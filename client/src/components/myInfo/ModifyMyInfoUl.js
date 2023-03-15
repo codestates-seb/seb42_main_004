@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import logo from '../../assets/hankkimealLogo.png';
+// import ContentDiv from './ContentDiv';
+import logo from '../../assets/logo_black.png';
 import ContentInputDiv from './ContentInputDiv';
 import AddressDiv from '../payment/AddessDiv';
 
