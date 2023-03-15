@@ -19,7 +19,7 @@ function PreAndNextButtons() {
   return (
     <ButtonWrapperDiv>
       <MainButton name="이전" handler={preHandler} />
-      <MainButton name="다음" handler={nextHandler} />
+      <MainButton name={page !== 3 ? '다음' : '완료'} handler={nextHandler} />
     </ButtonWrapperDiv>
   );
 }

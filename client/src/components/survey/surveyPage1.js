@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import InputLabelDiv from '../commons/InputLabelDiv';
 import MainButton from '../commons/MainButton';
-import PreAndNextButtons from './preAndNextButtons';
+import PreAndNextButtons from './PreAndNextButtons';
 
 function SurveyPage1() {
   let maleHandler = (e) => {
@@ -53,7 +53,9 @@ function SurveyPage1() {
 export default SurveyPage1;
 
 const Article = styled.article`
+  display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const H3 = styled.h3`
@@ -62,12 +64,12 @@ const H3 = styled.h3`
 
 const SurveyContentDiv = styled.div`
   width: 200px;
-  margin: 0 auto;
 `;
 
 const GenderOptionDiv = styled.div`
   display: flex;
   justify-content: space-between;
+
   *:not(:last-child) {
     margin-bottom: 0.5rem;
   }
