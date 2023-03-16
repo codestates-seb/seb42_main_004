@@ -19,10 +19,10 @@ public interface ProductMapper {
         return products.stream().map(product ->{
              return ProductOnlyResponseDto.builder()
                     .productId(product.getId())
-                    .productName(product.getName())
-                    .unitKcal(product.getUnitKcal())
-                    .unitWeight(product.getUnitWeight())
-                    .unitPrice(product.getUnitPrice())
+                    .name(product.getName())
+                    .kcal(product.getUnitKcal())
+                    .weight(product.getUnitWeight())
+                    .price(product.getUnitPrice())
                      .build();
         }).collect(Collectors.toList());
     }

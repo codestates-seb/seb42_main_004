@@ -16,16 +16,15 @@ public class MealboxProduct {
     @Column(name = "MEALBOX_PRODUCT_ID")
     private Long id;
 
-    @Setter
     @Column(nullable = false)
     private int quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="product_id")
+    @JoinColumn(name="PRODUCT_ID")
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="mealbox_id")
+    @JoinColumn(name="MEALBOX_ID")
     private Mealbox mealbox;
 
     public MealboxProduct(int quantity, Product product, Mealbox mealbox) {
@@ -34,5 +33,9 @@ public class MealboxProduct {
         this.mealbox = mealbox;
         product.addMealboxProduct(this);
         mealbox.addMealboxProduct(this);
+    }
+
+    public void changeQuantity(int quantity){
+        this.quantity = quantity;
     }
 }

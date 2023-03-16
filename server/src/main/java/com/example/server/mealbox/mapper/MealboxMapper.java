@@ -1,5 +1,6 @@
 package com.example.server.mealbox.mapper;
 
+import com.example.server.mealbox.dto.MealboxPatchDto;
 import com.example.server.mealbox.dto.MealboxPostDto;
 import com.example.server.mealbox.dto.OnlyMealboxResponseDto;
 import com.example.server.mealbox.entity.Mealbox;
@@ -11,12 +12,21 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface MealboxMapper {
-    default Mealbox mealboxPostDtoToMealbox(MealboxPostDto mealboxPostDto, boolean createdByAdmin){
+    default Mealbox mealboxPostDtoToMealbox(MealboxPostDto mealboxPostDto, Mealbox.MealboxInfo mealboxInfo){
         return Mealbox.builder().name(mealboxPostDto.getName())
-                .totalPrice(mealboxPostDto.getTotalPrice())
-                .totalKcal(mealboxPostDto.getTotalKcal())
-                .totalWeight(mealboxPostDto.getTotalWeight())
-                .createdByAdmin(createdByAdmin)
+                .totalPrice(mealboxPostDto.getPrice())
+                .totalKcal(mealboxPostDto.getKcal())
+                .totalWeight(mealboxPostDto.getWeight())
+                .mealboxInfo(mealboxInfo)
+                .build();
+    }
+
+    default Mealbox mealboxPatchDtoToMealbox(MealboxPatchDto mealboxPatchDto){
+        return Mealbox.builder()
+                .name(mealboxPatchDto.getName())
+                .totalPrice(mealboxPatchDto.getPrice())
+                .totalKcal(mealboxPatchDto.getKcal())
+                .totalWeight(mealboxPatchDto.getWeight())
                 .build();
     }
 
@@ -26,19 +36,18 @@ public interface MealboxMapper {
                 mealbox.getMealboxProducts().stream().map(mealboxProduct -> {
                     return ProductResponseDto.builder()
                             .productId(mealboxProduct.getProduct().getId())
-                            .mealboxProductId(mealboxProduct.getId())
-                            .productName(mealboxProduct.getProduct().getName())
-                            .unitPrice(mealboxProduct.getProduct().getUnitPrice())
-                            .unitWeight(mealboxProduct.getProduct().getUnitWeight())
-                            .unitKcal(mealboxProduct.getProduct().getUnitKcal())
+                            .name(mealboxProduct.getProduct().getName())
+                            .price(mealboxProduct.getProduct().getUnitPrice())
+                            .weight(mealboxProduct.getProduct().getUnitWeight())
+                            .kcal(mealboxProduct.getProduct().getUnitKcal())
                             .quantity(mealboxProduct.getQuantity())
                             .build();
                 }).collect(Collectors.toList());
 
         return OnlyMealboxResponseDto.builder()
                 .mealboxId(mealbox.getId())
-                .mealboxName(mealbox.getName())
-                .createdByAdmin(mealbox.isCreatedByAdmin())
+                .name(mealbox.getName())
+                .mealboxInfo(mealbox.getMealboxInfo())
                 .weight(mealbox.getTotalWeight())
                 .kcal(mealbox.getTotalKcal())
                 .price(mealbox.getTotalPrice())

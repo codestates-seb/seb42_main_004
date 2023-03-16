@@ -5,12 +5,12 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class MealboxPostDto {
+public class MealboxPatchDto {
     private String name;
     private int price;
     private int kcal;
     private int weight;
-    private List<Product> products;
+    private List<MealboxPatchDto.Product> products;
     @Getter
     public static class Product{
         private Long productId;
