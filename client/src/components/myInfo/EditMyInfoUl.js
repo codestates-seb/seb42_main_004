@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-// import ContentDiv from './ContentDiv';
 import logo from '../../assets/logo_black.png';
 import ContentInputDiv from './ContentInputDiv';
 import AddressDiv from '../payment/AddessDiv';
+import MyInfoButton from './MyInfoButton';
 
-function ModifyMyInfoUl() {
+function EditMyInfoUl() {
   return (
     <ContainerUl>
       <li>
@@ -14,14 +14,18 @@ function ModifyMyInfoUl() {
             <img src={logo} alt="logo" />
           </ImgDiv>
           <InfoDiv>
-            <ContentInputDiv name="프로필 사진" content="첨부하기" />
-            <ContentInputDiv id="nickname" name="닉네임" content="맹쥬" />
+            <ContentInputDiv labelName="프로필 사진" value="첨부하기" />
+            <ContentInputDiv id="nickname" labelName="닉네임" value="맹쥬" />
             <ContentInputDiv
               id="name"
-              name="이메일"
-              content="myungju030@gmail.com"
+              labelName="이메일"
+              value="myungju030@gmail.com"
             />
-            <ContentInputDiv id="phone" name="연락처" content="01012345678" />
+            <ContentInputDiv
+              id="phone"
+              labelName="연락처"
+              value="01012345678"
+            />
             <AddressDiv />
           </InfoDiv>
         </OrderDiv>
@@ -29,26 +33,25 @@ function ModifyMyInfoUl() {
       <li>
         <h2>배송지 정보</h2>
         <DeliveryDiv>
-          <ContentInputDiv id="orderName" name="받는분" content="강명주" />
+          <ContentInputDiv id="orderName" labelName="받는분" value="강명주" />
           <ContentInputDiv
             id="orderPhone"
-            name="연락처"
-            content="01012345678"
+            labelName="연락처"
+            value="01012345678"
           />
           <AddressDiv />
         </DeliveryDiv>
       </li>
       <li>
         <ButtonDiv>
-          <div>비밀번호 수정</div>
-          <div>회원 탈퇴</div>
+          <MyInfoButton text="수정완료" />
         </ButtonDiv>
       </li>
     </ContainerUl>
   );
 }
 
-export default ModifyMyInfoUl;
+export default EditMyInfoUl;
 
 const ContainerUl = styled.ul`
   min-width: 80%;
@@ -56,7 +59,7 @@ const ContainerUl = styled.ul`
   list-style: none;
 
   @media (max-width: 768px) {
-    min-width: 90%;
+    width: 100%;
   }
 `;
 const OrderDiv = styled.div`
@@ -100,6 +103,14 @@ const DeliveryDiv = styled.div`
   justify-content: space-between;
   word-break: break-all;
   border-bottom: 1px solid var(--black);
+
+  > div {
+    width: 60%;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
 `;
 const ButtonDiv = styled.div`
   display: flex;

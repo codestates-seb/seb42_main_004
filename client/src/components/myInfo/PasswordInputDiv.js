@@ -1,34 +1,29 @@
 import styled from 'styled-components';
 
-function ContentInputDiv({ id, labelName, value, onChange }) {
+function PasswordInputDiv({ id, name, content }) {
   return (
     <ContainerDiv>
-      <label htmlFor={id}>{labelName}</label>
-      {labelName && labelName === '프로필 사진' ? (
-        <button>첨부하기</button>
-      ) : (
-        <input
-          id={id}
-          className="inputstyle"
-          type="text"
-          value={value}
-          onChange={onChange}
-        ></input>
-      )}
+      <label htmlFor={id}>{name}</label>
+      <input
+        id={id}
+        className="inputstyle"
+        type="password"
+        value={content}
+      ></input>
     </ContainerDiv>
   );
 }
 
-export default ContentInputDiv;
+export default PasswordInputDiv;
 
 const ContainerDiv = styled.div`
   height: 50px;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
 
   > label {
-    flex-basis: 75px;
+    flex-basis: 90px;
     margin-right: 1.5rem;
     display: flex;
     justify-content: flex-end;
@@ -49,9 +44,13 @@ const ContainerDiv = styled.div`
   }
 
   > input {
-    width: 60%;
+    width: 50%;
 
     @media (max-width: 480px) {
+      width: 100%;
+    }
+
+    @media (min-width: 481px) and (max-width: 768px) {
       width: 80%;
     }
   }

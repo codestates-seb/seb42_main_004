@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import ContentDiv from './ContentDiv';
 import logo from '../../assets/logo_black.png';
+import PasswordInputDiv from './PasswordInputDiv';
+import MyInfoButton from './MyInfoButton';
 
-function MyInfoUl() {
+function MyInfoUl({ pathName }) {
   return (
     <ContainerUl>
       <li>
@@ -28,13 +30,31 @@ function MyInfoUl() {
           <ContentDiv name="주소" content="주소" />
         </DeliveryDiv>
       </li>
-      <li>
-        <ButtonDiv>
-          <div>내 정보 수정</div>
-          <div>비밀번호 수정</div>
-          <div>회원 탈퇴</div>
-        </ButtonDiv>
-      </li>
+      {pathName ? (
+        <li>
+          <PasswordDiv>
+            <PasswordInputDiv id="password" name="비밀번호" content="" />
+            <PasswordInputDiv id="newPassword" name="새 비밀번호" content="" />
+            <PasswordInputDiv
+              id="confirmNewPassword"
+              name="새 비밀번호 확인"
+              content=""
+            />
+            <ButtonDiv>
+              <MyInfoButton text="변경" />
+            </ButtonDiv>
+          </PasswordDiv>
+        </li>
+      ) : null}
+      {pathName ? null : (
+        <li>
+          <ButtonDiv>
+            <div>내 정보 수정</div>
+            <div>비밀번호 수정</div>
+            <div>회원 탈퇴</div>
+          </ButtonDiv>
+        </li>
+      )}
     </ContainerUl>
   );
 }
@@ -89,6 +109,11 @@ const DeliveryDiv = styled.div`
   word-break: break-all;
   border-bottom: 1px solid var(--black);
 `;
+const PasswordDiv = styled.div`
+  padding-bottom: 50px;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--black);
+`;
 const ButtonDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -105,5 +130,9 @@ const ButtonDiv = styled.div`
       cursor: pointer;
       color: var(--input_blue);
     }
+  }
+
+  > button {
+    margin-top: 2rem;
   }
 `;

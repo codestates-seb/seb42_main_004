@@ -22,7 +22,7 @@ const PaymentButton = () => {
       pay_method: 'card',
       merchant_uid: `mid_${new Date().getTime()}`,
       name: '결제 테스트',
-      amount: '1',
+      amount: '100',
       buyer_name: '강명주',
       buyer_tel: '01012345678',
       buyer_email: 'myungju030@gmail.com',
@@ -35,7 +35,7 @@ const PaymentButton = () => {
   const callback = (response) => {
     const { success, error_msg } = response;
     if (success) {
-      alert('결제 성공');
+      alert(`결제 성공`);
     } else {
       alert(`결제 실패 : ${error_msg}`);
     }
