@@ -16,7 +16,13 @@ import org.mapstruct.Mapper;
 public interface OrderMapper {
 
   default Orders orderPostDtoToOrders(OrderPostDto orderPostDto) {
-    return null;
+    Orders order = new Orders();
+    order.setTotalPrice(orderPostDto.getTotalPrice());
+    List<Long> cartMealboxIds = (List<Long>) orderPostDto.getMealboxes().stream().map(mb -> mb.getCartMealboxId());
+    for(Long cartMealboxId: cartMealboxIds) {
+      order.addCartMealboxId(cartMealboxId);
+    }
+    return order;
   }
   default OrderPageResponseDto ordersToOrderPageResponseDto(Orders orders) {
     OrderPageResponseDto orderPageResponseDto = new OrderPageResponseDto();
