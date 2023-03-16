@@ -14,15 +14,13 @@ function SurveyPage1() {
 
   return (
     <Article>
-      <H3>밀박스 추천을 위해 정보를 입력해주세요.</H3>
+      <SurveyH3>
+        밀박스 추천을 위해
+        <br />
+        정보를 입력해주세요.
+      </SurveyH3>
       <SurveyContentDiv>
-        <InputLabelDiv
-          label="생년월일"
-          id="name"
-          // value={productInfo.name}
-          // onChange={inputHandler('name')}
-          placeholder="2000.01.01"
-        />
+        <InputLabelDiv label="생년월일" id="name" placeholder="2000.01.01" />
         <div>
           <div>성별</div>
           <GenderOptionDiv>
@@ -30,20 +28,8 @@ function SurveyPage1() {
             <MainButton name="여성" handler={femaleHandler} />
           </GenderOptionDiv>
         </div>
-        <InputLabelDiv
-          label="신장"
-          id="name"
-          value=""
-          placeholder="0"
-          unit="cm"
-        />
-        <InputLabelDiv
-          label="체중"
-          id="name"
-          value=""
-          placeholder="0"
-          unit="kg"
-        />
+        <InputLabelDiv label="신장" id="name" placeholder="0" unit="cm" />
+        <InputLabelDiv label="체중" id="name" placeholder="0" unit="kg" />
         <PreAndNextButtons />
       </SurveyContentDiv>
     </Article>
@@ -58,11 +44,33 @@ const Article = styled.article`
   align-items: center; */
 `;
 
-const H3 = styled.h3`
-  margin-bottom: 0.5rem;
+export const SurveyH3 = styled.h3`
+  margin-bottom: 1rem;
+  white-space: nowrap;
+  font-size: 1.8rem;
+  font-family: 'IBM Plex Sans KR', sans-serif;
 `;
 
-const SurveyContentDiv = styled.div``;
+const SurveyContentDiv = styled.div`
+  > div:last-child {
+    margin-top: 20px;
+  }
+
+  label,
+  > div > div:first-child {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    padding: 15px;
+  }
+
+  span {
+    margin-right: 15px;
+  }
+`;
 
 const GenderOptionDiv = styled.div`
   display: flex;
@@ -70,5 +78,17 @@ const GenderOptionDiv = styled.div`
 
   *:not(:last-child) {
     margin-bottom: 0.5rem;
+  }
+
+  > button {
+    padding: 30px 0;
+    flex-grow: 1;
+
+    :first-child {
+      margin-right: 5px;
+    }
+    :last-child {
+      margin-left: 5px;
+    }
   }
 `;

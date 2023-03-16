@@ -1,15 +1,15 @@
 import styled from 'styled-components';
-import ModifyMyInfoUl from '../components/myInfo/ModifyMyInfoUl';
+import EditMyInfoUl from '../components/myInfo/EditMyInfoUl';
 
-function ModifyMyInfo() {
+function EditMyInfo() {
   return (
     <ContainerDiv className="margininside">
-      <ModifyMyInfoUl />
+      <EditMyInfoUl />
     </ContainerDiv>
   );
 }
 
-export default ModifyMyInfo;
+export default EditMyInfo;
 
 const ContainerDiv = styled.div`
   min-height: 100vh;

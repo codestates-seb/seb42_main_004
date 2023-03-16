@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
-function SurveyBox({ group, title, info, detail }) {
+function SurveyBox({ group, title, info, detail, children }) {
+  console.log(children);
   return (
     <SurveyBoxWrapper>
       <label htmlFor={title}>
@@ -9,7 +10,7 @@ function SurveyBox({ group, title, info, detail }) {
           <h3>{title}</h3>
           {info}
         </BoxTop>
-        <div>{detail}</div>
+        <div>{detail ? detail : children}</div>
       </label>
     </SurveyBoxWrapper>
   );
@@ -21,7 +22,7 @@ const SurveyBoxWrapper = styled.div`
   background-color: ${(props) =>
     props.check ? `var(--signature)` : `var(--product_cocoa)`};
   border-radius: 10px;
-  padding: 10px;
+  padding: 15px;
 
   :hover,
   :focus-within {
@@ -31,7 +32,6 @@ const SurveyBoxWrapper = styled.div`
 `;
 
 const Input = styled.input`
-  /* visibility: hidden; */
   position: absolute;
   z-index: -999;
 `;
@@ -40,4 +40,9 @@ const BoxTop = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+
+  > h3 {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-size: 1.4rem;
+  }
 `;

@@ -7,7 +7,6 @@ import RecommendedBox from './pages/RecommendedBox';
 import Custom from './pages/Custom';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
-import Explain from './pages/Explain';
 import Error from './pages/Error';
 import OrderHistory from './pages/OrderHistory';
 import Survey from './pages/Survey';
@@ -15,7 +14,9 @@ import Signup from './pages/Signup';
 import SignupOauth from './pages/SignupOauth';
 import MyInfo from './pages/MyInfo';
 import Payment from './pages/Payment';
-import ModifyMyInfo from './pages/ModifyMyInfo';
+import Product from './pages/Product';
+import EditMyInfo from './pages/EditMyInfo';
+import EditPassword from './pages/EditPassword';
 
 function App() {
   return (
@@ -25,19 +26,19 @@ function App() {
       <div className="marginbase bodymargin">
         <Routes>
           <Route path="/" element={<AllBoxes />} />
-          <Route path="/survey/recommend" element={<RecommendedBox />} />
+          <Route path="/survey/question/:page" element={<Survey />} />
+          <Route path="/survey/result" element={<RecommendedBox />} />
           <Route path="/custom" element={<Custom />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/orderhistory" element={<OrderHistory />} />
-          <Route path="/explain" element={<Explain />} />
+          <Route path="/myinfo/orderhistory" element={<OrderHistory />} />
+          <Route path="/product" element={<Product />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/signupoauth" element={<SignupOauth />} />
+          <Route path="/signup/oauth" element={<SignupOauth />} />
           <Route path="/myinfo" element={<MyInfo />} />
-          <Route path="/modifymyinfo" element={<ModifyMyInfo />} />
-          <Route path="/payment" element={<Payment />} />
-          <Route path="/explain" element={<Explain />} />
-          <Route path="/survey/:page" element={<Survey />} />
+          <Route path="/myinfo/edit" element={<EditMyInfo />} />
+          <Route path="/myinfo/edit/password" element={<EditPassword />} />
+          <Route path="/cart/payment" element={<Payment />} />
           <Route path="/*" element={<Error />} />
         </Routes>
       </div>

@@ -6,20 +6,18 @@ import { BsFillCircleFill as Dot } from 'react-icons/bs';
 function Survey() {
   let { page } = useParams();
   return (
-    <Main className={page !== '0' ? 'margininside' : null}>
-      {page !== '0' ? (
-        <Ul>
-          <li>
-            <Dot size="7" />
-          </li>
-          <li>
-            <Dot size="7" />
-          </li>
-          <li>
-            <Dot size="7" />
-          </li>
-        </Ul>
-      ) : null}
+    <Main className="margininside" page={page}>
+      <Ul>
+        <li>
+          <Dot size="7" />
+        </li>
+        <li>
+          <Dot size="7" />
+        </li>
+        <li>
+          <Dot size="7" />
+        </li>
+      </Ul>
       <Article page={page} />
     </Main>
   );
@@ -32,6 +30,7 @@ const Main = styled.main`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 600px;
 `;
 
 const Article = styled(SurveyArticle)``;
@@ -40,6 +39,7 @@ const Ul = styled.ul`
   list-style: none;
   display: flex;
   justify-content: flex-end;
+
   > li {
     margin: 2px;
   }
