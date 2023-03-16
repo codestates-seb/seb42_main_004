@@ -14,7 +14,11 @@ function EditMyInfoUl() {
             <img src={logo} alt="logo" />
           </ImgDiv>
           <InfoDiv>
-            <ContentInputDiv labelName="프로필 사진" value="첨부하기" />
+            <ContentInputDiv
+              id="profile"
+              labelName="프로필 사진"
+              value="첨부하기"
+            />
             <ContentInputDiv id="nickname" labelName="닉네임" value="맹쥬" />
             <ContentInputDiv
               id="name"
@@ -31,7 +35,13 @@ function EditMyInfoUl() {
         </OrderDiv>
       </li>
       <li>
-        <h2>배송지 정보</h2>
+        <TopDiv>
+          <h2>배송지 정보</h2>
+          <div>
+            <input type="checkbox" id="same"></input>
+            <label htmlFor="same">주문자와동일</label>
+          </div>
+        </TopDiv>
         <DeliveryDiv>
           <ContentInputDiv id="orderName" labelName="받는분" value="강명주" />
           <ContentInputDiv
@@ -94,6 +104,14 @@ const ImgDiv = styled.div`
     height: 300px;
   }
 `;
+const TopDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  div > * {
+    cursor: pointer;
+  }
+`;
 const DeliveryDiv = styled.div`
   margin-top: 2rem;
   padding-bottom: 50px;
@@ -116,17 +134,4 @@ const ButtonDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-
-  > div {
-    width: 100px;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-
-    &:hover {
-      cursor: pointer;
-      color: var(--input_blue);
-    }
-  }
 `;
