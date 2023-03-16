@@ -1,22 +1,5 @@
 package com.example.server.mealbox.controller;
 
-import com.example.server.dto.MultiResponseDto;
-import com.example.server.dto.PageInfo;
-import com.example.server.dto.SingleResponseDto;
-import com.example.server.mealbox.dto.MealboxResponseDto;
-import com.example.server.mealbox.dto.SurveyMealboxResponseDto;
-import com.example.server.mealbox.entity.MealboxProduct;
-import com.example.server.product.dto.ProductResponseDto;
-import com.example.server.product.entity.Product;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 //@Slf4j
 //@Validated
 //@RestController
@@ -55,11 +38,11 @@ import java.util.List;
 //        list1.add(product1); list1.add(product2);
 //        List<ProductResponseDto> list2 = new ArrayList<>();
 //        list2.add(product3); list2.add(product4);
-//        MealboxResponseDto mealboxResponseDto1 = new MealboxResponseDto(1,1,1,"과일밀박스", "달달합니다",
+//        OnlyMealboxResponseDto mealboxResponseDto1 = new OnlyMealboxResponseDto(1,1,1,"과일밀박스", "달달합니다",
 //                true, list1, 1, 350, 200, 2500);
-//        MealboxResponseDto mealboxResponseDto2 = new MealboxResponseDto(2,2,2,"탄수화물박스", "목막힘주의",
+//        OnlyMealboxResponseDto mealboxResponseDto2 = new OnlyMealboxResponseDto(2,2,2,"탄수화물박스", "목막힘주의",
 //                true, list2, 1, 500, 350, 5000);
-//        List<MealboxResponseDto> response = new ArrayList<>();
+//        List<OnlyMealboxResponseDto> response = new ArrayList<>();
 //        response.add(mealboxResponseDto1);
 //        response.add(mealboxResponseDto2);
 //        PageInfo pageInfo = new PageInfo(1,9,1,2);
@@ -79,9 +62,9 @@ import java.util.List;
 //        list1.add(product1); list1.add(product2);
 //        List<ProductResponseDto> list2 = new ArrayList<>();
 //        list2.add(product3); list2.add(product4);
-//        MealboxResponseDto mealboxResponseDto1 = new MealboxResponseDto(1,1,1,"과일밀박스", "달달합니다",
+//        OnlyMealboxResponseDto mealboxResponseDto1 = new OnlyMealboxResponseDto(1,1,1,"과일밀박스", "달달합니다",
 //                true, list1, 1, 350, 200, 2500);
-//        MealboxResponseDto mealboxResponseDto2 = new MealboxResponseDto(2,2,2,"탄수화물박스", "목막힘주의",
+//        OnlyMealboxResponseDto mealboxResponseDto2 = new OnlyMealboxResponseDto(2,2,2,"탄수화물박스", "목막힘주의",
 //                true, list2, 1, 500, 350, 5000);
 //        SurveyMealboxResponseDto response = new SurveyMealboxResponseDto(mealboxResponseDto1,mealboxResponseDto2,mealboxResponseDto1);
 //        return new ResponseEntity(new SingleResponseDto(response), HttpStatus.OK);
@@ -101,11 +84,11 @@ import java.util.List;
 //        list1.add(product1); list1.add(product2);
 //        List<ProductResponseDto> list2 = new ArrayList<>();
 //        list2.add(product3); list2.add(product4);
-//        MealboxResponseDto mealboxResponseDto1 = new MealboxResponseDto(1,1,1,"과일밀박스", "달달합니다",
+//        OnlyMealboxResponseDto mealboxResponseDto1 = new OnlyMealboxResponseDto(1,1,1,"과일밀박스", "달달합니다",
 //                true, list1, 1, 350, 200, 2500);
-//        MealboxResponseDto mealboxResponseDto2 = new MealboxResponseDto(2,2,2,"탄수화물박스", "목막힘주의",
+//        OnlyMealboxResponseDto mealboxResponseDto2 = new OnlyMealboxResponseDto(2,2,2,"탄수화물박스", "목막힘주의",
 //                true, list2, 1, 500, 350, 5000);
-//        List<MealboxResponseDto> response = new ArrayList<>();
+//        List<OnlyMealboxResponseDto> response = new ArrayList<>();
 //        response.add(mealboxResponseDto1);
 //        response.add(mealboxResponseDto2);
 //        PageInfo pageInfo = new PageInfo(1,9,1,2);

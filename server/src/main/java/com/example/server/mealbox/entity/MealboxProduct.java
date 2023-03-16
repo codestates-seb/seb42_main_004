@@ -28,4 +28,11 @@ public class MealboxProduct {
     @JoinColumn(name="mealbox_id")
     private Mealbox mealbox;
 
+    public MealboxProduct(int quantity, Product product, Mealbox mealbox) {
+        this.quantity = quantity;
+        this.product = product;
+        this.mealbox = mealbox;
+        product.addMealboxProduct(this);
+        mealbox.addMealboxProduct(this);
+    }
 }
