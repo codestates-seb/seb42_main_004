@@ -6,6 +6,7 @@ import com.example.server.mealbox.service.MealboxService;
 import com.example.server.order.data.OrderStatus;
 import com.example.server.order.dto.OrderGetDto;
 import com.example.server.order.dto.OrderMealboxPostDto;
+import com.example.server.order.dto.OrderPatchDeliveryDto;
 import com.example.server.order.dto.OrderPostDto;
 import com.example.server.order.entity.Orders;
 import com.example.server.order.entity.OrdersMealbox;
@@ -57,7 +58,7 @@ public class OrderService {
   // MealboxId 와 quantity, user로 OrdersMealbox를 저장
   private List<OrdersMealbox> OrderMealboxPostDtoToOrdersMealbox(List<OrderMealboxPostDto> orderMealboxPostDtos, Orders order) {
     List<OrdersMealbox> ordersMealboxList = orderMealboxPostDtos.stream().map(orderMealboxPostDto -> {
-      Mealbox mealbox = mealboxService.findMealbox(orderMealboxPostDto.getMealboxId());
+      Mealbox mealbox = mealboxService.findMealboxById(orderMealboxPostDto.getMealboxId());
       int quantity = orderMealboxPostDto.getQuantity();
       OrdersMealbox ordersMealbox = new OrdersMealbox(quantity, mealbox);
       ordersMealbox.addOrders(order);
@@ -132,5 +133,14 @@ public class OrderService {
 
   private LocalDate changeStringToLocalDate(String dateString) {
     return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+  }
+
+  public Orders setDeliveryAddress(OrderPatchDeliveryDto orderPatchDeliveryDto, long orderId) {
+    Orders order = findVerifiedOrder(orderId);
+    order.setAddressee(orderPatchDeliveryDto.getAddressee());
+    order.setZipCode(orderPatchDeliveryDto.getZipCode());
+    order.setSimpleAddress(orderPatchDeliveryDto.getSimpleAddress());
+    order.setDetailAddress(orderPatchDeliveryDto.getDetailAddress());
+    return orderRepository.save(order);
   }
 }

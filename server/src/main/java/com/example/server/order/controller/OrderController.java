@@ -3,6 +3,7 @@ package com.example.server.order.controller;
 import com.example.server.dto.MultiResponseDto;
 import com.example.server.order.dto.OrderGetDto;
 import com.example.server.order.dto.OrderPageResponseDto;
+import com.example.server.order.dto.OrderPatchDeliveryDto;
 import com.example.server.order.dto.OrderPostDto;
 import com.example.server.order.dto.OrderPostResponseDto;
 import com.example.server.order.dto.OrderResponseDto;
@@ -50,9 +51,10 @@ public class OrderController {
     OrderPageResponseDto response = mapper.ordersToOrderPageResponseDto(order);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
-  @PatchMapping("/orders/{order-id}")
-  public ResponseEntity patchOrder(@PathVariable("order-id") @PositiveOrZero long orderId) {  //주문수정 (뭐 하는진 모름)
-
+  @PatchMapping("/orders/delivery/{order-id}")
+  public ResponseEntity setDeliveryAddress(@PathVariable("order-id") @PositiveOrZero long orderId,
+      @RequestBody OrderPatchDeliveryDto orderPatchDeliveryDto) {  // 결제시 주문에 배송지 입력
+    orderService.setDeliveryAddress(orderPatchDeliveryDto, orderId);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 

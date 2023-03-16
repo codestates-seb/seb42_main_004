@@ -27,9 +27,15 @@ public interface OrderMapper {
   default OrderPageResponseDto ordersToOrderPageResponseDto(Orders orders) {
     OrderPageResponseDto orderPageResponseDto = new OrderPageResponseDto();
     orderPageResponseDto.setOrderNumber(orders.getOrderNumber());
-    orderPageResponseDto.setUserAddress(orders.getUser().getName());
+    orderPageResponseDto.setUserZipCode(orders.getUser().getAddress().getZipCode());
+    orderPageResponseDto.setUserSimpleAddress(orders.getUser().getAddress().getSimpleAddress());
+    orderPageResponseDto.setUserDetailAddress(orders.getUser().getAddress().getDetailAddress());
     orderPageResponseDto.setUsername(orders.getUser().getName());
     orderPageResponseDto.setUserPhoneNumber(orders.getUser().getPhoneNumber());
+    orderPageResponseDto.setAddressee(orders.getUser().getDeliveryInformation().getName());
+    orderPageResponseDto.setDeliveryZipCode(orders.getUser().getDeliveryInformation().getAddress().getZipCode());
+    orderPageResponseDto.setDeliverySimpleAddress(orders.getUser().getDeliveryInformation().getAddress().getSimpleAddress());
+    orderPageResponseDto.setDeliveryDetailAddress(orders.getUser().getDeliveryInformation().getAddress().getDetailAddress());
     orderPageResponseDto.setTotalPrice(orders.getTotalPrice());
     orderPageResponseDto.setEmail(orders.getUser().getEmail());
     return orderPageResponseDto;

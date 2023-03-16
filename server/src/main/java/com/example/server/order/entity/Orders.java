@@ -45,8 +45,9 @@ public class Orders extends BaseEntity {
 
   private String addressee; // 받는 사람
 
-  private String address; // 받는 주소
-
+  private String zipCode; // 배송 우편번호
+  private String simpleAddress; // 배송 주소
+  private String detailAddress; // 배송 상세주소
   private String phoneNumber; // 수령인 전화번호
 
   private OrderStatus status = OrderStatus.NOT_PAID; // 주문 상태
