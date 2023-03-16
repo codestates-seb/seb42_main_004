@@ -7,11 +7,12 @@ import com.example.server.user.dto.UserResponseDto;
 import com.example.server.user.entity.User;
 import com.example.server.user.mapper.UserMapper;
 import com.example.server.user.service.UserService;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,12 +34,15 @@ public class UserController {
 
   // 회원 가입
   @PostMapping
-  public ResponseEntity createUser(@RequestBody UserPostDto postDto) {
+  public ResponseEntity createUser(@RequestBody UserPostDto postDto)
+      throws MessagingException, UnsupportedEncodingException {
     log.info("##### CREATE USER #####");
 
     User user = mapper.userPostDtoToUser(postDto);
     User savedUser = userService.createUser(user);
     URI location = UriCreator.createUri(USER_DEFAULT_URL,savedUser.getId());
+
+
 
     return ResponseEntity.created(location).build();
   }

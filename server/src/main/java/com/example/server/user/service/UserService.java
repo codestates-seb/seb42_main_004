@@ -5,9 +5,12 @@ import com.example.server.exception.BusinessLogicException;
 import com.example.server.user.entity.User;
 import com.example.server.user.exception.UserException;
 import com.example.server.user.repository.UserRepository;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -15,6 +18,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 @Service
 @Slf4j
@@ -25,24 +30,31 @@ public class UserService {
   private final UserRepository userRepository;
   @Autowired
   private JavaMailSender mailSender;
+  private final SpringTemplateEngine templateEngine;
   private final ApplicationEventPublisher publisher;
 
   public UserService(CustomAuthorityUtils authorityUtils, PasswordEncoder passwordEncoder,
-      UserRepository userRepository, ApplicationEventPublisher publisher) {
+      UserRepository userRepository, SpringTemplateEngine templateEngine,
+      ApplicationEventPublisher publisher) {
     this.authorityUtils = authorityUtils;
     this.passwordEncoder = passwordEncoder;
     this.userRepository = userRepository;
+    this.templateEngine = templateEngine;
     this.publisher = publisher;
   }
 
-  public User createUser(User user) {
+  public User createUser(User user) throws MessagingException, UnsupportedEncodingException {
     log.info("user = {}", user);
     verifyExistsEmail(user.getEmail());
 
     setDefaultMemberInfo(user);
+
+
     User save = userRepository.save(user);
 
-    signUpEmailSend();
+
+    sendEmail(user.getEmail(), user.getMailKey(), user.getId());
+
 
     return save;
   }
@@ -97,6 +109,7 @@ public class UserService {
     String encryptedPassword = Optional.ofNullable(passwordEncoder.encode(user.getPassword()))
         .get();
     user.setPassword(encryptedPassword);
+    user.setMailKey(createCode());
     // db에 유저 role 저장
 //    TODO 시큐리티 비활성화
     List<String> roles = authorityUtils.createRoles(user.getEmail());
@@ -137,4 +150,43 @@ public class UserService {
     return key.toString();
   }
 
+  //메일 양식 작성
+  public MimeMessage createEmailForm(String email, String mailKey, Long id) throws MessagingException, UnsupportedEncodingException {
+
+//    String mailKey = createCode(); //인증 코드 생성
+    String setFrom = "${spring.mail.username}"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
+//    String setFrom = "297@naver.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
+    String toEmail = email; //받는 사람
+    String title = "한끼밀 이메일 인증"; //제목
+    //TODO href 수정
+    String href = "http://localhost:8080/email_auth?id="+id+"&mailkey="+mailKey;
+
+    MimeMessage message = mailSender.createMimeMessage();
+    message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
+    message.setSubject(title); //제목 설정
+    message.setFrom(setFrom); //보내는 이메일
+    message.setText(setContext(mailKey, id, href), "utf-8", "html");
+
+    return message;
+  }
+
+  //타임리프를 이용한 context 설정
+  public String setContext(String code, Long id, String href) {
+    Context context = new Context();
+    context.setVariable("code", code);
+    context.setVariable("id", id);
+    context.setVariable("href", href);
+    return templateEngine.process("emailAuth", context); //mail.html
+
+  }
+  //실제 메일 전송
+  public String sendEmail(String toEmail, String mailKey, Long id) throws MessagingException, UnsupportedEncodingException {
+
+    //메일전송에 필요한 정보 설정
+    MimeMessage emailForm = createEmailForm(toEmail, mailKey, id);
+    //실제 메일 전송
+    mailSender.send(emailForm);
+
+    return mailKey;
+  }
 }
