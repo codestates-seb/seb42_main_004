@@ -1,5 +1,6 @@
 package com.example.server.payment.controller;
 
+import com.example.server.cart.service.CartMealboxService;
 import com.example.server.exception.BusinessLogicException;
 import com.example.server.order.entity.Orders;
 import com.example.server.order.service.OrderService;
@@ -34,12 +35,14 @@ public class PaymentController {
   private final IamportClient iamportClient;
   private final OrderService orderService;
   private final PayInfoRepository payInfoRepository;
+  private final CartMealboxService cartMealboxService;
 
   // 생성자를 통해 REST API 와 REST API secret 입력
-  public PaymentController(@Lazy OrderService orderService, PayInfoRepository payInfoRepository) {
+  public PaymentController(@Lazy OrderService orderService, PayInfoRepository payInfoRepository, CartMealboxService cartMealboxService) {
     this.iamportClient = new IamportClient("5377665757631058","AgLx6Jo4zg8gM6Xc6wPDrFGUR0r7LVzQVCkQljQcf8avGEsqmri0rHW68jX53b0J5faZywwhhQiBFkWy");
     this.orderService = orderService;
     this.payInfoRepository = payInfoRepository;
+    this.cartMealboxService = cartMealboxService;
   }
   // 프론트에서 받은 PG사 결괏값을 통해 아임포트 토큰 발행
   @PostMapping("/{imp_uid}")
@@ -61,6 +64,7 @@ public class PaymentController {
     PayInfo payInfo = new PayInfo(validatePaymentDto.getImpUid());
     payInfo.addOrder(order);
     payInfoRepository.save(payInfo);
+    cartMealboxService.deleteCartMealboxAfterPayment(validatePaymentDto.getCartMealboxIds());
     return new ResponseEntity<>(HttpStatus.OK);
   }
   // 결제금액 사전등록
