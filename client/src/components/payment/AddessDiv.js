@@ -37,7 +37,12 @@ function AddressDiv() {
             onChange={handleInput}
             value={enroll_company.zonecode}
           />
-          <button onClick={handleComplete}>주소검색</button>
+          <AddressButton
+            className="buttonstyle shadow"
+            onClick={handleComplete}
+          >
+            주소검색
+          </AddressButton>
         </ButtonDiv>
         {popup && (
           <Post company={enroll_company} setcompany={setEnroll_company}></Post>
@@ -119,4 +124,8 @@ const ButtonDiv = styled.div`
     width: 60%;
     margin-right: 0.3rem;
   }
+`;
+const AddressButton = styled.button`
+  padding: 0px 10px;
+  border: none;
 `;

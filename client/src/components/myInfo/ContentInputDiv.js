@@ -1,17 +1,18 @@
 import styled from 'styled-components';
 
-function ContentInputDiv({ id, name, content }) {
+function ContentInputDiv({ id, labelName, value, onChange }) {
   return (
     <ContainerDiv>
-      <label htmlFor={id}>{name}</label>
-      {name && name === '프로필 사진' ? (
+      <label htmlFor={id}>{labelName}</label>
+      {labelName && labelName === '프로필 사진' ? (
         <button>첨부하기</button>
       ) : (
         <input
           id={id}
           className="inputstyle"
           type="text"
-          value={content}
+          value={value}
+          onChange={onChange}
         ></input>
       )}
     </ContainerDiv>

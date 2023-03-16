@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import ContentDiv from './ContentDiv';
 import logo from '../../assets/logo_black.png';
 import PasswordInputDiv from './PasswordInputDiv';
+import MyInfoButton from './MyInfoButton';
 
 function MyInfoUl({ pathName }) {
   return (
@@ -39,17 +40,21 @@ function MyInfoUl({ pathName }) {
               name="새 비밀번호 확인"
               content=""
             />
+            <ButtonDiv>
+              <MyInfoButton text="변경" />
+            </ButtonDiv>
           </PasswordDiv>
         </li>
       ) : null}
-      <li>
-        <ButtonDiv>
-          <div>내 정보 수정</div>
-          {pathName ? null : <div>비밀번호 수정</div>}
-          <div>회원 탈퇴</div>
-          {pathName ? <button>확인</button> : null}
-        </ButtonDiv>
-      </li>
+      {pathName ? null : (
+        <li>
+          <ButtonDiv>
+            <div>내 정보 수정</div>
+            <div>비밀번호 수정</div>
+            <div>회원 탈퇴</div>
+          </ButtonDiv>
+        </li>
+      )}
     </ContainerUl>
   );
 }
@@ -125,5 +130,9 @@ const ButtonDiv = styled.div`
       cursor: pointer;
       color: var(--input_blue);
     }
+  }
+
+  > button {
+    margin-top: 2rem;
   }
 `;
