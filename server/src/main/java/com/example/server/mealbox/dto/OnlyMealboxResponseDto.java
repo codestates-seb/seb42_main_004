@@ -10,15 +10,12 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Getter
-public class MealboxResponseDto {
+public class OnlyMealboxResponseDto {
     private long mealboxId;
-    private long orderMealboxId;
-    private long cartMealboxId;
     private String mealboxName;
     private boolean createdByAdmin;
     private List<ProductResponseDto> products;
-    private int quantity;
-    private int totalWeight;
-    private int totalKcal;
-    private int totalPrice;
+    private int weight;
+    private int kcal;
+    private int price;
 }

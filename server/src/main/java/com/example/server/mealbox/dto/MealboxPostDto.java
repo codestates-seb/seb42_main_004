@@ -12,7 +12,7 @@ public class MealboxPostDto {
     private int totalWeight;
     private List<Product> products;
     @Getter
-    private class Product{
+    public static class Product{
         private Long productId;
         private int quantity;
     }
