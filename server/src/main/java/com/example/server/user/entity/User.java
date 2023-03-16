@@ -8,11 +8,13 @@ import com.example.server.baseEntity.BaseEntity;
 import com.example.server.cart.entity.Cart;
 import com.example.server.image.entity.UserImage;
 import com.example.server.order.entity.Orders;
+import com.example.server.user.data.Address;
 import com.example.server.user.data.UserStatus;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
@@ -47,8 +49,11 @@ public class User extends BaseEntity {
   @Column(name = "phone_number")
   @Setter
   private String phoneNumber;
+//  @Setter
+//  private String address;
   @Setter
-  private String address;
+  @Embedded
+  private Address address;
   @ElementCollection(fetch = EAGER)
   @Setter
   @Builder.Default
