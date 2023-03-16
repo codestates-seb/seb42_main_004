@@ -11,10 +11,9 @@ import java.sql.Timestamp;
 @Getter
 public class ProductResponseDto {
     private long productId;
-    private long mealboxProductId;
-    private String productName;
-    private int unitWeight;
-    private int unitKcal;
-    private int unitPrice;
+    private String name;
+    private int weight;
+    private int kcal;
+    private int price;
     private int quantity;
 }

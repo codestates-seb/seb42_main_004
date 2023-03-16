@@ -1,5 +1,6 @@
 package com.example.server.mealbox.dto;
 
+import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.product.dto.ProductResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,11 +15,11 @@ public class MealboxResponseDto {
     private long mealboxId;
     private long orderMealboxId;
     private long cartMealboxId;
-    private String mealboxName;
-    private boolean createdByAdmin;
+    private String name;
+    private Mealbox.MealboxInfo mealboxInfo;
     private List<ProductResponseDto> products;
     private int quantity;
-    private int totalWeight;
-    private int totalKcal;
-    private int totalPrice;
+    private int weight;
+    private int kcal;
+    private int price;
 }

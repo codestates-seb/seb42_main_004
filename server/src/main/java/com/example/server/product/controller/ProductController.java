@@ -50,7 +50,7 @@ public class ProductController {
                                              @RequestBody ProductPatchDto productPatchDto){
         log.info("--------updateProduct-------");
         Product productPatcher = mapper.productPatchDtoToProduct(productPatchDto);
-        Product product = productService.updateProduct(productId, productPatcher);
+        productService.updateProduct(productId, productPatcher);
         return new ResponseEntity(HttpStatus.OK);
     }
 

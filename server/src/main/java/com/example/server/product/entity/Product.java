@@ -18,16 +18,12 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRODUCT_ID")
     private Long id;
-    @Setter
     @Column(name = "PRODUCT_NAME", nullable = false)
     private String name;
-    @Setter
     @Column(nullable = false)
     private int unitWeight;
-    @Setter
     @Column(nullable = false)
     private int unitKcal;
-    @Setter
     @Column(nullable = false)
     private int unitPrice;
 
@@ -39,6 +35,13 @@ public class Product {
 
     public void addMealboxProduct(MealboxProduct mealboxProduct){
         mealboxProducts.add(mealboxProduct);
+    }
+
+    public void patchProduct(String name, int unitWeight, int unitKcal, int unitPrice){
+        this.name = name;
+        this.unitWeight = unitWeight;
+        this.unitKcal = unitKcal;
+        this.unitPrice = unitPrice;
     }
 
 }

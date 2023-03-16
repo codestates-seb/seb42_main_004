@@ -10,7 +10,7 @@ public class SurveyResponseDto {
     private Diet hard;
 
     @Builder
-    public class Diet {
+    public static class Diet {
         private int kcal;
         private double goalWeight;
         private double goalWeightLoss;

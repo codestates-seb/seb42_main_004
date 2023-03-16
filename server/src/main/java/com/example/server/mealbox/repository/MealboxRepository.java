@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface MealboxRepository extends JpaRepository<Mealbox, Long> {
-    Page<Mealbox> findAllByCreatedByAdmin(Pageable pageable, boolean createdByAdmin);
+    Page<Mealbox> findAllByMealboxInfoIsNot(Pageable pageable, Mealbox.MealboxInfo mealboxInfo);
 }
