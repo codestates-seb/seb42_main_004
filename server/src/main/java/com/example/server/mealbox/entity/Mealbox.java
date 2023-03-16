@@ -1,7 +1,7 @@
 package com.example.server.mealbox.entity;
 
-import com.example.server.image.entity.Image;
 import com.example.server.image.entity.MealboxImage;
+import com.example.server.mealboxSet.entity.MealboxSet;
 import com.example.server.order.entity.OrdersMealbox;
 import lombok.*;
 
@@ -19,21 +19,17 @@ public class Mealbox {
     @Column(name = "MEALBOX_ID")
     private Long id;
     @Column(name = "MEALBOX_NAME", nullable = false)
-    @Setter
     private String name;
     @Column(nullable = false)
-    @Setter
     private int totalPrice;
     @Column(nullable = false)
-    @Setter
     private int totalKcal;
     @Column(nullable = false)
-    @Setter
     private int totalWeight;
     @Column(nullable = false)
-    private boolean createdByAdmin;
+    private MealboxInfo mealboxInfo;
 
-    @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MealboxProduct> mealboxProducts;
 
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
@@ -42,11 +38,34 @@ public class Mealbox {
     @OneToOne(mappedBy = "mealbox")
     private MealboxImage image;
 
+    @ManyToOne
+    @JoinColumn(name = "MEALBOX_SETS_ID")
+    private MealboxSet mealboxSet;
+
     public void addMealboxProduct(MealboxProduct mealboxProduct) {
         mealboxProducts.add(mealboxProduct);
     }
 
     public void addOrderMealbox(OrdersMealbox ordersMealbox) {
         ordersMealboxes.add(ordersMealbox);
+    }
+
+    public void patchMealbox(String name, int totalPrice, int totalKcal, int totalWeight){
+        this.name = name;
+        this.totalPrice = totalPrice;
+        this.totalKcal = totalKcal;
+        this.totalWeight = totalWeight;
+        this.mealboxProducts.clear();
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public enum MealboxInfo{
+        CUSTOM_MEALBOX("Custom Mealbox"),
+        NO_REC_MEALBOX("Not Rec Mealbox"),
+        BREAKFAST_REC_MEALBOX("Breakfast Rec Mealbox"),
+        LUNCH_REC_MEALBOX("Lunch Rec Mealbox"),
+        DINNER_REC_MEALBOX("Dinner Rec Mealbox");
+        private String info;
     }
 }

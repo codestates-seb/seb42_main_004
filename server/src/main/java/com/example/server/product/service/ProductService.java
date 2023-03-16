@@ -28,16 +28,10 @@ public class ProductService {
 
     public Product updateProduct(Long productId, Product productPatcher){
         Product product = findProductById(productId);
-        if(productPatcher.getName()!=null)
-            product.setName(productPatcher.getName());
-        if(productPatcher.getUnitKcal()!=0)
-            product.setUnitKcal(productPatcher.getUnitKcal());
-        if(productPatcher.getUnitWeight()!=0)
-            product.setUnitWeight(productPatcher.getUnitWeight());
-        if(productPatcher.getUnitPrice()!=0)
-            product.setUnitPrice(productPatcher.getUnitPrice());
+        product.patchProduct(productPatcher.getName(),productPatcher.getUnitWeight(),
+                productPatcher.getUnitKcal(), productPatcher.getUnitPrice());
         return productRepository.save(product);
-    }//이것들 다 유효성검증 + 리팩토링필요 (null아니면 해당값 고치기 메서드정의하기)
+    }
 
     public void deleteProduct(Long productId){
         Product product = findProductById(productId);

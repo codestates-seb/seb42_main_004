@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 public class ProductPostDto {
     private String name;
-    private int unitWeight;
-    private int unitKcal;
-    private int unitPrice;
+    private int weight;
+    private int kcal;
+    private int price;
 }

@@ -1,5 +1,6 @@
 package com.example.server.mealbox.dto;
 
+import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.product.dto.ProductResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +13,8 @@ import java.util.List;
 @Getter
 public class OnlyMealboxResponseDto {
     private long mealboxId;
-    private String mealboxName;
-    private boolean createdByAdmin;
+    private String name;
+    private Mealbox.MealboxInfo mealboxInfo;
     private List<ProductResponseDto> products;
     private int weight;
     private int kcal;
