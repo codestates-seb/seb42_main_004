@@ -37,7 +37,7 @@ public class OrderController {
   private final OrderMapper mapper;
   @PostMapping("/orders")
   public ResponseEntity postOrder(@RequestBody OrderPostDto orderPostDto)
-      throws IamportResponseException, IOException { //주문하기
+      throws IamportResponseException, IOException { // 결제 전 주문 생성
     Orders order = mapper.orderPostDtoToOrders(orderPostDto);
     Orders createdOrder = orderService.createOrder(order, orderPostDto);
     OrderPostResponseDto response = new OrderPostResponseDto();
@@ -46,7 +46,7 @@ public class OrderController {
   }
 
   @GetMapping("/orders/checkout/{order-id}")
-  public ResponseEntity getOrderToPay(@PathVariable("order-id") @PositiveOrZero long orderId) {
+  public ResponseEntity getOrderToPay(@PathVariable("order-id") @PositiveOrZero long orderId) { // 결제 창
     Orders order = orderService.findOrder(orderId);
     OrderPageResponseDto response = mapper.ordersToOrderPageResponseDto(order);
     return new ResponseEntity<>(response, HttpStatus.OK);
