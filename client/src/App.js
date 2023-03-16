@@ -17,6 +17,10 @@ import Payment from './pages/Payment';
 import Product from './pages/Product';
 import EditMyInfo from './pages/EditMyInfo';
 import EditPassword from './pages/EditPassword';
+import CompleteEmail from './pages/CompleteEmail';
+import ConfirmEmail from './pages/ConfirmEmail';
+import SendEmail from './pages/SendEmail';
+import FindPassword from './pages/FindPassword';
 
 function App() {
   return (
@@ -39,6 +43,10 @@ function App() {
           <Route path="/myinfo" element={<MyInfo />} />
           <Route path="/myinfo/edit" element={<EditMyInfo />} />
           <Route path="/myinfo/edit/password" element={<EditPassword />} />
+          <Route path="/email/complete" element={<CompleteEmail />} />
+          <Route path="/email/confirm" element={<ConfirmEmail />} />
+          <Route path="/email/send" element={<SendEmail />} />
+          <Route path="/email/send/password" element={<FindPassword />} />
           <Route path="/cart/payment" element={<Payment />} />
           <Route path="/*" element={<Error />} />
         </Routes>
