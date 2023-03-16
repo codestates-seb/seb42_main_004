@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 public interface OrderRepository extends JpaRepository<Orders, Long> {
   //미결제 안뜨게 다 바꿔야함
