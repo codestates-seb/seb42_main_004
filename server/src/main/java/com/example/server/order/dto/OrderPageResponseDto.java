@@ -3,8 +3,8 @@ package com.example.server.order.dto;
 import lombok.Setter;
 
 @Setter
-public class OrderPageResponseDto { // 주문 결제시 필요
-  private String orderNumber;
+public class OrderPageResponseDto { // 결제창에서 넘겨줄 값
+  private String orderNumber; // 주문번호
   private String userAddress; // 주문자 주소
   private String username; // 주문자 이름
   private String userPhoneNumber; // 주문자 연락처
