@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import LogoWhite from '../../assets/logo_white.png';
 import MainButton from '../commons/MainButton';
-function SurveyPage0() {
+function SurveyHomeArticle() {
   return (
     <Article>
       <TopSection>
@@ -16,13 +16,13 @@ function SurveyPage0() {
         <div>다이어트용 밀박스를</div>
         <div>추천받으시겠습니까?</div>
         <SurveyLink name="추천받기" url="/survey/1" />
-        <SkipLink to="/">건너뛰기</SkipLink>
+        <SkipLink to="/list/boxes">건너뛰기</SkipLink>
       </BottomSection>
     </Article>
   );
 }
 
-export default SurveyPage0;
+export default SurveyHomeArticle;
 
 const Article = styled.article`
   display: flex;
