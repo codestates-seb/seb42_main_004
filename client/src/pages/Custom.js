@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import PaginationUl from '../components/commons/PaginationUl';
-import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
 import ModalDiv from '../components/commons/ModalDiv';
-import { MealBoxesWrapDiv } from './AllBoxes';
-import FilterSearchDiv from '../components/commons/FilterSearchDiv';
 import CustomAside from '../components/custom/CustomAside';
+import PaginationUl from '../components/commons/PaginationUl';
+import FilterSearchDiv from '../components/commons/FilterSearchDiv';
+import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
+import { MealBoxesWrapDiv } from './AllBoxes';
+// import useGET from '../util/useGET';
 
 function Custom({ admin }) {
   const [openModal, setOpenModal] = useState(false);
+  const [page, setPage] = useState(1);
+  // const [products, isPending, error] = useGET(`/products/${page}`);
   const navigate = useNavigate();
 
   return (
@@ -31,7 +34,7 @@ function Custom({ admin }) {
               <BoxElementCardDiv />
             </li>
           </BoxElementCardUl>
-          <PaginationUl nowpage={1} totalpage={1} />
+          <PaginationUl page={page} totalpage={3} setPage={setPage} />
         </ElementsContainerDiv>
         <CustomAside
           admin={0}
