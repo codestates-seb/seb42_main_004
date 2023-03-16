@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import MyInfoUl from '../components/myInfo/MyInfoUl';
 
-function ModifyPassword() {
+function EditPassword() {
   return (
     <ContainerDiv className="margininside">
       <MyInfoUl pathName="password" />
@@ -9,7 +9,7 @@ function ModifyPassword() {
   );
 }
 
-export default ModifyPassword;
+export default EditPassword;
 
 const ContainerDiv = styled.div`
   min-height: 100vh;

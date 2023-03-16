@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import ElementItemLi from '../components/explain/ElementItemLi';
 
-function Explain() {
+function Product() {
   const arr = ['달걀', '고구마', '사과', '감자', '오이'];
   return (
     <ContainerDiv className="margininside">
@@ -15,7 +15,7 @@ function Explain() {
   );
 }
 
-export default Explain;
+export default Product;
 
 const ContainerDiv = styled.div`
   min-height: 100vh;
