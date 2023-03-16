@@ -8,7 +8,10 @@ import com.example.server.user.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,8 @@ public class UserService {
   private final CustomAuthorityUtils authorityUtils;
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
+  @Autowired
+  private JavaMailSender mailSender;
   private final ApplicationEventPublisher publisher;
 
   public UserService(CustomAuthorityUtils authorityUtils, PasswordEncoder passwordEncoder,
@@ -35,6 +40,8 @@ public class UserService {
 
     setDefaultMemberInfo(user);
     User save = userRepository.save(user);
+
+    signUpEmailSend();
 
     return save;
   }
@@ -94,6 +101,17 @@ public class UserService {
     List<String> roles = authorityUtils.createRoles(user.getEmail());
     user.setRoles(roles);
     log.info("member encryptedPassword = {}", encryptedPassword);
+  }
+
+  private void signUpEmailSend() {
+    //이메일 작성
+    SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+    simpleMailMessage.setTo("baram2449@naver.com");
+    simpleMailMessage.setSubject("이메일 타이틀~");
+    simpleMailMessage.setText("이메일 내용~");
+
+    //이메일 발신
+    mailSender.send(simpleMailMessage);
   }
 
 }
