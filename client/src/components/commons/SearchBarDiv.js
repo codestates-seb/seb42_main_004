@@ -23,6 +23,7 @@ const SearchBarContainerDiv = styled.div`
   position: relative;
   margin-bottom: 0.5rem;
   height: 2rem;
+  align-self: flex-end;
 
   > input {
     width: 150px;
