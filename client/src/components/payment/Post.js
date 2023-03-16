@@ -1,7 +1,7 @@
 import DaumPostcode from 'react-daum-postcode';
 import styled from 'styled-components';
 
-const Post = (props) => {
+const Post = ({ company, setcompany }) => {
   const complete = (data) => {
     let fullAddress = data.address;
     let extraAddress = '';
@@ -20,8 +20,8 @@ const Post = (props) => {
     console.log(fullAddress);
     console.log(data.zonecode);
 
-    props.setcompany({
-      ...props.company,
+    setcompany({
+      ...company,
       address: fullAddress,
       zonecode: data.zonecode,
     });
