@@ -28,4 +28,16 @@ export default PreAndNextButtons;
 const ButtonWrapperDiv = styled.div`
   display: flex;
   justify-content: space-between;
+
+  > button {
+    flex-grow: 1;
+    padding: 30px 0;
+
+    :first-child {
+      margin-right: 5px;
+    }
+    :last-child {
+      margin-left: 5px;
+    }
+  }
 `;

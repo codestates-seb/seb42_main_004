@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import Explain from './pages/Explain';
 import Error from './pages/Error';
 import OrderHistory from './pages/OrderHistory';
+import SurveyHome from './pages/SurveyHome';
 import Survey from './pages/Survey';
 import Signup from './pages/Signup';
 import SignupOauth from './pages/SignupOauth';
@@ -24,7 +25,9 @@ function App() {
       <Header />
       <div className="marginbase bodymargin">
         <Routes>
-          <Route path="/" element={<AllBoxes />} />
+          <Route path="/" element={<SurveyHome />} />
+          <Route path="/survey/:page" element={<Survey />} />
+          <Route path="/list/boxes" element={<AllBoxes />} />
           <Route path="/survey/recommend" element={<RecommendedBox />} />
           <Route path="/custom" element={<Custom />} />
           <Route path="/cart" element={<Cart />} />
@@ -37,7 +40,6 @@ function App() {
           <Route path="/modifymyinfo" element={<ModifyMyInfo />} />
           <Route path="/payment" element={<Payment />} />
           <Route path="/explain" element={<Explain />} />
-          <Route path="/survey/:page" element={<Survey />} />
           <Route path="/*" element={<Error />} />
         </Routes>
       </div>

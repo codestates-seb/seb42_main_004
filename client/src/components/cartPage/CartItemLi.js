@@ -8,7 +8,7 @@ function CartItemLi() {
   return (
     <CartItemWrapperLi>
       <CartItemTopDiv>
-        <CheckBoxInput type={'checkbox'} />
+        <CheckBoxInput type={'checkbox'} checked />
         <h2>Custom</h2>
         <CartItemTopButtonsDiv>
           <div>수량</div>
