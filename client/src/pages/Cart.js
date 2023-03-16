@@ -19,14 +19,12 @@ function Cart() {
           <CartItemLi />
           <CartItemLi />
         </CartItemListUl>
-        <CartAside
-          inDiv={
-            <InnerDiv>
-              <div>총 결제금액</div>
-              <div>56,900원</div>
-            </InnerDiv>
-          }
-        />
+        <CartAside>
+          <InnerDiv>
+            <div>총 결제금액</div>
+            <div>56,900원</div>
+          </InnerDiv>
+        </CartAside>
       </CartPageContent>
     </CartPageWrapper>
   );
