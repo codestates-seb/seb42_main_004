@@ -1,15 +1,15 @@
-import { useState } from 'react';
+// import { useState } from 'react';
+// import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import MealBoxCardDiv from '../components/allboxes/MealBoxCardDiv';
 import BannerLink from '../components/commons/BannerLink';
 import PaginationUl from '../components/commons/PaginationUl';
 import SearchBarDiv from '../components/commons/SearchBarDiv';
+// import useGET from '../util/useGET';
 
 function AllBoxes() {
-  const [nextPage, setNextPage] = useState();
-  // TODO GET
-  // const [mealboxes, error] = useGET(nextPage)
-  console.log(nextPage);
+  // const { page } = useParams();
+  // const [data, isPending, error] = useGET(`/mealboxes/${page}`)
 
   return (
     <MealBoxesWrapDiv className="margininside">
@@ -23,8 +23,29 @@ function AllBoxes() {
         <li>
           <MealBoxCardDiv mealBox={1} />
         </li>
+        <li>
+          <MealBoxCardDiv mealBox={1} />
+        </li>
+        <li>
+          <MealBoxCardDiv mealBox={1} />
+        </li>
+        <li>
+          <MealBoxCardDiv mealBox={1} />
+        </li>
+        <li>
+          <MealBoxCardDiv mealBox={1} />
+        </li>
+        <li>
+          <MealBoxCardDiv mealBox={1} />
+        </li>
+        <li>
+          <MealBoxCardDiv mealBox={1} />
+        </li>
+        <li>
+          <MealBoxCardDiv mealBox={1} />
+        </li>
       </MealBoxesUl>
-      <PaginationUl nowpage={4} totalpage={7} setNextPage={setNextPage} />
+      <PaginationUl page={4} totalpage={7} url="" />
     </MealBoxesWrapDiv>
   );
 }

@@ -1,29 +1,40 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-function PaginationUl({ nowpage, totalpage, setNextPage }) {
-  const total = totalpage <= 5 ? totalpage : 5;
-  let now;
-  if (nowpage < 4) now = 1;
-  else if (totalpage - nowpage < 3) now = totalpage - 4;
-  else now = nowpage - 2;
-  const totalLi = new Array(total).fill(now).map((el, i) => el + i);
+function PaginationUl({ page, totalpage, url, setPage }) {
+  const navigate = useNavigate();
+
+  const total = totalpage < 5 ? totalpage : 5;
+  let first;
+  if (page < 4) first = 1;
+  else if (totalpage - page < 3) first = totalpage - 4;
+  else first = page - 2;
+  const totalLi = new Array(total).fill(first).map((el, i) => el + i);
 
   return (
     <PaginationContainerUl>
       {!totalLi.includes(1) && (
-        <PaginationLi onClick={() => setNextPage(1)}>{'<<'}</PaginationLi>
+        <PaginationLi
+          onClick={() => (url ? navigate(`${url}/${1}`) : setPage(1))}
+        >
+          {'<<'}
+        </PaginationLi>
       )}
       {totalLi.map((li, i) => (
         <PaginationLi
           key={i}
-          now={li === nowpage && 1}
-          onClick={() => setNextPage(li)}
+          now={li === page && 1}
+          onClick={() => (url ? navigate(`${url}/${li}`) : setPage(li))}
         >
           {li}
         </PaginationLi>
       ))}
       {!totalLi.includes(totalpage) && (
-        <PaginationLi onClick={() => setNextPage(totalpage)}>
+        <PaginationLi
+          onClick={() =>
+            url ? navigate(`${url}/${totalpage}`) : setPage(totalpage)
+          }
+        >
           {'>>'}
         </PaginationLi>
       )}

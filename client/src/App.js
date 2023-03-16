@@ -26,6 +26,7 @@ function App() {
       <div className="marginbase bodymargin">
         <Routes>
           <Route path="/" element={<AllBoxes />} />
+          <Route path="/:page" element={<AllBoxes />} />
           <Route path="/survey/question/:page" element={<Survey />} />
           <Route path="/survey/result" element={<RecommendedBox />} />
           <Route path="/custom" element={<Custom />} />
