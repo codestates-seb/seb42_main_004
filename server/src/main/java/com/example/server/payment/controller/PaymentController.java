@@ -65,10 +65,10 @@ public class PaymentController {
   }
   // 결제금액 사전등록
   @PostMapping("/prepare")
-  public void postPrepare(@RequestBody PreparePostDto preparePostDto)
+  public IamportResponse<Prepare> postPrepare(@RequestBody PreparePostDto preparePostDto)
       throws IamportResponseException, IOException {
     PrepareData prepareData = new PrepareData(preparePostDto.getMerchantUid(), preparePostDto.getAmount());
-    iamportClient.postPrepare(prepareData);
+    return iamportClient.postPrepare(prepareData);
   }
 
   // 사전등록된 결제정보 조회
