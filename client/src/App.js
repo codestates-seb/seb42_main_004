@@ -9,7 +9,6 @@ import Cart from './pages/Cart';
 import Login from './pages/Login';
 import Error from './pages/Error';
 import OrderHistory from './pages/OrderHistory';
-import SurveyHome from './pages/SurveyHome';
 import Survey from './pages/Survey';
 import Signup from './pages/Signup';
 import SignupOauth from './pages/SignupOauth';
