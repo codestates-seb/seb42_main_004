@@ -33,7 +33,7 @@ const Article = styled.article`
   height: 60vh;
   background-color: var(--signature);
   color: var(--white);
-
+  width: 100%;
   span,
   div {
     font-size: 1.2rem;
