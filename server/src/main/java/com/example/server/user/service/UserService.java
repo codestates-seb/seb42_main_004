@@ -156,7 +156,7 @@ public class UserService {
 
 //    String mailKey = createCode(); //인증 코드 생성
     String setFrom = "${spring.mail.username}"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
-//    String setFrom = "297@naver.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
+//    String setFrom = "hgm@hgm.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
     String toEmail = email; //받는 사람
     String title = "한끼밀 이메일 인증"; //제목
     //TODO href 수정

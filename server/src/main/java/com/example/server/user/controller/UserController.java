@@ -94,5 +94,4 @@ public class UserController {
     response.sendRedirect(redirectUri);
   }
 
-
 }
