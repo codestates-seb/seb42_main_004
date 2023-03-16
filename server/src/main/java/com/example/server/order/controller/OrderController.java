@@ -61,7 +61,8 @@ public class OrderController {
   @GetMapping("/orders/user/{user-id}")
   public ResponseEntity getOrdersUser(@PathVariable("user-id") @PositiveOrZero long userId) {  //유저별 주문 내역 확인, JWT 정보랑 비교해야할 듯
     List<Orders> orders = orderService.getOrdersByDateToList(userId);
-    return new ResponseEntity<>(orders, HttpStatus.OK);
+    List<OrderResponseDto> response = mapper.OrdersToOrderResponseDtos(orders);
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   @GetMapping("/admin/orders")
