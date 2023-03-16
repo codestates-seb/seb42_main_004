@@ -2,7 +2,9 @@ package com.example.server.order.controller;
 
 import com.example.server.dto.MultiResponseDto;
 import com.example.server.order.dto.OrderGetDto;
+import com.example.server.order.dto.OrderPageResponseDto;
 import com.example.server.order.dto.OrderPostDto;
+import com.example.server.order.dto.OrderPostResponseDto;
 import com.example.server.order.dto.OrderResponseDto;
 import com.example.server.order.entity.Orders;
 import com.example.server.order.mapper.OrderMapper;
@@ -36,10 +38,18 @@ public class OrderController {
   public ResponseEntity postOrder(@RequestBody OrderPostDto orderPostDto)
       throws IamportResponseException, IOException { //주문하기
     Orders order = mapper.orderPostDtoToOrders(orderPostDto);
-    orderService.createOrder(order);
-    return new ResponseEntity<>(HttpStatus.CREATED);
+    Orders createdOrder = orderService.createOrder(order, orderPostDto);
+    OrderPostResponseDto response = new OrderPostResponseDto();
+    response.setOrderId(createdOrder.getOrderId());
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 
+  @GetMapping("/orders/checkout/{order-id}")
+  public ResponseEntity getOrderToPay(@PathVariable("order-id") @PositiveOrZero long orderId) {
+    Orders order = orderService.findOrder(orderId);
+    OrderPageResponseDto response = mapper.ordersToOrderPageResponseDto(order);
+    return new ResponseEntity<>(response, HttpStatus.OK);
+  }
   @PatchMapping("/orders/{order-id}")
   public ResponseEntity patchOrder(@PathVariable("order-id") @PositiveOrZero long orderId) {  //주문수정 (뭐 하는진 모름)
 
