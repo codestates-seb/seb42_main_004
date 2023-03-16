@@ -18,6 +18,7 @@ public interface UserMapper {
         .password(patchDto.getPassword())
         .phoneNumber(patchDto.getPhoneNumber())
         .address(patchDto.getAddress())
+        .deliveryInformation(patchDto.getDeliveryInformation())
         .build();
   }
 

@@ -15,6 +15,6 @@ public class Address {
   @Column(name = "address_simple")
   private String simpleAddress;
   @Column(name = "address_detail")
-  private String detail;
+  private String detailAddress;
 
 }

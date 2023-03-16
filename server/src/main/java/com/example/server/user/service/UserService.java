@@ -53,6 +53,7 @@ public class UserService {
     Optional.ofNullable(user.getName()).ifPresent(findUser::setName);
     Optional.ofNullable(user.getAddress()).ifPresent(findUser::setAddress);
     Optional.ofNullable(user.getPhoneNumber()).ifPresent(findUser::setPhoneNumber);
+    Optional.ofNullable(user.getDeliveryInformation()).ifPresent(findUser::setDeliveryInformation);
 
     String encryptedPassword = Optional.ofNullable(passwordEncoder.encode(user.getPassword()))
         .get();

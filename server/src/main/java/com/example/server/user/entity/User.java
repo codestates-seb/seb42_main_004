@@ -9,9 +9,11 @@ import com.example.server.cart.entity.Cart;
 import com.example.server.image.entity.UserImage;
 import com.example.server.order.entity.Orders;
 import com.example.server.user.data.Address;
+import com.example.server.user.data.DeliveryInformation;
 import com.example.server.user.data.UserStatus;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
@@ -54,6 +56,16 @@ public class User extends BaseEntity {
   @Setter
   @Embedded
   private Address address;
+
+  @Setter
+  @Embedded
+  @AttributeOverride(name = "name", column = @Column(name = "addressee"))
+  @AttributeOverride(name = "phoneNumber", column = @Column(name = "addresseePhoneNumber"))
+  @AttributeOverride(name = "address.zipCode", column = @Column(name = "deliveryZipCode"))
+  @AttributeOverride(name = "address.simpleAddress", column = @Column(name = "deliverySimpleAddress"))
+  @AttributeOverride(name = "address.detailAddress", column = @Column(name = "deliveryDetailsAddress"))
+  private DeliveryInformation deliveryInformation;
+
   @ElementCollection(fetch = EAGER)
   @Setter
   @Builder.Default
