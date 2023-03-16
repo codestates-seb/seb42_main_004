@@ -86,7 +86,7 @@ const TitleDiv = styled.div`
   margin-right: 1.5rem;
   display: flex;
   justify-content: flex-end;
-  font-family: 'IBM Plex Sans KR', sans-serif;
+  font-family: 'IBM Plex Sans KR', sans- + serif;
 
   @media (max-width: 480px) {
     width: 80%;
@@ -126,6 +126,8 @@ const ButtonDiv = styled.div`
   }
 `;
 const AddressButton = styled.button`
+  height: 30px;
   padding: 0px 10px;
   border: none;
+  background-color: var(--gray);
 `;
