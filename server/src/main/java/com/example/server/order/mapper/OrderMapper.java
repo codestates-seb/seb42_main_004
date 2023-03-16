@@ -26,12 +26,12 @@ public interface OrderMapper {
   }
   default OrderPageResponseDto ordersToOrderPageResponseDto(Orders orders) {
     OrderPageResponseDto orderPageResponseDto = new OrderPageResponseDto();
-    orderPageResponseDto.setEmail(orders.getUser().getEmail());
-    orderPageResponseDto.setUsername(orders.getUser().getName());
+    orderPageResponseDto.setOrderNumber(orders.getOrderNumber());
     orderPageResponseDto.setUserAddress(orders.getUser().getName());
+    orderPageResponseDto.setUsername(orders.getUser().getName());
     orderPageResponseDto.setUserPhoneNumber(orders.getUser().getPhoneNumber());
     orderPageResponseDto.setTotalPrice(orders.getTotalPrice());
-    orderPageResponseDto.setOrderNumber(orders.getOrderNumber());
+    orderPageResponseDto.setEmail(orders.getUser().getEmail());
     return orderPageResponseDto;
   }
 
