@@ -39,7 +39,7 @@ class InitUser {
             authorityUtils.createRoles("admin@gmail.com")).address(new Address()).status(UserStatus.USER_ADMIN)
         .phoneNumber("010-1234-1234").build());
     user.add(User.builder().id(2L).email("qwe@gmail.com").password("qwe123").name("위준성").roles(
-            authorityUtils.createRoles("qwe@gmail.com")).address(new Address())
+            authorityUtils.createRoles("qwe@gmail.com")).address(new Address()).mailKey("QWERQWERQW")
         .phoneNumber("010-1234-1234").build());
     user.add(User.builder().id(3L).email("asd@gmail.com").password("asd123").name("진태양").roles(
             authorityUtils.createRoles("asd@gmail.com")).address(new Address())

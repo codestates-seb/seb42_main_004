@@ -7,9 +7,12 @@ import com.example.server.user.dto.UserResponseDto;
 import com.example.server.user.entity.User;
 import com.example.server.user.mapper.UserMapper;
 import com.example.server.user.service.UserService;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
+
   private final UserMapper mapper;
   private final UserService userService;
   private final static String USER_DEFAULT_URL = "/users";
@@ -40,9 +45,7 @@ public class UserController {
 
     User user = mapper.userPostDtoToUser(postDto);
     User savedUser = userService.createUser(user);
-    URI location = UriCreator.createUri(USER_DEFAULT_URL,savedUser.getId());
-
-
+    URI location = UriCreator.createUri(USER_DEFAULT_URL, savedUser.getId());
 
     return ResponseEntity.created(location).build();
   }
@@ -51,7 +54,7 @@ public class UserController {
   @DeleteMapping("/{id}")
   public ResponseEntity deleteUser(@PathVariable Long id) {
     log.info("##### DELETE USER #####");
-    log.trace("### MEMBER ID = {}",id);
+    log.trace("### MEMBER ID = {}", id);
     userService.deleteUser(id);
 
 //    return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -64,7 +67,7 @@ public class UserController {
     log.info("##### UPDATE USER #####");
     User user = mapper.userPatchDtoToUser(patchDto);
     User patchedUser = userService.updatedMember(user);
-    URI location = UriCreator.createUri(USER_DEFAULT_URL,patchedUser.getId());
+    URI location = UriCreator.createUri(USER_DEFAULT_URL, patchedUser.getId());
 
     return ResponseEntity.ok(location);
   }
@@ -77,10 +80,19 @@ public class UserController {
     User findUser = userService.getUser(id);
     UserResponseDto userResponseDto = mapper.userToUserResponseDto(findUser);
 
-
     return ResponseEntity.ok(userResponseDto);
   }
 
-  //TODO getUsers 만들어야하나?
+  @GetMapping("/email_auth")
+  public void getEmailAuth(@RequestParam("id") @Positive Long id,
+      @RequestParam("mailKey") String mailKey,
+      HttpServletResponse response) throws IOException {
+
+    userService.mailKeyAuth(id, mailKey);
+    //TODO 우리 홈페이지 uri로 변경
+    String redirectUri = "http://www.google.com";
+    response.sendRedirect(redirectUri);
+  }
+
 
 }

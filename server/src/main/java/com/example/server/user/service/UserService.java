@@ -2,6 +2,7 @@ package com.example.server.user.service;
 
 import com.example.server.auth.utils.CustomAuthorityUtils;
 import com.example.server.exception.BusinessLogicException;
+import com.example.server.user.data.UserStatus;
 import com.example.server.user.entity.User;
 import com.example.server.user.exception.UserException;
 import com.example.server.user.repository.UserRepository;
@@ -159,7 +160,7 @@ public class UserService {
     String toEmail = email; //받는 사람
     String title = "한끼밀 이메일 인증"; //제목
     //TODO href 수정
-    String href = "http://localhost:8080/email_auth?id="+id+"&mailkey="+mailKey;
+    String href = "http://localhost:8080/users/email_auth?id="+id+"&mailKey="+mailKey;
 
     MimeMessage message = mailSender.createMimeMessage();
     message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
@@ -188,5 +189,15 @@ public class UserService {
     mailSender.send(emailForm);
 
     return mailKey;
+  }
+
+  public void mailKeyAuth(Long id, String mailKey) {
+    User findUser = checkUserExist(id);
+    if( findUser.getMailKey().equals(mailKey) ) {
+      findUser.setStatus(UserStatus.USER_ACTiVE);
+      userRepository.save(findUser);
+    }
+    else throw new BusinessLogicException(UserException.MAILKEY_MISMATCH);
+
   }
 }
