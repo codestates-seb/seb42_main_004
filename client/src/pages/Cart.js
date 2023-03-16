@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import CartItemLi from '../components/cartPage/CartItemLi';
 import CartAside from '../components/commons/CartAside';
-import { InAsideDiv } from './Custom';
+
 function Cart() {
   return (
     <CartPageWrapper className="margininside">
@@ -19,14 +19,14 @@ function Cart() {
           <CartItemLi />
           <CartItemLi />
         </CartItemListUl>
-        <CartAside
-          inDiv={
-            <InnerDiv>
-              <div>총 결제금액</div>
-              <div>56,900원</div>
-            </InnerDiv>
-          }
-        />
+        <CartAside>
+          <InnerDiv>
+            <InnerPriceDiv>
+              <span>총 결제금액</span>
+              <span>56,900원</span>
+            </InnerPriceDiv>
+          </InnerDiv>
+        </CartAside>
       </CartPageContent>
     </CartPageWrapper>
   );
@@ -41,18 +41,6 @@ const CartPageWrapper = styled.div`
 const CartPageContent = styled.div`
   display: flex;
   justify-content: space-between;
-
-  > aside {
-    > div {
-      display: flex;
-      justify-content: center;
-
-      @media (max-width: 480px) {
-        box-shadow: none;
-        border-top: 2px solid var(--signature);
-      }
-    }
-  }
 `;
 
 export const CartItemListUl = styled.ul`
@@ -68,25 +56,39 @@ export const CartItemListUl = styled.ul`
   }
 `;
 
-const InnerDiv = styled(InAsideDiv)`
+const InnerDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 10vw;
+  padding: 1rem;
+  border-radius: 10px 10px 0 0;
+  background-color: var(--white_020);
+  box-shadow: 0 0 0 2px var(--signature) inset, 2px 2px 2px rgba(0, 0, 0, 0.4);
+
+  @media (max-width: 480px) {
+    border-radius: 0;
+    background-color: var(--white);
+    box-shadow: none;
+    border-top: 2px solid var(--signature);
+  }
+`;
+const InnerPriceDiv = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin: 0;
 
-  > div:last-child {
+  > span:last-child {
     font-size: 2rem;
-    @media (max-width: 480px) {
-      font-size: 1.5rem;
-    }
   }
 
   @media (max-width: 480px) {
     width: 100%;
-    height: 16px;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-around !important;
     align-items: center;
+
+    > span:last-child {
+      font-size: 1.5rem;
+    }
   }
 `;
