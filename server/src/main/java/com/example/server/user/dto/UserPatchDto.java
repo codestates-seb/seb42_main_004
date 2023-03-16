@@ -5,15 +5,12 @@ import com.example.server.user.data.DeliveryInformation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
 @Data
 @Getter
 @AllArgsConstructor
 public class UserPatchDto {
   private Long id;
-  @Setter
-  private String password;
   private String name;
   private String phoneNumber;
   private Address address;

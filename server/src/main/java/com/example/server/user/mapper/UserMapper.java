@@ -15,7 +15,6 @@ public interface UserMapper {
   default User userPatchDtoToUser(UserPatchDto patchDto) {
     return User.builder().id(patchDto.getId())
         .name(patchDto.getName())
-        .password(patchDto.getPassword())
         .phoneNumber(patchDto.getPhoneNumber())
         .address(patchDto.getAddress())
         .deliveryInformation(patchDto.getDeliveryInformation())
