@@ -1,11 +1,16 @@
 import styled from 'styled-components';
 
-function CartAside({ children, type, buttonClick }) {
+function CartAside({ totalPrice, buttonClick }) {
   return (
     <AsideWrapper>
-      {children}
+      <InnerDiv>
+        <InnerPriceDiv>
+          <span>총 결제금액</span>
+          <span>{totalPrice.toLocaleString()}원</span>
+        </InnerPriceDiv>
+      </InnerDiv>
       <AsideSignatureButton onClick={buttonClick}>
-        {type ? type : '구매하기'}
+        구매하기
       </AsideSignatureButton>
     </AsideWrapper>
   );
@@ -13,7 +18,7 @@ function CartAside({ children, type, buttonClick }) {
 
 export default CartAside;
 
-const AsideWrapper = styled.aside`
+export const AsideWrapper = styled.aside`
   float: right;
   position: sticky;
   top: calc(70px + 2rem);
@@ -31,7 +36,7 @@ const AsideWrapper = styled.aside`
     min-width: 360px;
   }
 `;
-const AsideSignatureButton = styled.button`
+export const AsideSignatureButton = styled.button`
   width: 100%;
   border: none;
   padding: 1rem 0;
@@ -43,5 +48,41 @@ const AsideSignatureButton = styled.button`
 
   @media (max-width: 480px) {
     border-radius: 0;
+  }
+`;
+const InnerDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vw;
+  padding: 1rem;
+  border-radius: 10px 10px 0 0;
+  background-color: var(--white_020);
+  box-shadow: 0 0 0 2px var(--signature) inset, 2px 2px 2px rgba(0, 0, 0, 0.4);
+
+  @media (max-width: 480px) {
+    border-radius: 0;
+    background-color: var(--white);
+    box-shadow: none;
+    border-top: 2px solid var(--signature);
+  }
+`;
+const InnerPriceDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  > span:last-child {
+    font-size: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around !important;
+    align-items: center;
+
+    > span:last-child {
+      font-size: 1.5rem;
+    }
   }
 `;
