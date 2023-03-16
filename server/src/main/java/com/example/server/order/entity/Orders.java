@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -50,6 +51,12 @@ public class Orders extends BaseEntity {
 
   private OrderStatus status = OrderStatus.NOT_PAID; // 주문 상태
 
+  @ElementCollection(fetch = FetchType.LAZY)
+  private List<Long> cartMealboxIds = new ArrayList<>();
+
+  public void addCartMealboxId(long cartMealboxId) {
+    cartMealboxIds.add(cartMealboxId);
+  }
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "USER_ID")
   private User user;
