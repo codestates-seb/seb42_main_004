@@ -21,11 +21,11 @@ public class Product {
     @Column(name = "PRODUCT_NAME", nullable = false)
     private String name;
     @Column(nullable = false)
-    private int unitWeight;
+    private int weight;
     @Column(nullable = false)
-    private int unitKcal;
+    private int kcal;
     @Column(nullable = false)
-    private int unitPrice;
+    private int price;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<MealboxProduct> mealboxProducts;
@@ -37,11 +37,11 @@ public class Product {
         mealboxProducts.add(mealboxProduct);
     }
 
-    public void patchProduct(String name, int unitWeight, int unitKcal, int unitPrice){
+    public void patchProduct(String name, int weight, int kcal, int price){
         this.name = name;
-        this.unitWeight = unitWeight;
-        this.unitKcal = unitKcal;
-        this.unitPrice = unitPrice;
+        this.weight = weight;
+        this.kcal = kcal;
+        this.price = price;
     }
 
 }

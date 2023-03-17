@@ -3,8 +3,19 @@ import PreAndNextButtons from './PreAndNextButtons';
 import SurveyBox from './SurveyBox';
 import { Option, ExplanationDiv } from './SurveyPage2';
 import { SurveyH3 } from './SurveyPage1';
+// import { useEffect } from 'react';
+// import getData from '../../util/getData';
 
 function SurveyPage3() {
+  console.log(window.location.href);
+
+  let api = `${process.env.REACT_APP_API_URL}`;
+  console.log(api);
+
+  // useEffect(() => {
+  //   getData(api + ``);
+  // }, []);
+
   return (
     <article>
       <SurveyH3>

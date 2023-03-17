@@ -20,9 +20,9 @@ public interface ProductMapper {
              return ProductOnlyResponseDto.builder()
                     .productId(product.getId())
                     .name(product.getName())
-                    .kcal(product.getUnitKcal())
-                    .weight(product.getUnitWeight())
-                    .price(product.getUnitPrice())
+                    .kcal(product.getKcal())
+                    .weight(product.getWeight())
+                    .price(product.getPrice())
                      .build();
         }).collect(Collectors.toList());
     }
