@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 function SurveyBox({ group, title, info, detail, children }) {
-  console.log(children);
   return (
     <SurveyBoxWrapper>
       <label htmlFor={title}>
@@ -33,7 +32,7 @@ const SurveyBoxWrapper = styled.div`
 
 const Input = styled.input`
   position: absolute;
-  z-index: -999;
+  /* z-index: -999; */
 `;
 
 const BoxTop = styled.div`
