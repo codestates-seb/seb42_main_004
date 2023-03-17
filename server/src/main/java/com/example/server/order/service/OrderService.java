@@ -46,6 +46,7 @@ public class OrderService {
 
   public Orders createOrder(Orders order, OrderPostDto orderPostDto) throws IamportResponseException, IOException {
     order.makeOrderNumber();
+//    orderRepository.save(order);
     order.addUser(userService.getUser(orderPostDto.getUserId()));
     orderRepository.save(order);
     OrderMealboxPostDtoToOrdersMealbox(orderPostDto.getMealboxes(), order);

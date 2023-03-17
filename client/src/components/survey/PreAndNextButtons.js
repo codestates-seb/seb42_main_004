@@ -1,18 +1,41 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setActive } from '../../reducers/surveyQuestionReducer';
 function PreAndNextButtons() {
+  let dispatch = useDispatch();
+  let navigate = useNavigate();
   let { page } = useParams();
   page = Number(page);
-  let navigate = useNavigate();
+
+  const { age, gender, height, weight, active } = useSelector(
+    (state) => state.surveyQuestionReducer
+  );
+  console.log(age, gender, height, weight, active);
 
   let preHandler = () => {
-    navigate(`/survey/${page - 1}`);
+    navigate(`/survey/question/${page - 1}`);
   };
 
   let nextHandler = () => {
-    navigate(page !== 3 ? `/survey/${page + 1}` : `/survey/recommend`);
+    let url = `/survey/question/${page + 1}`;
+
+    if (page === 1) {
+      url += `?age=${age}&gender=${gender}&height=${height}&weight=${weight}`;
+    }
+
+    if (page === 2) {
+      let activeValue = document.querySelector(
+        'input[name="page2"]:checked'
+      )?.id;
+
+      dispatch(setActive(activeValue));
+
+      url += `?age=${age}&gender=${gender}&height=${height}&weight=${weight}&active=${activeValue}`;
+    }
+
+    navigate(url);
   };
 
   return (

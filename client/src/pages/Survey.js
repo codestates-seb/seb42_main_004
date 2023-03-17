@@ -5,6 +5,7 @@ import { BsFillCircleFill as Dot } from 'react-icons/bs';
 
 function Survey() {
   let { page } = useParams();
+
   return (
     <Main className="margininside" page={page}>
       <Ul>
