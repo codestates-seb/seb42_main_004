@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 public interface MealboxMapper {
     default Mealbox mealboxPostDtoToMealbox(MealboxPostDto mealboxPostDto, Mealbox.MealboxInfo mealboxInfo){
         return Mealbox.builder().name(mealboxPostDto.getName())
-                .totalPrice(mealboxPostDto.getPrice())
-                .totalKcal(mealboxPostDto.getKcal())
-                .totalWeight(mealboxPostDto.getWeight())
+                .price(mealboxPostDto.getPrice())
+                .kcal(mealboxPostDto.getKcal())
+                .weight(mealboxPostDto.getWeight())
                 .mealboxInfo(mealboxInfo)
                 .build();
     }
@@ -24,9 +24,9 @@ public interface MealboxMapper {
     default Mealbox mealboxPatchDtoToMealbox(MealboxPatchDto mealboxPatchDto){
         return Mealbox.builder()
                 .name(mealboxPatchDto.getName())
-                .totalPrice(mealboxPatchDto.getPrice())
-                .totalKcal(mealboxPatchDto.getKcal())
-                .totalWeight(mealboxPatchDto.getWeight())
+                .price(mealboxPatchDto.getPrice())
+                .kcal(mealboxPatchDto.getKcal())
+                .weight(mealboxPatchDto.getWeight())
                 .build();
     }
 
@@ -37,9 +37,9 @@ public interface MealboxMapper {
                     return ProductResponseDto.builder()
                             .productId(mealboxProduct.getProduct().getId())
                             .name(mealboxProduct.getProduct().getName())
-                            .price(mealboxProduct.getProduct().getUnitPrice())
-                            .weight(mealboxProduct.getProduct().getUnitWeight())
-                            .kcal(mealboxProduct.getProduct().getUnitKcal())
+                            .price(mealboxProduct.getProduct().getPrice())
+                            .weight(mealboxProduct.getProduct().getWeight())
+                            .kcal(mealboxProduct.getProduct().getKcal())
                             .quantity(mealboxProduct.getQuantity())
                             .build();
                 }).collect(Collectors.toList());
@@ -48,9 +48,9 @@ public interface MealboxMapper {
                 .mealboxId(mealbox.getId())
                 .name(mealbox.getName())
                 .mealboxInfo(mealbox.getMealboxInfo())
-                .weight(mealbox.getTotalWeight())
-                .kcal(mealbox.getTotalKcal())
-                .price(mealbox.getTotalPrice())
+                .weight(mealbox.getWeight())
+                .kcal(mealbox.getKcal())
+                .price(mealbox.getPrice())
                 .products(productResponseDtos)
                 .build();
     }
