@@ -1,9 +1,34 @@
 import styled from 'styled-components';
-import PreAndNextButtons from './PreAndNextButtons';
+import PreAndNextButtons from '../PreAndNextButtons';
 import SurveyBox from './SurveyBox';
 import { SurveyH3 } from './SurveyPage1';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setActive } from '../../reducers/surveyQuestionReducer';
+import getData from '../../util/getData';
 
 function SurveyPage2({ name = '맹쥬' }) {
+  let dispatch = useDispatch();
+  let navigate = useNavigate();
+
+  let api = `${process.env.REACT_APP_API_URL}`;
+  console.log(api);
+
+  let { age, gender, height, weight } = useSelector(
+    (state) => state.surveyQuestionReducer
+  );
+
+  let nextHandler = () => {
+    let activeValue = document.querySelector('input[name="page2"]:checked')?.id;
+
+    dispatch(setActive(activeValue));
+
+    let page2Param = `?age=${age}&gender=${gender}&height=${height}&weight=${weight}&active=${activeValue}`;
+
+    let data = getData(api + page2Param);
+    navigate(`/survey/result`, data);
+  };
+
   return (
     <article>
       <SurveyH3>{name}님의 활동량을 알려주세요</SurveyH3>
@@ -32,7 +57,7 @@ function SurveyPage2({ name = '맹쥬' }) {
           detail="주로 선수, 거의 매일 2회 운동"
         />
       </Option>
-      <PreAndNextButtons />
+      <PreAndNextButtons nextHandler={nextHandler} />
     </article>
   );
 }

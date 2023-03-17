@@ -1,5 +1,15 @@
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { TextButton } from '../commons/ModalDiv';
 function MealBoxEditLink() {
-  return <a href="https://www.google.co.kr/">다시 담기</a>;
+  let navigate = useNavigate();
+  let customPageLink = () => {
+    navigate('/custom');
+  };
+
+  return <Button onClick={customPageLink}>다시 담기</Button>;
 }
 
 export default MealBoxEditLink;
+
+const Button = styled(TextButton)``;

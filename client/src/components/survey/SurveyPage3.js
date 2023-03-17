@@ -3,18 +3,26 @@ import PreAndNextButtons from './PreAndNextButtons';
 import SurveyBox from './SurveyBox';
 import { Option, ExplanationDiv } from './SurveyPage2';
 import { SurveyH3 } from './SurveyPage1';
-// import { useEffect } from 'react';
-// import getData from '../../util/getData';
+import { useEffect } from 'react';
+import getData from '../../util/getData';
+import { useNavigate } from 'react-router-dom';
 
 function SurveyPage3() {
-  console.log(window.location.href);
+  let navigate = useNavigate();
 
   let api = `${process.env.REACT_APP_API_URL}`;
   console.log(api);
 
-  // useEffect(() => {
-  //   getData(api + ``);
-  // }, []);
+  let nextHandler = () => {
+    let dietPlan = document.querySelector('input[name="page3"]:checked')?.id;
+    let page3Param = `?kcal=${dietPlan}`;
+    let data = getData(api + page3Param);
+    navigate(`/survey/result`, data);
+  };
+
+  useEffect(() => {
+    getData(api + ``);
+  }, []);
 
   return (
     <article>
@@ -56,7 +64,7 @@ function SurveyPage3() {
           <div>강도가 높아 지키기 힘들 수도 있어요.</div>
         </SurveyBox>
       </Option>
-      <PreAndNextButtons />
+      <PreAndNextButtons nextHandler={nextHandler} />
     </article>
   );
 }
