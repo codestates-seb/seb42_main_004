@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
@@ -24,6 +26,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 @Service
 @Slf4j
+@EnableAsync
 public class UserService {
 
   private final CustomAuthorityUtils authorityUtils;
@@ -279,6 +282,7 @@ public class UserService {
   }
 
   //실제 메일 전송
+  @Async
   public String sendEmail(String toEmail, String mailKey, Long id)
       throws MessagingException, UnsupportedEncodingException {
 
@@ -290,6 +294,7 @@ public class UserService {
     return mailKey;
   }
 
+  @Async
   public String sendEmailRecovery(String toEmail, String mailKey)
       throws MessagingException, UnsupportedEncodingException {
 
@@ -300,7 +305,7 @@ public class UserService {
 
     return mailKey;
   }
-
+  @Async
   public void sendEmailDismatch(String toEmail)
       throws MessagingException, UnsupportedEncodingException {
 
