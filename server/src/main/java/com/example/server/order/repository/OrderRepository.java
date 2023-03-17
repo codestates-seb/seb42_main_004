@@ -1,5 +1,6 @@
 package com.example.server.order.repository;
 
+import com.example.server.order.data.OrderStatus;
 import com.example.server.order.entity.Orders;
 import com.example.server.user.entity.User;
 import java.time.LocalDateTime;
@@ -8,11 +9,10 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
 public interface OrderRepository extends JpaRepository<Orders, Long> {
-  //나중에 테스트 해봐야함
-  Page<Orders> findAllByCreatedDateBetween(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
-  List<Orders> findByCreatedDateBetweenAndUserOrderByCreatedDateDesc(LocalDateTime startDate, LocalDateTime endDate, User user);
+  //미결제 안뜨게 다 바꿔야함
+  Page<Orders> findAllByCreatedDateBetweenAndStatusNot(LocalDateTime startDate, LocalDateTime endDate, OrderStatus orderStatus, Pageable pageable);
+  List<Orders> findByUserAndStatusNotOrderByCreatedDateDesc(User user, OrderStatus orderStatus);
   Optional<Orders> findByOrderNumber(String orderNumber);
 }

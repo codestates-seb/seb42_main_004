@@ -1,5 +1,7 @@
 package com.example.server.order.mapper;
 
+import com.example.server.mealbox.dto.MealboxProductResponseDto;
+import com.example.server.mealbox.entity.MealboxProduct;
 import com.example.server.order.dto.OrderMealboxResponseDto;
 import com.example.server.order.dto.OrderPageResponseDto;
 import com.example.server.order.dto.OrderPostDto;
@@ -14,16 +16,28 @@ import org.mapstruct.Mapper;
 public interface OrderMapper {
 
   default Orders orderPostDtoToOrders(OrderPostDto orderPostDto) {
-    return null;
+    Orders order = new Orders();
+    order.setTotalPrice(orderPostDto.getTotalPrice());
+    List<Long> cartMealboxIds = (List<Long>) orderPostDto.getMealboxes().stream().map(mb -> mb.getCartMealboxId());
+    for(Long cartMealboxId: cartMealboxIds) {
+      order.addCartMealboxId(cartMealboxId);
+    }
+    return order;
   }
   default OrderPageResponseDto ordersToOrderPageResponseDto(Orders orders) {
     OrderPageResponseDto orderPageResponseDto = new OrderPageResponseDto();
-    orderPageResponseDto.setEmail(orders.getUser().getEmail());
-    orderPageResponseDto.setUsername(orders.getUser().getName());
-    orderPageResponseDto.setUserAddress(orders.getUser().getName());
-    orderPageResponseDto.setUserPhoneNumber(orders.getUser().getPhoneNumber());
-    orderPageResponseDto.setTotalPrice(orders.getTotalPrice());
     orderPageResponseDto.setOrderNumber(orders.getOrderNumber());
+    orderPageResponseDto.setUserZipCode(orders.getUser().getAddress().getZipCode());
+    orderPageResponseDto.setUserSimpleAddress(orders.getUser().getAddress().getSimpleAddress());
+    orderPageResponseDto.setUserDetailAddress(orders.getUser().getAddress().getDetailAddress());
+    orderPageResponseDto.setUsername(orders.getUser().getName());
+    orderPageResponseDto.setUserPhoneNumber(orders.getUser().getPhoneNumber());
+    orderPageResponseDto.setAddressee(orders.getUser().getDeliveryInformation().getName());
+    orderPageResponseDto.setDeliveryZipCode(orders.getUser().getDeliveryInformation().getAddress().getZipCode());
+    orderPageResponseDto.setDeliverySimpleAddress(orders.getUser().getDeliveryInformation().getAddress().getSimpleAddress());
+    orderPageResponseDto.setDeliveryDetailAddress(orders.getUser().getDeliveryInformation().getAddress().getDetailAddress());
+    orderPageResponseDto.setTotalPrice(orders.getTotalPrice());
+    orderPageResponseDto.setEmail(orders.getUser().getEmail());
     return orderPageResponseDto;
   }
 
@@ -42,7 +56,14 @@ public interface OrderMapper {
         orderMealboxResponseDto.setMealboxName(ordersMealbox.getMealbox().getName());
         orderMealboxResponseDto.setMealboxPrice(ordersMealbox.getPrice());
         orderMealboxResponseDto.setMealboxQuantity(ordersMealbox.getQuantity());
-        // 재료, 수량 추가해야함
+        List<MealboxProduct> mealboxProductList = ordersMealbox.getMealbox().getMealboxProducts();
+        List<MealboxProductResponseDto> mealboxProductResponseDtoList = mealboxProductList.stream().map(mealboxProduct -> {
+          MealboxProductResponseDto mealboxProductResponseDto = new MealboxProductResponseDto();
+          mealboxProductResponseDto.setProductName(mealboxProduct.getProduct().getName());
+          mealboxProductResponseDto.setProductQuantity(mealboxProduct.getQuantity());
+          return mealboxProductResponseDto;
+        }).collect(Collectors.toList());
+        orderMealboxResponseDto.setProducts(mealboxProductResponseDtoList);
         return orderMealboxResponseDto;
       }).collect(Collectors.toList());
       orderResponseDto.setMealboxes(orderMealboxResponseList);

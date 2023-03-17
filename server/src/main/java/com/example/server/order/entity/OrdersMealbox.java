@@ -19,6 +19,7 @@ public class OrdersMealbox {
     @Setter
     private int quantity;
 
+    @Setter
     private int price;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,6 +36,12 @@ public class OrdersMealbox {
         this.quantity = quantity;
         this.mealbox = mealbox;
         this.orders = orders;
+    }
+
+    @Builder
+    public OrdersMealbox(int quantity, Mealbox mealbox) {
+        this.quantity = quantity;
+        this.mealbox = mealbox;
     }
 
     public void addOrders(Orders orders) {

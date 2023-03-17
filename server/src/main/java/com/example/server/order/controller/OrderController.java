@@ -2,7 +2,10 @@ package com.example.server.order.controller;
 
 import com.example.server.dto.MultiResponseDto;
 import com.example.server.order.dto.OrderGetDto;
+import com.example.server.order.dto.OrderPageResponseDto;
+import com.example.server.order.dto.OrderPatchDeliveryDto;
 import com.example.server.order.dto.OrderPostDto;
+import com.example.server.order.dto.OrderPostResponseDto;
 import com.example.server.order.dto.OrderResponseDto;
 import com.example.server.order.entity.Orders;
 import com.example.server.order.mapper.OrderMapper;
@@ -34,22 +37,32 @@ public class OrderController {
   private final OrderMapper mapper;
   @PostMapping("/orders")
   public ResponseEntity postOrder(@RequestBody OrderPostDto orderPostDto)
-      throws IamportResponseException, IOException { //주문하기
+      throws IamportResponseException, IOException { // 결제 전 주문 생성
     Orders order = mapper.orderPostDtoToOrders(orderPostDto);
-    orderService.createOrder(order);
-    return new ResponseEntity<>(HttpStatus.CREATED);
+    Orders createdOrder = orderService.createOrder(order, orderPostDto);
+    OrderPostResponseDto response = new OrderPostResponseDto();
+    response.setOrderId(createdOrder.getOrderId());
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 
-  @PatchMapping("/orders/{order-id}")
-  public ResponseEntity patchOrder(@PathVariable("order-id") @PositiveOrZero long orderId) {  //주문수정 (뭐 하는진 모름)
-
+  @GetMapping("/orders/checkout/{order-id}")
+  public ResponseEntity getOrderToPay(@PathVariable("order-id") @PositiveOrZero long orderId) { // 결제 창
+    Orders order = orderService.findOrder(orderId);
+    OrderPageResponseDto response = mapper.ordersToOrderPageResponseDto(order);
+    return new ResponseEntity<>(response, HttpStatus.OK);
+  }
+  @PatchMapping("/orders/delivery/{order-id}")
+  public ResponseEntity setDeliveryAddress(@PathVariable("order-id") @PositiveOrZero long orderId,
+      @RequestBody OrderPatchDeliveryDto orderPatchDeliveryDto) {  // 결제시 주문에 배송지 입력
+    orderService.setDeliveryAddress(orderPatchDeliveryDto, orderId);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @GetMapping("/orders/user/{user-id}")
-  public ResponseEntity getOrdersUser(@PathVariable("user-id") @PositiveOrZero long userId, @RequestBody OrderGetDto orderGetDto) {  //유저별 주문 내역 확인, JWT 정보랑 비교해야할 듯
-    List<Orders> orders = orderService.getOrdersByDateToList(orderGetDto, userId);
-    return new ResponseEntity<>(orders, HttpStatus.OK);
+  public ResponseEntity getOrdersUser(@PathVariable("user-id") @PositiveOrZero long userId) {  //유저별 주문 내역 확인, JWT 정보랑 비교해야할 듯
+    List<Orders> orders = orderService.getOrdersByDateToList(userId);
+    List<OrderResponseDto> response = mapper.OrdersToOrderResponseDtos(orders);
+    return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   @GetMapping("/admin/orders")

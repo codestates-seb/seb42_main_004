@@ -1,4 +1,4 @@
-package com.example.server.mealbox.exception;
+package com.example.server.cart.exception;
 
 import com.example.server.exception.ExceptionCode;
 import lombok.Getter;
@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @RequiredArgsConstructor
-public enum MealboxException implements ExceptionCode {
-  MEALBOX_NOT_FOUND(HttpStatus.NOT_FOUND, "Meal Box Not Found");
+public enum CartMealboxException implements ExceptionCode {
 
+  CART_MEALBOX_NOT_FOUND(HttpStatus.NOT_FOUND, "Cart Meal Box Not Found");
   private final HttpStatus status;
   private final String message;
 }
