@@ -68,7 +68,7 @@ public class UserService {
     userRepository.delete(findUser);
   }
 
-  public User updatedMember(User user) {
+  public User updatedUser(User user) {
     User findUser = checkUserExist(user.getId());
     //검증 성공
     Optional.ofNullable(user.getName()).ifPresent(findUser::setName);
@@ -81,6 +81,19 @@ public class UserService {
 //    findUser.setPassword(encryptedPassword);
 
     userRepository.save(findUser);
+    return findUser;
+  }
+
+  // 패스워드 변경
+  public User updatePassword(Long id, String password, String afterPassword) {
+    // 회원이 존재하는지 검증
+    User findUser = checkUserExist(id);
+    // 비밀번호가 일치하는지 검증
+    if(passwordEncoder.encode(password).equals(passwordEncoder.encode(findUser.getPassword()))) {
+      findUser.setPassword(passwordEncoder.encode(afterPassword));
+      userRepository.save(findUser);
+    }
+    else throw new BusinessLogicException(UserException.INCORRECT_PASSWORD);
     return findUser;
   }
 

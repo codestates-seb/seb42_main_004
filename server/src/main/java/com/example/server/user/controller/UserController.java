@@ -1,6 +1,7 @@
 package com.example.server.user.controller;
 
 import com.example.server.auth.utils.UriCreator;
+import com.example.server.user.dto.PasswordPatchDto;
 import com.example.server.user.dto.UserPatchDto;
 import com.example.server.user.dto.UserPostDto;
 import com.example.server.user.dto.UserResponseDto;
@@ -66,7 +67,7 @@ public class UserController {
   public ResponseEntity updateUser(@RequestBody UserPatchDto patchDto) {
     log.info("##### UPDATE USER #####");
     User user = mapper.userPatchDtoToUser(patchDto);
-    User patchedUser = userService.updatedMember(user);
+    User patchedUser = userService.updatedUser(user);
     URI location = UriCreator.createUri(USER_DEFAULT_URL, patchedUser.getId());
 
     return ResponseEntity.ok(location);
@@ -76,13 +77,13 @@ public class UserController {
   @GetMapping("/{id}")
   public ResponseEntity getUser(@PathVariable Long id) {
     log.info("##### GET USER #####");
-    //TODO getUser 구현
     User findUser = userService.getUser(id);
     UserResponseDto userResponseDto = mapper.userToUserResponseDto(findUser);
 
     return ResponseEntity.ok(userResponseDto);
   }
 
+  // 이메일키 인증
   @GetMapping("/email_auth")
   public void getEmailAuth(@RequestParam("id") @Positive Long id,
       @RequestParam("mailKey") String mailKey,
@@ -92,6 +93,17 @@ public class UserController {
     //TODO 우리 홈페이지 uri로 변경
     String redirectUri = "http://www.google.com";
     response.sendRedirect(redirectUri);
+  }
+
+  // 비밀번호 변경
+  @PatchMapping("/{id}")
+  public ResponseEntity updatePassword(@PathVariable Long id,
+      @RequestBody PasswordPatchDto passwordPatchDto) {
+    String password = passwordPatchDto.getPassword();
+    String afterPassword = passwordPatchDto.getAfterPassword();
+    userService.updatePassword(id, password, afterPassword);
+
+    return ResponseEntity.ok().build();
   }
 
 }
