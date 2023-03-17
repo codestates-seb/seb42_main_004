@@ -96,7 +96,7 @@ public class UserController {
   }
 
   // 비밀번호 변경
-  @PatchMapping("/{id}")
+  @PatchMapping("/{id}/password")
   public ResponseEntity updatePassword(@PathVariable Long id,
       @RequestBody PasswordPatchDto passwordPatchDto) {
     String password = passwordPatchDto.getPassword();

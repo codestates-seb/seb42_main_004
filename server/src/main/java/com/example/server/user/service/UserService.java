@@ -62,7 +62,7 @@ public class UserService {
 
   public void deleteUser(Long userId) {
     User findUser = userRepository.findById(userId)
-        .orElseThrow(() -> new BusinessLogicException(UserException.MEMBER_NOT_FOUND));
+        .orElseThrow(() -> new BusinessLogicException(UserException.USER_NOT_FOUND));
 
     //지금은 완전삭제
     userRepository.delete(findUser);
@@ -99,7 +99,7 @@ public class UserService {
 
   public User getUser(Long userId) {
     User findUser = userRepository.findById(userId)
-        .orElseThrow(() -> new BusinessLogicException(UserException.MEMBER_NOT_FOUND));
+        .orElseThrow(() -> new BusinessLogicException(UserException.USER_NOT_FOUND));
 
     return findUser;
   }
@@ -108,14 +108,14 @@ public class UserService {
   // 회원이 존재하는지 검사 , 존재하면 예외
   private void verifyExistsEmail(String email) {
     if (userRepository.findByEmail(email).isPresent()) {
-      throw new BusinessLogicException(UserException.MEMBER_EXIST);
+      throw new BusinessLogicException(UserException.USER_EXIST);
     }
   }
 
   // 회원이 존재하지 않으면 예외발생
   public User checkUserExist(Long id) {
     return userRepository.findById(id)
-        .orElseThrow(() -> new BusinessLogicException(UserException.MEMBER_NOT_FOUND));
+        .orElseThrow(() -> new BusinessLogicException(UserException.USER_NOT_FOUND));
   }
 
   private void setDefaultMemberInfo(User user) {
