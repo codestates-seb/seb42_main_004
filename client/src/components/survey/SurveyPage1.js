@@ -2,14 +2,39 @@ import styled from 'styled-components';
 import InputLabelDiv from '../commons/InputLabelDiv';
 import MainButton from '../commons/MainButton';
 import PreAndNextButtons from './PreAndNextButtons';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setAge,
+  setGender,
+  setHeight,
+  setWeight,
+} from '../../reducers/surveyQuestionReducer';
 
 function SurveyPage1() {
+  let dispatch = useDispatch();
+  const { age, gender, height, weight } = useSelector(
+    (state) => state.surveyQuestionReducer
+  );
+
+  let ageHandler = (e) => {
+    dispatch(setAge(e.target.value));
+  };
+
   let maleHandler = (e) => {
-    console.log(e.target);
+    dispatch(setGender(e.target.name));
+    console.log(gender);
   };
 
   let femaleHandler = (e) => {
-    console.log(e.target);
+    dispatch(setGender(e.target.name));
+  };
+
+  let heightHandler = (e) => {
+    dispatch(setHeight(e.target.value));
+  };
+
+  let weightHandler = (e) => {
+    dispatch(setWeight(e.target.value));
   };
 
   return (
@@ -20,7 +45,15 @@ function SurveyPage1() {
         정보를 입력해주세요.
       </SurveyH3>
       <SurveyContentDiv>
-        <InputLabelDiv label="생년월일" id="name" placeholder="2000.01.01" />
+        <InputLabelDiv
+          label="나이"
+          id="age"
+          value={age}
+          onChange={ageHandler}
+          placeholder="00"
+          unit="세"
+          maxLength="3"
+        />
         <div>
           <div>성별</div>
           <GenderOptionDiv>
@@ -28,8 +61,24 @@ function SurveyPage1() {
             <MainButton name="여성" handler={femaleHandler} />
           </GenderOptionDiv>
         </div>
-        <InputLabelDiv label="신장" id="name" placeholder="0" unit="cm" />
-        <InputLabelDiv label="체중" id="name" placeholder="0" unit="kg" />
+        <InputLabelDiv
+          label="신장"
+          id="height"
+          value={height}
+          onChange={heightHandler}
+          placeholder="0"
+          unit="cm"
+          maxLength="3"
+        />
+        <InputLabelDiv
+          label="체중"
+          id="weight"
+          value={weight}
+          onChange={weightHandler}
+          placeholder="0"
+          unit="kg"
+          maxLength="3"
+        />
         <PreAndNextButtons />
       </SurveyContentDiv>
     </Article>
