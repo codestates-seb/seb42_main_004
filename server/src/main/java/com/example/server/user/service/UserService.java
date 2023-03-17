@@ -328,6 +328,7 @@ public class UserService {
 
   }
 
+  @Async
   public void resendEmail(String email) throws MessagingException, UnsupportedEncodingException {
     User findUser = checkUserExist(email);
 
