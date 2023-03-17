@@ -7,12 +7,12 @@ import java.util.List;
 @Getter
 public class MealboxPostDto {
     private String name;
-    private int totalPrice;
-    private int totalKcal;
-    private int totalWeight;
+    private int price;
+    private int kcal;
+    private int weight;
     private List<Product> products;
     @Getter
-    private class Product{
+    public static class Product{
         private Long productId;
         private int quantity;
     }

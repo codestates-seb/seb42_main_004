@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import ModalDiv from '../components/commons/ModalDiv';
+import CustomAside from '../components/custom/CustomAside';
 import PaginationUl from '../components/commons/PaginationUl';
+import FilterSearchDiv from '../components/commons/FilterSearchDiv';
 import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
-import CartAside from '../components/commons/CartAside';
-import SearchBarDiv from '../components/commons/SearchBarDiv';
-import ModalDiv, { TextButton } from '../components/commons/ModalDiv';
 import { MealBoxesWrapDiv } from './AllBoxes';
-import FilterSelect from '../components/commons/FilterSelect';
+// import useGET from '../util/useGET';
 
-function Custom({ admin, mealBox }) {
+function Custom({ admin }) {
   const [openModal, setOpenModal] = useState(false);
+  const [page, setPage] = useState(1);
+  // const [products, isPending, error] = useGET(`/products/${page}`);
   const navigate = useNavigate();
 
   return (
@@ -26,49 +28,21 @@ function Custom({ admin, mealBox }) {
       <h1>커스텀 밀박스</h1>
       <CustomSelectDiv>
         <ElementsContainerDiv>
-          <FilterSearchDiv>
-            <FilterSelect />
-            <SearchBarDiv placeholder="고구마" />
-          </FilterSearchDiv>
+          <FilterSearchDiv />
           <BoxElementCardUl>
             <li>
               <BoxElementCardDiv />
             </li>
           </BoxElementCardUl>
-          <PaginationUl nowpage={1} totalpage={1} />
+          <PaginationUl page={page} totalpage={3} setPage={setPage} />
         </ElementsContainerDiv>
-        <CartAside
-          type={
-            admin
-              ? '밀박스 생성 진행하기'
-              : mealBox?.id
-              ? '밀박스 수정 진행하기'
-              : '장바구니 담기'
+        <CustomAside
+          admin={0}
+          bucket={1}
+          buttonClick={
+            admin ? () => setOpenModal(true) : () => navigate('/cart')
           }
-          buttonClick={admin ? () => setOpenModal(true) : () => navigate('/')}
-        >
-          <InAsideH2>Custom</InAsideH2>
-          <InAsideUl>
-            <ElementInBucketLi>
-              <span>{`${'오렌지주스'}`}</span>
-              <span>
-                {`${1}`}
-                <TextButton className="linkstyle">&#10005;</TextButton>
-              </span>
-            </ElementInBucketLi>
-            <ElementInBucketLi>
-              <span>{`${'오렌지주스'}`}</span>
-              <span>
-                {`${1}`}
-                <TextButton className="linkstyle">&#10005;</TextButton>
-              </span>
-            </ElementInBucketLi>
-          </InAsideUl>
-          <InAsideDiv>
-            <span>합계</span>
-            <span>{`${'19,900'}원`}</span>
-          </InAsideDiv>
-        </CartAside>
+        />
       </CustomSelectDiv>
     </MealBoxesWrapDiv>
   );
@@ -90,53 +64,7 @@ const ElementsContainerDiv = styled.div`
     width: 100%;
   }
 `;
-const FilterSearchDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
 const BoxElementCardUl = styled.ul`
   list-style: none;
   margin-bottom: -10px;
-`;
-const InAsideH2 = styled.h2`
-  color: var(--white);
-  list-style: none;
-  min-height: 1vh;
-
-  @media (max-width: 480px) {
-    display: none;
-  }
-`;
-
-const InAsideUl = styled.ul`
-  @media (max-width: 480px) {
-    display: none;
-  }
-`;
-
-export const InAsideDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-  margin-bottom: -0.5rem;
-`;
-
-const ElementInBucketLi = styled.li`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  > span {
-    font-size: 0.8rem;
-    margin-right: -2px;
-
-    > button {
-      margin-left: 0.5rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    border-radius: 0;
-  }
 `;

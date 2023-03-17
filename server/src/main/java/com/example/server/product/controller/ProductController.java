@@ -50,8 +50,8 @@ public class ProductController {
                                              @RequestBody ProductPatchDto productPatchDto){
         log.info("--------updateProduct-------");
         Product productPatcher = mapper.productPatchDtoToProduct(productPatchDto);
-        Product product = productService.updateProduct(productId, productPatcher);
-        return new ResponseEntity(new SingleResponseDto(product), HttpStatus.OK);
+        productService.updateProduct(productId, productPatcher);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     //관리자가 개별상품 삭제하기
@@ -62,12 +62,12 @@ public class ProductController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    //관리자가 개별상품리스트 얻기 (추천조합 밀박스 만들때)
+    //관리자가 개별상품리스트 얻기 (추천조합 밀박스 만들때 + 구성품 조회할때)
     @GetMapping("/admin/products")
     public ResponseEntity getAdminProductList (@Positive @RequestParam int page,
                                                @Positive @RequestParam int size,
                                                @RequestParam String sort,
-                                               @RequestParam Sort.Direction dir) {//여기서 이넘타입을 받을수있는지 테스트해보기
+                                               @RequestParam Sort.Direction dir) {//여기서 이넘타입을 받을수있다!
         log.info("------getProductList-------");
         Page<Product> productPage = productService.findProducts(page, size, sort, dir);
 
@@ -77,12 +77,14 @@ public class ProductController {
         return new ResponseEntity(new MultiResponseDto(response,productPage), HttpStatus.OK);
     }
 
-    //소비자가 개별상품리스트 얻기 (커스텀밀박스 만들때)
+    //소비자가 개별상품리스트 얻기 (커스텀밀박스 만들때 + 구성품 조회할때)
     @GetMapping("/users/products")
     public ResponseEntity getProductList(@Positive @RequestParam int page,
-                                         @Positive @RequestParam int size) {
+                                         @Positive @RequestParam int size,
+                                         @RequestParam String sort,
+                                         @RequestParam Sort.Direction dir) {
         log.info("------getProductList-------");
-        Page<Product> productPage = productService.findProducts(page,size,"productId", Sort.Direction.ASC);
+        Page<Product> productPage = productService.findProducts(page,size,sort,dir);
 
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
@@ -96,7 +98,7 @@ public class ProductController {
                                             @RequestParam String search) {
         log.info("------searchProduct------");
         Page<Product> productPage =
-                productService.searchProducts(search, page, size, "productId", Sort.Direction.ASC);
+                productService.searchProducts(search, page, size, "id", Sort.Direction.ASC);
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
 

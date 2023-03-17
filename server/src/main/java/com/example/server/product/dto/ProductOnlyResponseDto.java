@@ -9,8 +9,8 @@ import lombok.Getter;
 @Getter
 public class ProductOnlyResponseDto {
     private long productId;
-    private String productName;
-    private int unitWeight;
-    private int unitKcal;
-    private int unitPrice;
+    private String name;
+    private int weight;
+    private int kcal;
+    private int price;
 }

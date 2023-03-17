@@ -1,8 +1,15 @@
 package com.example.server.order.service;
 
 import com.example.server.exception.BusinessLogicException;
+import com.example.server.mealbox.entity.Mealbox;
+import com.example.server.mealbox.service.MealboxService;
+import com.example.server.order.data.OrderStatus;
 import com.example.server.order.dto.OrderGetDto;
+import com.example.server.order.dto.OrderMealboxPostDto;
+import com.example.server.order.dto.OrderPatchDeliveryDto;
+import com.example.server.order.dto.OrderPostDto;
 import com.example.server.order.entity.Orders;
+import com.example.server.order.entity.OrdersMealbox;
 import com.example.server.order.exception.OrderException;
 import com.example.server.order.repository.OrderMealboxRepository;
 import com.example.server.order.repository.OrderRepository;
@@ -19,6 +26,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,14 +40,32 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
   private final OrderRepository orderRepository;
   private final OrderMealboxRepository orderMealboxRepository;
+  private final MealboxService mealboxService;
   private final UserService userService;
   private final PaymentController paymentController;
 
-  public Orders createOrder(Orders order) throws IamportResponseException, IOException {
+  public Orders createOrder(Orders order, OrderPostDto orderPostDto) throws IamportResponseException, IOException {
     order.makeOrderNumber();
+    order.addUser(userService.getUser(orderPostDto.getUserId()));
+    orderRepository.save(order);
+    OrderMealboxPostDtoToOrdersMealbox(orderPostDto.getMealboxes(), order);
+    //결제 사전 정보
     PreparePostDto preparePostDto = new PreparePostDto(order.getOrderNumber(), new BigDecimal(order.getTotalPrice()));
     paymentController.postPrepare(preparePostDto);
     return orderRepository.save(order);
+  }
+
+  // MealboxId 와 quantity, user로 OrdersMealbox를 저장
+  private List<OrdersMealbox> OrderMealboxPostDtoToOrdersMealbox(List<OrderMealboxPostDto> orderMealboxPostDtos, Orders order) {
+    List<OrdersMealbox> ordersMealboxList = orderMealboxPostDtos.stream().map(orderMealboxPostDto -> {
+      Mealbox mealbox = mealboxService.findMealboxById(orderMealboxPostDto.getMealboxId());
+      int quantity = orderMealboxPostDto.getQuantity();
+      OrdersMealbox ordersMealbox = new OrdersMealbox(quantity, mealbox);
+      ordersMealbox.addOrders(order);
+      ordersMealbox.setPrice(mealbox.getTotalPrice());
+      return orderMealboxRepository.save(ordersMealbox);
+    }).collect(Collectors.toList());
+    return ordersMealboxList;
   }
 
   public Orders cancelOrder(long orderId) {
@@ -96,19 +122,25 @@ public class OrderService {
     LocalDate localDate = changeStringToLocalDate(orderGetDto.getDate());
     LocalDateTime startDate = localDate.atStartOfDay();
     LocalDateTime endDate = localDate.atTime(LocalTime.MAX);
-    return orderRepository.findAllByCreatedDateBetween(startDate, endDate, PageRequest.of(page, 5, Sort.by("createdDate").descending()));
+    return orderRepository.findAllByCreatedDateBetweenAndStatusNot(startDate, endDate, OrderStatus.NOT_PAID, PageRequest.of(page, 5, Sort.by("createdDate").descending()));
   }
 
-  public List<Orders> getOrdersByDateToList(OrderGetDto orderGetDto, long userId) {
+  public List<Orders> getOrdersByDateToList(long userId) {
     // 본인이 맞는지 검증해야함
-    LocalDate localDate = changeStringToLocalDate(orderGetDto.getDate());
-    LocalDateTime startDate = localDate.atStartOfDay();
-    LocalDateTime endDate = localDate.atTime(LocalTime.MAX);
     User user = userService.getUser(userId);
-    return orderRepository.findByCreatedDateBetweenAndUserOrderByCreatedDateDesc(startDate, endDate, user);
+    return orderRepository.findByUserAndStatusNotOrderByCreatedDateDesc(user, OrderStatus.NOT_PAID);
   }
 
   private LocalDate changeStringToLocalDate(String dateString) {
     return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+  }
+
+  public Orders setDeliveryAddress(OrderPatchDeliveryDto orderPatchDeliveryDto, long orderId) {
+    Orders order = findVerifiedOrder(orderId);
+    order.setAddressee(orderPatchDeliveryDto.getAddressee());
+    order.setZipCode(orderPatchDeliveryDto.getZipCode());
+    order.setSimpleAddress(orderPatchDeliveryDto.getSimpleAddress());
+    order.setDetailAddress(orderPatchDeliveryDto.getDetailAddress());
+    return orderRepository.save(order);
   }
 }

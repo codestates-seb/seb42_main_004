@@ -5,7 +5,7 @@ function ContentInputDiv({ id, labelName, value, onChange }) {
     <ContainerDiv>
       <label htmlFor={id}>{labelName}</label>
       {labelName && labelName === '프로필 사진' ? (
-        <button>첨부하기</button>
+        <button className="buttonstyle shadow">{value}</button>
       ) : (
         <input
           id={id}
@@ -54,6 +54,13 @@ const ContainerDiv = styled.div`
     @media (max-width: 480px) {
       width: 80%;
     }
+  }
+
+  > button {
+    height: 60%;
+    padding: 0px 10px;
+    border: none;
+    background-color: var(--gray);
   }
 
   @media (max-width: 768px) {
