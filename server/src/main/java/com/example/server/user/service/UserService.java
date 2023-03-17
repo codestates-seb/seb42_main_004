@@ -90,6 +90,20 @@ public class UserService {
     }
     return findUser;
   }
+  // 메일 인증을 통한 리커버리
+  public User recovery(String email, String mailKey, String afterPassword) {
+    //회원이 존재하는지 검증
+    User findUser = checkUserExist(email);
+    //메일 키가 일치하는지 검증
+    if(findUser.getMailKey().equals(mailKey)) {
+      findUser.setPassword(passwordEncoder.encode(afterPassword));
+      userRepository.save(findUser);
+    }
+    else throw new BusinessLogicException(UserException.MAILKEY_MISMATCH);
+
+    return findUser;
+  }
+
 
   // recovery email send
   public void recoveryEmailSend(String emailSignUp, String emailNeedToSend)
@@ -124,6 +138,11 @@ public class UserService {
   // 회원이 존재하지 않으면 예외발생
   public User checkUserExist(Long id) {
     return userRepository.findById(id)
+        .orElseThrow(() -> new BusinessLogicException(UserException.USER_NOT_FOUND));
+  }
+  // 회원이 존재하지 않으면 예외발생 by email
+  public User checkUserExist(String email) {
+    return userRepository.findByEmail(email)
         .orElseThrow(() -> new BusinessLogicException(UserException.USER_NOT_FOUND));
   }
 
