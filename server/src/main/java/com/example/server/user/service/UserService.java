@@ -325,5 +325,15 @@ public class UserService {
       throw new BusinessLogicException(UserException.MAILKEY_MISMATCH);
     }
 
+
   }
+
+  @Async
+  public void resendEmail(String email) throws MessagingException, UnsupportedEncodingException {
+    User findUser = checkUserExist(email);
+
+    sendEmail(email, findUser.getMailKey(), findUser.getId());
+  }
+
+
 }

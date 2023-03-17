@@ -4,6 +4,7 @@ import com.example.server.auth.utils.UriCreator;
 import com.example.server.user.dto.PasswordPatchDto;
 import com.example.server.user.dto.RecoveryEmailSendDto;
 import com.example.server.user.dto.RecoveryPasswordPatchDto;
+import com.example.server.user.dto.ResendEmailDto;
 import com.example.server.user.dto.UserPatchDto;
 import com.example.server.user.dto.UserPostDto;
 import com.example.server.user.dto.UserResponseDto;
@@ -107,6 +108,7 @@ public class UserController {
 
     return ResponseEntity.ok().build();
   }
+
   // 리커버리 이메일 샌드
   @PostMapping("/recovery_email_send")
   public ResponseEntity recoveryEmailSend(@RequestBody RecoveryEmailSendDto dto)
@@ -118,7 +120,7 @@ public class UserController {
 
     return ResponseEntity.ok().build();
   }
-  //TODO 리커버리 기능 구현
+
   @PatchMapping("/recovery")
   public ResponseEntity recovery(@RequestBody RecoveryPasswordPatchDto dto) {
     String email = dto.getEmail();
@@ -126,6 +128,15 @@ public class UserController {
     String afterPassword = dto.getAfterPassword();
 
     userService.recovery(email, mailKey, afterPassword);
+
+    return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/resend")
+  public ResponseEntity resend(@RequestBody ResendEmailDto dto)
+      throws MessagingException, UnsupportedEncodingException {
+    String email = dto.getEmail();
+    userService.resendEmail(email);
 
     return ResponseEntity.ok().build();
   }
