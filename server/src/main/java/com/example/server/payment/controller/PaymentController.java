@@ -9,12 +9,12 @@ import com.example.server.payment.dto.PreparePostDto;
 import com.example.server.payment.dto.ValidatePaymentDto;
 import com.example.server.payment.exception.PaymentException;
 import com.example.server.payment.repository.PayInfoRepository;
+import com.google.gson.Gson;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.PrepareData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
-import com.siot.IamportRestClient.response.Prepare;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -36,6 +36,8 @@ public class PaymentController {
   private final OrderService orderService;
   private final PayInfoRepository payInfoRepository;
   private final CartMealboxService cartMealboxService;
+
+  Gson gson = new Gson();
 
   // 생성자를 통해 REST API 와 REST API secret 입력
   public PaymentController(@Lazy OrderService orderService, PayInfoRepository payInfoRepository, CartMealboxService cartMealboxService) {
@@ -69,16 +71,22 @@ public class PaymentController {
   }
   // 결제금액 사전등록
   @PostMapping("/prepare")
-  public IamportResponse<Prepare> postPrepare(@RequestBody PreparePostDto preparePostDto)
+  public ResponseEntity postPrepare(@RequestBody PreparePostDto preparePostDto)
       throws IamportResponseException, IOException {
+    log.info("------------------- POST PREPARE -------------------");
     PrepareData prepareData = new PrepareData(preparePostDto.getMerchantUid(), preparePostDto.getAmount());
-    return iamportClient.postPrepare(prepareData);
+    IamportResponse impResponse = iamportClient.postPrepare(prepareData);
+    String response = gson.toJson(impResponse);
+    return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 
   // 사전등록된 결제정보 조회
   @GetMapping("/prepare/{merchant-uid}")
-  public IamportResponse<Prepare> getPrepare(@PathVariable("merchant-uid") String merchantUid)
+  public ResponseEntity getPrepare(@PathVariable("merchant-uid") String merchantUid)
       throws IamportResponseException, IOException {
-    return iamportClient.getPrepare(merchantUid);
+    log.info("------------------- GET PREPARE -------------------");
+    IamportResponse impResponse = iamportClient.getPrepare(merchantUid);
+    String json = gson.toJson(impResponse);
+    return new ResponseEntity<>(json, HttpStatus.OK);
   }
 }
