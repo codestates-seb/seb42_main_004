@@ -50,12 +50,9 @@ public class UserService {
 
     setDefaultMemberInfo(user);
 
-
     User save = userRepository.save(user);
 
-
     sendEmail(user.getEmail(), user.getMailKey(), user.getId());
-
 
     return save;
   }
@@ -76,10 +73,6 @@ public class UserService {
     Optional.ofNullable(user.getPhoneNumber()).ifPresent(findUser::setPhoneNumber);
     Optional.ofNullable(user.getDeliveryInformation()).ifPresent(findUser::setDeliveryInformation);
 
-//    String encryptedPassword = Optional.ofNullable(passwordEncoder.encode(user.getPassword()))
-//        .get();
-//    findUser.setPassword(encryptedPassword);
-
     userRepository.save(findUser);
     return findUser;
   }
@@ -89,12 +82,28 @@ public class UserService {
     // 회원이 존재하는지 검증
     User findUser = checkUserExist(id);
     // 비밀번호가 일치하는지 검증
-    if(passwordEncoder.encode(password).equals(passwordEncoder.encode(findUser.getPassword()))) {
+    if (passwordEncoder.encode(password).equals(passwordEncoder.encode(findUser.getPassword()))) {
       findUser.setPassword(passwordEncoder.encode(afterPassword));
       userRepository.save(findUser);
+    } else {
+      throw new BusinessLogicException(UserException.INCORRECT_PASSWORD);
     }
-    else throw new BusinessLogicException(UserException.INCORRECT_PASSWORD);
     return findUser;
+  }
+
+  // recovery email send
+  public void recoveryEmailSend(String emailSignUp, String emailNeedToSend)
+      throws MessagingException, UnsupportedEncodingException {
+    String newMailKey = createCode();
+    User findUser = userRepository.findByEmail(emailSignUp).get();
+    if (emailSignUp.equals(emailNeedToSend)) {
+      findUser.setMailKey(newMailKey);
+      userRepository.save(findUser);
+      sendEmailRecovery(emailSignUp, newMailKey);
+    } else {
+      sendEmailDismatch(emailNeedToSend);
+    }
+
   }
 
   public User getUser(Long userId) {
@@ -131,6 +140,7 @@ public class UserService {
     log.info("member encryptedPassword = {}", encryptedPassword);
   }
 
+  //simple email sender
   private void signUpEmailSend() {
     //이메일 작성
     SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
@@ -146,15 +156,15 @@ public class UserService {
     Random random = new Random();
     StringBuffer key = new StringBuffer();
 
-    for(int i=0;i<10;i++) {
+    for (int i = 0; i < 10; i++) {
       int index = random.nextInt(3);
 
       switch (index) {
-        case 0 :
-          key.append((char) ((int)random.nextInt(26) + 97));
+        case 0:
+          key.append((char) ((int) random.nextInt(26) + 97));
           break;
         case 1:
-          key.append((char) ((int)random.nextInt(26) + 65));
+          key.append((char) ((int) random.nextInt(26) + 65));
           break;
         case 2:
           key.append(random.nextInt(9));
@@ -165,7 +175,8 @@ public class UserService {
   }
 
   //메일 양식 작성
-  public MimeMessage createEmailForm(String email, String mailKey, Long id) throws MessagingException, UnsupportedEncodingException {
+  public MimeMessage createEmailForm(String email, String mailKey, Long id)
+      throws MessagingException, UnsupportedEncodingException {
 
 //    String mailKey = createCode(); //인증 코드 생성
     String setFrom = "${spring.mail.username}"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
@@ -173,28 +184,84 @@ public class UserService {
     String toEmail = email; //받는 사람
     String title = "한끼밀 이메일 인증"; //제목
     //TODO href 수정
-    String href = "http://localhost:8080/users/email_auth?id="+id+"&mailKey="+mailKey;
+    String href = "http://localhost:8080/users/email_auth?id=" + id + "&mailKey=" + mailKey;
 
     MimeMessage message = mailSender.createMimeMessage();
     message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
     message.setSubject(title); //제목 설정
     message.setFrom(setFrom); //보내는 이메일
-    message.setText(setContext(mailKey, id, href), "utf-8", "html");
+    message.setText(setContext(href), "utf-8", "html");
+
+    return message;
+  }
+
+  //메일 양식 작성
+  public MimeMessage createEmailFormRecovery(String email, String mailKey)
+      throws MessagingException, UnsupportedEncodingException {
+
+//    String mailKey = createCode(); //인증 코드 생성
+    String setFrom = "${spring.mail.username}"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
+//    String setFrom = "hgm@hgm.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
+    String toEmail = email; //받는 사람
+    String title = "한끼밀 계정 복구 서비스입니다."; //제목
+    //TODO href 수정
+    String href = "http://localhost:8080/users/recovery?email=" + email + "&mailKey=" + mailKey;
+
+    MimeMessage message = mailSender.createMimeMessage();
+    message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
+    message.setSubject(title); //제목 설정
+    message.setFrom(setFrom); //보내는 이메일
+    message.setText(setContextRecovery(href), "utf-8", "html");
+
+    return message;
+  }
+
+  public MimeMessage createEmailFormDismatch(String email)
+      throws MessagingException, UnsupportedEncodingException {
+
+//    String mailKey = createCode(); //인증 코드 생성
+    String setFrom = "${spring.mail.username}"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
+//    String setFrom = "hgm@hgm.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
+    String toEmail = email; //받는 사람
+    String title = "한끼밀 계정 복구 서비스입니다."; //제목
+    //TODO href 수정
+    String href = "http://localhost:8080/home";
+
+    MimeMessage message = mailSender.createMimeMessage();
+    message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
+    message.setSubject(title); //제목 설정
+    message.setFrom(setFrom); //보내는 이메일
+    message.setText(setContextDismatch(href), "utf-8", "html");
 
     return message;
   }
 
   //타임리프를 이용한 context 설정
-  public String setContext(String code, Long id, String href) {
+  public String setContext(String href) {
     Context context = new Context();
-    context.setVariable("code", code);
-    context.setVariable("id", id);
     context.setVariable("href", href);
     return templateEngine.process("emailAuth", context); //mail.html
 
   }
+
+  //타임리프를 이용한 context 설정
+  public String setContextRecovery(String href) {
+    Context context = new Context();
+    context.setVariable("href", href);
+    return templateEngine.process("recovery", context); //recovery.html
+
+  }
+  //타임리프를 이용한 context 설정
+  public String setContextDismatch(String href) {
+    Context context = new Context();
+    context.setVariable("href", href);
+    return templateEngine.process("dismatch", context); //dismatch.html
+
+  }
+
   //실제 메일 전송
-  public String sendEmail(String toEmail, String mailKey, Long id) throws MessagingException, UnsupportedEncodingException {
+  public String sendEmail(String toEmail, String mailKey, Long id)
+      throws MessagingException, UnsupportedEncodingException {
 
     //메일전송에 필요한 정보 설정
     MimeMessage emailForm = createEmailForm(toEmail, mailKey, id);
@@ -204,13 +271,35 @@ public class UserService {
     return mailKey;
   }
 
+  public String sendEmailRecovery(String toEmail, String mailKey)
+      throws MessagingException, UnsupportedEncodingException {
+
+    //메일전송에 필요한 정보 설정
+    MimeMessage emailForm = createEmailFormRecovery(toEmail, mailKey);
+    //실제 메일 전송
+    mailSender.send(emailForm);
+
+    return mailKey;
+  }
+
+  public void sendEmailDismatch(String toEmail)
+      throws MessagingException, UnsupportedEncodingException {
+
+    //메일전송에 필요한 정보 설정
+    MimeMessage emailForm = createEmailFormDismatch(toEmail);
+    //실제 메일 전송
+    mailSender.send(emailForm);
+
+  }
+
   public void mailKeyAuth(Long id, String mailKey) {
     User findUser = checkUserExist(id);
-    if( findUser.getMailKey().equals(mailKey) ) {
+    if (findUser.getMailKey().equals(mailKey)) {
       findUser.setStatus(UserStatus.USER_ACTiVE);
       userRepository.save(findUser);
+    } else {
+      throw new BusinessLogicException(UserException.MAILKEY_MISMATCH);
     }
-    else throw new BusinessLogicException(UserException.MAILKEY_MISMATCH);
 
   }
 }
