@@ -4,13 +4,16 @@ import com.example.server.image.entity.MealboxImage;
 import com.example.server.mealboxSet.entity.MealboxSet;
 import com.example.server.order.entity.OrdersMealbox;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Builder
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Mealbox {
@@ -43,10 +46,20 @@ public class Mealbox {
     private MealboxSet mealboxSet;
 
     public void addMealboxProduct(MealboxProduct mealboxProduct) {
+        if(mealboxProducts==null){
+            mealboxProducts = new ArrayList<>();
+        }
         mealboxProducts.add(mealboxProduct);
     }
 
+    public void clearMealboxProducts(){
+        mealboxProducts.clear();
+    }
+
     public void addOrderMealbox(OrdersMealbox ordersMealbox) {
+        if(ordersMealboxes==null){
+            ordersMealboxes = new ArrayList<>();
+        }
         ordersMealboxes.add(ordersMealbox);
     }
 

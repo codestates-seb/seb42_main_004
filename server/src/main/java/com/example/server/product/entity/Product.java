@@ -6,6 +6,7 @@ import com.example.server.mealbox.entity.MealboxProduct;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,6 +35,9 @@ public class Product {
     private ProductImage image;
 
     public void addMealboxProduct(MealboxProduct mealboxProduct){
+        if(mealboxProducts == null){
+            mealboxProducts = new ArrayList<>();
+        }
         mealboxProducts.add(mealboxProduct);
     }
 

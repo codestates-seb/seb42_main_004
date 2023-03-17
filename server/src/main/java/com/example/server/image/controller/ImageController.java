@@ -50,7 +50,7 @@ public class ImageController {
     private ImageDto updateProfile(MultipartFile file, String lastFile)  {
         try {
             String sourceFileName = file.getOriginalFilename();
-            String fileUrl = path+lastFile;
+            String fileUrl = path+"\\"+lastFile+"\\";
             String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase();
             String destinationFileName = RandomStringUtils.randomAlphabetic(32) + "." + sourceFileNameExtension;
             File destinationFile = new File(fileUrl + destinationFileName);
@@ -75,7 +75,8 @@ public class ImageController {
     @GetMapping("users/images/{userId}")
     public ResponseEntity getUserImage(@PathVariable("userId") Long userId){
         try {
-            String fileName = "C:\\Users\\윤상혁\\Downloads\\leaves-g18e083645_640.jpg";//userId에서 userImage로 들어간후 임베디드인 image에서 fileName찾기
+
+            String fileName = "C:\\Users\\윤상혁\\Downloads\\leaves-g18e083645_640.jpeg";//userId에서 userImage로 들어간후 임베디드인 image에서 fileName찾기
             FileSystemResource resource = new FileSystemResource(fileName);
             if (!resource.exists()) {
 //                throw new NotFoundImageException();

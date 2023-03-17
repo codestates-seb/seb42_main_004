@@ -35,6 +35,7 @@ public class MealboxController {
     public ResponseEntity createAdminMealbox(@RequestBody MealboxPostDto mealboxPostDto) {
         log.info("------createAdminMealbox------");
         Mealbox mealbox = mapper.mealboxPostDtoToMealbox(mealboxPostDto, Mealbox.MealboxInfo.NO_REC_MEALBOX);
+        log.info(mealbox.toString());
         mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxPostDto.getProducts());
         return new ResponseEntity(HttpStatus.CREATED);
     }

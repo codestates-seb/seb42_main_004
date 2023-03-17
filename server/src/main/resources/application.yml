@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mariadb://localhost:3307/main004db
     username: root
-    password: tnthd*6682
+    password: 1234
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
@@ -10,8 +10,8 @@ spring:
     #      ddl-auto: update #update the schema with the given values.
     properties:
       hibernate:
-        format_sql: true #To beautify or pretty print the SQL
-        show_sql: true #show sql
+        format_sql: false #To beautify or pretty print the SQL
+        show_sql: false #show sql
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -35,7 +35,7 @@ logging:
     org.hibernate.type.descriptor.sql: DEBUG #show parameter binding
 
 image:
-  path: sss
+  path: C:\Users\윤상혁\Desktop\java project\projectImage
 
 mail:
   address:

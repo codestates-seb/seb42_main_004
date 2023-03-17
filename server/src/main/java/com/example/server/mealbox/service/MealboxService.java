@@ -8,7 +8,10 @@ import com.example.server.mealbox.entity.MealboxProduct;
 import com.example.server.mealbox.exception.MealboxException;
 import com.example.server.mealbox.repository.MealboxRepository;
 
+import com.example.server.product.entity.Product;
+import com.example.server.product.repository.ProductRepository;
 import com.example.server.product.service.ProductService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -20,20 +23,27 @@ import java.util.Optional;
 
 @Transactional
 @Service
+@Slf4j
 public class MealboxService {
     private final MealboxRepository mealboxRepository;
+    private final ProductRepository productRepository;
     private final ProductService productService;
 
-    public MealboxService(MealboxRepository mealboxRepository, ProductService productService) {
+    public MealboxService(MealboxRepository mealboxRepository, ProductRepository productRepository, ProductService productService) {
         this.mealboxRepository = mealboxRepository;
+        this.productRepository = productRepository;
         this.productService = productService;
     }
 
     public Mealbox createMealboxAndMealboxProduct(Mealbox mealbox, List<MealboxPostDto.Product> mealboxDtoProducts){
         mealboxDtoProducts.forEach(mealboxDtoProduct -> {
-            new MealboxProduct(mealboxDtoProduct.getQuantity(),
-                            productService.findProductById(mealboxDtoProduct.getProductId()),
-                            mealbox);
+            Product product = productService.findProductById(mealboxDtoProduct.getProductId());
+
+            MealboxProduct.makeMealboxProduct(mealboxDtoProduct.getQuantity(), product, mealbox);
+
+//            productRepository.save(product);
+
+//            log.info(productService.findProductById(mealboxDtoProduct.getProductId()).getMealboxProducts().get(0).getId().toString());
         });
         return mealboxRepository.save(mealbox);
     }
@@ -48,14 +58,17 @@ public class MealboxService {
         mealboxRepository.delete(mealbox);
     }
 
+    //안됨 -> 수정해야됨
     public Mealbox updateMealbox(Mealbox mealboxPatcher, Long mealboxId,
                                  List<MealboxPatchDto.Product> mealboxDtoProducts){
         Mealbox mealbox = findMealboxById(mealboxId);
         mealbox.patchMealbox(mealboxPatcher.getName(), mealboxPatcher.getPrice(),
                 mealboxPatcher.getKcal(), mealboxPatcher.getWeight());
 
+        mealbox.clearMealboxProducts();
+
         mealboxDtoProducts.forEach(mealboxDtoProduct -> {
-            new MealboxProduct(mealboxDtoProduct.getQuantity(),
+            MealboxProduct.makeMealboxProduct(mealboxDtoProduct.getQuantity(),
                     productService.findProductById(mealboxDtoProduct.getProductId()),
                     mealbox);
         });

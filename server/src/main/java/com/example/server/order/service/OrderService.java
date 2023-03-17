@@ -62,7 +62,7 @@ public class OrderService {
       int quantity = orderMealboxPostDto.getQuantity();
       OrdersMealbox ordersMealbox = new OrdersMealbox(quantity, mealbox);
       ordersMealbox.addOrders(order);
-      ordersMealbox.setPrice(mealbox.getTotalPrice());
+      ordersMealbox.setPrice(mealbox.getPrice());
       return orderMealboxRepository.save(ordersMealbox);
     }).collect(Collectors.toList());
     return ordersMealboxList;
