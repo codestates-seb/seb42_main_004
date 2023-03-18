@@ -21,6 +21,7 @@ import CompleteEmail from './pages/CompleteEmail';
 import ConfirmEmail from './pages/ConfirmEmail';
 import SendEmail from './pages/SendEmail';
 import FindPassword from './pages/FindPassword';
+import ToTopButton from './components/commons/ToTopButton';
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
           <Route path="/cart/payment" element={<Payment />} />
           <Route path="/*" element={<Error />} />
         </Routes>
+        <ToTopButton />
       </div>
       <Footer />
     </>
