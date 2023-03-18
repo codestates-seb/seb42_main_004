@@ -1,8 +1,27 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import LoginButton from '../login/LoginButton';
 import InputDiv from './InputDiv';
 
 function SignupUl() {
+  const [inputValue, setInputValue] = useState({
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
+  });
+  const { name, email, password, passwordConfirm } = inputValue;
+  // const isValidEmail = email.includes('@') && email.includes('.');
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
+    console.log(inputValue);
+  };
+
   return (
     <ContainerUl>
       <li>
@@ -11,19 +30,43 @@ function SignupUl() {
         </Title>
       </li>
       <li>
-        <InputDiv name="닉네임" id="nickname" placeholder="nickname" />
-      </li>
-      <li>
-        <InputDiv name="이메일" id="email" placeholder="email" />
-      </li>
-      <li>
-        <InputDiv name="비밀번호" id="password" placeholder="password" />
+        <InputDiv
+          id="name"
+          name="name"
+          labelName="닉네임"
+          placeholder="nickname"
+          value={name}
+          onChange={handleInput}
+        />
       </li>
       <li>
         <InputDiv
-          name="비밀번호 확인"
-          id="confirmPassword"
+          id="email"
+          name="email"
+          labelName="이메일"
+          placeholder="email"
+          value={email}
+          onChange={handleInput}
+        />
+      </li>
+      <li>
+        <InputDiv
+          id="password"
+          name="password"
+          labelName="비밀번호"
           placeholder="password"
+          value={password}
+          onChange={handleInput}
+        />
+      </li>
+      <li>
+        <InputDiv
+          id="passwordConfirm"
+          name="passwordConfirm"
+          labelName="비밀번호 확인"
+          placeholder="passwordConfirm"
+          value={passwordConfirm}
+          onChange={handleInput}
         />
       </li>
       <li>

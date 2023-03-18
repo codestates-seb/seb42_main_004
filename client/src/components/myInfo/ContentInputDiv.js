@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-function ContentInputDiv({ id, labelName, value, onChange }) {
+function ContentInputDiv({ id, labelName, placeholder, value, onChange }) {
   return (
     <ContainerDiv>
       <label htmlFor={id}>{labelName}</label>
@@ -11,6 +11,7 @@ function ContentInputDiv({ id, labelName, value, onChange }) {
           id={id}
           className="inputstyle"
           type="text"
+          placeholder={placeholder}
           value={value}
           onChange={onChange}
         ></input>
