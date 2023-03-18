@@ -55,6 +55,14 @@ export default AllBoxes;
 export const MealBoxesWrapDiv = styled.div`
   flex-direction: column;
   min-height: calc(100vh - 330px - 5rem);
+
+  @media screen and (max-width: 768px) {
+    min-height: calc(100vh - 280px - 5rem);
+  }
+
+  @media screen and (max-width: 480px) {
+    min-height: calc(100vh - 230px - 5rem);
+  }
 `;
 export const MealBoxesUl = styled.ul`
   display: grid;

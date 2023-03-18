@@ -6,13 +6,9 @@ function CustomAside({ admin, bucket, buttonClick }) {
   return (
     <AsideWrapper>
       <InAsideBoxDiv>
-        <TriangleDiv />
-        <InAsideTitleDiv className="hidden">
-          <h2>Custom</h2>
-          <span>99,999kcal</span>
-        </InAsideTitleDiv>
+        <InAsideH2 className="hidden">Custom</InAsideH2>
         {bucket && (
-          <ul>
+          <ElementInBucketUl>
             <ElementInBucketLi>
               <span>{`${'오렌지주스'}`}</span>
               <span>
@@ -27,14 +23,15 @@ function CustomAside({ admin, bucket, buttonClick }) {
                 <TextButton className="linkstyle">&#10005;</TextButton>
               </span>
             </ElementInBucketLi>
-          </ul>
+          </ElementInBucketUl>
         )}
         <InAsidePriceDiv>
-          <span>합계</span>
+          <span>
+            합계 <span>(99,999kcal)</span>
+          </span>
           <span>{`${'19,900'}원`}</span>
         </InAsidePriceDiv>
       </InAsideBoxDiv>
-
       <AsideSignatureButton onClick={buttonClick}>
         {!admin
           ? '장바구니 담기'
@@ -58,61 +55,41 @@ const InAsideBoxDiv = styled.div`
   @media (max-width: 480px) {
     border-radius: 0;
 
-    .hidden,
-    > ul {
-      display: none;
-    }
-
-    > div {
-      margin: 0;
+    ::before {
+      content: '';
+      border-bottom: calc(4px * 1.732) solid var(--bucket_brown);
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      position: absolute;
+      top: -6.4px;
+      left: 50%;
     }
 
     :hover {
       border-radius: 10px 10px 0 0;
 
-      div:first-child {
+      ::before {
         display: none;
       }
 
-      .hidden {
-        display: flex;
-      }
-
+      > h2,
       > ul {
         display: block;
       }
     }
   }
 `;
-const TriangleDiv = styled.div`
-  display: none;
-  width: 0;
-  height: 0;
-  border-bottom: calc(4px * 1.732) solid var(--bucket_brown);
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  position: absolute;
-  top: -6.4px;
-  left: 50%;
+const InAsideH2 = styled.h2`
+  color: var(--white);
+  min-height: 1vh;
 
   @media (max-width: 480px) {
-    display: block;
+    display: none;
   }
 `;
-const InAsideTitleDiv = styled.div`
-  display: flex;
-  align-items: baseline;
-
-  > span {
-    font-size: 0.8rem;
-    margin-left: 0.5rem;
-    font-weight: normal;
-  }
-
-  > h2 {
-    color: var(--white);
-    list-style: none;
-    min-height: 1vh;
+const ElementInBucketUl = styled.ul`
+  @media (max-width: 480px) {
+    display: none;
   }
 `;
 const ElementInBucketLi = styled.li`
@@ -132,6 +109,17 @@ const ElementInBucketLi = styled.li`
 const InAsidePriceDiv = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 1rem;
   margin-bottom: -0.5rem;
+
+  > span {
+    > span {
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    margin: 0;
+  }
 `;

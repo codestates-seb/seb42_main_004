@@ -47,7 +47,7 @@ function Payment() {
   return (
     <ContainerDiv className="margininside">
       <PaymentUl />
-      <CartAside buttonClick={onClickPayment} />
+      <CartAside totalPrice={2000} buttonClick={onClickPayment} />
     </ContainerDiv>
   );
 }
@@ -56,5 +56,5 @@ export default Payment;
 
 const ContainerDiv = styled.div`
   min-height: 100vh;
-  justify-content: center;
+  justify-content: space-between;
 `;

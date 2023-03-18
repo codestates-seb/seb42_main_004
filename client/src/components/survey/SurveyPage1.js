@@ -31,10 +31,13 @@ function SurveyPage1() {
     dispatch(setWeight(e.target.value));
   };
 
-  let nextHandler = () => {
+  let dispatchGender = () => {
     dispatch(
       setGender(document.querySelector('input[name="gender"]:checked')?.id)
     );
+  };
+
+  let nextHandler = () => {
     navigate(`/survey/question/2`);
   };
 
@@ -58,8 +61,16 @@ function SurveyPage1() {
         <div>
           <div>성별</div>
           <GenderOptionDiv>
-            <SurveyBox group="gender" title="남성" />
-            <SurveyBox group="gender" title="여성" />
+            <SurveyBox
+              group="gender"
+              title="남성"
+              changeHandler={dispatchGender}
+            />
+            <SurveyBox
+              group="gender"
+              title="여성"
+              changeHandler={dispatchGender}
+            />
           </GenderOptionDiv>
         </div>
         <InputLabelDiv

@@ -20,7 +20,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: baram2449@gmail.com
-    password: plxlbhvgjmcnmdjf
+    password: ${GOOGLE_APP_PASSWORD}
     default-encoding: utf-8
     properties:
       mail:
