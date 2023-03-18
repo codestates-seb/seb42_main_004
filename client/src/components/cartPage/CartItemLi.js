@@ -65,6 +65,10 @@ export const CartItemBottomDiv = styled.div`
 export const CartItemBottomButtonsDiv = styled.div`
   display: flex;
   align-items: flex-end;
+
+  > div {
+    margin-right: 0.8rem;
+  }
 `;
 
 const CartItemTopButtonsDiv = styled.div`

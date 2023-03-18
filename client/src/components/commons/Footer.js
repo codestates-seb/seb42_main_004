@@ -3,7 +3,7 @@ import LogoWhite from '../../assets/logo_white.png';
 function Footer() {
   // (모바일) 사용자/관리자 커스텀 페이지, 결제 페이지, 장바구니 -> X
   let fe = [
-    { name: '맴쥬', github: '', blog: '' },
+    { name: '맹쥬', github: '', blog: '' },
     { name: '하미', github: '', blog: '' },
     { name: '유니', github: '', blog: '' },
   ];
