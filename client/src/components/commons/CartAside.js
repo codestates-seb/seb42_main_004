@@ -27,7 +27,7 @@ export const AsideWrapper = styled.aside`
   font-weight: bold;
 
   @media (max-width: 480px) {
-    z-index: 999;
+    z-index: 19;
     position: fixed;
     top: auto;
     bottom: 0;
