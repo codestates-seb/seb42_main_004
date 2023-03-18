@@ -16,12 +16,12 @@ function Custom({ admin }) {
   const navigate = useNavigate();
 
   return (
-    <MealBoxesWrapDiv className="margininside">
-      {/* <ModalDiv
+    <CustomWrapDiv className="margininside">
+      <ModalDiv
         mealBox={0}
         boxElement={1}
         closeModal={() => setOpenModal(false)}
-      /> */}
+      />
       {admin && openModal && (
         <ModalDiv closeModal={() => setOpenModal(false)} />
       )}
@@ -44,12 +44,17 @@ function Custom({ admin }) {
           }
         />
       </CustomSelectDiv>
-    </MealBoxesWrapDiv>
+    </CustomWrapDiv>
   );
 }
 
 export default Custom;
 
+const CustomWrapDiv = styled(MealBoxesWrapDiv)`
+  @media screen and (max-width: 480px) {
+    min-height: calc(100vh - 50px - 5rem);
+  }
+`;
 const CustomSelectDiv = styled.div`
   display: flex;
   justify-content: space-between;
