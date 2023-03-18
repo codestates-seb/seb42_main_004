@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
-// import { useSelector } from 'react-redux';
 
 function PreAndNextButtons({ nextHandler }) {
   let navigate = useNavigate();
@@ -9,19 +8,8 @@ function PreAndNextButtons({ nextHandler }) {
   page = Number(page);
 
   let preHandler = () => {
-    navigate(`/survey/question/${page - 1}`);
+    navigate(page === 1 ? `/surveyHome` : `/survey/question/${page - 1}`);
   };
-
-  // let nextHandler = () => {
-  //   let url = `/survey/question/${page + 1}`;
-
-  //   if (page === 2) {
-  //     get 요청
-
-  //   }
-
-  //   navigate(url);
-  // };
 
   return (
     <ButtonWrapperDiv>

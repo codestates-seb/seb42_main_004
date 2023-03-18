@@ -31,7 +31,7 @@ function OrderHistory() {
       <OrderHistoryByDateDiv />
       <OrderHistoryByDateDiv />
       <OrderHistoryByDateDiv />
-      <PaginationUl nowpage={1} totalpage={1} url="/" />
+      <PaginationUl page={1} totalpage={22} url="/" />
     </OrderHistoryPageWrapper>
   );
 }

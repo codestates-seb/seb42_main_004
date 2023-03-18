@@ -21,6 +21,7 @@ import CompleteEmail from './pages/CompleteEmail';
 import ConfirmEmail from './pages/ConfirmEmail';
 import SendEmail from './pages/SendEmail';
 import FindPassword from './pages/FindPassword';
+import SurveyHome from './pages/SurveyHome';
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/email/send/password" element={<FindPassword />} />
           <Route path="/cart/payment" element={<Payment />} />
           <Route path="/*" element={<Error />} />
+          <Route path="/surveyHome" element={<SurveyHome />} />
         </Routes>
       </div>
       <Footer />

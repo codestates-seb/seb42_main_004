@@ -1,32 +1,26 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import InputLabelDiv from '../commons/InputLabelDiv';
-import MainButton from '../commons/MainButton';
 import PreAndNextButtons from './PreAndNextButtons';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   setAge,
   setGender,
   setHeight,
   setWeight,
 } from '../../reducers/surveyQuestionReducer';
+import SurveyBox from './SurveyBox';
 
 function SurveyPage1() {
+  let navigate = useNavigate();
+
   let dispatch = useDispatch();
-  const { age, gender, height, weight } = useSelector(
+  const { age, height, weight } = useSelector(
     (state) => state.surveyQuestionReducer
   );
 
   let ageHandler = (e) => {
     dispatch(setAge(e.target.value));
-  };
-
-  let maleHandler = (e) => {
-    dispatch(setGender(e.target.name));
-    console.log(gender);
-  };
-
-  let femaleHandler = (e) => {
-    dispatch(setGender(e.target.name));
   };
 
   let heightHandler = (e) => {
@@ -35,6 +29,13 @@ function SurveyPage1() {
 
   let weightHandler = (e) => {
     dispatch(setWeight(e.target.value));
+  };
+
+  let nextHandler = () => {
+    dispatch(
+      setGender(document.querySelector('input[name="gender"]:checked')?.id)
+    );
+    navigate(`/survey/question/2`);
   };
 
   return (
@@ -57,8 +58,8 @@ function SurveyPage1() {
         <div>
           <div>성별</div>
           <GenderOptionDiv>
-            <MainButton name="남성" handler={maleHandler} />
-            <MainButton name="여성" handler={femaleHandler} />
+            <SurveyBox group="gender" title="남성" />
+            <SurveyBox group="gender" title="여성" />
           </GenderOptionDiv>
         </div>
         <InputLabelDiv
@@ -75,11 +76,11 @@ function SurveyPage1() {
           id="weight"
           value={weight}
           onChange={weightHandler}
-          placeholder="0"
+          placeholder="00.0"
           unit="kg"
           maxLength="3"
         />
-        <PreAndNextButtons />
+        <PreAndNextButtons nextHandler={nextHandler} />
       </SurveyContentDiv>
     </Article>
   );
@@ -125,12 +126,7 @@ const GenderOptionDiv = styled.div`
   display: flex;
   justify-content: space-between;
 
-  *:not(:last-child) {
-    margin-bottom: 0.5rem;
-  }
-
-  > button {
-    padding: 30px 0;
+  > * {
     flex-grow: 1;
 
     :first-child {
@@ -138,6 +134,14 @@ const GenderOptionDiv = styled.div`
     }
     :last-child {
       margin-left: 5px;
+    }
+
+    > div {
+      margin: 0;
+
+      > h3 {
+        margin: 0 auto;
+      }
     }
   }
 `;
