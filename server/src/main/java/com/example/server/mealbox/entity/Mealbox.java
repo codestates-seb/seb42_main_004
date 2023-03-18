@@ -21,11 +21,11 @@ public class Mealbox {
     @Column(name = "MEALBOX_NAME", nullable = false)
     private String name;
     @Column(nullable = false)
-    private int totalPrice;
+    private int price;
     @Column(nullable = false)
-    private int totalKcal;
+    private int kcal;
     @Column(nullable = false)
-    private int totalWeight;
+    private int weight;
     @Column(nullable = false)
     private MealboxInfo mealboxInfo;
 
@@ -50,11 +50,11 @@ public class Mealbox {
         ordersMealboxes.add(ordersMealbox);
     }
 
-    public void patchMealbox(String name, int totalPrice, int totalKcal, int totalWeight){
+    public void patchMealbox(String name, int price, int kcal, int weight){
         this.name = name;
-        this.totalPrice = totalPrice;
-        this.totalKcal = totalKcal;
-        this.totalWeight = totalWeight;
+        this.price = price;
+        this.kcal = kcal;
+        this.weight = weight;
         this.mealboxProducts.clear();
     }
 

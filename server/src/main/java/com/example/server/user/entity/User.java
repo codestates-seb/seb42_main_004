@@ -87,6 +87,7 @@ public class User extends BaseEntity {
 
   //이메일 인증이 되었는지 확인하는 키
   @Default
+  @Setter
   private String mailKey = "";
 
   @OneToOne(mappedBy = "user")

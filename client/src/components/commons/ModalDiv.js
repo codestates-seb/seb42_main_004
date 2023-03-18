@@ -134,10 +134,11 @@ const ModalContentDiv = styled.div`
   font-weight: bold;
 
   @media (max-width: 480px) {
-    padding: 50px 0 0;
+    margin: 50px 0 0;
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 50px);
     flex-direction: column;
+    border-radius: 0px;
   }
 `;
 export const TextButton = styled.button`
@@ -160,8 +161,8 @@ const ModalImgLabel = styled.label`
   justify-content: ${(props) => (props.img ? 'start' : 'center')};
   align-items: ${(props) => (props.img ? 'start' : 'center')};
   text-align: ${(props) => (props.img ? 'left' : 'center')};
-  min-width: 100px;
-  min-height: 100px;
+  min-width: 150px;
+  min-height: 150px;
   width: 12vw;
   height: 12vw;
   border-radius: 4px;
@@ -206,5 +207,9 @@ const ModalTextDiv = styled.div`
   > label {
     width: 100%;
     margin-bottom: 0.3rem;
+  }
+
+  @media (max-width: 480px) {
+    min-height: 0;
   }
 `;

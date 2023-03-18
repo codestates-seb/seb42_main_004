@@ -28,8 +28,8 @@ public class ProductService {
 
     public Product updateProduct(Long productId, Product productPatcher){
         Product product = findProductById(productId);
-        product.patchProduct(productPatcher.getName(),productPatcher.getUnitWeight(),
-                productPatcher.getUnitKcal(), productPatcher.getUnitPrice());
+        product.patchProduct(productPatcher.getName(),productPatcher.getWeight(),
+                productPatcher.getKcal(), productPatcher.getPrice());
         return productRepository.save(product);
     }
 

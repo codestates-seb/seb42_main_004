@@ -51,8 +51,8 @@ public class MealboxService {
     public Mealbox updateMealbox(Mealbox mealboxPatcher, Long mealboxId,
                                  List<MealboxPatchDto.Product> mealboxDtoProducts){
         Mealbox mealbox = findMealboxById(mealboxId);
-        mealbox.patchMealbox(mealboxPatcher.getName(), mealboxPatcher.getTotalPrice(),
-                mealboxPatcher.getTotalKcal(), mealboxPatcher.getTotalWeight());
+        mealbox.patchMealbox(mealboxPatcher.getName(), mealboxPatcher.getPrice(),
+                mealboxPatcher.getKcal(), mealboxPatcher.getWeight());
 
         mealboxDtoProducts.forEach(mealboxDtoProduct -> {
             new MealboxProduct(mealboxDtoProduct.getQuantity(),

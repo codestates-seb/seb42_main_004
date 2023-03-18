@@ -15,6 +15,19 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  mail:
+    protocol: smtp
+    host: smtp.gmail.com
+    port: 587
+    username: baram2449@gmail.com
+    password: ${GOOGLE_APP_PASSWORD}
+    default-encoding: utf-8
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
 
 logging:
   level:

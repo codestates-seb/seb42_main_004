@@ -1,20 +1,42 @@
 import styled from 'styled-components';
 import OrderHistoryPageButton from './OrderHistoryPageButton';
 import OrderHistoryUl from '../../components/orderHistory/OrderHistoryUl';
-
+import { useState } from 'react';
+// import postData from '../../util/postData';
+// import deleteData from '../../util/deleteData';
 function OrderHistoryByDateDiv() {
+  let [status, setStatus] = useState();
+
+  // 관리자
+  let statusHandler = (e) => {
+    setStatus(e.target.value);
+  };
+
+  let adminPostStatus = () => {
+    // let data = postData();
+    console.log(status);
+  };
+
+  // 사용자
+  let userDeleteOrder = () => {
+    // let data = deleteData();
+  };
+
   return (
     <HistoryByDateDiv>
       <H3>2023.04.18</H3>
       <TopMenuDiv>
         <div>23041898292304189829</div>
         <UserTopMenuDiv>
-          <OrderHistoryPageButton text={'주문 취소'} />
+          <OrderHistoryPageButton
+            text={'주문 취소'}
+            onClick={userDeleteOrder}
+          />
           <div>주문 완료</div>
         </UserTopMenuDiv>
         <AdminTopMenuDiv>
           <div>맹쥬님</div>
-          <select name="#">
+          <select name="#" onChange={statusHandler}>
             <option value="주문 완료">주문 완료</option>
             <option value="배송중">배송중</option>
             <option value="배송 완료">배송 완료</option>
@@ -24,7 +46,7 @@ function OrderHistoryByDateDiv() {
             <option value="반품 대기중">반품 대기중</option>
             <option value="반품 완료">반품 완료</option>
           </select>
-          <button>확인</button>
+          <button onClick={adminPostStatus}>확인</button>
         </AdminTopMenuDiv>
       </TopMenuDiv>
       <OrderHistoryUl />
