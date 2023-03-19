@@ -85,10 +85,10 @@ const TopMenuDiv = styled.div`
 const BottomMenuDiv = styled.div`
   margin-bottom: 10px;
   text-align: right;
-  font-weight: bold;
 
   > span:first-child {
     margin-right: 10px;
+    font-family: 'IBM Plex Sans KR', sans-serif;
 
     @media (max-width: 480px) {
       margin-right: 8px;
@@ -96,7 +96,8 @@ const BottomMenuDiv = styled.div`
   }
 
   > span:last-child {
-    font-size: large;
+    font-size: 1.5rem;
+    font-family: 'IBM Plex Sans KR', sans-serif;
   }
 `;
 
