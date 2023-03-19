@@ -38,10 +38,11 @@ public class Mealbox {
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
     private List<OrdersMealbox> ordersMealboxes;
 
-    @OneToOne(mappedBy = "mealbox")
+    @OneToOne(mappedBy = "mealbox", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter
     private MealboxImage image;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "MEALBOX_SETS_ID")
     private MealboxSet mealboxSet;
 
@@ -50,10 +51,6 @@ public class Mealbox {
             mealboxProducts = new ArrayList<>();
         }
         mealboxProducts.add(mealboxProduct);
-    }
-
-    public void clearMealboxProducts(){
-        mealboxProducts.clear();
     }
 
     public void addOrderMealbox(OrdersMealbox ordersMealbox) {

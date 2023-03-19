@@ -1,6 +1,5 @@
 package com.example.server.product.entity;
 
-import com.example.server.image.entity.Image;
 import com.example.server.image.entity.ProductImage;
 import com.example.server.mealbox.entity.MealboxProduct;
 import lombok.*;
@@ -28,10 +27,11 @@ public class Product {
     @Column(nullable = false)
     private int price;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<MealboxProduct> mealboxProducts;
 
-    @OneToOne(mappedBy = "product")
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter
     private ProductImage image;
 
     public void addMealboxProduct(MealboxProduct mealboxProduct){

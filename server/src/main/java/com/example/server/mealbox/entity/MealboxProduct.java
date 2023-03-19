@@ -30,8 +30,8 @@ public class MealboxProduct {
     public static MealboxProduct makeMealboxProduct(int quantity, Product product, Mealbox mealbox){
         MealboxProduct mealboxProduct =
                 MealboxProduct.builder().quantity(quantity).product(product).mealbox(mealbox).build();
-        product.addMealboxProduct(mealboxProduct);
         mealbox.addMealboxProduct(mealboxProduct);
+        product.addMealboxProduct(mealboxProduct);
         return mealboxProduct;
     }
 

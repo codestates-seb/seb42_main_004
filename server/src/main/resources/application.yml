@@ -46,4 +46,13 @@ jwt:
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
 
+cloud:
+  aws:
+    credentials.access-key:
+    credentials.secret-key:
+    s3.bucket: codestates-main-project-image
+    region.static: ap-northeast-2
+    stack.auto: false
+
+
 

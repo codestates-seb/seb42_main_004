@@ -13,11 +13,11 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Embeddable
-public class Image {
+public class ImageInfo {
     @Column(nullable = false)
     private String imageName;
     @Column(nullable = false)
     private String oriName;
     @Column(nullable = false)
-    private String path;
+    private String filePath;
 }
