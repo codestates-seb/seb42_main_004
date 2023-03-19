@@ -10,7 +10,7 @@ public class MealboxPatchDto {
     private int price;
     private int kcal;
     private int weight;
-    private List<MealboxPatchDto.Product> products;
+    private List<Product> products;
     @Getter
     public static class Product{
         private Long productId;

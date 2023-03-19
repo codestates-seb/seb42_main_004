@@ -3,6 +3,7 @@ package com.example.server.product.controller;
 import com.example.server.dto.MultiResponseDto;
 import com.example.server.dto.PageInfo;
 import com.example.server.dto.SingleResponseDto;
+import com.example.server.image.entity.ImageInfo;
 import com.example.server.product.dto.ProductOnlyResponseDto;
 import com.example.server.product.dto.ProductPatchDto;
 import com.example.server.product.dto.ProductPostDto;
@@ -17,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Positive;
 import java.util.ArrayList;
@@ -35,22 +37,33 @@ public class ProductController {
         this.productService = productService;
     }
 
+    //이미지 생성 테스트
+    @PostMapping("/admin/products/image/{productId}")
+    public ResponseEntity uploadProductImage(@PathVariable("productId") Long productId,
+                                           @RequestBody MultipartFile file){
+        log.info("------uploadProductImage------");
+        ImageInfo imageInfo = productService.uploadProductImage(productId, file);
+        return new ResponseEntity(imageInfo, HttpStatus.CREATED);
+    }
+
     //관리자가 개별상품 생성하기
     @PostMapping("/admin/products")
-    public ResponseEntity createAdminProduct(@RequestBody ProductPostDto productPostDto){
+    public ResponseEntity createAdminProduct(@RequestPart (value = "productDto") ProductPostDto productPostDto,
+                                             @RequestPart (value = "file", required = false) MultipartFile file){
         log.info("--------createProduct-------");
         Product product = mapper.productPostDtoToProduct(productPostDto);
-        productService.createProduct(product);
+        productService.createProduct(product, file);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     //관리자가 개별상품 수정하기
     @PatchMapping("/admin/products/{productId}")
     public ResponseEntity updateAdminProduct(@PathVariable("productId") Long productId,
-                                             @RequestBody ProductPatchDto productPatchDto){
+                                             @RequestPart (value = "productDto") ProductPatchDto productPatchDto,
+                                             @RequestPart (value = "file", required = false) MultipartFile file){
         log.info("--------updateProduct-------");
         Product productPatcher = mapper.productPatchDtoToProduct(productPatchDto);
-        productService.updateProduct(productId, productPatcher);
+        productService.updateProduct(productId, productPatcher,file);
         return new ResponseEntity(HttpStatus.OK);
     }
 

@@ -1,5 +1,6 @@
 package com.example.server.product.mapper;
 
+import com.example.server.image.entity.ImageInfo;
 import com.example.server.product.dto.ProductOnlyResponseDto;
 import com.example.server.product.dto.ProductPatchDto;
 import com.example.server.product.dto.ProductPostDto;
@@ -17,13 +18,20 @@ public interface ProductMapper {
 
     default List<ProductOnlyResponseDto> productsToProductOnlyResponseDtos(List<Product> products){
         return products.stream().map(product ->{
-             return ProductOnlyResponseDto.builder()
+            ProductOnlyResponseDto productOnlyResponseDto = ProductOnlyResponseDto.builder()
                     .productId(product.getId())
                     .name(product.getName())
                     .kcal(product.getKcal())
                     .weight(product.getWeight())
                     .price(product.getPrice())
                      .build();
+
+            if(product.getImage()!=null){
+                ImageInfo imageInfo = product.getImage().getImageInfo();
+                productOnlyResponseDto.setImagePath(imageInfo.getFilePath()+"/"+imageInfo.getImageName());
+            }
+
+            return productOnlyResponseDto;
         }).collect(Collectors.toList());
     }
 }
