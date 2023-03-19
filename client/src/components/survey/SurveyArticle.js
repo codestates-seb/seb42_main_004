@@ -4,11 +4,11 @@ import SurveyPage3 from './SurveyPage3';
 
 function SurveyArticle({ page }) {
   switch (page) {
-    case '1':
+    case 1:
       return <SurveyPage1 />;
-    case '2':
+    case 2:
       return <SurveyPage2 />;
-    case '3':
+    case 3:
       return <SurveyPage3 />;
   }
 }

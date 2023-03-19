@@ -1,14 +1,19 @@
 package com.example.server.survey.util;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+
 
 @Getter
-@AllArgsConstructor
 public enum Gender {
     MALE("male"),
     FEMALE("female");
 
     private String gender;
+
+    @JsonCreator
+    Gender(String gender) {
+        this.gender = gender;
+    }
 }

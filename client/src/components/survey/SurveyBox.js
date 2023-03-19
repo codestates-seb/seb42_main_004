@@ -1,38 +1,56 @@
+// import { useSelector } from 'react-redux';
+// import { useEffect } from 'react';
 import styled from 'styled-components';
 
-function SurveyBox({ group, title, info, detail, children }) {
+function SurveyBox({
+  id,
+  group,
+  info,
+  detail,
+  children,
+  changeHandler,
+  checked,
+}) {
   return (
-    <SurveyBoxWrapper>
-      <label htmlFor={title}>
-        <Input type="radio" name={group} id={title} />
+    <>
+      <Input
+        type="radio"
+        name={group}
+        id={id}
+        onChange={changeHandler}
+        checked={checked}
+      />
+      <SurveyBoxLabel htmlFor={id}>
         <BoxTop>
-          <h3>{title}</h3>
+          <h3>{id === '매우' ? id + ' 활동적' : id}</h3>
           {info}
         </BoxTop>
         <div>{detail ? detail : children}</div>
-      </label>
-    </SurveyBoxWrapper>
+      </SurveyBoxLabel>
+    </>
   );
 }
 
 export default SurveyBox;
 
-const SurveyBoxWrapper = styled.div`
-  background-color: ${(props) =>
-    props.check ? `var(--signature)` : `var(--product_cocoa)`};
+const SurveyBoxLabel = styled.label`
+  display: block;
+  background-color: var(--product_cocoa);
   border-radius: 10px;
   padding: 15px;
 
-  :hover,
-  :focus-within {
-    background-color: var(--signature);
-    color: var(--white);
+  :hover {
+    background-color: var(--bucket_brown_070);
   }
 `;
 
 const Input = styled.input`
   position: absolute;
   /* z-index: -999; */
+  :checked + label {
+    background-color: var(--signature);
+    color: var(--white);
+  }
 `;
 
 const BoxTop = styled.div`

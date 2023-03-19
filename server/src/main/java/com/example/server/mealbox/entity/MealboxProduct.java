@@ -27,13 +27,14 @@ public class MealboxProduct {
     @JoinColumn(name="MEALBOX_ID")
     private Mealbox mealbox;
 
-    public MealboxProduct(int quantity, Product product, Mealbox mealbox) {
-        this.quantity = quantity;
-        this.product = product;
-        this.mealbox = mealbox;
-        product.addMealboxProduct(this);
-        mealbox.addMealboxProduct(this);
+    public static MealboxProduct makeMealboxProduct(int quantity, Product product, Mealbox mealbox){
+        MealboxProduct mealboxProduct =
+                MealboxProduct.builder().quantity(quantity).product(product).mealbox(mealbox).build();
+        mealbox.addMealboxProduct(mealboxProduct);
+        product.addMealboxProduct(mealboxProduct);
+        return mealboxProduct;
     }
+
 
     public void changeQuantity(int quantity){
         this.quantity = quantity;

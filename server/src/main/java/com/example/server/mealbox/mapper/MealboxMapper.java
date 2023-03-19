@@ -1,5 +1,6 @@
 package com.example.server.mealbox.mapper;
 
+import com.example.server.image.entity.ImageInfo;
 import com.example.server.mealbox.dto.MealboxPatchDto;
 import com.example.server.mealbox.dto.MealboxPostDto;
 import com.example.server.mealbox.dto.OnlyMealboxResponseDto;
@@ -44,7 +45,7 @@ public interface MealboxMapper {
                             .build();
                 }).collect(Collectors.toList());
 
-        return OnlyMealboxResponseDto.builder()
+        OnlyMealboxResponseDto responseDto = OnlyMealboxResponseDto.builder()
                 .mealboxId(mealbox.getId())
                 .name(mealbox.getName())
                 .mealboxInfo(mealbox.getMealboxInfo())
@@ -53,6 +54,13 @@ public interface MealboxMapper {
                 .price(mealbox.getPrice())
                 .products(productResponseDtos)
                 .build();
+
+        if(mealbox.getImage()!=null) {
+            ImageInfo imageInfo = mealbox.getImage().getImageInfo();
+            responseDto.setImagePath(imageInfo.getFilePath()+"/"+imageInfo.getImageName());
+        }
+
+        return responseDto;
     }
 
     default List<OnlyMealboxResponseDto> mealboxListToMealboxResponseDtoList(List<Mealbox> mealboxList) {
