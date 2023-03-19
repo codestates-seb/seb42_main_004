@@ -6,6 +6,7 @@ import { FaShoppingCart } from 'react-icons/fa';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { TfiMenu } from 'react-icons/tfi';
 import { IoIosArrowForward } from 'react-icons/io';
+import CartCounter from './CartCounter';
 
 function Header() {
   const [isNav, setIsNav] = useState(false);
@@ -41,6 +42,7 @@ function Header() {
             </li>
             <li>
               <FaShoppingCart size={25} />
+              <CartCounter />
             </li>
           </IconsUl>
         </nav>
@@ -181,6 +183,7 @@ const IconsUl = styled.ul`
   }
 
   > li:last-child {
+    position: relative;
     height: 70px;
     display: flex;
     align-items: center;
