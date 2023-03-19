@@ -1,6 +1,7 @@
 package com.example.server.user.service;
 
 import com.example.server.auth.utils.CustomAuthorityUtils;
+import com.example.server.cart.entity.Cart;
 import com.example.server.exception.BusinessLogicException;
 import com.example.server.user.data.UserStatus;
 import com.example.server.user.entity.User;
@@ -52,6 +53,8 @@ public class UserService {
     verifyExistsEmail(user.getEmail());
 
     setDefaultMemberInfo(user);
+
+    user.setCart(Cart.builder().user(user).build());
 
     User save = userRepository.save(user);
 
