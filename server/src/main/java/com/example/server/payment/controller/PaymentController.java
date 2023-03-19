@@ -56,6 +56,7 @@ public class PaymentController {
   @PostMapping("/validation")
   public ResponseEntity validatePayment(@RequestBody ValidatePaymentDto validatePaymentDto)
       throws IamportResponseException, IOException {
+    log.info("------------------- PAYMENT VALIDATION -------------------");
     Orders order = orderService.findByOrderNumber(validatePaymentDto.getMerchantUid());
     int serverPrice = order.getTotalPrice();
     int impPrice = iamportClient.paymentByImpUid(validatePaymentDto.getImpUid()).getResponse().getAmount().intValue();
