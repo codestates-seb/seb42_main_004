@@ -1,10 +1,18 @@
 import styled from 'styled-components';
 
-function InputDiv({ name, id, placeholder }) {
+function InputDiv({ id, name, labelName, placeholder, value, onChange }) {
   return (
     <ContainerDiv>
-      <label htmlFor={id}>{name}</label>
-      <input className="inputstyle" id={id} placeholder={placeholder}></input>
+      <label htmlFor={id}>{labelName}</label>
+      <input
+        id={id}
+        name={name}
+        className="inputstyle"
+        type={name && name.includes('password') ? 'password' : 'text'}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      ></input>
     </ContainerDiv>
   );
 }
