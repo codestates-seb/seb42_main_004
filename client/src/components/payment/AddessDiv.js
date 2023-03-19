@@ -86,7 +86,7 @@ const TitleDiv = styled.div`
   margin-right: 1.5rem;
   display: flex;
   justify-content: flex-end;
-  font-family: 'IBM Plex Sans KR', sans- + serif;
+  font-family: 'IBM Plex Sans KR', sans-serif;
 
   @media (max-width: 480px) {
     width: 80%;
