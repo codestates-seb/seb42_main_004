@@ -12,10 +12,9 @@ function SurveyPage2({ name = '맹쥬' }) {
   let navigate = useNavigate();
 
   // 활동량 상태 변경
-  let dispatchActive = () => {
-    dispatch(
-      setActive(document.querySelector('input[name="active"]:checked')?.id)
-    );
+  let dispatchActive = (e) => {
+    let { id } = e.target;
+    dispatch(setActive(id));
   };
 
   // 다이어트 플랜 get 요청 + 화면 전환
@@ -39,28 +38,32 @@ function SurveyPage2({ name = '맹쥬' }) {
       </ExplanationDiv>
       <Option>
         <SurveyBox
+          id="비활동적"
           group="active"
-          title="비활동적"
           detail="대부분 앉아있는 직장인 등"
           changeHandler={dispatchActive}
+          checked={active === '비활동적'}
         />
         <SurveyBox
+          id="저활동적"
           group="active"
-          title="저활동적"
           detail="주 1~3회 가벼운 운동"
           changeHandler={dispatchActive}
+          checked={active === '저활동적'}
         />
         <SurveyBox
+          id="활동적"
           group="active"
-          title="활동적"
           detail="매일 30분 이상 자발적 운동"
           changeHandler={dispatchActive}
+          checked={active === '활동적'}
         />
         <SurveyBox
+          id="매우"
           group="active"
-          title="매우"
           detail="주로 선수, 거의 매일 2회 운동"
           changeHandler={dispatchActive}
+          checked={active === '매우'}
         />
       </Option>
       <PreAndNextButtons nextHandler={nextHandler} />

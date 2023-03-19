@@ -1,7 +1,10 @@
 import styled from 'styled-components';
 import LogoWhite from '../../assets/logo_white.png';
+import checkFooter from '../../util/checkFooter';
+
 function Footer() {
   // (모바일) 사용자/관리자 커스텀 페이지, 결제 페이지, 장바구니 -> X
+
   let fe = [
     { name: '맹쥬', github: '', blog: '' },
     { name: '하미', github: '', blog: '' },
@@ -15,7 +18,7 @@ function Footer() {
   ];
 
   return (
-    <FooterWrapper className="marginbase">
+    <FooterWrapper className="marginbase" isVisible={!checkFooter()}>
       <FooterContent className="margininside">
         <LogoImg src={LogoWhite} alt="logo" />
         <LineHr />
@@ -55,6 +58,7 @@ const FooterWrapper = styled.footer`
   }
 
   @media (max-width: 480px) {
+    display: ${(props) => (props.isVisible ? `block` : `none`)};
     height: 180px;
   }
 `;

@@ -12,4 +12,6 @@ function MealBoxEditLink() {
 
 export default MealBoxEditLink;
 
-const Button = styled(TextButton)``;
+const Button = styled(TextButton)`
+  margin-bottom: -0.1rem;
+`;

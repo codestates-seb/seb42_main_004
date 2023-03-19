@@ -19,6 +19,7 @@ function CartItemLi() {
       <CartItemBottomDiv>
         <MealBoxItemsDiv />
         <CartItemBottomButtonsDiv>
+          <div>320kcal</div>
           <div>17,000원</div>
           <MealBoxEditLink />
         </CartItemBottomButtonsDiv>
@@ -53,6 +54,7 @@ export const CartItemTopDiv = styled.div`
 
   > h2 {
     color: var(--white);
+    font-family: 'IBM Plex Sans KR', sans-serif;
   }
 `;
 
@@ -66,6 +68,11 @@ export const CartItemBottomButtonsDiv = styled.div`
   display: flex;
   align-items: flex-end;
 
+  > *:not(:first-child) {
+    font-size: 1.2rem;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+  }
+
   > div {
     margin-right: 0.8rem;
   }
@@ -75,4 +82,9 @@ const CartItemTopButtonsDiv = styled.div`
   flex-grow: 1;
   display: flex;
   justify-content: end;
+
+  > div {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-size: 1.2rem;
+  }
 `;
