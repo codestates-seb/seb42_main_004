@@ -53,5 +53,3 @@ class InitUser {
     userRepository.saveAll(user);
   }
 }
-
-

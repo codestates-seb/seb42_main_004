@@ -1,23 +1,23 @@
 package com.example.server.image.entity;
 
 import com.example.server.mealbox.entity.Mealbox;
-import com.example.server.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Getter
 @Entity
-public class MealboxImage /*extends JpaBase*/{
+public class MealboxImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEALBOX_IMAGE_ID")
     private Long id;
 
     @Embedded
-    private Image image;
+    private ImageInfo imageInfo;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEALBOX_ID")
