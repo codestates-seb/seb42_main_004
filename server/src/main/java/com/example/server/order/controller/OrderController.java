@@ -15,6 +15,7 @@ import java.util.List;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,17 +27,20 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Validated
 @RequiredArgsConstructor
+@Slf4j
 public class OrderController {
   private final OrderService orderService;
   private final OrderMapper mapper;
   @PostMapping("/orders")
-  public ResponseEntity postOrder(@RequestBody OrderPostDto orderPostDto)
+  public ResponseEntity postOrder(@RequestBody OrderPostDto orderPostDto,
+      @RequestHeader("Authorization") String auth)
       throws IamportResponseException, IOException { // 결제 전 주문 생성
     Orders order = mapper.orderPostDtoToOrders(orderPostDto);
     Orders createdOrder = orderService.createOrder(order, orderPostDto);
@@ -46,6 +50,8 @@ public class OrderController {
     String uri = String.format("redirect:/orders/checkout/%d",createdOrder.getOrderId());
     HttpHeaders headers = new HttpHeaders();
     headers.setLocation(URI.create(uri));
+
+    log.info("------------------- Redirect -------------------");
     return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
   }
 

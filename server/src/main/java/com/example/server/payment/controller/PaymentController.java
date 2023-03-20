@@ -78,6 +78,7 @@ public class PaymentController {
     PrepareData prepareData = new PrepareData(preparePostDto.getMerchantUid(), preparePostDto.getAmount());
     IamportResponse impResponse = iamportClient.postPrepare(prepareData);
     String response = gson.toJson(impResponse);
+    log.info(response);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 
