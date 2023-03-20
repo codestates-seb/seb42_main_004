@@ -19,7 +19,6 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
       Authentication authentication) throws IOException, ServletException {
-    log.info("# Authenticated successfully!");
     Gson gson = new Gson();
 
     log.info("# Authenticated successfully!");
