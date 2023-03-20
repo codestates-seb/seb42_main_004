@@ -121,6 +121,7 @@ public class UserController {
     return ResponseEntity.ok().build();
   }
 
+  // 리커버리 진행
   @PatchMapping("/recovery")
   public ResponseEntity recovery(@RequestBody RecoveryPasswordPatchDto dto) {
     String email = dto.getEmail();
@@ -132,6 +133,7 @@ public class UserController {
     return ResponseEntity.ok().build();
   }
 
+  //이메일 인증 다시 보내기
   @GetMapping("/resend")
   public ResponseEntity resend(@RequestBody ResendEmailDto dto)
       throws MessagingException, UnsupportedEncodingException {
