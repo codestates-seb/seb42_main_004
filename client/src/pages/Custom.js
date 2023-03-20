@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ModalDiv from '../components/commons/ModalDiv';
 import CustomAside from '../components/custom/CustomAside';
+import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
 import FilterSearchDiv from '../components/commons/FilterSearchDiv';
 import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
 import { MealBoxesWrapDiv } from './AllBoxes';
 import useGET from '../util/useGET';
-import GetTemplate from '../components/commons/GetTemplate';
+import postData from '../util/postData';
+import { initializeCustom } from '../reducers/customReducer';
 
 function Custom({ admin }) {
   const [openModal, setOpenModal] = useState(false);
@@ -17,7 +20,9 @@ function Custom({ admin }) {
   const [searchWord, setSearchWord] = useState('');
   const [path, setPath] = useState('page=1&sort=id&dir=ASC');
   const [res, isPending, error] = useGET(`/products?${path}`);
+  const { custom } = useSelector((state) => state.customReducer);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const searchProducts = () => {
     setPage(1);
@@ -39,6 +44,25 @@ function Custom({ admin }) {
   useEffect(() => {
     getProducts();
   }, [page]);
+
+  const addCustomToCart = () => {
+    postData(`/users/cart/custom/${'cartId'}`, custom).then(() => {
+      dispatch(initializeCustom());
+      if (
+        window.confirm(
+          'Custom 밀박스가 장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?'
+        )
+      ) {
+        navigate('/cart');
+      } else navigate('/');
+    });
+  };
+
+  const totalQuantity = custom.products.reduce((a, c) => a + c.quantity, 0);
+  const productsId = custom.products.map((product) => product.id);
+  const productInCustom = (id) => {
+    return productsId.indexOf(id);
+  };
 
   return (
     <GetTemplate isPending={isPending} error={error} res={res.data}>
@@ -62,12 +86,19 @@ function Custom({ admin }) {
             <BoxElementCardUl>
               {res?.data?.map((product) => (
                 <li key={product.productId}>
-                  <BoxElementCardDiv />
+                  <BoxElementCardDiv
+                    product={product}
+                    quantity={
+                      custom.products[productInCustom(product.productId)]
+                        ?.quantity
+                    }
+                    totalQuantity={totalQuantity}
+                  />
                 </li>
               ))}
-              <li>
+              {/* <li>
                 <BoxElementCardDiv />
-              </li>
+              </li> */}
             </BoxElementCardUl>
             <PaginationUl
               page={res?.pageInfo?.page}
@@ -77,10 +108,8 @@ function Custom({ admin }) {
           </ElementsContainerDiv>
           <CustomAside
             admin={0}
-            bucket={1}
-            buttonClick={
-              admin ? () => setOpenModal(true) : () => navigate('/cart')
-            }
+            custom={custom}
+            buttonClick={() => (admin ? setOpenModal(true) : addCustomToCart())}
           />
         </CustomSelectDiv>
       </CustomWrapDiv>
