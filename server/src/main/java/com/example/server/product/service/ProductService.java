@@ -38,21 +38,12 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public ImageInfo uploadProductImage(Long productId, MultipartFile file){
-        Product product = findProductById(productId);
-        ProductImage image = imageService.uploadProductImage(file, product);
-        product.setImage(image);
-
-        productRepository.save(product);
-        return image.getImageInfo();
-    }
-
     public Product updateProduct(Long productId, Product productPatcher, MultipartFile file){
         Product product = findProductById(productId);
         product.patchProduct(productPatcher.getName(),productPatcher.getWeight(),
                 productPatcher.getKcal(), productPatcher.getPrice());
         //이미지 있으면 업로드
-        if(!file.isEmpty()){
+        if(file!=null & !file.isEmpty()){
             ProductImage image = imageService.uploadProductImage(file, product);
             product.setImage(image);
         }
