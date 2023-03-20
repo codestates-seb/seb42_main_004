@@ -13,7 +13,7 @@ function AllBoxes() {
   const [res, isPending, error] = useGET(`/mealboxes/rec?page=${page}`);
 
   return (
-    <GetTemplate isPending={isPending} error={error} res={res.data}>
+    <GetTemplate isPending={isPending} error={error} res={res?.data}>
       <MealBoxesWrapDiv className="margininside">
         <BannerLink />
         <h1>{'맹쥬'}님 오늘도 건강한 하루되세요(｡•̀ᴗ-)✧</h1>
@@ -27,7 +27,7 @@ function AllBoxes() {
               <MealBoxCardDiv mealBox={mealbox} />
             </li>
           ))}
-          <li>
+          {/* <li>
             <MealBoxCardDiv mealBox={1} />
           </li>
           <li>
@@ -50,7 +50,7 @@ function AllBoxes() {
           </li>
           <li>
             <MealBoxCardDiv mealBox={1} />
-          </li>
+          </li> */}
         </MealBoxesUl>
         <PaginationUl
           page={res?.pageInfo?.page}

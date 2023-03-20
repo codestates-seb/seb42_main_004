@@ -1,25 +1,15 @@
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
 import blankbucket from '../../assets/blankbucket.png';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { addProduct } from '../../reducers/customReducer';
-// import deleteData from '../../util/deleteData';
-// import postData from '../../util/postData';
+import goToCustom from '../../util/goToCustom';
+import deleteData from '../../util/deleteData';
+import postData from '../../util/postData';
 
 function MealBoxCardDiv({ mealBox, custom, admin }) {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const goToCustom = () => {
-    if (mealBox?.products) {
-      mealBox.products.forEach((product) => dispatch(addProduct(product)));
-    }
-    navigate('/custom');
-  };
-
   const addToCart = () => {
-    // postData(`/users/cart/{userId}`).then(() => alert(`${mealBox.mealboxName}이 장바구니에 추가되었습니다.}`));
+    postData(`/users/cart/{userId}`).then(() =>
+      alert(`${mealBox.mealboxName}이 장바구니에 추가되었습니다.}`)
+    );
     console.log('추가 완료');
   };
 
@@ -29,7 +19,9 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
         `${mealBox.mealboxName}을 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
       )
     ) {
-      // deleteData(`/admin/mealboxes/${mealBox.mealboxId}`).then(()=> alert(`${mealBox.mealboxName}이 삭제되었습니다.}`));
+      deleteData(`/admin/mealboxes/${mealBox.mealboxId}`).then(() =>
+        alert(`${mealBox.mealboxName}이 삭제되었습니다.}`)
+      );
       console.log('삭제 완료');
     }
   };
@@ -39,34 +31,34 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
       <MealBoxImgDiv className="shadow">
         {mealBox && (
           <p>
-            <span>500g</span>
-            <span>500kcal</span>
+            <span>{mealBox.weight.toLocaleString('ko-KR')}g(ml)</span>
+            <span>{mealBox.weight.toLocaleString('ko-KR')}kcal</span>
           </p>
         )}
-        <MealBoxImg
-          alt=""
-          src={
-            custom
-              ? blankbucket
-              : 'https://www.shinsegaegroupnewsroom.com/wp-content/uploads/2022/06/%EC%8B%A0%EC%84%B8%EA%B3%84%ED%91%B8%EB%93%9C_%EB%B3%B8%EB%AC%B8-1.jpg'
-          }
-        />
+        <MealBoxImg alt="" src={custom ? blankbucket : mealBox.imagePath} />
         {mealBox && (
           <MealBoxDesUl>
-            <li>
+            {mealBox.products.map((product) => {
+              <li key={product.productId}>
+                <span>{product.name}</span>
+                <span>{product.weight.toLocaleString('ko-KR')}g(ml)</span>
+                <span>{product.kcal.toLocaleString('ko-KR')}kcal</span>
+              </li>;
+            })}
+            {/* <li>
               <span>케일주스</span>
               <span>100ml</span>
               <span>100kcal</span>
-            </li>
+            </li> */}
           </MealBoxDesUl>
         )}
       </MealBoxImgDiv>
       <MealBoxH3 custom={custom && 1}>
-        {custom ? `${admin ? '새로운' : '나만의'} 밀박스 만들기` : '밀박스A'}
+        {custom ? `${admin ? '새로운' : '나만의'} 밀박스 만들기` : mealBox.name}
       </MealBoxH3>
       <MealBoxCardButtonDiv custom={custom && 1}>
         <MainButton
-          handler={goToCustom}
+          handler={goToCustom(mealBox, admin)}
           name={!admin || custom ? '커스텀 하기' : '밀박스 수정'}
         />
         {!custom && (
@@ -75,7 +67,7 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
               handler={admin ? deleteProduct : addToCart}
               name={admin ? '밀박스 삭제' : '장바구니 추가'}
             />
-            <MainButton name="가격" />
+            <MainButton name={mealBox.price.toLocaleString('ko-KR') + '원'} />
           </>
         )}
       </MealBoxCardButtonDiv>
