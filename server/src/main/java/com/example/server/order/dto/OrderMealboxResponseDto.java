@@ -9,5 +9,6 @@ public class OrderMealboxResponseDto {  // 주문 목록 조회시 필요
     private String mealboxName;
     private int mealboxPrice;
     private int mealboxQuantity;
+    private int mealboxKcal;
     private List<MealboxProductResponseDto> products;
 }

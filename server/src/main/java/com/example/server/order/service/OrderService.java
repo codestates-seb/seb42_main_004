@@ -63,6 +63,7 @@ public class OrderService {
       OrdersMealbox ordersMealbox = new OrdersMealbox(quantity, mealbox);
       ordersMealbox.addOrders(order);
       ordersMealbox.setPrice(mealbox.getPrice());
+      ordersMealbox.setKcal(mealbox.getKcal());
       return orderMealboxRepository.save(ordersMealbox);
     }).collect(Collectors.toList());
     return ordersMealboxList;
