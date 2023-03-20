@@ -42,7 +42,7 @@ function SignupUl() {
     ) {
       postData('/users', { name, email, password }).then((data) => {
         if (data.status === 409) {
-          navigate('/email/send');
+          navigate('/email/send', { state: { email } });
         } else {
           navigate('/email/confirm');
         }
