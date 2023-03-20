@@ -1,50 +1,119 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ModalDiv from '../components/commons/ModalDiv';
 import CustomAside from '../components/custom/CustomAside';
+import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
 import FilterSearchDiv from '../components/commons/FilterSearchDiv';
 import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
 import { MealBoxesWrapDiv } from './AllBoxes';
-// import useGET from '../util/useGET';
+import useGET from '../util/useGET';
+import postData from '../util/postData';
+import { initializeCustom } from '../reducers/customReducer';
 
 function Custom({ admin }) {
   const [openModal, setOpenModal] = useState(false);
   const [page, setPage] = useState(1);
-  // const [products, isPending, error] = useGET(`/products/${page}`);
+  const [sortBy, setSortBy] = useState(['id', 'ASC']);
+  const [searchWord, setSearchWord] = useState('');
+  const [path, setPath] = useState('page=1&sort=id&dir=ASC');
+  const [res, isPending, error] = useGET(`/products?${path}`);
+  const { custom } = useSelector((state) => state.customReducer);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const searchProducts = () => {
+    setPage(1);
+    getProducts();
+  };
+
+  const sortProducts = (select) => {
+    setSearchWord('');
+    setSortBy(select);
+    setPage(1);
+    getProducts();
+  };
+
+  const getProducts = () => {
+    if (!searchWord) setPath(`page=${page}&sort=${sortBy[0]}&dir=${sortBy[1]}`);
+    else setPath(`page=${page}&search=${searchWord}`);
+  };
+
+  useEffect(() => {
+    getProducts();
+  }, [page]);
+
+  const addCustomToCart = () => {
+    postData(`/users/cart/custom/${'cartId'}`, custom).then(() => {
+      dispatch(initializeCustom());
+      if (
+        window.confirm(
+          'Custom 밀박스가 장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?'
+        )
+      ) {
+        navigate('/cart');
+      } else navigate('/');
+    });
+  };
+
+  const totalQuantity = custom.products.reduce((a, c) => a + c.quantity, 0);
+  const productsId = custom.products.map((product) => product.id);
+  const productInCustom = (id) => {
+    return productsId.indexOf(id);
+  };
 
   return (
-    <CustomWrapDiv className="margininside">
-      <ModalDiv
+    <GetTemplate isPending={isPending} error={error} res={res.data}>
+      <CustomWrapDiv className="margininside">
+        {/* <ModalDiv
         mealBox={0}
         boxElement={1}
         closeModal={() => setOpenModal(false)}
-      />
-      {admin && openModal && (
-        <ModalDiv closeModal={() => setOpenModal(false)} />
-      )}
-      <h1>커스텀 밀박스</h1>
-      <CustomSelectDiv>
-        <ElementsContainerDiv>
-          <FilterSearchDiv />
-          <BoxElementCardUl>
-            <li>
-              <BoxElementCardDiv />
-            </li>
-          </BoxElementCardUl>
-          <PaginationUl page={page} totalpage={3} setPage={setPage} />
-        </ElementsContainerDiv>
-        <CustomAside
-          admin={0}
-          bucket={1}
-          buttonClick={
-            admin ? () => setOpenModal(true) : () => navigate('/cart')
-          }
-        />
-      </CustomSelectDiv>
-    </CustomWrapDiv>
+      /> */}
+        {admin && openModal && (
+          <ModalDiv closeModal={() => setOpenModal(false)} />
+        )}
+        <h1>커스텀 밀박스</h1>
+        <CustomSelectDiv>
+          <ElementsContainerDiv>
+            <FilterSearchDiv
+              sortProducts={sortProducts}
+              searchProducts={searchProducts}
+              setSearchWord={setSearchWord}
+            />
+            <BoxElementCardUl>
+              {res?.data?.map((product) => (
+                <li key={product.productId}>
+                  <BoxElementCardDiv
+                    product={product}
+                    quantity={
+                      custom.products[productInCustom(product.productId)]
+                        ?.quantity
+                    }
+                    totalQuantity={totalQuantity}
+                  />
+                </li>
+              ))}
+              {/* <li>
+                <BoxElementCardDiv />
+              </li> */}
+            </BoxElementCardUl>
+            <PaginationUl
+              page={res?.pageInfo?.page}
+              totalpage={res?.pageInfo?.totalPages}
+              setPage={setPage}
+            />
+          </ElementsContainerDiv>
+          <CustomAside
+            admin={0}
+            custom={custom}
+            buttonClick={() => (admin ? setOpenModal(true) : addCustomToCart())}
+          />
+        </CustomSelectDiv>
+      </CustomWrapDiv>
+    </GetTemplate>
   );
 }
 
