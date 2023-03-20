@@ -17,6 +17,8 @@ function SignupUl() {
   const inputRef = useRef([]);
   const navigate = useNavigate();
   const { name, email, password, passwordConfirm } = inputValue;
+  console.log(isValid);
+  console.log(validText);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
