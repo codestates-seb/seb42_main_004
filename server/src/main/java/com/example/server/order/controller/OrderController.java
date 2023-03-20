@@ -4,18 +4,19 @@ import com.example.server.dto.MultiResponseDto;
 import com.example.server.order.dto.OrderPageResponseDto;
 import com.example.server.order.dto.OrderPatchDeliveryDto;
 import com.example.server.order.dto.OrderPostDto;
-import com.example.server.order.dto.OrderPostResponseDto;
 import com.example.server.order.dto.OrderResponseDto;
 import com.example.server.order.entity.Orders;
 import com.example.server.order.mapper.OrderMapper;
 import com.example.server.order.service.OrderService;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -39,9 +40,13 @@ public class OrderController {
       throws IamportResponseException, IOException { // 결제 전 주문 생성
     Orders order = mapper.orderPostDtoToOrders(orderPostDto);
     Orders createdOrder = orderService.createOrder(order, orderPostDto);
-    OrderPostResponseDto response = new OrderPostResponseDto();
-    response.setOrderId(createdOrder.getOrderId());
-    return new ResponseEntity<>(response, HttpStatus.CREATED);
+//    OrderPostResponseDto response = new OrderPostResponseDto();
+//    response.setOrderId(createdOrder.getOrderId());
+//    return new ResponseEntity<>(response, HttpStatus.CREATED);
+    String uri = String.format("redirect:/orders/checkout/%d",createdOrder.getOrderId());
+    HttpHeaders headers = new HttpHeaders();
+    headers.setLocation(URI.create(uri));
+    return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
   }
 
   @GetMapping("/orders/checkout/{order-id}")
