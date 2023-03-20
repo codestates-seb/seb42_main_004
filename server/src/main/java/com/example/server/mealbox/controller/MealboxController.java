@@ -83,16 +83,6 @@ public class MealboxController {
         return new ResponseEntity(new MultiResponseDto(response, mealboxPage), HttpStatus.OK);
     }
 
-    //소비자가 커스텀 밀박스 만들기 + 기존의 추천조합 밀박스 수정하기
-    @PostMapping("/mealboxes/custom")
-    public ResponseEntity createCustomMealbox(@RequestBody MealboxPostDto mealboxPostDto) {
-        log.info("------createCustomMealbox------");
-        Mealbox mealbox = mapper.mealboxPostDtoToMealbox(mealboxPostDto, Mealbox.MealboxInfo.CUSTOM_MEALBOX);
-        mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxPostDto.getProducts(), null);
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
-
-
     //소비자가 전체 추천조합 밀박스 리스트 조회하기 (관리자가 만든 밀박스면 다 띄워줌)
     @GetMapping("/mealboxes/rec")
     public ResponseEntity getRecMealboxes(@Positive @RequestParam int page,

@@ -1,7 +1,10 @@
 package com.example.server.user.service;
 
 import com.example.server.auth.utils.CustomAuthorityUtils;
+import com.example.server.cart.entity.Cart;
 import com.example.server.exception.BusinessLogicException;
+import com.example.server.image.entity.UserImage;
+import com.example.server.image.service.ImageService;
 import com.example.server.user.data.UserStatus;
 import com.example.server.user.entity.User;
 import com.example.server.user.exception.UserException;
@@ -11,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
@@ -36,15 +41,17 @@ public class UserService {
   private JavaMailSender mailSender;
   private final SpringTemplateEngine templateEngine;
   private final ApplicationEventPublisher publisher;
+  private final ImageService imageService;
 
   public UserService(CustomAuthorityUtils authorityUtils, PasswordEncoder passwordEncoder,
       UserRepository userRepository, SpringTemplateEngine templateEngine,
-      ApplicationEventPublisher publisher) {
+      ApplicationEventPublisher publisher, ImageService imageService) {
     this.authorityUtils = authorityUtils;
     this.passwordEncoder = passwordEncoder;
     this.userRepository = userRepository;
     this.templateEngine = templateEngine;
     this.publisher = publisher;
+    this.imageService = imageService;
   }
 
   public User createUser(User user) throws MessagingException, UnsupportedEncodingException {
@@ -52,6 +59,8 @@ public class UserService {
     verifyExistsEmail(user.getEmail());
 
     setDefaultMemberInfo(user);
+
+    user.setCart(Cart.builder().user(user).build());
 
     User save = userRepository.save(user);
 
@@ -335,5 +344,11 @@ public class UserService {
     sendEmail(email, findUser.getMailKey(), findUser.getId());
   }
 
+  public void postUserImage(Long id, MultipartFile file){
+    User user = getUser(id);
+    UserImage userImage = imageService.uploadUserImage(file, user);
+    user.setImage(userImage);
+    userRepository.save(user);
+  }
 
 }
