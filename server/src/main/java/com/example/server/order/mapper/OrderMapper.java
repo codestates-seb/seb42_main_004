@@ -18,7 +18,8 @@ public interface OrderMapper {
   default Orders orderPostDtoToOrders(OrderPostDto orderPostDto) {
     Orders order = new Orders();
     order.setTotalPrice(orderPostDto.getTotalPrice());
-    List<Long> cartMealboxIds = (List<Long>) orderPostDto.getMealboxes().stream().map(mb -> mb.getCartMealboxId());
+    List<Long> cartMealboxIds = orderPostDto.getMealboxes().stream().map(mb -> mb.getCartMealboxId()).collect(
+        Collectors.toList());
     for(Long cartMealboxId: cartMealboxIds) {
       order.addCartMealboxId(cartMealboxId);
     }
