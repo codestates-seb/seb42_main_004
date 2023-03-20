@@ -79,7 +79,7 @@ const GlobalStyle = createGlobalStyle`
     color: var(--black);
     cursor: pointer;
     :hover {
-      color: var(--signature)
+      color: var(--input_blue)
     }
   }
 
