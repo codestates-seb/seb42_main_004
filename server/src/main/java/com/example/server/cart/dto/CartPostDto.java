@@ -6,5 +6,4 @@ import lombok.Setter;
 @Getter
 public class CartPostDto {
   private long mealboxId;
-  private int quantity;
 }

@@ -1,11 +1,14 @@
 package com.example.server.cart.service;
 
+import com.example.server.cart.entity.Cart;
 import com.example.server.cart.entity.CartMealbox;
 import com.example.server.cart.exception.CartMealboxException;
 import com.example.server.cart.repository.CartMealboxRepository;
 import com.example.server.exception.BusinessLogicException;
 import java.util.List;
 import java.util.Optional;
+
+import com.example.server.mealbox.entity.Mealbox;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,5 +36,14 @@ public class CartMealboxService {
     CartMealbox cartMealbox = findCartMealbox(cartMealboxId);
     cartMealbox.changeQuantity(quantity);
     cartMealboxRepository.save(cartMealbox);
+  }
+
+  public void createCartMealbox(Cart cart, Mealbox mealbox){
+    CartMealbox cartMealbox = CartMealbox.makeCartMealbox(cart, mealbox);
+    cartMealboxRepository.save(cartMealbox);
+  }
+
+  public void deleteCartMealbox(CartMealbox cartMealbox){
+    cartMealboxRepository.delete(cartMealbox);
   }
 }

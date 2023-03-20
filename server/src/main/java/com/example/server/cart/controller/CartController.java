@@ -35,7 +35,8 @@ public class CartController {
   @PostMapping("/{cartId}")
   public ResponseEntity addRecMealboxToCart(@PathVariable("cartId") Long cartId,
                                             @RequestBody CartPostDto cartPostDto){
-    cartService.createCartMealboxAndAddMealbox(cartId, cartPostDto.getMealboxId(),cartPostDto.getQuantity());
+    log.info("------RecMealboxAddCart------");
+    cartService.createCartMealboxAndAddMealbox(cartId, cartPostDto.getMealboxId());
     return new ResponseEntity(HttpStatus.OK);
   }
 
@@ -55,6 +56,7 @@ public class CartController {
   @DeleteMapping("/{cartId}/{cartMealboxId}")
   public ResponseEntity removeMealbox(@PathVariable("cartId") Long cartId,
                                       @PathVariable("cartMealboxId") Long cartMealboxId){
+    log.info("------DeleteMealboxFromCart------");
     cartService.removeMealboxFromCart(cartId, cartMealboxId);
     return new ResponseEntity(HttpStatus.OK);
   }
@@ -63,6 +65,7 @@ public class CartController {
   @PatchMapping("/{cartId}")
   public ResponseEntity changeMealboxCount(@PathVariable("cartId") Long cartId,
                                            @RequestBody CartPatchDto cartPatchDto){
+    log.info("------ChangeMealboxCount------");
     cartService.changeMealboxQuantity(cartId, cartPatchDto.getCartMealboxId(), cartPatchDto.getQuantity());
     return new ResponseEntity(HttpStatus.OK);
   }
@@ -70,6 +73,7 @@ public class CartController {
   //장바구니 화면 띄워주기
   @GetMapping("/{cartId}")
   public ResponseEntity getCart(@PathVariable("cartId") Long cartId) {
+    log.info("------getCart------");
     Cart cart = cartService.findCartById(cartId);
     CartResponseDto cartResponseDto = cartMapper.cartToCartResponseDto(cart);
     return new ResponseEntity(new SingleResponseDto(cartResponseDto),HttpStatus.OK);
