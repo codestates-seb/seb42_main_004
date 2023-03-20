@@ -13,7 +13,11 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
 
   const goToCustom = () => {
     if (mealBox?.products) {
-      mealBox.products.forEach((product) => dispatch(addProduct(product)));
+      mealBox.products
+        .map(({ productId, quantity }) => {
+          productId, quantity;
+        })
+        .forEach((obj) => dispatch(addProduct(obj)));
     }
     navigate('/custom');
   };
@@ -67,7 +71,7 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
       <MealBoxCardButtonDiv custom={custom && 1}>
         <MainButton
           handler={goToCustom}
-          name={admin ? '밀박스 수정' : '커스텀 하기'}
+          name={!admin || custom ? '커스텀 하기' : '밀박스 수정'}
         />
         {!custom && (
           <>
