@@ -24,7 +24,7 @@ function LoginUl() {
     if (valid.email && valid.password) {
       postData('/login', { email, password }).then((data) => {
         if (data.status === 401) {
-          alert('이메일 또는 비밀번호를 확인해주세요.');
+          alert('이메일 주소나 비밀번호가 틀립니다.');
           setValid({ ...valid, password: false });
         } else {
           navigate('/');
