@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const useGET = (url) => {
-  const [data, setData] = useState('');
+  const [res, setRes] = useState('');
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
 
@@ -11,7 +11,7 @@ const useGET = (url) => {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}${url}`
       );
-      setData(response.data);
+      setRes(response);
       setIsPending(false);
     } catch (err) {
       setError(err);
@@ -24,7 +24,7 @@ const useGET = (url) => {
     }
   }, [url]);
 
-  return [data, isPending, error];
+  return [res, isPending, error];
 };
 
 export default useGET;
