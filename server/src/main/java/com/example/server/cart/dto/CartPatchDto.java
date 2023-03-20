@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class CartPatchDto {
+  private Long cartMealboxId;
   private int quantity;
 }

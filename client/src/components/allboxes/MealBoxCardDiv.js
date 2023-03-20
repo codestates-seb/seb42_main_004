@@ -1,8 +1,39 @@
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
 import blankbucket from '../../assets/blankbucket.png';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '../../reducers/customReducer';
+// import deleteData from '../../util/deleteData';
+// import postData from '../../util/postData';
 
 function MealBoxCardDiv({ mealBox, custom, admin }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const goToCustom = () => {
+    if (mealBox?.products) {
+      mealBox.products.forEach((product) => dispatch(addProduct(product)));
+    }
+    navigate('/custom');
+  };
+
+  const addToCart = () => {
+    // postData(`/users/cart/{userId}`).then(() => alert(`${mealBox.mealboxName}이 장바구니에 추가되었습니다.}`));
+    console.log('추가 완료');
+  };
+
+  const deleteProduct = () => {
+    if (
+      window.confirm(
+        `${mealBox.mealboxName}을 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
+      )
+    ) {
+      // deleteData(`/admin/mealboxes/${mealBox.mealboxId}`).then(()=> alert(`${mealBox.mealboxName}이 삭제되었습니다.}`));
+      console.log('삭제 완료');
+    }
+  };
+
   return (
     <MealBoxCardContainerDiv className="shadow">
       <MealBoxImgDiv className="shadow">
@@ -34,10 +65,16 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
         {custom ? `${admin ? '새로운' : '나만의'} 밀박스 만들기` : '밀박스A'}
       </MealBoxH3>
       <MealBoxCardButtonDiv custom={custom && 1}>
-        <MainButton name={admin ? '밀박스 수정' : '커스텀 하기'} />
+        <MainButton
+          handler={goToCustom}
+          name={admin ? '밀박스 수정' : '커스텀 하기'}
+        />
         {!custom && (
           <>
-            <MainButton name={admin ? '밀박스 삭제' : '장바구니 추가'} />
+            <MainButton
+              handler={admin ? deleteProduct : addToCart}
+              name={admin ? '밀박스 삭제' : '장바구니 추가'}
+            />
             <MainButton name="가격" />
           </>
         )}

@@ -13,17 +13,8 @@ import com.example.server.user.data.DeliveryInformation;
 import com.example.server.user.data.UserStatus;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Builder.Default;
@@ -90,10 +81,12 @@ public class User extends BaseEntity {
   @Setter
   private String mailKey = "";
 
-  @OneToOne(mappedBy = "user")
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Setter
   private UserImage image;
 
-  @OneToOne(mappedBy = "user")
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+  @Setter
   private Cart cart;
 
   @OneToMany(mappedBy = "user")

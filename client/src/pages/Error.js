@@ -1,14 +1,10 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import checkFooter from '../util/checkFooter';
 
 function Error() {
-  let { pathname } = useLocation();
-
   return (
-    <ErrorBaseDiv
-      className="margininside"
-      fullh={pathname.includes('cart') || (pathname.includes('custom') && 1)}
-    >
+    <ErrorBaseDiv className="margininside" fullh={checkFooter ? 1 : null}>
       <ErrorWrapDiv>
         <h1 className="errorstyle">
           404
@@ -28,6 +24,7 @@ export default Error;
 const ErrorBaseDiv = styled.div`
   margin: -1rem 0 -4rem;
   height: calc(100vh - 330px);
+
   @media screen and (max-width: 768px) {
     height: calc(100vh - 280px);
   }

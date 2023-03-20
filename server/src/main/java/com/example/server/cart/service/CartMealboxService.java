@@ -28,4 +28,10 @@ public class CartMealboxService {
       cartMealboxRepository.delete(cartMealbox);
     });
   }
+
+  public void changeQuantity(Long cartMealboxId, int quantity){
+    CartMealbox cartMealbox = findCartMealbox(cartMealboxId);
+    cartMealbox.changeQuantity(quantity);
+    cartMealboxRepository.save(cartMealbox);
+  }
 }

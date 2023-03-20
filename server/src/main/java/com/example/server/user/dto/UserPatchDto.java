@@ -15,7 +15,4 @@ public class UserPatchDto {
   private String phoneNumber;
   private Address address;
   private DeliveryInformation deliveryInformation;
-  //TODO 이미지 추가해야함
-//  private Image image;
-
 }

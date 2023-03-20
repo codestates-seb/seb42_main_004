@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import SurveyHomeArticle from '../components/survey/SurveyHomeArticle';
 
-function Survey() {
+function SurveyHome() {
   return (
     <Main>
       <SurveyHomeArticle />
@@ -9,7 +9,7 @@ function Survey() {
   );
 }
 
-export default Survey;
+export default SurveyHome;
 
 const Main = styled.main`
   height: calc(100vh - 115px);

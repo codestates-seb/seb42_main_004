@@ -10,7 +10,7 @@ import java.util.List;
 
 @Component
 public class MealboxSetMapper {
-    MealboxMapper mealboxMapper;
+    private final MealboxMapper mealboxMapper;
 
     public MealboxSetMapper(MealboxMapper mealboxMapper) {
         this.mealboxMapper = mealboxMapper;

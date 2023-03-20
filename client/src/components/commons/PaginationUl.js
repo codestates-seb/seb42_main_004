@@ -49,6 +49,10 @@ const PaginationContainerUl = styled.ul`
   display: flex;
   margin: 2rem -0.5rem 0;
   align-self: end;
+
+  @media screen and (max-width: 480px) {
+    align-self: center;
+  }
 `;
 const PaginationLi = styled.li`
   cursor: pointer;
