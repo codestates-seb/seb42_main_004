@@ -1,51 +1,116 @@
-import { useState } from 'react';
-import styled from 'styled-components';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 import LoginButton from './LoginButton';
-import InputDiv from '../signup/InputDiv';
+import postData from '../../util/postData';
 import { FcGoogle } from 'react-icons/fc';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 function LoginUl() {
   const [showPwd, setShowPwd] = useState(false);
+  const [inputValue, setInputValue] = useState({
+    email: '',
+    password: '',
+  });
+  const [valid, setValid] = useState({
+    email: false,
+    password: false,
+  });
+  const inputRef = useRef([]);
+  const { email, password } = inputValue;
+  const navigate = useNavigate();
 
   const handleClick = () => {
+    if (valid.email && valid.password) {
+      postData('/login', { email, password }).then((data) => {
+        if (data.status === 401) {
+          alert('이메일 또는 비밀번호를 확인해주세요.');
+          setValid({ ...valid, password: false });
+        } else {
+          navigate('/');
+        }
+      });
+    } else if (!valid.email) {
+      inputRef.current[0].focus();
+    } else if (!valid.password) {
+      inputRef.current[1].focus();
+    }
+  };
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
+  };
+
+  const handlePasswordClick = () => {
     setShowPwd(!showPwd);
   };
+
+  useEffect(() => {
+    //eslint-disable-next-line
+    const exp = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+    if (exp.test(email)) {
+      setValid({ ...valid, email: true });
+    } else {
+      setValid({ ...valid, email: false });
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (password) {
+      setValid({ ...valid, password: true });
+    } else {
+      setValid({ ...valid, password: false });
+    }
+  }, [password]);
 
   return (
     <ContainerUl>
       <li>
         <Title>
-          <h1>Login</h1>
+          <h1>로그인</h1>
         </Title>
       </li>
       <li>
-        <InputDiv
-          id="email"
-          name="email"
-          labelName="이메일"
-          placeholder="이메일"
-        />
+        <LoginDiv valid={valid.email} content={email}>
+          <label htmlFor="email">이메일</label>
+          <input
+            id="email"
+            name="email"
+            className="inputstyle"
+            placeholder="이메일"
+            ref={(el) => (inputRef.current[0] = el)}
+            value={email}
+            onChange={handleInput}
+          />
+        </LoginDiv>
       </li>
       <li>
-        <PasswordDiv>
+        <LoginDiv valid={valid.password} content={password}>
           <label htmlFor="password">비밀번호</label>
           <input
+            id="password"
+            name="password"
             className="inputstyle"
             type={showPwd ? 'text' : 'password'}
-            id="password"
             placeholder="비밀번호"
-          ></input>
+            ref={(el) => (inputRef.current[1] = el)}
+            value={password}
+            onChange={handleInput}
+          />
           {showPwd ? (
-            <IconDiv onClick={handleClick}>
+            <IconDiv onClick={handlePasswordClick}>
               <AiOutlineEye size={20} />
             </IconDiv>
           ) : (
-            <IconDiv onClick={handleClick}>
+            <IconDiv onClick={handlePasswordClick}>
               <AiOutlineEyeInvisible size={20} />
             </IconDiv>
           )}
-        </PasswordDiv>
+        </LoginDiv>
       </li>
       <li>
         <CheckboxDiv>
@@ -54,12 +119,14 @@ function LoginUl() {
         </CheckboxDiv>
       </li>
       <li>
-        <LoginButton name="로그인"></LoginButton>
+        <LoginButton onClick={handleClick} name="로그인"></LoginButton>
       </li>
       <li>
         <Div>
-          <div>비밀번호 찾기</div>
-          <div>회원가입</div>
+          <LoginLink className="linkstyle">비밀번호 찾기</LoginLink>
+          <LoginLink to="/signup" className="linkstyle">
+            회원가입
+          </LoginLink>
         </Div>
       </li>
       <li>
@@ -101,20 +168,37 @@ const Title = styled.title`
   display: flex;
   justify-content: center;
 `;
-const PasswordDiv = styled.div`
+const LoginDiv = styled.div`
   height: 80px;
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
 
   > label {
     height: 20px;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    font-family: 'IBM Plex Sans KR', sans-serif;
   }
 
   > input {
     height: 48px;
     padding-right: 3rem;
+    ${({ valid, content }) =>
+      !valid &&
+      content &&
+      css`
+        padding: 0.5rem 1.5rem;
+        border: 1px solid var(--red);
+        border-radius: 4px;
+
+        &:focus,
+        :focus-within {
+          border: 2px solid var(--red);
+          outline: none;
+        }
+      `}
   }
 `;
 const IconDiv = styled.div`
@@ -166,4 +250,7 @@ const GoogleButton = styled.button`
   > div {
     margin-left: 0.5rem;
   }
+`;
+const LoginLink = styled(Link)`
+  text-decoration: none;
 `;
