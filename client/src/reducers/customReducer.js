@@ -5,7 +5,6 @@ const customSlice = createSlice({
   initialState: {
     custom: {
       products: [],
-      quantity: 1,
       totalWeight: 0,
       totalKcal: 0,
       totalPrice: 0,
@@ -17,10 +16,13 @@ const customSlice = createSlice({
       const total = custom.products.reduce((a, c) => a + c.quantity, 0);
       if (total < 10) {
         const product = action.payload;
-        custom.products.push(product);
-        custom.totalWeight += product.weight;
-        custom.totalKcal += product.kcal;
-        custom.totalPrice += product.price;
+        custom.products.push({
+          productId: product.productId,
+          quantity: product.quantity,
+        });
+        custom.totalWeight += product.weight * product.quantity;
+        custom.totalKcal += product.kcal * product.quantity;
+        custom.totalPrice += product.price * product.quantity;
       }
     },
     deleteProduct: (state, action) => {
@@ -40,14 +42,17 @@ const customSlice = createSlice({
       const idx = custom.products.map((product) => product.id).indexOf(id);
       if (total < 10) {
         const product = custom.products[idx];
+        if (product.quantity > num) {
+          custom.totalWeight -= product.weight;
+          custom.totalKcal -= product.kcal;
+          custom.totalPrice -= product.price;
+        } else {
+          custom.totalWeight += product.weight;
+          custom.totalKcal += product.kcal;
+          custom.totalPrice += product.price;
+        }
         product.quantity = num;
-        custom.totalWeight -= product.weight;
-        custom.totalKcal -= product.kcal;
-        custom.totalPrice -= product.price;
       }
-    },
-    setCustom: (state, action) => {
-      state.custom.quantity = action.payload;
     },
   },
 });

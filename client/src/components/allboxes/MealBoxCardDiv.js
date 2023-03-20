@@ -13,11 +13,7 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
 
   const goToCustom = () => {
     if (mealBox?.products) {
-      mealBox.products
-        .map(({ productId, quantity }) => {
-          productId, quantity;
-        })
-        .forEach((obj) => dispatch(addProduct(obj)));
+      mealBox.products.forEach((product) => dispatch(addProduct(product)));
     }
     navigate('/custom');
   };
