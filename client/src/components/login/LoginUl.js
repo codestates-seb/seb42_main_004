@@ -20,7 +20,12 @@ function LoginUl() {
         </Title>
       </li>
       <li>
-        <InputDiv name="이메일" id="email" placeholder="example@email.com" />
+        <InputDiv
+          id="email"
+          name="email"
+          labelName="이메일"
+          placeholder="이메일"
+        />
       </li>
       <li>
         <PasswordDiv>
@@ -29,7 +34,7 @@ function LoginUl() {
             className="inputstyle"
             type={showPwd ? 'text' : 'password'}
             id="password"
-            placeholder="password"
+            placeholder="비밀번호"
           ></input>
           {showPwd ? (
             <IconDiv onClick={handleClick}>

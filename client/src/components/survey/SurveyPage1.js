@@ -3,38 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import InputLabelDiv from '../commons/InputLabelDiv';
 import PreAndNextButtons from './PreAndNextButtons';
-import {
-  setAge,
-  setGender,
-  setHeight,
-  setWeight,
-} from '../../reducers/surveyQuestionReducer';
+import { setProfile, setGender } from '../../reducers/surveyQuestionReducer';
 import SurveyBox from './SurveyBox';
 
 function SurveyPage1() {
   let navigate = useNavigate();
-
   let dispatch = useDispatch();
-  const { age, height, weight } = useSelector(
+
+  let { age, height, weight, gender } = useSelector(
     (state) => state.surveyQuestionReducer
   );
 
-  let ageHandler = (e) => {
-    dispatch(setAge(e.target.value));
+  let dispatchProfile = (e) => {
+    let { id, value } = e.target;
+    dispatch(setProfile({ id, value }));
   };
 
-  let heightHandler = (e) => {
-    dispatch(setHeight(e.target.value));
-  };
-
-  let weightHandler = (e) => {
-    dispatch(setWeight(e.target.value));
-  };
-
-  let dispatchGender = () => {
-    dispatch(
-      setGender(document.querySelector('input[name="gender"]:checked')?.id)
-    );
+  let dispatchGender = (e) => {
+    const { id } = e.target;
+    dispatch(setGender(id));
   };
 
   let nextHandler = () => {
@@ -53,7 +40,7 @@ function SurveyPage1() {
           label="나이"
           id="age"
           value={age}
-          onChange={ageHandler}
+          onChange={dispatchProfile}
           placeholder="00"
           unit="세"
           maxLength="3"
@@ -62,14 +49,16 @@ function SurveyPage1() {
           <div>성별</div>
           <GenderOptionDiv>
             <SurveyBox
+              id="남성"
               group="gender"
-              title="남성"
               changeHandler={dispatchGender}
+              checked={gender === '남성'}
             />
             <SurveyBox
+              id="여성"
               group="gender"
-              title="여성"
               changeHandler={dispatchGender}
+              checked={gender === '여성'}
             />
           </GenderOptionDiv>
         </div>
@@ -77,7 +66,7 @@ function SurveyPage1() {
           label="신장"
           id="height"
           value={height}
-          onChange={heightHandler}
+          onChange={dispatchProfile}
           placeholder="0"
           unit="cm"
           maxLength="3"
@@ -86,7 +75,7 @@ function SurveyPage1() {
           label="체중"
           id="weight"
           value={weight}
-          onChange={weightHandler}
+          onChange={dispatchProfile}
           placeholder="00.0"
           unit="kg"
           maxLength="3"

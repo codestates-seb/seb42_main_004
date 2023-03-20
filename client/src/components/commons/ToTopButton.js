@@ -5,6 +5,7 @@ function Component() {
   const toTop = () => {
     window.scrollTo(0, 0);
   };
+
   return (
     <Button onClick={toTop} height={checkFooter() ? 1 : null}>
       <VscTriangleUp />
@@ -21,10 +22,14 @@ const Button = styled.button`
   border-radius: 50px;
   background-color: var(--signature_070);
   position: fixed;
-  bottom: calc(${(props) => (props.height ? '76px' : '0px')} + 1rem);
+  bottom: 1rem;
   right: 1rem;
 
   > svg {
     fill: var(--white);
+  }
+
+  @media screen and (max-width: 480px) {
+    bottom: calc(${(props) => (props.height ? '76px' : '0px')} + 1rem);
   }
 `;

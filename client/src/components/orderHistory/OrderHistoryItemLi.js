@@ -11,11 +11,14 @@ function OrderHistoryItemLi() {
     <OrderHistoryWrapperLi>
       <CartItemTopDiv>
         <h2>Custom</h2>
-        <div>X2</div>
+        <MealBoxCounter>X2</MealBoxCounter>
       </CartItemTopDiv>
       <MealBoxItemBottemDiv>
         <MealBoxItemsDiv />
-        <div>12,000원</div>
+        <MealBoxInfo>
+          <span>320kcal</span>
+          <span>12,000원</span>
+        </MealBoxInfo>
       </MealBoxItemBottemDiv>
     </OrderHistoryWrapperLi>
   );
@@ -23,10 +26,25 @@ function OrderHistoryItemLi() {
 
 export default OrderHistoryItemLi;
 
+const OrderHistoryWrapperLi = styled(CartItemWrapperLi)`
+  background-color: var(--bucket_brown_070);
+`;
+
 const MealBoxItemBottemDiv = styled(CartItemBottomDiv)`
   align-items: flex-end;
 `;
 
-const OrderHistoryWrapperLi = styled(CartItemWrapperLi)`
-  background-color: var(--bucket_brown_070);
+const MealBoxCounter = styled.div`
+  font-size: 1.2rem;
+  font-family: 'IBM Plex Sans KR', sans-serif;
+`;
+
+const MealBoxInfo = styled.div`
+  > span:first-child {
+    margin-right: 0.8rem;
+  }
+  > span:last-child {
+    font-size: 1.2rem;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+  }
 `;
