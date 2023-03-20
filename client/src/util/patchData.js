@@ -14,7 +14,7 @@ async function patchData(url, data) {
     );
     return response.data;
   } catch (error) {
-    console.error(error);
+    return error.response;
   }
 }
 
