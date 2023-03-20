@@ -88,7 +88,7 @@ public class UserController {
     UserResponseDto userResponseDto = mapper.userToUserResponseDto(findUser);
 
     ImageInfo imageInfo = findUser.getImage().getImageInfo();
-    userResponseDto.setImagePath(imageInfo.getFilePath()+"/"+imageInfo.getImageName());
+    userResponseDto.setImagePath(imageInfo.getBaseUrl()+imageInfo.getFilePath()+"/"+imageInfo.getImageName());
     return ResponseEntity.ok(userResponseDto);
   }
 

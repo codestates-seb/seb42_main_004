@@ -11,9 +11,11 @@ import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.mealbox.service.MealboxService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 @Service
 public class CartService {
     private final CartRepository cartRepository;
@@ -33,11 +35,11 @@ public class CartService {
         return findCart.orElseThrow(() -> new BusinessLogicException(CartException.CART_NOT_FOUND));
     }
 
-    public Cart createCartMealboxAndAddMealbox(Long cartId, Long mealboxId, int quantity){
+    public Cart createCartMealboxAndAddMealbox(Long cartId, Long mealboxId){
         Cart cart = findCartById(cartId);
         Mealbox mealbox = mealboxService.findMealboxById(mealboxId);
 
-        CartMealbox.makeCartMealbox(cart, mealbox, quantity);
+        cartMealboxService.createCartMealbox(cart, mealbox);
 
         cart.calculateTotalPrice();
         return cartRepository.save(cart);
@@ -53,7 +55,7 @@ public class CartService {
             mealboxService.deleteMealbox(mealbox.getId());
         } //커스텀이 아니면 cartMealbox만 삭제
         else if (mealbox.getMealboxInfo() != Mealbox.MealboxInfo.CUSTOM_MEALBOX) {
-            cart.deleteCartMealbox(cartMealboxService.findCartMealbox(cartMealboxId));
+            cartMealboxService.deleteCartMealbox(cartMealbox);
         }
 
         cart.calculateTotalPrice();
@@ -74,7 +76,7 @@ public class CartService {
 
         mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxDtoProducts, null);
 
-        CartMealbox.makeCartMealbox(cart, mealbox, 1);
+        cartMealboxService.createCartMealbox(cart, mealbox);
 
         cart.calculateTotalPrice();
         return cartRepository.save(cart);

@@ -57,7 +57,7 @@ public interface MealboxMapper {
 
         if(mealbox.getImage()!=null) {
             ImageInfo imageInfo = mealbox.getImage().getImageInfo();
-            responseDto.setImagePath(imageInfo.getFilePath()+"/"+imageInfo.getImageName());
+            responseDto.setImagePath(imageInfo.getBaseUrl()+imageInfo.getFilePath()+"/"+imageInfo.getImageName());
         }
 
         return responseDto;

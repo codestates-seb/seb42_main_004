@@ -28,7 +28,7 @@ public interface ProductMapper {
 
             if(product.getImage()!=null){
                 ImageInfo imageInfo = product.getImage().getImageInfo();
-                productOnlyResponseDto.setImagePath(imageInfo.getFilePath()+"/"+imageInfo.getImageName());
+                productOnlyResponseDto.setImagePath(imageInfo.getBaseUrl()+imageInfo.getFilePath()+"/"+imageInfo.getImageName());
             }
 
             return productOnlyResponseDto;

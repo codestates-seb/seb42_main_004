@@ -20,4 +20,6 @@ public class ImageInfo {
     private String oriName;
     @Column(nullable = false)
     private String filePath;
+    @Transient
+    private final String baseUrl = "https://codestates-main-project-image.s3.ap-northeast-2.amazonaws.com/";
 }

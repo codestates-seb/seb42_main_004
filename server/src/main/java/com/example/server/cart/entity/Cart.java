@@ -27,7 +27,7 @@ public class Cart extends BaseEntity {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "cart", orphanRemoval = true)
   @Builder.Default
   private List<CartMealbox> cartMealboxes = new ArrayList<>();
 
