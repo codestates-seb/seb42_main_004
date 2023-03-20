@@ -1,26 +1,53 @@
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { MealBoxCardContainerDiv } from '../allboxes/MealBoxCardDiv';
 import { TextButton } from '../commons/ModalDiv';
+import { MealBoxCardContainerDiv } from '../allboxes/MealBoxCardDiv';
+import { deleteProduct, setProduct } from '../../reducers/customReducer';
 
-function BoxElementCardDiv() {
+function BoxElementCardDiv({ product, quantity, totalQuantity }) {
+  const dispatch = useDispatch();
+
+  const cardClick = () => {
+    if (quantity === 0) dispatch(setProduct(quantity + 1));
+    else if (quantity === 1) dispatch(deleteProduct(product.productId));
+  };
+
+  const minusProduct = () => {
+    if (quantity <= 0) return;
+    dispatch(setProduct(quantity - 1));
+  };
+
+  const plusProduct = () => {
+    if (totalQuantity >= 10)
+      return alert('구성품은 10개까지 추가할 수 있습니다');
+    dispatch(setProduct(quantity + 1));
+  };
+
   return (
-    <BoxElementContainerDiv className="shadow">
-      <BoxElementImg
-        alt=""
-        src="https://kfcapi.inicis.com/kfcs_api_img/KFCS/goods/DL_1444648_20211125135829503.png"
-      />
+    <BoxElementContainerDiv
+      onClick={cardClick}
+      className="shadow"
+      quantity={quantity}
+    >
+      <BoxElementImg alt="" src={product.imagePath} />
       <BoxElementInfoDiv>
-        <h3>오렌지 주스</h3>
+        <h3>{product.name}</h3>
         <BoxElementDetailDiv>
-          <span>9,999g</span>
-          <span>9,999kcal</span>
-          <span>99,999원</span>
+          <span>{product.weight.toLocaleString('ko-KR')}g(ml)</span>
+          <span>{product.kcal.toLocaleString('ko-KR')}kcal</span>
+          <span>{product.price.toLocaleString('ko-KR')}원</span>
         </BoxElementDetailDiv>
       </BoxElementInfoDiv>
       <div>
-        <TextButton className="linkstyle">&#8722;</TextButton>
-        <BoxElementQuantitySpan>1</BoxElementQuantitySpan>
-        <TextButton className="linkstyle">&#43;</TextButton>
+        <TextButton onClick={minusProduct} className="linkstyle">
+          &#8722;
+        </TextButton>
+        <BoxElementQuantitySpan>
+          {quantity ? quantity : 0}
+        </BoxElementQuantitySpan>
+        <TextButton onClick={plusProduct} className="linkstyle">
+          &#43;
+        </TextButton>
       </div>
     </BoxElementContainerDiv>
   );

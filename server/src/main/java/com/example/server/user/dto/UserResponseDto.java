@@ -19,7 +19,7 @@ public class UserResponseDto {
   private String phoneNumber;
   private Address address;
   private DeliveryInformation deliveryInformation;
-  private UserImage image;
+  private String imagePath;
   private UserStatus status;
   private LocalDateTime createdDate;
   private LocalDateTime lastModifiedDate;

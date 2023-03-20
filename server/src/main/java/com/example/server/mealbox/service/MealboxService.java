@@ -29,13 +29,11 @@ import java.util.Optional;
 @Slf4j
 public class MealboxService {
     private final MealboxRepository mealboxRepository;
-    private final ProductRepository productRepository;
     private final ProductService productService;
     private final ImageService imageService;
 
-    public MealboxService(MealboxRepository mealboxRepository, ProductRepository productRepository, ProductService productService, ImageService imageService) {
+    public MealboxService(MealboxRepository mealboxRepository, ProductService productService, ImageService imageService) {
         this.mealboxRepository = mealboxRepository;
-        this.productRepository = productRepository;
         this.productService = productService;
         this.imageService = imageService;
     }
@@ -52,7 +50,7 @@ public class MealboxService {
 //            log.info(productService.findProductById(mealboxDtoProduct.getProductId()).getMealboxProducts().get(0).getId().toString());
         });
 
-        if(file!=null&&!file.isEmpty()){
+        if(file!=null && !file.isEmpty()){
             MealboxImage mealboxImage = imageService.uploadMealboxImage(file,mealbox);
             mealbox.setImage(mealboxImage);
         }
@@ -94,6 +92,12 @@ public class MealboxService {
     public Page<Mealbox> findAdminMadeMealboxes(int page, int size){
         PageRequest pageRequest = PageRequest.of(page-1, size);
         return mealboxRepository.findAllByMealboxInfoIsNot(pageRequest, Mealbox.MealboxInfo.CUSTOM_MEALBOX);
+    }
+
+    public Page<Mealbox> getSearchedMealboxes(int page, int size, String search) {
+        PageRequest pageRequest = PageRequest.of(page-1, size);
+        return mealboxRepository.findAllByMealboxInfoIsNotAndNameContains(pageRequest,
+                Mealbox.MealboxInfo.CUSTOM_MEALBOX, search);
     }
 
 }

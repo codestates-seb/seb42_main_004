@@ -4,6 +4,7 @@ import com.example.server.exception.ExceptionCode;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Getter
@@ -21,5 +22,13 @@ public class ErrorResponseDto {
             .status(exceptionCode.getStatus().toString())
             .build()
         );
+  }
+
+  public static ErrorResponseDto of(HttpStatus httpStatus) {
+    return ErrorResponseDto.builder()
+            .message(httpStatus.getReasonPhrase())
+            .status(httpStatus.toString())
+            .build()
+        ;
   }
 }

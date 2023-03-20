@@ -1,6 +1,7 @@
 package com.example.server.user.controller;
 
 import com.example.server.auth.utils.UriCreator;
+import com.example.server.image.entity.ImageInfo;
 import com.example.server.user.dto.PasswordPatchDto;
 import com.example.server.user.dto.RecoveryEmailSendDto;
 import com.example.server.user.dto.RecoveryPasswordPatchDto;
@@ -16,9 +17,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/users")
@@ -43,7 +47,7 @@ public class UserController {
 
   // 회원 가입
   @PostMapping
-  public ResponseEntity createUser(@RequestBody UserPostDto postDto)
+  public ResponseEntity createUser(@RequestBody @Valid UserPostDto postDto)
       throws MessagingException, UnsupportedEncodingException {
     log.info("##### CREATE USER #####");
 
@@ -67,7 +71,7 @@ public class UserController {
 
   //회원 정보 수정
   @PatchMapping("/{id}")
-  public ResponseEntity updateUser(@RequestBody UserPatchDto patchDto) {
+  public ResponseEntity updateUser(@RequestBody @Valid UserPatchDto patchDto) {
     log.info("##### UPDATE USER #####");
     User user = mapper.userPatchDtoToUser(patchDto);
     User patchedUser = userService.updatedUser(user);
@@ -83,6 +87,8 @@ public class UserController {
     User findUser = userService.getUser(id);
     UserResponseDto userResponseDto = mapper.userToUserResponseDto(findUser);
 
+    ImageInfo imageInfo = findUser.getImage().getImageInfo();
+    userResponseDto.setImagePath(imageInfo.getBaseUrl()+imageInfo.getFilePath()+"/"+imageInfo.getImageName());
     return ResponseEntity.ok(userResponseDto);
   }
 
@@ -101,7 +107,7 @@ public class UserController {
   // 비밀번호 변경
   @PatchMapping("/{id}/password")
   public ResponseEntity updatePassword(@PathVariable Long id,
-      @RequestBody PasswordPatchDto passwordPatchDto) {
+      @RequestBody @Valid PasswordPatchDto passwordPatchDto) {
     String password = passwordPatchDto.getPassword();
     String afterPassword = passwordPatchDto.getAfterPassword();
     userService.updatePassword(id, password, afterPassword);
@@ -111,7 +117,7 @@ public class UserController {
 
   // 리커버리 이메일 샌드
   @PostMapping("/recovery_email_send")
-  public ResponseEntity recoveryEmailSend(@RequestBody RecoveryEmailSendDto dto)
+  public ResponseEntity recoveryEmailSend(@RequestBody @Valid RecoveryEmailSendDto dto)
       throws MessagingException, UnsupportedEncodingException {
     String emailSignUp = dto.getEmailSignUp();
     String emailNeedToSend = dto.getEmailNeedToSend();
@@ -121,8 +127,9 @@ public class UserController {
     return ResponseEntity.ok().build();
   }
 
+  // 리커버리 진행
   @PatchMapping("/recovery")
-  public ResponseEntity recovery(@RequestBody RecoveryPasswordPatchDto dto) {
+  public ResponseEntity recovery(@RequestBody @Valid RecoveryPasswordPatchDto dto) {
     String email = dto.getEmail();
     String mailKey = dto.getMailKey();
     String afterPassword = dto.getAfterPassword();
@@ -132,13 +139,21 @@ public class UserController {
     return ResponseEntity.ok().build();
   }
 
+  //이메일 인증 다시 보내기
   @GetMapping("/resend")
-  public ResponseEntity resend(@RequestBody ResendEmailDto dto)
+  public ResponseEntity resend(@RequestBody @Valid ResendEmailDto dto)
       throws MessagingException, UnsupportedEncodingException {
     String email = dto.getEmail();
     userService.resendEmail(email);
 
     return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/{id}/image")
+  public ResponseEntity postUserImage(@PathVariable("id") Long id,
+                                      @RequestBody MultipartFile file){
+    userService.postUserImage(id, file);
+    return new ResponseEntity(HttpStatus.CREATED);
   }
 
 }

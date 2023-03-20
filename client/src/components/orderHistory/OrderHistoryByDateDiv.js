@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 import OrderHistoryPageButton from './OrderHistoryPageButton';
 import OrderHistoryUl from '../../components/orderHistory/OrderHistoryUl';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
 // import postData from '../../util/postData';
 // import deleteData from '../../util/deleteData';
+
 function OrderHistoryByDateDiv() {
   let [status, setStatus] = useState();
+  let [isAdmin, setIsAdmin] = useState(false); // 삭제예정
 
   // 관리자
   let statusHandler = (e) => {
@@ -20,34 +23,44 @@ function OrderHistoryByDateDiv() {
   // 사용자
   let userDeleteOrder = () => {
     // let data = deleteData();
+    setIsAdmin(false); // 삭제 예정
   };
+
+  let renderData = () => {};
+
+  useEffect(() => {
+    renderData();
+  }, []);
 
   return (
     <HistoryByDateDiv>
       <H3>2023.04.18</H3>
       <TopMenuDiv>
         <div>23041898292304189829</div>
-        <UserTopMenuDiv>
-          <OrderHistoryPageButton
-            text={'주문 취소'}
-            onClick={userDeleteOrder}
-          />
-          <div>주문 완료</div>
-        </UserTopMenuDiv>
-        <AdminTopMenuDiv>
-          <div>맹쥬님</div>
-          <select name="#" onChange={statusHandler}>
-            <option value="주문 완료">주문 완료</option>
-            <option value="배송중">배송중</option>
-            <option value="배송 완료">배송 완료</option>
-            <option value="주문 취소" selected>
-              주문 취소
-            </option>
-            <option value="반품 대기중">반품 대기중</option>
-            <option value="반품 완료">반품 완료</option>
-          </select>
-          <button onClick={adminPostStatus}>확인</button>
-        </AdminTopMenuDiv>
+        {isAdmin ? (
+          <AdminTopMenuDiv>
+            <div>맹쥬님</div>
+            <select name="#" onChange={statusHandler}>
+              <option value="주문 완료">주문 완료</option>
+              <option value="배송중">배송중</option>
+              <option value="배송 완료">배송 완료</option>
+              <option value="주문 취소" selected>
+                주문 취소
+              </option>
+              <option value="반품 대기중">반품 대기중</option>
+              <option value="반품 완료">반품 완료</option>
+            </select>
+            <button onClick={adminPostStatus}>확인</button>
+          </AdminTopMenuDiv>
+        ) : (
+          <UserTopMenuDiv>
+            <OrderHistoryPageButton
+              text={'주문 취소'}
+              onClick={userDeleteOrder}
+            />
+            <div>주문 완료</div>
+          </UserTopMenuDiv>
+        )}
       </TopMenuDiv>
       <OrderHistoryUl />
       <BottomMenuDiv>
