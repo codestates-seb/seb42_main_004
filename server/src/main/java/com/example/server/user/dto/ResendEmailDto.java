@@ -1,5 +1,7 @@
 package com.example.server.user.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 
@@ -7,6 +9,8 @@ import lombok.Getter;
 @Getter
 public class ResendEmailDto {
 
+  @NotNull
+  @Email
   private String email;
 
 }

@@ -85,7 +85,8 @@ public class User extends BaseEntity {
   @Setter
   private UserImage image;
 
-  @OneToOne(mappedBy = "user")
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+  @Setter
   private Cart cart;
 
   @OneToMany(mappedBy = "user")

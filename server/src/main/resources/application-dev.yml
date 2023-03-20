@@ -35,7 +35,7 @@ logging:
     org.hibernate.type.descriptor.sql: DEBUG #show parameter binding
 
 image:
-  path: sss
+  path: C:\Users\윤상혁\Desktop\java project\projectImage
 
 mail:
   address:

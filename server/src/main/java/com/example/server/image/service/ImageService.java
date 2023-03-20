@@ -6,9 +6,6 @@ import com.example.server.image.entity.MealboxImage;
 import com.example.server.image.entity.ProductImage;
 import com.example.server.image.entity.UserImage;
 import com.example.server.image.exception.ImageUploadException;
-import com.example.server.image.repository.MealboxImageRepository;
-import com.example.server.image.repository.ProductImageRepository;
-import com.example.server.image.repository.UserImageRepository;
 import com.example.server.image.util.ImageSort;
 import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.product.entity.Product;
@@ -28,9 +25,6 @@ import java.util.Optional;
 public class ImageService {
     private final FileManager fileManager;
     private final UploadImageS3 uploadImageS3;
-    private final ProductImageRepository productImageRepository;
-    private final MealboxImageRepository mealboxImageRepository;
-    private final UserImageRepository userImageRepository;
 
     public ProductImage uploadProductImage(MultipartFile mf, Product product){
         long time = System.currentTimeMillis();
@@ -62,7 +56,7 @@ public class ImageService {
         long time = System.currentTimeMillis();
         String originalFilename = mf.getOriginalFilename();
         String saveFileName = String.format("%d_%s", time, originalFilename.replaceAll(" ", ""));
-        String filePath = ImageSort.MEALBOX_IMAGE.getPath();
+        String filePath = ImageSort.USER_IMAGE.getPath();
 
         String savedPath = createAndUploadFile(mf,saveFileName, filePath);
         log.info("Saved Path : "+savedPath);

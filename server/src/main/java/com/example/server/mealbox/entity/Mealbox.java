@@ -1,5 +1,6 @@
 package com.example.server.mealbox.entity;
 
+import com.example.server.cart.entity.CartMealbox;
 import com.example.server.image.entity.MealboxImage;
 import com.example.server.mealboxSet.entity.MealboxSet;
 import com.example.server.order.entity.OrdersMealbox;
@@ -38,6 +39,9 @@ public class Mealbox {
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
     private List<OrdersMealbox> ordersMealboxes;
 
+    @OneToMany(mappedBy = "mealbox", cascade = CascadeType.REMOVE)
+    private List<CartMealbox> cartMealboxes;
+
     @OneToOne(mappedBy = "mealbox", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     private MealboxImage image;
@@ -58,6 +62,13 @@ public class Mealbox {
             ordersMealboxes = new ArrayList<>();
         }
         ordersMealboxes.add(ordersMealbox);
+    }
+
+    public void addCartMealbox(CartMealbox cartMealbox) {
+        if(cartMealboxes==null){
+            cartMealboxes = new ArrayList<>();
+        }
+        cartMealboxes.add(cartMealbox);
     }
 
     public void patchMealbox(String name, int price, int kcal, int weight){

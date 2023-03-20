@@ -4,20 +4,9 @@ import com.example.server.baseEntity.BaseEntity;
 import com.example.server.user.entity.User;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import javax.persistence.*;
+
+import lombok.*;
 
 @Entity
 @Getter
@@ -26,23 +15,36 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cart extends BaseEntity {
   @Id
+  @Column(name = "CART_ID")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long cartId;
+  private long id;
   @Column(nullable = false)
-  private int totalPrice;
+  @Builder.Default
+  @Setter
+  private int totalPrice = 0;
 
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 
-  @OneToMany(mappedBy = "cart")
+  @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
   @Builder.Default
   private List<CartMealbox> cartMealboxes = new ArrayList<>();
 
-  public void setCartMealbox(CartMealbox cartMealbox) {
+  public void addCartMealbox(CartMealbox cartMealbox) {
     cartMealboxes.add(cartMealbox);
     if(cartMealbox.getCart() != this) {
       cartMealbox.setCart(this);
     }
+  }
+
+  public void deleteCartMealbox(CartMealbox cartMealbox){
+    cartMealboxes.remove(cartMealbox);
+  }
+
+  public void calculateTotalPrice() {
+    this.totalPrice = this.getCartMealboxes().stream().mapToInt(cartMealbox -> {
+      return  cartMealbox.getQuantity() * cartMealbox.getMealbox().getPrice();
+    }).sum();
   }
 }
