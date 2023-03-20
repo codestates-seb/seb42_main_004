@@ -40,9 +40,13 @@ function SignupUl() {
       isValid.password &&
       isValid.passwordConfirm
     ) {
-      postData('/users', { name, email, password }).then((data) =>
-        console.log(data)
-      );
+      postData('/users', { name, email, password }).then((data) => {
+        if (data.status === 409) {
+          navigate('/email/send', { state: { email } });
+        } else {
+          navigate('/email/confirm');
+        }
+      });
     } else if (!isValid.name) {
       inputRef.current[0].focus();
     } else if (!isValid.email) {
@@ -90,7 +94,7 @@ function SignupUl() {
           id="password"
           name="password"
           labelName="비밀번호"
-          placeholder="영문, 숫자를 포함하여 8자 이상 입력해주세요."
+          placeholder="영문, 숫자를 포함하여 8~20글자로 입력해주세요."
           value={password}
           inputRef={(el) => (inputRef.current[2] = el)}
           validText={validText.password}

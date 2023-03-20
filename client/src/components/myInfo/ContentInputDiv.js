@@ -1,8 +1,15 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-function ContentInputDiv({ id, labelName, placeholder, value, onChange }) {
+function ContentInputDiv({
+  id,
+  labelName,
+  placeholder,
+  value,
+  onChange,
+  validText,
+}) {
   return (
-    <ContainerDiv>
+    <ContainerDiv validText={validText}>
       <label htmlFor={id}>{labelName}</label>
       {labelName && labelName === '프로필 사진' ? (
         <button className="buttonstyle shadow">{value}</button>
@@ -35,6 +42,7 @@ const ContainerDiv = styled.div`
     justify-content: flex-end;
     align-items: center;
     font-family: 'IBM Plex Sans KR', sans-serif;
+    color: ${({ validText }) => (validText ? `var(--red)` : `var(--black)`)};
 
     @media (max-width: 480px) {
       width: 80%;
@@ -51,6 +59,19 @@ const ContainerDiv = styled.div`
 
   > input {
     width: 60%;
+    ${({ validText }) =>
+      validText &&
+      css`
+        padding: 0.5rem 1.5rem;
+        border: 1px solid var(--red);
+        border-radius: 4px;
+
+        &:focus,
+        :focus-within {
+          border: 2px solid var(--red);
+          outline: none;
+        }
+      `}
 
     @media (max-width: 480px) {
       width: 80%;
