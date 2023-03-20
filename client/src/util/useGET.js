@@ -6,7 +6,7 @@ const useGET = (url) => {
   const [isPending, setIsPending] = useState(true);
   const [error, setError] = useState(null);
 
-  const getres = async () => {
+  const getData = async () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}${url}`
@@ -21,7 +21,7 @@ const useGET = (url) => {
 
   useEffect(() => {
     if (url) {
-      getres();
+      getData();
     }
   }, [url]);
 
