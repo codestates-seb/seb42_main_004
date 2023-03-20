@@ -71,7 +71,7 @@ public class UserController {
 
   //회원 정보 수정
   @PatchMapping("/{id}")
-  public ResponseEntity updateUser(@RequestBody UserPatchDto patchDto) {
+  public ResponseEntity updateUser(@RequestBody @Valid UserPatchDto patchDto) {
     log.info("##### UPDATE USER #####");
     User user = mapper.userPatchDtoToUser(patchDto);
     User patchedUser = userService.updatedUser(user);
@@ -107,7 +107,7 @@ public class UserController {
   // 비밀번호 변경
   @PatchMapping("/{id}/password")
   public ResponseEntity updatePassword(@PathVariable Long id,
-      @RequestBody PasswordPatchDto passwordPatchDto) {
+      @RequestBody @Valid PasswordPatchDto passwordPatchDto) {
     String password = passwordPatchDto.getPassword();
     String afterPassword = passwordPatchDto.getAfterPassword();
     userService.updatePassword(id, password, afterPassword);
@@ -117,7 +117,7 @@ public class UserController {
 
   // 리커버리 이메일 샌드
   @PostMapping("/recovery_email_send")
-  public ResponseEntity recoveryEmailSend(@RequestBody RecoveryEmailSendDto dto)
+  public ResponseEntity recoveryEmailSend(@RequestBody @Valid RecoveryEmailSendDto dto)
       throws MessagingException, UnsupportedEncodingException {
     String emailSignUp = dto.getEmailSignUp();
     String emailNeedToSend = dto.getEmailNeedToSend();
@@ -129,7 +129,7 @@ public class UserController {
 
   // 리커버리 진행
   @PatchMapping("/recovery")
-  public ResponseEntity recovery(@RequestBody RecoveryPasswordPatchDto dto) {
+  public ResponseEntity recovery(@RequestBody @Valid RecoveryPasswordPatchDto dto) {
     String email = dto.getEmail();
     String mailKey = dto.getMailKey();
     String afterPassword = dto.getAfterPassword();
@@ -141,7 +141,7 @@ public class UserController {
 
   //이메일 인증 다시 보내기
   @GetMapping("/resend")
-  public ResponseEntity resend(@RequestBody ResendEmailDto dto)
+  public ResponseEntity resend(@RequestBody @Valid ResendEmailDto dto)
       throws MessagingException, UnsupportedEncodingException {
     String email = dto.getEmail();
     userService.resendEmail(email);
