@@ -1,6 +1,8 @@
 package com.example.server.config;
 
 import com.example.server.auth.filter.JwtAuthenticationFilter;
+import com.example.server.auth.handler.UserAuthenticationFailureHandler;
+import com.example.server.auth.handler.UserAuthenticationSuccessHandler;
 import com.example.server.auth.jwt.JwtTokenizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,8 +60,10 @@ public class SecurityConfiguration {
       AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);  // (2-3)
 
       JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);  // (2-4)
-//      jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");          // (2-5)
-//TODO default login request URL 변경?
+      jwtAuthenticationFilter.setAuthenticationFailureHandler(new UserAuthenticationFailureHandler()); // 실패 핸들러 적용
+      jwtAuthenticationFilter.setAuthenticationSuccessHandler(new UserAuthenticationSuccessHandler()); // 성공 핸들러 적용
+
+
       builder.addFilter(jwtAuthenticationFilter);  // (2-6)
     }
   }
