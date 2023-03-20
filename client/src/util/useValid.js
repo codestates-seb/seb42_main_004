@@ -41,7 +41,7 @@ function useValid(InputValue) {
 
   useEffect(() => {
     //eslint-disable-next-line
-    const exp = /^[a-zA-Z0-9]{8,}$/;
+    const exp = /^[a-zA-Z0-9]{8,20}$/;
     if (
       exp.test(InputValue.password) &&
       !(InputValue.password.search(/[0-9]/g) < 0) &&
@@ -52,7 +52,7 @@ function useValid(InputValue) {
     } else {
       setValidText({
         ...validText,
-        password: '영문, 숫자를 포함하여 8자 이상 입력해주세요.',
+        password: '영문, 숫자를 포함하여 8~20글자로 입력해주세요.',
       });
       setIsValid({ ...isValid, password: false });
     }
