@@ -13,11 +13,13 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Embeddable
-public class Image {
+public class ImageInfo {
     @Column(nullable = false)
     private String imageName;
     @Column(nullable = false)
     private String oriName;
     @Column(nullable = false)
-    private String path;
+    private String filePath;
+    @Transient
+    private final String baseUrl = "https://codestates-main-project-image.s3.ap-northeast-2.amazonaws.com/";
 }

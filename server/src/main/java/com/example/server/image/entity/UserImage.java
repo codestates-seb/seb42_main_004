@@ -5,8 +5,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Getter
 @Entity
 public class UserImage {
@@ -16,7 +17,7 @@ public class UserImage {
     private Long id;
 
     @Embedded
-    private Image image;
+    private ImageInfo imageInfo;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")

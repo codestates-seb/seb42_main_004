@@ -13,8 +13,9 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartMealbox {
   @Id
+  @Column(name = "CART_MEALBOX_ID")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long cartMealboxId;
+  private long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cart_id")
@@ -27,11 +28,23 @@ public class CartMealbox {
   @Column(nullable = false)
   private int quantity;
 
+  public static CartMealbox makeCartMealbox(Cart cart, Mealbox mealbox) {
+    CartMealbox cartMealbox = CartMealbox.builder()
+            .cart(cart).mealbox(mealbox).quantity(1).build();
+    cart.addCartMealbox(cartMealbox);
+    mealbox.addCartMealbox(cartMealbox);
+    return cartMealbox;
+  }
+
   public void setCart(Cart cart) {
     this.cart = cart;
     if (!cart.getCartMealboxes().contains(this)) {
       cart.getCartMealboxes().add(this);
     }
+  }
+
+  public void changeQuantity(int quantity){
+    this.quantity = quantity;
   }
 }
 

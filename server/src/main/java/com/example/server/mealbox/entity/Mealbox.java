@@ -1,16 +1,20 @@
 package com.example.server.mealbox.entity;
 
+import com.example.server.cart.entity.CartMealbox;
 import com.example.server.image.entity.MealboxImage;
 import com.example.server.mealboxSet.entity.MealboxSet;
 import com.example.server.order.entity.OrdersMealbox;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Builder
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Mealbox {
@@ -35,19 +39,36 @@ public class Mealbox {
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
     private List<OrdersMealbox> ordersMealboxes;
 
-    @OneToOne(mappedBy = "mealbox")
+    @OneToMany(mappedBy = "mealbox", cascade = CascadeType.REMOVE)
+    private List<CartMealbox> cartMealboxes;
+
+    @OneToOne(mappedBy = "mealbox", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter
     private MealboxImage image;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "MEALBOX_SETS_ID")
     private MealboxSet mealboxSet;
 
     public void addMealboxProduct(MealboxProduct mealboxProduct) {
+        if(mealboxProducts==null){
+            mealboxProducts = new ArrayList<>();
+        }
         mealboxProducts.add(mealboxProduct);
     }
 
     public void addOrderMealbox(OrdersMealbox ordersMealbox) {
+        if(ordersMealboxes==null){
+            ordersMealboxes = new ArrayList<>();
+        }
         ordersMealboxes.add(ordersMealbox);
+    }
+
+    public void addCartMealbox(CartMealbox cartMealbox) {
+        if(cartMealboxes==null){
+            cartMealboxes = new ArrayList<>();
+        }
+        cartMealboxes.add(cartMealbox);
     }
 
     public void patchMealbox(String name, int price, int kcal, int weight){

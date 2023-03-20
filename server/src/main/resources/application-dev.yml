@@ -20,7 +20,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: baram2449@gmail.com
-    password: plxlbhvgjmcnmdjf
+    password: ${GOOGLE_APP_PASSWORD}
     default-encoding: utf-8
     properties:
       mail:
@@ -34,9 +34,6 @@ logging:
     org.hibernate.sql: DEBUG
     org.hibernate.type.descriptor.sql: DEBUG #show parameter binding
 
-image:
-  path: sss
-
 mail:
   address:
     admin: admin@gmail.com
@@ -45,3 +42,11 @@ jwt:
   key: 4FizXKCsqLU4lKXNtWLnyMBax57eVryor6zmf7wPUhF5SGc25Tk7VzKhm5KiPgj
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
+
+  cloud:
+    aws:
+      credentials.access-key:
+      credentials.secret-key:
+      s3.bucket: codestates-main-project-image
+      region.static: ap-northeast-2
+      stack.auto: false

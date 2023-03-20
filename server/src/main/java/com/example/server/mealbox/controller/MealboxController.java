@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.List;
 public class MealboxController {
     private final MealboxService mealboxService;
     private final MealboxMapper mapper;
+    private final int mealboxListSize = 5;
 
     public MealboxController(MealboxService mealboxService, MealboxMapper mapper) {
         this.mealboxService = mealboxService;
@@ -32,29 +34,33 @@ public class MealboxController {
 
     //관리자가 추천조합 밀박스 만들기
     @PostMapping("/admin/mealboxes")
-    public ResponseEntity createAdminMealbox(@RequestBody MealboxPostDto mealboxPostDto) {
+    public ResponseEntity createAdminMealbox(@RequestPart (value = "mealboxDto") MealboxPostDto mealboxPostDto,
+                                             @RequestPart (value = "file", required = false) MultipartFile file) {
         log.info("------createAdminMealbox------");
         Mealbox mealbox = mapper.mealboxPostDtoToMealbox(mealboxPostDto, Mealbox.MealboxInfo.NO_REC_MEALBOX);
-        mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxPostDto.getProducts());
+        log.info(mealbox.toString());
+        mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxPostDto.getProducts(), file);
+        log.info(mealbox.toString());
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    //관리자가 추천조합 밀박스 get (auth를위해서 다른 요청을 했음)
-    @GetMapping("/admin/mealboxes/{mealboxId}")
-    public ResponseEntity getAdminMealbox(@Positive @PathVariable("mealboxId") Long mealboxId) {
-        log.info("------getAdminMealbox------");
-        Mealbox mealbox = mealboxService.findMealboxById(mealboxId);
-        OnlyMealboxResponseDto response = mapper.mealboxToMealboxResponseDto(mealbox);
-        return new ResponseEntity(new SingleResponseDto(response), HttpStatus.OK);
-    }
+//    //관리자가 추천조합 밀박스 get (auth를위해서 다른 요청을 했음)
+//    @GetMapping("/admin/mealboxes/{mealboxId}")
+//    public ResponseEntity getAdminMealbox(@Positive @PathVariable("mealboxId") Long mealboxId) {
+//        log.info("------getAdminMealbox------");
+//        Mealbox mealbox = mealboxService.findMealboxById(mealboxId);
+//        OnlyMealboxResponseDto response = mapper.mealboxToMealboxResponseDto(mealbox);
+//        return new ResponseEntity(new SingleResponseDto(response), HttpStatus.OK);
+//    }
 
     //관리자가 추천조합 밀박스 수정하기
     @PatchMapping("/admin/mealboxes/{mealboxId}")
     public ResponseEntity updateAdminMealbox(@Positive @PathVariable("mealboxId") Long mealboxId,
-                                             @RequestBody MealboxPatchDto mealboxPatchDto) {
+                                             @RequestPart(value = "mealboxDto") MealboxPatchDto mealboxPatchDto,
+                                             @RequestPart(value = "file", required = false) MultipartFile file) {
         log.info("------updateAdminMealbox------");
         Mealbox mealboxPatcher = mapper.mealboxPatchDtoToMealbox(mealboxPatchDto);
-        mealboxService.updateMealbox(mealboxPatcher, mealboxId, mealboxPatchDto.getProducts());
+        mealboxService.updateMealbox(mealboxPatcher, mealboxId, mealboxPatchDto.getProducts(), file);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -66,34 +72,22 @@ public class MealboxController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    //관리자가 추천조합 밀박스 리스트 보기
-    @GetMapping("/admin/mealboxes")
-    public ResponseEntity getAdminMealboxList(@Positive @RequestParam int page,
-                                              @Positive @RequestParam int size) {
-        log.info("------getAdminMealboxList------");
-        Page<Mealbox> mealboxPage = mealboxService.findAdminMadeMealboxes(page,size);
+    //추천조합 밀박스 리스트 보기
+    @GetMapping("/mealboxes")
+    public ResponseEntity getMealboxList(@Positive @RequestParam int page) {
+        log.info("------getMealboxList------");
+        Page<Mealbox> mealboxPage = mealboxService.findAdminMadeMealboxes(page,mealboxListSize);
         List<Mealbox> mealboxes = mealboxPage.getContent();
         List<OnlyMealboxResponseDto> response = mapper.mealboxListToMealboxResponseDtoList(mealboxes);
 
         return new ResponseEntity(new MultiResponseDto(response, mealboxPage), HttpStatus.OK);
     }
 
-    //소비자가 커스텀 밀박스 만들기 + 기존의 추천조합 밀박스 수정하기
-    @PostMapping("/mealboxes/custom")
-    public ResponseEntity createCustomMealbox(@RequestBody MealboxPostDto mealboxPostDto) {
-        log.info("------createCustomMealbox------");
-        Mealbox mealbox = mapper.mealboxPostDtoToMealbox(mealboxPostDto, Mealbox.MealboxInfo.CUSTOM_MEALBOX);
-        mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxPostDto.getProducts());
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
-
-
-    //소비자가 전체 추천조합 밀박스 리스트 조회하기
-    @GetMapping("/mealboxes/rec")
-    public ResponseEntity getRecMealboxes(@Positive @RequestParam int page,
-                                          @Positive @RequestParam int size) {
-        log.info("------getRecommendedMealbox------");
-        Page<Mealbox> mealboxPage = mealboxService.findAdminMadeMealboxes(page,size);
+    @GetMapping("/mealboxes/search")
+    public ResponseEntity getSearchedMealboxes(@Positive @RequestParam int page,
+                                               @RequestParam String name) {
+        log.info("------getSearchedMealboxList------");
+        Page<Mealbox> mealboxPage = mealboxService.getSearchedMealboxes(page,mealboxListSize, name);
         List<Mealbox> mealboxes = mealboxPage.getContent();
         List<OnlyMealboxResponseDto> response = mapper.mealboxListToMealboxResponseDtoList(mealboxes);
 
