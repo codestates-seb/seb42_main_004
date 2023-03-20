@@ -56,7 +56,7 @@ public class ImageService {
         long time = System.currentTimeMillis();
         String originalFilename = mf.getOriginalFilename();
         String saveFileName = String.format("%d_%s", time, originalFilename.replaceAll(" ", ""));
-        String filePath = ImageSort.MEALBOX_IMAGE.getPath();
+        String filePath = ImageSort.USER_IMAGE.getPath();
 
         String savedPath = createAndUploadFile(mf,saveFileName, filePath);
         log.info("Saved Path : "+savedPath);

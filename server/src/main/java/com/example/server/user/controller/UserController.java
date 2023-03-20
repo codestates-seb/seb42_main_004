@@ -1,6 +1,7 @@
 package com.example.server.user.controller;
 
 import com.example.server.auth.utils.UriCreator;
+import com.example.server.image.entity.ImageInfo;
 import com.example.server.user.dto.PasswordPatchDto;
 import com.example.server.user.dto.RecoveryEmailSendDto;
 import com.example.server.user.dto.RecoveryPasswordPatchDto;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/users")
@@ -83,6 +86,8 @@ public class UserController {
     User findUser = userService.getUser(id);
     UserResponseDto userResponseDto = mapper.userToUserResponseDto(findUser);
 
+    ImageInfo imageInfo = findUser.getImage().getImageInfo();
+    userResponseDto.setImagePath(imageInfo.getFilePath()+"/"+imageInfo.getImageName());
     return ResponseEntity.ok(userResponseDto);
   }
 
@@ -139,6 +144,13 @@ public class UserController {
     userService.resendEmail(email);
 
     return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/{id}/image")
+  public ResponseEntity postUserImage(@PathVariable("id") Long id,
+                                      @RequestBody MultipartFile file){
+    userService.postUserImage(id, file);
+    return new ResponseEntity(HttpStatus.CREATED);
   }
 
 }
