@@ -17,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,7 @@ public class UserController {
 
   // 회원 가입
   @PostMapping
-  public ResponseEntity createUser(@RequestBody UserPostDto postDto)
+  public ResponseEntity createUser(@RequestBody @Valid UserPostDto postDto)
       throws MessagingException, UnsupportedEncodingException {
     log.info("##### CREATE USER #####");
 
