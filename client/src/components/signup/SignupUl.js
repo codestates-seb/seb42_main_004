@@ -17,8 +17,6 @@ function SignupUl() {
   const inputRef = useRef([]);
   const navigate = useNavigate();
   const { name, email, password, passwordConfirm } = inputValue;
-  console.log(isValid);
-  console.log(validText);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -42,9 +40,13 @@ function SignupUl() {
       isValid.password &&
       isValid.passwordConfirm
     ) {
-      postData('/users', { name, email, password }).then((data) =>
-        console.log(data)
-      );
+      postData('/users', { name, email, password }).then((data) => {
+        if (data.status === 409) {
+          navigate('/email/send');
+        } else {
+          navigate('/email/confirm');
+        }
+      });
     } else if (!isValid.name) {
       inputRef.current[0].focus();
     } else if (!isValid.email) {
