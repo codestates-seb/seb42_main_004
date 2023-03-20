@@ -1,7 +1,6 @@
 package com.example.server.order.controller;
 
 import com.example.server.dto.MultiResponseDto;
-import com.example.server.order.dto.OrderGetDto;
 import com.example.server.order.dto.OrderPageResponseDto;
 import com.example.server.order.dto.OrderPatchDeliveryDto;
 import com.example.server.order.dto.OrderPostDto;
@@ -66,8 +65,8 @@ public class OrderController {
   }
 
   @GetMapping("/admin/orders")
-  public ResponseEntity getOrdersAdmin(@RequestParam @Positive int page, @RequestBody OrderGetDto orderGetDto) {
-    Page<Orders> orders = orderService.getOrdersByDateToPage(orderGetDto, page-1);
+  public ResponseEntity getOrdersAdmin(@RequestParam @Positive int page, @RequestParam String date) {
+    Page<Orders> orders = orderService.getOrdersByDateToPage(date, page-1);
     List<Orders> content = orders.getContent();
     List<OrderResponseDto> orderResponseDtos = mapper.OrdersToOrderResponseDtos(content);
     return new ResponseEntity<>(new MultiResponseDto<>(orderResponseDtos, orders),HttpStatus.OK);

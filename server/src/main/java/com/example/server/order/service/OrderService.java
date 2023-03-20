@@ -4,7 +4,6 @@ import com.example.server.exception.BusinessLogicException;
 import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.mealbox.service.MealboxService;
 import com.example.server.order.data.OrderStatus;
-import com.example.server.order.dto.OrderGetDto;
 import com.example.server.order.dto.OrderMealboxPostDto;
 import com.example.server.order.dto.OrderPatchDeliveryDto;
 import com.example.server.order.dto.OrderPostDto;
@@ -118,9 +117,9 @@ public class OrderService {
     return orderRepository.save(order);
   }
 
-  public Page<Orders> getOrdersByDateToPage(OrderGetDto orderGetDto, int page) {
+  public Page<Orders> getOrdersByDateToPage(String date, int page) {
     // 관리자 검증 해야함
-    LocalDate localDate = changeStringToLocalDate(orderGetDto.getDate());
+    LocalDate localDate = changeStringToLocalDate(date);
     LocalDateTime startDate = localDate.atStartOfDay();
     LocalDateTime endDate = localDate.atTime(LocalTime.MAX);
     return orderRepository.findAllByCreatedDateBetweenAndStatusNot(startDate, endDate, OrderStatus.NOT_PAID, PageRequest.of(page, 5, Sort.by("createdDate").descending()));
