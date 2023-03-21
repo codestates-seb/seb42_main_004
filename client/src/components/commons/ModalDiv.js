@@ -1,20 +1,22 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import InputLabelDiv from './InputLabelDiv';
 import MainButton from './MainButton';
+import InputLabelDiv from './InputLabelDiv';
+import { initializeCustom } from '../../reducers/customReducer';
+import patchData from '../../util/patchData';
+import postData from '../../util/postData';
 
-function ModalDiv({ closeModal, mealBox, boxElement }) {
+function ModalDiv({ closeModal, mealBox, product }) {
   const [imgInput, setImgInput] = useState();
   const [imgInputBuffer, setImgInputBuffer] = useState();
-  const [productInfo, setProductInfo] = useState({
-    name: '',
-    kcal: '',
-    weight: '',
-    price: '',
-  });
-  const subject = mealBox ? mealBox : boxElement;
+  const subject = mealBox ? mealBox : product;
+  const [subjectInfo, setSubjectInfo] = useState(subject);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const inputHandler = (key) => (e) => {
+  const subjectInputHandler = (key) => (e) => {
     let value = e.target.value;
     if (key !== 'name') {
       let lastLetter = Number(e.target.value.slice(-1));
@@ -23,7 +25,7 @@ function ModalDiv({ closeModal, mealBox, boxElement }) {
         value = Number(value.replaceAll(',', ''));
       }
     }
-    setProductInfo({ ...productInfo, [key]: value });
+    setSubjectInfo({ ...subjectInfo, [key]: value });
   };
   // console.log(imgInput[0]);
 
@@ -38,6 +40,65 @@ function ModalDiv({ closeModal, mealBox, boxElement }) {
       setImgInputBuffer(null);
     }
   }, [imgInput]);
+
+  const mealBoxReq = () => {
+    const data = { ...subjectInfo };
+    if (!data.name) return;
+    let uri = '/admin/mealboxes';
+    const id = subjectInfo.mealBoxId;
+    data.products = data.products.forEach((product) => delete product.name);
+
+    const haveIdReq = (haveId) => {
+      let func = haveId ? patchData : postData;
+      func(uri, data)
+        .then(() => {
+          dispatch(initializeCustom());
+          alert(`${data.name}이 ${haveId ? '수정' : '추가'}되었습니다.`);
+          navigate('/');
+        })
+        .catch(() => alert('등록에 실패했습니다\n관리자에게 문의해주세요.'));
+    };
+
+    if (id) {
+      uri += `/${id}`;
+      delete data.mealBoxId;
+      haveIdReq(true);
+    } else {
+      haveIdReq(false);
+    }
+  };
+
+  const productReq = () => {
+    const data = { ...subjectInfo };
+    if (
+      !data.name ||
+      data.weight === undefined ||
+      data.kcal === undefined ||
+      data.price === undefined
+    )
+      return;
+
+    let uri = '/admin/products';
+    const id = subjectInfo.productId;
+
+    const haveIdReq = (haveId) => {
+      let func = haveId ? patchData : postData;
+      func(uri, data)
+        .then(() => {
+          alert(`${data.name}이 ${haveId ? '수정' : '추가'}되었습니다.`);
+          navigate('/');
+        })
+        .catch(() => alert('등록에 실패했습니다\n관리자에게 문의해주세요.'));
+    };
+
+    if (id) {
+      uri += `/${id}`;
+      delete data.productId;
+      haveIdReq(true);
+    } else {
+      haveIdReq(false);
+    }
+  };
 
   return (
     <ModalContainerDiv onClick={closeModal}>
@@ -64,16 +125,16 @@ function ModalDiv({ closeModal, mealBox, boxElement }) {
           <InputLabelDiv
             label="제품명"
             id="name"
-            value={productInfo.name}
-            onChange={inputHandler('name')}
+            value={subjectInfo.name}
+            onChange={subjectInputHandler('name')}
             placeholder="밀박스A"
             maxLength={20}
           />
           <InputLabelDiv
             label="열량"
             id="kcal"
-            value={productInfo.kcal.toLocaleString('ko-KR')}
-            onChange={boxElement && inputHandler('kcal')}
+            value={subjectInfo.kcal.toLocaleString('ko-KR')}
+            onChange={product && subjectInputHandler('kcal')}
             unit="kcal/10g"
             maxLength={5}
             disabled={mealBox && 1}
@@ -81,8 +142,8 @@ function ModalDiv({ closeModal, mealBox, boxElement }) {
           <InputLabelDiv
             label="용량"
             id="weight"
-            value={productInfo.weight.toLocaleString('ko-KR')}
-            onChange={boxElement && inputHandler('weight')}
+            value={subjectInfo.weight.toLocaleString('ko-KR')}
+            onChange={product && subjectInputHandler('weight')}
             unit="g"
             maxLength={5}
             disabled={mealBox && 1}
@@ -90,8 +151,8 @@ function ModalDiv({ closeModal, mealBox, boxElement }) {
           <InputLabelDiv
             label="금액"
             id="price"
-            value={productInfo.price.toLocaleString('ko-KR')}
-            onChange={boxElement && inputHandler('price')}
+            value={subjectInfo.price.toLocaleString('ko-KR')}
+            onChange={product && subjectInputHandler('price')}
             unit="원"
             maxLength={6}
             disabled={mealBox && 1}
@@ -100,6 +161,7 @@ function ModalDiv({ closeModal, mealBox, boxElement }) {
             name={`${mealBox ? '밀박스' : '구성품'} ${
               subject?.id ? '수정' : '추가'
             }하기`}
+            handler={mealBox ? mealBoxReq : productReq}
           />
         </ModalTextDiv>
       </ModalContentDiv>
