@@ -1,52 +1,64 @@
-// import { useState } from 'react';
-// import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import MealBoxCardDiv from '../components/allboxes/MealBoxCardDiv';
 import BannerLink from '../components/commons/BannerLink';
+import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
 import SearchBarDiv from '../components/commons/SearchBarDiv';
-// import useGET from '../util/useGET';
+import useGET from '../util/useGET';
 
 function AllBoxes() {
-  // const { page } = useParams();
-  // const [data, isPending, error] = useGET(`/mealboxes/${page}`)
+  let { page } = useParams();
+  if (!page) page = 1;
+  const [res, isPending, error] = useGET(`/mealboxes?page=${page}`);
 
   return (
-    <MealBoxesWrapDiv className="margininside">
-      <BannerLink />
-      <h1>{'맹쥬'}님 오늘도 건강한 하루되세요(｡•̀ᴗ-)✧</h1>
-      <SearchBarDiv placeholder="healthy day 밀박스" />
-      <MealBoxesUl>
-        <li>
-          <MealBoxCardDiv custom={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-      </MealBoxesUl>
-      <PaginationUl page={4} totalpage={7} url="" />
-    </MealBoxesWrapDiv>
+    <GetTemplate isPending={isPending} error={error} res={res?.data}>
+      <MealBoxesWrapDiv className="margininside">
+        <BannerLink />
+        <h1>{'맹쥬'}님 오늘도 건강한 하루되세요(｡•̀ᴗ-)✧</h1>
+        <SearchBarDiv placeholder="healthy day 밀박스" />
+        <MealBoxesUl>
+          <li>
+            <MealBoxCardDiv custom={1} />
+          </li>
+          {res?.data?.map((mealbox) => (
+            <li key={mealbox.mealboxId}>
+              <MealBoxCardDiv mealBox={mealbox} />
+            </li>
+          ))}
+          {/* <li>
+            <MealBoxCardDiv mealBox={1} />
+          </li>
+          <li>
+            <MealBoxCardDiv mealBox={1} />
+          </li>
+          <li>
+            <MealBoxCardDiv mealBox={1} />
+          </li>
+          <li>
+            <MealBoxCardDiv mealBox={1} />
+          </li>
+          <li>
+            <MealBoxCardDiv mealBox={1} />
+          </li>
+          <li>
+            <MealBoxCardDiv mealBox={1} />
+          </li>
+          <li>
+            <MealBoxCardDiv mealBox={1} />
+          </li>
+          <li>
+            <MealBoxCardDiv mealBox={1} />
+          </li> */}
+        </MealBoxesUl>
+        <PaginationUl
+          page={res?.pageInfo?.page}
+          totalpage={res?.pageInfo?.totalPages}
+          url=""
+        />
+      </MealBoxesWrapDiv>
+    </GetTemplate>
   );
 }
 

@@ -79,6 +79,15 @@ public class Mealbox {
         this.mealboxProducts.clear();
     }
 
+    public void calculateDetails() {
+        this.weight = mealboxProducts.stream().mapToInt(mealboxProduct->
+                mealboxProduct.getProduct().getWeight()*mealboxProduct.getQuantity()).sum();
+        this.price = mealboxProducts.stream().mapToInt(mealboxProduct->
+                mealboxProduct.getProduct().getPrice()*mealboxProduct.getQuantity()).sum();
+        this.kcal = mealboxProducts.stream().mapToInt(mealboxProduct->
+                mealboxProduct.getProduct().getKcal()*mealboxProduct.getQuantity()).sum();
+    }
+
     @Getter
     @AllArgsConstructor
     public enum MealboxInfo{

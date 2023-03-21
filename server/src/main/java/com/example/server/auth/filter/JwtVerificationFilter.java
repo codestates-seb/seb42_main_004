@@ -58,6 +58,15 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
   private Map<String, Object> verifyJws(HttpServletRequest request) {
     String jws = request.getHeader("Authorization").replace("Bearer ", ""); // (3-1)
+
+    //쿠키에 담긴 jwt 사용?
+//    Cookie cookie = Arrays.stream(request.getCookies())
+//        .filter(c -> c.getName().equals("Authorization")).findFirst()
+//        .orElseThrow(() -> new RuntimeException());
+//    String jws = cookie.getValue().replace("Bearer ", "");
+//    log.info("### value is "+jws);
+
+
     String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(
         jwtTokenizer.getSecretKey()); // (3-2)
     Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey)

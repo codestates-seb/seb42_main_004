@@ -47,5 +47,4 @@ public class Product {
         this.kcal = kcal;
         this.price = price;
     }
-
 }

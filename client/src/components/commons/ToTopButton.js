@@ -1,21 +1,54 @@
+import { useEffect, useState } from 'react';
 import { VscTriangleUp } from 'react-icons/vsc';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import checkFooter from '../../util/checkFooter';
-function Component() {
-  const toTop = () => {
-    window.scrollTo(0, 0);
+
+function ToTopButton() {
+  const { path } = useLocation();
+  const [scroll, setScroll] = useState();
+
+  const calcHeight = () => {
+    setScroll(document.body.scrollHeight > window.innerHeight);
   };
 
+  useEffect(() => {
+    calcHeight();
+  }, [path]);
+
+  // 아래 두개 합치기
+  useEffect(() => {
+    window.addEventListener('resize', calcHeight);
+    return () => {
+      window.removeEventListener('resize', calcHeight);
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     window.addEventListener('scroll', handleScroll);
+  //   }, 100);
+  //   return () => {
+  //     clearInterval(timer);
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, []);
+
   return (
-    <Button onClick={toTop} height={checkFooter() ? 1 : null}>
+    <Button
+      onClick={() => window.scrollTo(0, 0)}
+      scroll={scroll}
+      havefooter={checkFooter() && 1}
+    >
       <VscTriangleUp />
     </Button>
   );
 }
 
-export default Component;
+export default ToTopButton;
 
 const Button = styled.button`
+  display: ${(props) => (props.scroll ? 'block' : 'none')};
   z-index: 15;
   width: 35px;
   height: 35px;
@@ -30,6 +63,6 @@ const Button = styled.button`
   }
 
   @media screen and (max-width: 480px) {
-    bottom: calc(${(props) => (props.height ? '76px' : '0px')} + 1rem);
+    bottom: calc(${(props) => (props.havefooter ? '76px' : '0px')} + 1rem);
   }
 `;

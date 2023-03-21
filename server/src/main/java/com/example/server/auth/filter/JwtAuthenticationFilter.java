@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
@@ -54,6 +55,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     String accessToken = delegateAccessToken(user);
     String refreshToken = delegateRefreshToken(user);
 
+    Cookie cookie = new Cookie("Authorization",accessToken);
+    cookie.setPath("/");
+    cookie.setMaxAge(30*60);
+
+    response.addCookie(cookie);
     response.setHeader("Authorization", "Bearer " + accessToken);
     response.setHeader("Refresh", refreshToken);
 
