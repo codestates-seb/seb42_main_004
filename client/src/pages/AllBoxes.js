@@ -10,7 +10,7 @@ import useGET from '../util/useGET';
 function AllBoxes() {
   let { page } = useParams();
   if (!page) page = 1;
-  const [res, isPending, error] = useGET(`/mealboxes/rec?page=${page}`);
+  const [res, isPending, error] = useGET(`/mealboxes?page=${page}`);
 
   return (
     <GetTemplate isPending={isPending} error={error} res={res?.data}>
