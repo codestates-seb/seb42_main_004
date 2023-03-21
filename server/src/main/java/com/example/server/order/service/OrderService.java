@@ -145,6 +145,7 @@ public class OrderService {
     order.setZipCode(orderPatchDeliveryDto.getZipCode());
     order.setSimpleAddress(orderPatchDeliveryDto.getSimpleAddress());
     order.setDetailAddress(orderPatchDeliveryDto.getDetailAddress());
+    order.setPhoneNumber(orderPatchDeliveryDto.getPhoneNumber());
     return orderRepository.save(order);
   }
 }

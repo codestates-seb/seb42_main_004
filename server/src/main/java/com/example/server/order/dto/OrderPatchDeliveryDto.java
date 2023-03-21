@@ -8,4 +8,5 @@ public class OrderPatchDeliveryDto {
   private String zipCode;
   private String simpleAddress;
   private String detailAddress;
+  private String phoneNumber;
 }
