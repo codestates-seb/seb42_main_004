@@ -9,6 +9,7 @@ import com.example.server.order.service.OrderService;
 import com.example.server.payment.Entity.PayInfo;
 import com.example.server.payment.dto.PreparePostDto;
 import com.example.server.payment.dto.ValidatePaymentDto;
+import com.example.server.payment.exception.PaymentException;
 import com.example.server.payment.repository.PayInfoRepository;
 import com.google.gson.Gson;
 import com.siot.IamportRestClient.IamportClient;
