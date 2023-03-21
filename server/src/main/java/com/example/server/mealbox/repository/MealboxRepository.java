@@ -9,4 +9,7 @@ import java.util.List;
 
 public interface MealboxRepository extends JpaRepository<Mealbox, Long> {
     Page<Mealbox> findAllByMealboxInfoIsNot(Pageable pageable, Mealbox.MealboxInfo mealboxInfo);
+
+    Page<Mealbox> findAllByMealboxInfoIsNotAndNameContains(Pageable pageable, Mealbox.MealboxInfo mealboxInfo,
+                                                              String search);
 }

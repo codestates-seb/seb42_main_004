@@ -40,37 +40,43 @@ function useValid(InputValue) {
   }, [InputValue.email]);
 
   useEffect(() => {
-    //eslint-disable-next-line
-    const exp = /^[a-zA-Z0-9]{8,}$/;
+    const exp = /^[a-zA-Z0-9]{8,20}$/;
+    let objText = {};
+    let objValid = {};
     if (
       exp.test(InputValue.password) &&
       !(InputValue.password.search(/[0-9]/g) < 0) &&
       !(InputValue.password.search(/[a-z]/gi) < 0)
     ) {
-      setValidText({ ...validText, password: '' });
-      setIsValid({ ...isValid, password: true });
-    } else {
-      setValidText({
-        ...validText,
-        password: '영문, 숫자를 포함하여 8자 이상 입력해주세요.',
-      });
-      setIsValid({ ...isValid, password: false });
+      objText = { ...objText, password: '' };
+      objValid = { ...objValid, password: true };
+    } else if (
+      !exp.test(InputValue.password) ||
+      InputValue.password.search(/[0-9]/g) < 0 ||
+      InputValue.password.search(/[a-z]/gi) < 0
+    ) {
+      objText = {
+        ...objText,
+        password: '영문, 숫자를 포함하여 8~20글자로 입력해주세요.',
+      };
+      objValid = { ...objValid, password: false };
     }
-  }, [InputValue.password, InputValue.passwordConfirm]);
+    if (
+      InputValue.passwordConfirm &&
+      InputValue.password === InputValue.passwordConfirm
+    ) {
+      objText = { ...objText, passwordConfirm: '' };
+      objValid = { ...objValid, passwordConfirm: true };
+    } else if (
+      InputValue.passwordConfirm &&
+      InputValue.password !== InputValue.passwordConfirm
+    ) {
+      objText = { ...objText, passwordConfirm: '비밀번호가 일치하지않습니다.' };
+      objValid = { ...objValid, passwordConfirm: false };
+    }
 
-  useEffect(() => {
-    if (!InputValue.passwordConfirm) {
-      setIsValid({ ...isValid, passwordConfirm: false });
-    } else if (InputValue.password === InputValue.passwordConfirm) {
-      setValidText({ ...validText, passwordConfirm: '' });
-      setIsValid({ ...isValid, passwordConfirm: true });
-    } else {
-      setValidText({
-        ...validText,
-        passwordConfirm: '비밀번호가 일치하지않습니다.',
-      });
-      setIsValid({ ...isValid, passwordConfirm: false });
-    }
+    setValidText({ ...validText, ...objText });
+    setIsValid({ ...isValid, ...objValid });
   }, [InputValue.password, InputValue.passwordConfirm]);
 
   useEffect(() => {

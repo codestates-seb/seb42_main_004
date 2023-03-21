@@ -30,20 +30,12 @@ import java.util.List;
 public class ProductController {
     private final ProductMapper mapper;
     private final ProductService productService;
+    private final int productListSize = 11;
 
 
     public ProductController(ProductMapper mapper, ProductService productService) {
         this.mapper = mapper;
         this.productService = productService;
-    }
-
-    //이미지 생성 테스트
-    @PostMapping("/admin/products/image/{productId}")
-    public ResponseEntity uploadProductImage(@PathVariable("productId") Long productId,
-                                           @RequestBody MultipartFile file){
-        log.info("------uploadProductImage------");
-        ImageInfo imageInfo = productService.uploadProductImage(productId, file);
-        return new ResponseEntity(imageInfo, HttpStatus.CREATED);
     }
 
     //관리자가 개별상품 생성하기
@@ -62,6 +54,7 @@ public class ProductController {
                                              @RequestPart (value = "productDto") ProductPatchDto productPatchDto,
                                              @RequestPart (value = "file", required = false) MultipartFile file){
         log.info("--------updateProduct-------");
+        log.info(file.getContentType());
         Product productPatcher = mapper.productPatchDtoToProduct(productPatchDto);
         productService.updateProduct(productId, productPatcher,file);
         return new ResponseEntity(HttpStatus.OK);
@@ -75,14 +68,13 @@ public class ProductController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    //관리자가 개별상품리스트 얻기 (추천조합 밀박스 만들때 + 구성품 조회할때)
-    @GetMapping("/admin/products")
+    //개별상품리스트 얻기 (추천조합 밀박스 만들때 + 구성품 조회할때)
+    @GetMapping("/products")
     public ResponseEntity getAdminProductList (@Positive @RequestParam int page,
-                                               @Positive @RequestParam int size,
                                                @RequestParam String sort,
                                                @RequestParam Sort.Direction dir) {//여기서 이넘타입을 받을수있다!
         log.info("------getProductList-------");
-        Page<Product> productPage = productService.findProducts(page, size, sort, dir);
+        Page<Product> productPage = productService.findProducts(page, productListSize, sort, dir);
 
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
@@ -90,28 +82,12 @@ public class ProductController {
         return new ResponseEntity(new MultiResponseDto(response,productPage), HttpStatus.OK);
     }
 
-    //소비자가 개별상품리스트 얻기 (커스텀밀박스 만들때 + 구성품 조회할때)
-    @GetMapping("/users/products")
-    public ResponseEntity getProductList(@Positive @RequestParam int page,
-                                         @Positive @RequestParam int size,
-                                         @RequestParam String sort,
-                                         @RequestParam Sort.Direction dir) {
-        log.info("------getProductList-------");
-        Page<Product> productPage = productService.findProducts(page,size,sort,dir);
-
-        List<Product> products = productPage.getContent();
-        List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
-
-        return new ResponseEntity(new MultiResponseDto(response,productPage), HttpStatus.OK);
-    }
-
-    @GetMapping("/products")
+    @GetMapping("/products/search")
     public ResponseEntity searchProductList(@Positive @RequestParam int page,
-                                            @Positive @RequestParam int size,
-                                            @RequestParam String search) {
+                                            @RequestParam String name) {
         log.info("------searchProduct------");
         Page<Product> productPage =
-                productService.searchProducts(search, page, size, "id", Sort.Direction.ASC);
+                productService.searchProducts(name, page, productListSize, "id", Sort.Direction.ASC);
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
 

@@ -1,15 +1,35 @@
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { AsideSignatureButton, AsideWrapper } from '../commons/CartAside';
 import { TextButton } from '../commons/ModalDiv';
+import { AsideSignatureButton, AsideWrapper } from '../commons/CartAside';
+import { deleteProduct } from '../../reducers/customReducer';
 
-function CustomAside({ admin, bucket, buttonClick }) {
+function CustomAside({ admin, custom, buttonClick }) {
+  const dispatch = useDispatch();
+
   return (
     <AsideWrapper>
       <InAsideBoxDiv>
-        <InAsideH2 className="hidden">Custom</InAsideH2>
-        {bucket && (
+        <InAsideH2 className="hidden">
+          {custom?.id ? custom.name : 'Custom'}
+        </InAsideH2>
+        {custom && (
           <ElementInBucketUl>
-            <ElementInBucketLi>
+            {custom.products.map((product) => {
+              <ElementInBucketLi key={product.productId}>
+                <span>{`${product.name}`}</span>
+                <span>
+                  {`${product.quantity}`}
+                  <TextButton
+                    onClick={() => dispatch(deleteProduct(product.productId))}
+                    className="linkstyle"
+                  >
+                    &#10005;
+                  </TextButton>
+                </span>
+              </ElementInBucketLi>;
+            })}
+            {/* <ElementInBucketLi>
               <span>{`${'오렌지주스'}`}</span>
               <span>
                 {`${1}`}
@@ -22,20 +42,20 @@ function CustomAside({ admin, bucket, buttonClick }) {
                 {`${1}`}
                 <TextButton className="linkstyle">&#10005;</TextButton>
               </span>
-            </ElementInBucketLi>
+            </ElementInBucketLi> */}
           </ElementInBucketUl>
         )}
         <InAsidePriceDiv>
           <span>
-            합계 <span>(99,999kcal)</span>
+            합계 <span>({custom.kcal.toLocaleString('ko-KR')}kcal)</span>
           </span>
-          <span>{`${'19,900'}원`}</span>
+          <span>{`${custom.price.toLocaleString('ko-KR')}원`}</span>
         </InAsidePriceDiv>
       </InAsideBoxDiv>
       <AsideSignatureButton onClick={buttonClick}>
         {!admin
           ? '장바구니 담기'
-          : bucket?.id
+          : custom?.id
           ? '밀박스 수정 진행하기'
           : '밀박스 생성 진행하기'}
       </AsideSignatureButton>

@@ -1,10 +1,14 @@
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import EmailDiv from '../components/signup/EmailDiv';
+import ConfirmEmailDiv from '../components/signup/ConfirmEmailDiv';
 
 function ConfirmEmail() {
+  const location = useLocation();
+  const email = location.state ? location.state.email : '';
+
   return (
     <ContainerDiv className="margininside">
-      <EmailDiv pathName="confirm" />
+      <ConfirmEmailDiv pathName="confirm" email={email} />
     </ContainerDiv>
   );
 }
