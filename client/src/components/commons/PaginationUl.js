@@ -24,7 +24,7 @@ function PaginationUl({ page, totalpage, url, setPage }) {
         <PaginationLi
           key={i}
           now={li === page && 1}
-          onClick={() => (url ? navigate(`${url}/${li}`) : setPage(li))}
+          onClick={() => (url !==undefined? navigate(`${url}/${li}`) : setPage(li))}
         >
           {li}
         </PaginationLi>
