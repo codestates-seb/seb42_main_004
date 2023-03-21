@@ -76,15 +76,19 @@ public class OrderService {
   public Orders cancelOrder(String orderNumber) {
     Orders order = findByOrderNumber(orderNumber);
     int index = order.getStatus().getIndex();
-    if(index == 3) {
-      order.applyRefund();
-    } else if (index == 4 & LocalDate.now().isAfter(order.getDeliveryDate().plusDays(1))) {
+    if (LocalDate.now().isAfter(order.getDeliveryDate().plusDays(1))) {
       throw new BusinessLogicException(OrderException.NOT_REFUNDABLE_DATE);
-    } else if (index == 4) {
+    } else if (index == 4 || index == 3) {
       order.applyRefund();
     } else if (index == 1) {
       // 주문 취소 메서드 필요 (아임포트)
       order.cancelOrder();
+    } else if (index == 5) {
+      throw new BusinessLogicException(OrderException.ALREADY_APPLIED_REFUND);
+    } else if (index == 2) {
+      throw new BusinessLogicException(OrderException.ALREADY_CANCELED);
+    } else {
+      throw new BusinessLogicException(OrderException.NOT_YET_PAID);
     }
     return orderRepository.save(order);
   }
