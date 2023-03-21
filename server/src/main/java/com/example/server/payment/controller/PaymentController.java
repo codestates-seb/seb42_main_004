@@ -1,13 +1,14 @@
 package com.example.server.payment.controller;
 
+import com.example.server.cart.entity.Cart;
 import com.example.server.cart.service.CartMealboxService;
+import com.example.server.cart.service.CartService;
 import com.example.server.exception.BusinessLogicException;
 import com.example.server.order.entity.Orders;
 import com.example.server.order.service.OrderService;
 import com.example.server.payment.Entity.PayInfo;
 import com.example.server.payment.dto.PreparePostDto;
 import com.example.server.payment.dto.ValidatePaymentDto;
-import com.example.server.payment.exception.PaymentException;
 import com.example.server.payment.repository.PayInfoRepository;
 import com.google.gson.Gson;
 import com.siot.IamportRestClient.IamportClient;
@@ -36,15 +37,17 @@ public class PaymentController {
   private final OrderService orderService;
   private final PayInfoRepository payInfoRepository;
   private final CartMealboxService cartMealboxService;
+  private final CartService cartService;
 
   Gson gson = new Gson();
 
   // 생성자를 통해 REST API 와 REST API secret 입력
-  public PaymentController(@Lazy OrderService orderService, PayInfoRepository payInfoRepository, CartMealboxService cartMealboxService) {
+  public PaymentController(@Lazy OrderService orderService, PayInfoRepository payInfoRepository, CartMealboxService cartMealboxService, CartService cartService) {
     this.iamportClient = new IamportClient("5377665757631058","AgLx6Jo4zg8gM6Xc6wPDrFGUR0r7LVzQVCkQljQcf8avGEsqmri0rHW68jX53b0J5faZywwhhQiBFkWy");
     this.orderService = orderService;
     this.payInfoRepository = payInfoRepository;
     this.cartMealboxService = cartMealboxService;
+    this.cartService = cartService;
   }
   // 프론트에서 받은 PG사 결괏값을 통해 아임포트 토큰 발행
   @PostMapping("/{imp_uid}")
@@ -68,6 +71,8 @@ public class PaymentController {
     payInfo.addOrder(order);
     payInfoRepository.save(payInfo);
     cartMealboxService.deleteCartMealboxAfterPayment(validatePaymentDto.getCartMealboxIds());
+    Cart findCart = order.getUser().getCart();
+    cartService.refreshTotalPrice(findCart);
     return new ResponseEntity<>(HttpStatus.OK);
   }
   // 결제금액 사전등록
