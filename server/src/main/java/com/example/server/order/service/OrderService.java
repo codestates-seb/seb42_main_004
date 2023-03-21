@@ -6,6 +6,7 @@ import com.example.server.mealbox.service.MealboxService;
 import com.example.server.order.data.OrderStatus;
 import com.example.server.order.dto.OrderMealboxPostDto;
 import com.example.server.order.dto.OrderPatchDeliveryDto;
+import com.example.server.order.dto.OrderPatchStatusDto;
 import com.example.server.order.dto.OrderPostDto;
 import com.example.server.order.entity.Orders;
 import com.example.server.order.entity.OrdersMealbox;
@@ -97,6 +98,12 @@ public class OrderService {
     }
     order.completeDelivery();
     return orderRepository.save(order);
+  }
+
+  public void changeStatus(String orderNumber, OrderPatchStatusDto dto) {
+    Orders order = findByOrderNumber(orderNumber);
+    order.setStatus(OrderStatus.valueOfStatus(dto.getStatus()));
+    orderRepository.save(order);
   }
 
   public Orders findOrder(long orderId) {

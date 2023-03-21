@@ -3,6 +3,7 @@ package com.example.server.order.controller;
 import com.example.server.dto.MultiResponseDto;
 import com.example.server.order.dto.OrderPageResponseDto;
 import com.example.server.order.dto.OrderPatchDeliveryDto;
+import com.example.server.order.dto.OrderPatchStatusDto;
 import com.example.server.order.dto.OrderPostDto;
 import com.example.server.order.dto.OrderResponseDto;
 import com.example.server.order.entity.Orders;
@@ -87,5 +88,12 @@ public class OrderController {
   public ResponseEntity deleteOrder(@PathVariable("order-id") @PositiveOrZero long orderId) {
     orderService.cancelOrder(orderId);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
+
+  @PatchMapping("/admin/orders/status/{order-number}")
+  public ResponseEntity setOrderStatus(@PathVariable("order-number") String orderNumber, @RequestBody
+      OrderPatchStatusDto orderPatchStatusDto) {
+    orderService.changeStatus(orderNumber, orderPatchStatusDto);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }
