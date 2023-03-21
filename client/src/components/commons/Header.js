@@ -48,21 +48,23 @@ function Header() {
         </nav>
       </HeaderDiv>
       {isNav ? (
-        <NavDiv>
-          <NavUl>
-            {/* <li>로그인 해주세요</li> */}
-            <li>
-              <BsFillPersonFill size={25} />
-              <IdDiv>맹쥬님</IdDiv>
-              <IoIosArrowForward size={15} />
-            </li>
-            <li>한끼밀 추천받기</li>
-            <li>커스텀 밀박스 만들기</li>
-            <li>전체 상품 보기</li>
-            <li>구성품 알아보기</li>
-            <li>로그아웃</li>
-          </NavUl>
-        </NavDiv>
+        <ModalContainerDiv onClick={handleClick}>
+          <NavDiv onClick={(e) => e.stopPropagation()}>
+            <NavUl>
+              {/* <li>로그인 해주세요</li> */}
+              <li>
+                <BsFillPersonFill size={25} />
+                <IdDiv>맹쥬님</IdDiv>
+                <IoIosArrowForward size={15} />
+              </li>
+              <li>한끼밀 추천받기</li>
+              <li>커스텀 밀박스 만들기</li>
+              <li>전체 상품 보기</li>
+              <li>구성품 알아보기</li>
+              <li>로그아웃</li>
+            </NavUl>
+          </NavDiv>
+        </ModalContainerDiv>
       ) : null}
     </ContainerHeader>
   );
@@ -88,7 +90,7 @@ const HeaderDiv = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  z-index: 30;
+  z-index: 36;
 
   > nav {
     flex-direction: row;
@@ -122,12 +124,23 @@ const NavDiv = styled.div`
   width: 50vw;
   height: 100vh;
   position: fixed;
-  z-index: 29;
+  z-index: 35;
   padding-top: 70px;
   background-color: var(--head_brown);
+  animation-name: nav;
+  animation-duration: 250ms;
 
   @media (min-width: 768px) {
     display: none;
+  }
+
+  @keyframes nav {
+    from {
+      width: 30vw;
+    }
+    to {
+      width: 50vw;
+    }
   }
 `;
 const NavUl = styled.ul`
@@ -200,4 +213,17 @@ const IdDiv = styled.div`
   padding: 0px 1rem;
   font-family: 'IBM Plex Sans KR', sans-serif;
   font-size: 1.5rem;
+`;
+const ModalContainerDiv = styled.div`
+  z-index: 34;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: var(--gray_070);
+  width: 100vw;
+  height: 100vh;
+
+  :hover {
+    cursor: pointer;
+  }
 `;

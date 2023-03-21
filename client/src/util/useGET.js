@@ -15,6 +15,7 @@ const useGET = (url) => {
       setIsPending(false);
     } catch (err) {
       setError(err);
+      setIsPending(false);
     }
   };
 

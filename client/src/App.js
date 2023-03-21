@@ -3,7 +3,7 @@ import Header from './components/commons/Header';
 import GlobalStyle from './global/globalstyles';
 import Footer from './components/commons/Footer';
 import AllBoxes from './pages/AllBoxes';
-import RecommendedBox from './pages/RecommendedBox';
+import SurveyResult from './pages/SurveyResult';
 import Custom from './pages/Custom';
 import Cart from './pages/Cart';
 import Login from './pages/Login';
@@ -34,7 +34,7 @@ function App() {
           <Route path="/" element={<AllBoxes />} />
           <Route path="/:page" element={<AllBoxes />} />
           <Route path="/survey/question/:page" element={<Survey />} />
-          <Route path="/survey/result" element={<RecommendedBox />} />
+          <Route path="/survey/result" element={<SurveyResult />} />
           <Route path="/custom" element={<Custom />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/myinfo/orderhistory" element={<OrderHistory />} />
