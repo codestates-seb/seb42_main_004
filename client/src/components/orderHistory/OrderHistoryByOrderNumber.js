@@ -6,10 +6,12 @@ import patchData from '../../util/patchData';
 import deleteData from '../../util/deleteData';
 
 function OrderHistoryByOrderNumber({ orders }) {
-  let isAdmin = false;
-  let { username, orderStatus, orderNumber, mealboxes } = orders;
+  let isAdmin = true;
+  let { username, deliveryDate, orderStatus, orderNumber, mealboxes } = orders;
   let [status, setStatus] = useState();
   let [buttonText, setButtonText] = useState('');
+  let [isRefundable, setIsRefundable] = useState(false);
+
   let totalPricePerOrderNum = mealboxes.reduce(
     (acc, cur) => acc + cur.mealboxPrice * cur.mealboxQuantity,
     0
@@ -26,23 +28,40 @@ function OrderHistoryByOrderNumber({ orders }) {
 
   // 사용자
   let buttonTextHandler = () => {
-    // 버튼 text 설정
     if (orderStatus === '주문완료' || orderStatus === '배송중') {
       setButtonText('주문 취소');
-    } else if (orderStatus === '배송완료') {
+    } else if (orderStatus === '배송완료' && isRefundable) {
       setButtonText('반품 신청');
     } else {
       setButtonText('');
     }
   };
 
+  let refundHandler = () => {
+    if (!deliveryDate) return setIsRefundable(false);
+
+    let [y, m, d] = deliveryDate.split('-');
+    let refundDay = String(Number(d) + 1);
+    let refundMonth = String(Number(m) - 1);
+    let refundDueDate = new Date(y, refundMonth, refundDay);
+    setIsRefundable(refundDueDate <= new Date() ? true : false);
+  };
+
   let buttonHandler = () => {
-    deleteData(`/orders/${orderNumber}`);
+    if (confirm('주문을 취소하시겠습니까?')) {
+      deleteData(`/orders/${orderNumber}`);
+      alert('주문이 취소되었습니다.');
+    }
   };
 
   useEffect(() => {
-    buttonTextHandler();
-  }, [orderStatus]);
+    if (isAdmin) {
+      console.log(isAdmin);
+    } else {
+      buttonTextHandler();
+      refundHandler();
+    }
+  }, []);
 
   return (
     <>

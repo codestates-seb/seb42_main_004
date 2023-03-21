@@ -73,7 +73,7 @@ export const resEx = {
       username: '맹쥬',
       orderNumber: '20230318143217123456',
       createdAt: '2023-03-18T14:32:17.008', // localdate time
-      deliveryDate: '2023-03-19',
+      deliveryDate: '2023-03-18',
       orderStatus: '환불대기중', //주문 완료, 주문 취소, 배송중, 배송완료, 환불대기중, 환불완료
       mealboxes: [
         {

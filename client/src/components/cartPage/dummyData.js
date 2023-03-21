@@ -5,7 +5,7 @@ export const resEx = {
       {
         mealboxId: 1, // 같으면 구성품 같음
         cartMealboxId: 1, // 장바구니에 담긴 갯수
-        name: '맛있는 밀박스',
+        name: '맛있는 리코타치즈샐러드&두부구이세트',
         mealboxInfo: 'NO_REC_MEALBOX',
         quantity: 3,
         weight: 300,
