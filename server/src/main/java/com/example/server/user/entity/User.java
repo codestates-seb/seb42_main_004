@@ -53,8 +53,6 @@ public class User extends BaseEntity {
   @Setter
   @Default
   private String phoneNumber = "";
-//  @Setter
-//  private String address;
   @Setter
   @Embedded
   @Default
