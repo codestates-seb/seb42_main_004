@@ -18,7 +18,7 @@ import javax.validation.constraints.Positive;
 @Validated
 @RestController
 public class SurveyController {
-    static final int[] kcalUnitList = new int[]{2000, 1700, 1400, 1200, 1000, 800};
+    static final int[] kcalUnitList = new int[]{2000, 1600, 1400, 1200, 1000, 800};
 //나이, 성별, 신장, 체중  /비활동적, 저활동적, 활동적, 매우 활동적
     @GetMapping("/survey")
     ResponseEntity doSurvey(@Positive @RequestParam int age,

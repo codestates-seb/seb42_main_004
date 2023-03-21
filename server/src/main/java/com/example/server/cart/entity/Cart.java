@@ -38,13 +38,9 @@ public class Cart extends BaseEntity {
     }
   }
 
-  public void deleteCartMealbox(CartMealbox cartMealbox){
-    cartMealboxes.remove(cartMealbox);
-  }
-
   public void calculateTotalPrice() {
-    this.totalPrice = this.getCartMealboxes().stream().mapToInt(cartMealbox -> {
-      return  cartMealbox.getQuantity() * cartMealbox.getMealbox().getPrice();
-    }).sum();
+    this.totalPrice = this.getCartMealboxes().stream().mapToInt(cartMealbox ->
+        cartMealbox.getQuantity() * cartMealbox.getMealbox().getPrice())
+            .sum();
   }
 }
