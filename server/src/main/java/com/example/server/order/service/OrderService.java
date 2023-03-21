@@ -106,7 +106,12 @@ public class OrderService {
 
   public void changeStatus(String orderNumber, OrderPatchStatusDto dto) {
     Orders order = findByOrderNumber(orderNumber);
-    order.setStatus(OrderStatus.valueOfStatus(dto.getStatus()));
+    if(dto.getStatus().equals("배송완료")) {
+      order.completeDelivery();
+    } else {
+      order.setStatus(OrderStatus.valueOfStatus(dto.getStatus()));
+    }
+
     orderRepository.save(order);
   }
 
