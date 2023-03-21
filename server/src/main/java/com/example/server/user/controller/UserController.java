@@ -86,9 +86,12 @@ public class UserController {
     log.info("##### GET USER #####");
     User findUser = userService.getUser(id);
     UserResponseDto userResponseDto = mapper.userToUserResponseDto(findUser);
+    
+    if(findUser.getImage()!=null){
+      ImageInfo imageInfo = findUser.getImage().getImageInfo();
+      userResponseDto.setImagePath(imageInfo.getBaseUrl()+imageInfo.getFilePath()+imageInfo.getImageName());
 
-    ImageInfo imageInfo = findUser.getImage().getImageInfo();
-    userResponseDto.setImagePath(imageInfo.getBaseUrl()+imageInfo.getFilePath()+"/"+imageInfo.getImageName());
+    }
     return ResponseEntity.ok(userResponseDto);
   }
 
@@ -151,7 +154,7 @@ public class UserController {
 
   @PostMapping("/{id}/image")
   public ResponseEntity postUserImage(@PathVariable("id") Long id,
-                                      @RequestBody MultipartFile file){
+      @RequestBody MultipartFile file) {
     userService.postUserImage(id, file);
     return new ResponseEntity(HttpStatus.CREATED);
   }
