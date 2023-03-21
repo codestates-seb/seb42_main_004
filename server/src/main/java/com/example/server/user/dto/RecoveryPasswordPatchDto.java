@@ -15,6 +15,6 @@ public class RecoveryPasswordPatchDto {
   @NotNull
   private String mailKey;
   @NotNull
-  @Pattern(regexp = "/(?=.*\\d{1,50})(?=.*[a-zA-Z]{1,50}).{8,20}$/")
+  @Pattern(regexp = "^(?=.\\d{1,50})(?=.[a-zA-Z]{1,50}).{8,20}$")
   private String afterPassword;
 }
