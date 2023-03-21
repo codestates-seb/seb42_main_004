@@ -7,6 +7,8 @@ import com.example.server.image.entity.ProductImage;
 import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.mealbox.entity.MealboxProduct;
 import com.example.server.mealbox.repository.MealboxRepository;
+import com.example.server.mealboxSet.entity.MealboxSet;
+import com.example.server.mealboxSet.repository.MealboxSetRepository;
 import com.example.server.product.entity.Product;
 import com.example.server.product.repository.ProductRepository;
 import com.example.server.product.service.ProductService;
@@ -94,7 +96,7 @@ class InitProduct{
 
       ProductImage image = ProductImage.builder()
               .id((long) id)
-              .imageInfo(new ImageInfo(String.format("%03d",id)+name.get(i)+".png", name.get(i), imagePath ))
+              .imageInfo(new ImageInfo(String.format("%03d",id)+name.get(i).replace(" ","")+".png", name.get(i), imagePath ))
               .product(product)
               .build();
       product.setImage(image);
@@ -130,7 +132,7 @@ class InitMealbox{
 
     String[] nameList = {"닭가슴살 샐러드 세트", "닭가슴살 소세지 세트A", "삶은 돼지고기(안심) 세트", "고단백질 아침 세트", "닭가슴살샌드위치&샐러드 세트", "리코타치즈샐러드&두부구이세트", "연두부 세트", "닭가슴살 만두 세트", "구운 돼지고기(목살) 세트A",
             "시리얼&오트밀 간단 아침 세트", "닭가슴살&단백질쉐이크 세트", "쇠고기주먹밥 세트", "과일&샐러드 아침 세트", "두부샐러드 세트A", "구운 돼지고기(목살) 세트B", "드링킹 간단 아침 세트", "닭가슴살 소세지 세트B", "삶은 돼지고기(안심) 세트B",
-            "두부샐러드 세트B", "두부샐러드 세트B", "참치&샐러드 세트", "오트밀&단백질쉐이크 세트", "두부샐러드&고구마 세트", "참치 현미밥 세트A", "샐러드&달걀 세트", "닭가슴살샐러드&연두부 세트", "리코타치즈샐러드&쉐이크 세트",
+            "두부샐러드 세트B", "병아리콩&바나나식단세트", "참치&샐러드 세트", "오트밀&단백질쉐이크 세트", "두부샐러드&고구마 세트", "참치 현미밥 세트A", "샐러드&달걀 세트", "닭가슴살샐러드&연두부 세트", "리코타치즈샐러드&쉐이크 세트",
             "통밀빵&달걀 프라이 세트", "샐러드&고구마 세트", "샐러드&돼지고기 세트", "통밀빵&두유 세트", "감자&쉐이크 세트", "샐러드&케일주스 세트", "시리얼&스크램블에그 세트", "닭가슴살만두&감자 세트", "달걀&쉐이크 세트", "단호박찜&닭가슴살 세트", "구운 돼지고기(목살) 세트C",
             "스크램블에그&케일주스 세트", "샐러드&파프리카 세트", "두부구이 세트", "바나나&케일주스 세트", "달걀&토마토 세트", "요거트&오트밀 세트", "시리얼&바나나 세트", "달걀&연두부 세트", "샐러드&참치 세트", "오트밀&바나나 세트", "닭가슴살&단호박찜 세트", "돼지고기뒷다리&샐러드 세트",
             "바나나&우유 세트", "참치샌드위치세트", "단호박찜&두부구이 세트", "요거트&삶은 달걀 세트", "참치 샌드위치&케일주스 세트", "두부구이&샐러드 세트", "바나나 우유 세트", "단호박찜&샐러드","구운 돼지고기(목살) 세트D",
@@ -183,3 +185,16 @@ class InitMealbox{
     return mealbox;
   }
 }
+
+//@Component
+//@Transactional
+//@RequiredArgsConstructor
+//class InitMealboxSet{
+//  private final MealboxSetRepository mealboxSetRepository;
+//
+//  public void MealboxSetInit() {
+//    List<MealboxSet> mealboxSetList = new ArrayList<>();
+//
+//    for(int i=1;i<)
+//  }
+//}
