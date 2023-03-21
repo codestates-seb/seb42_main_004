@@ -1,62 +1,65 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import OrderHistoryPageButton from '../components/orderHistory/OrderHistoryPageButton';
 import OrderHistoryByDateDiv from '../components/orderHistory/OrderHistoryByDateDiv';
 import PaginationUl from '../components/commons/PaginationUl';
 import useGET from '../util/useGET';
-import { data } from '../components/orderHistory/dummyData';
+import { resEx } from '../components/orderHistory/dummyData';
 import GetTemplate from '../components/commons/GetTemplate';
+import { setHistory } from '../reducers/orderHistoryReducer';
+import getData from '../util/getData';
 
 function OrderHistory() {
+  let isAdmin = false;
+  let dispatch = useDispatch();
+  let { data } = useSelector((state) => state.orderHistoryReducer);
+
   let [date, setDate] = useState(null);
-  let [isAdmin, setIsAdmin] = useState(false); // 삭제예정
+  let [page, setPage] = useState(1);
   let [isPending, error] = useGET(`/orders/users/1`); // 삭제 예정
-  // let [data, isPending, error] = useGET(`/orders/users/1`);
-  console.log(isPending, error);
+  // let [res, isPending, error] = useGET(`/orders/users/1`);
+  console.log(isPending, error); // 삭제 예정
 
   // 관리자
   let dateHandler = (e) => {
     setDate(e.target.value);
   };
 
-  let adminGet = () => {
-    // date 어떻게 보냄?
-    useGET();
-    console.log(date);
-    setIsAdmin(false); // 삭제예정
-  };
-
-  let renderData = () => {
-    let filterByDate = data.reduce((acc, cur) => {
-      let orderDate = cur.createdAt.slice(0, 10);
-      if (acc[orderDate]) {
-        acc[orderDate].push(cur);
-      } else {
-        acc[orderDate] = [cur];
-      }
-      return acc;
-    }, {});
-    console.log(filterByDate);
+  let adminParam = `?page=${page}&date=${date}`;
+  let adminGetOrderHistory = () => {
+    getData(`/admin/orders${adminParam}`).then((res) => {
+      dispatch(setHistory(res.data));
+    });
   };
 
   useEffect(() => {
-    renderData();
+    !false && dispatch(setHistory(resEx.data));
   }, []);
 
   return (
-    <GetTemplate isPending={false} error={true} res={null}>
+    <GetTemplate isPending={false} error={false} res={data}>
       <OrderHistoryPageWrapper className="margininside">
         {isAdmin && (
           <ManagerMenuDiv>
             <input type="date" onChange={dateHandler} />
-            <OrderHistoryPageButton text={'확인'} handler={adminGet} />
+            <OrderHistoryPageButton
+              text={'확인'}
+              handler={adminGetOrderHistory}
+            />
           </ManagerMenuDiv>
         )}
-
-        <OrderHistoryByDateDiv />
-        <OrderHistoryByDateDiv />
-        <OrderHistoryByDateDiv />
-        {isAdmin && <PaginationUl page={1} totalpage={22} url="/" />}
+        {data.map((el) => (
+          <OrderHistoryByDateDiv key={el.date} ordersPerDate={el} />
+        ))}
+        {isAdmin && (
+          <PaginationUl
+            page={page}
+            totalpage={22}
+            url={`/admin/orders/${adminParam}`}
+            setPage={setPage}
+          />
+        )}
       </OrderHistoryPageWrapper>
     </GetTemplate>
   );

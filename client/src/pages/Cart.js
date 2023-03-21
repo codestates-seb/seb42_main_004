@@ -1,25 +1,32 @@
 import styled from 'styled-components';
 import CartItemLi from '../components/cartPage/CartItemLi';
 import CartAside from '../components/commons/CartAside';
-
+import { resEx } from '../components/cartPage/dummyData';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCart } from '../reducers/cartReducer';
 function Cart() {
+  let dispatch = useDispatch();
+  let { data } = useSelector((state) => {
+    return state.cartReducer;
+  });
+  let { totalPrice, mealboxes } = data;
+  console.log(mealboxes);
+
+  useEffect(() => {
+    dispatch(setCart(resEx.data));
+  }, []);
+
   return (
     <CartPageWrapper className="margininside">
       <h1>장바구니</h1>
       <CartPageContent>
         <CartItemListUl>
-          <CartItemLi />
-          <CartItemLi />
-          <CartItemLi />
-          <CartItemLi />
-          <CartItemLi />
-          <CartItemLi />
-          <CartItemLi />
-          <CartItemLi />
-          <CartItemLi />
-          <CartItemLi />
+          {mealboxes?.map((el) => {
+            return <CartItemLi key={el.mealboxId} mealbox={el} />;
+          })}
         </CartItemListUl>
-        <CartAside totalPrice={56900} />
+        <CartAside totalPrice={totalPrice} />
       </CartPageContent>
     </CartPageWrapper>
   );
