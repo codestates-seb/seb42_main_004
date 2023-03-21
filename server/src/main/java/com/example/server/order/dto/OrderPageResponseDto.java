@@ -16,6 +16,7 @@ public class OrderPageResponseDto { // 결제창에서 넘겨줄 값
   private String deliveryZipCode; // 수신자 우편번호
   private String deliverySimpleAddress; // 수신자 주소
   private String deliveryDetailAddress; // 수신자 상세주소
+  private String deliveryPhoneNumber; // 수신자 연락처
   private int totalPrice; // 총 결제금액
   private String email; // 주문자 이메일
 }
