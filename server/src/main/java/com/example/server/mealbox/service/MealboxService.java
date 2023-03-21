@@ -94,4 +94,10 @@ public class MealboxService {
         return mealboxRepository.findAllByMealboxInfoIsNot(pageRequest, Mealbox.MealboxInfo.CUSTOM_MEALBOX);
     }
 
+    public Page<Mealbox> getSearchedMealboxes(int page, int size, String search) {
+        PageRequest pageRequest = PageRequest.of(page-1, size);
+        return mealboxRepository.findAllByMealboxInfoIsNotAndNameContains(pageRequest,
+                Mealbox.MealboxInfo.CUSTOM_MEALBOX, search);
+    }
+
 }

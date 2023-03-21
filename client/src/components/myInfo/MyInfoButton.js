@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 
-function MyInfoButton({ text }) {
-  return <Button className="buttonstyle shadow">{text}</Button>;
+function MyInfoButton({ text, onClick }) {
+  return (
+    <Button onClick={onClick} className="buttonstyle shadow">
+      {text}
+    </Button>
+  );
 }
 
 export default MyInfoButton;
