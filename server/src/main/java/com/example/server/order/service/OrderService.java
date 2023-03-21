@@ -73,8 +73,8 @@ public class OrderService {
     return ordersMealboxList;
   }
 
-  public Orders cancelOrder(long orderId) {
-    Orders order = findVerifiedOrder(orderId);
+  public Orders cancelOrder(String orderNumber) {
+    Orders order = findByOrderNumber(orderNumber);
     int index = order.getStatus().getIndex();
     if(index == 3) {
       order.applyRefund();
