@@ -61,7 +61,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
         delete data.productId;
       }
 
-      if (imgInputBuffer && imgInputBuffer !== subject.imagePath) {
+      if (imgInputBuffer !== subject.imagePath) {
         data = addImg(data);
       }
 
@@ -97,7 +97,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
         delete data.productId;
       }
 
-      if (imgInputBuffer && imgInputBuffer !== subject.imagePath) {
+      if (imgInputBuffer !== subject.imagePath) {
         data = addImg(data);
       }
 
