@@ -123,9 +123,9 @@ public class OrderService {
     return findOrder;
   }
 
-  public Orders paidOrder(Orders order) {
+  public void paidOrder(Orders order) {
     order.paid();
-    return orderRepository.save(order);
+    orderRepository.save(order);
   }
 
   public Page<Orders> getOrdersByDateToPage(String date, int page) {
@@ -146,13 +146,13 @@ public class OrderService {
     return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
   }
 
-  public Orders setDeliveryAddress(OrderPatchDeliveryDto orderPatchDeliveryDto, long orderId) {
+  public void setDeliveryAddress(OrderPatchDeliveryDto orderPatchDeliveryDto, long orderId) {
     Orders order = findVerifiedOrder(orderId);
     order.setAddressee(orderPatchDeliveryDto.getAddressee());
     order.setZipCode(orderPatchDeliveryDto.getZipCode());
     order.setSimpleAddress(orderPatchDeliveryDto.getSimpleAddress());
     order.setDetailAddress(orderPatchDeliveryDto.getDetailAddress());
     order.setPhoneNumber(orderPatchDeliveryDto.getPhoneNumber());
-    return orderRepository.save(order);
+    orderRepository.save(order);
   }
 }
