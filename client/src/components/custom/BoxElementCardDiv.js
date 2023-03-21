@@ -1,10 +1,11 @@
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import { TextButton } from '../commons/ModalDiv';
 import { MealBoxCardContainerDiv } from '../allboxes/MealBoxCardDiv';
 import { deleteProduct, setProduct } from '../../reducers/customReducer';
 
 function BoxElementCardDiv({ product, quantity, totalQuantity }) {
+  quantity = quantity || 0;
   const dispatch = useDispatch();
 
   const cardClick = () => {
@@ -42,9 +43,7 @@ function BoxElementCardDiv({ product, quantity, totalQuantity }) {
         <TextButton onClick={minusProduct} className="linkstyle">
           &#8722;
         </TextButton>
-        <BoxElementQuantitySpan>
-          {quantity ? quantity : 0}
-        </BoxElementQuantitySpan>
+        <BoxElementQuantitySpan>{quantity}</BoxElementQuantitySpan>
         <TextButton onClick={plusProduct} className="linkstyle">
           &#43;
         </TextButton>

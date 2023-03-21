@@ -46,7 +46,9 @@ function Custom({ admin }) {
   }, [page]);
 
   const addCustomToCart = () => {
-    postData(`/users/cart/custom/${'cartId'}`, custom).then(() => {
+    const data = { ...custom };
+    data.products = data.products.forEach((product) => delete product.name);
+    postData(`/users/cart/custom/${'cartId'}`, data).then(() => {
       dispatch(initializeCustom());
       if (
         window.confirm(
@@ -73,7 +75,7 @@ function Custom({ admin }) {
         closeModal={() => setOpenModal(false)}
       /> */}
         {admin && openModal && (
-          <ModalDiv closeModal={() => setOpenModal(false)} />
+          <ModalDiv mealBox={custom} closeModal={() => setOpenModal(false)} />
         )}
         <h1>커스텀 밀박스</h1>
         <CustomSelectDiv>
