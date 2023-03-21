@@ -13,8 +13,18 @@ import com.example.server.user.data.DeliveryInformation;
 import com.example.server.user.data.UserStatus;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
-
+import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Builder.Default;
@@ -41,21 +51,22 @@ public class User extends BaseEntity {
   private String name;
   @Column(name = "phone_number")
   @Setter
-  private String phoneNumber;
-//  @Setter
-//  private String address;
+  @Default
+  private String phoneNumber = "";
   @Setter
   @Embedded
-  private Address address;
+  @Default
+  private Address address = new Address();
 
   @Setter
   @Embedded
+  @Default
   @AttributeOverride(name = "name", column = @Column(name = "addressee"))
   @AttributeOverride(name = "phoneNumber", column = @Column(name = "addresseePhoneNumber"))
   @AttributeOverride(name = "address.zipCode", column = @Column(name = "deliveryZipCode"))
   @AttributeOverride(name = "address.simpleAddress", column = @Column(name = "deliverySimpleAddress"))
   @AttributeOverride(name = "address.detailAddress", column = @Column(name = "deliveryDetailsAddress"))
-  private DeliveryInformation deliveryInformation;
+  private DeliveryInformation deliveryInformation = new DeliveryInformation();
 
   @ElementCollection(fetch = EAGER)
   @Setter
