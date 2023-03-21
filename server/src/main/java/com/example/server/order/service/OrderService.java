@@ -4,9 +4,9 @@ import com.example.server.exception.BusinessLogicException;
 import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.mealbox.service.MealboxService;
 import com.example.server.order.data.OrderStatus;
-import com.example.server.order.dto.OrderGetDto;
 import com.example.server.order.dto.OrderMealboxPostDto;
 import com.example.server.order.dto.OrderPatchDeliveryDto;
+import com.example.server.order.dto.OrderPatchStatusDto;
 import com.example.server.order.dto.OrderPostDto;
 import com.example.server.order.entity.Orders;
 import com.example.server.order.entity.OrdersMealbox;
@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -37,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class OrderService {
   private final OrderRepository orderRepository;
   private final OrderMealboxRepository orderMealboxRepository;
@@ -49,6 +51,7 @@ public class OrderService {
 //    orderRepository.save(order);
     order.addUser(userService.getUser(orderPostDto.getUserId()));
     orderRepository.save(order);
+    log.info("------------------- CREATE OrderMealboxes -------------------");
     OrderMealboxPostDtoToOrdersMealbox(orderPostDto.getMealboxes(), order);
     //결제 사전 정보
     PreparePostDto preparePostDto = new PreparePostDto(order.getOrderNumber(), new BigDecimal(order.getTotalPrice()));
@@ -64,6 +67,7 @@ public class OrderService {
       OrdersMealbox ordersMealbox = new OrdersMealbox(quantity, mealbox);
       ordersMealbox.addOrders(order);
       ordersMealbox.setPrice(mealbox.getPrice());
+      ordersMealbox.setKcal(mealbox.getKcal());
       return orderMealboxRepository.save(ordersMealbox);
     }).collect(Collectors.toList());
     return ordersMealboxList;
@@ -96,6 +100,12 @@ public class OrderService {
     return orderRepository.save(order);
   }
 
+  public void changeStatus(String orderNumber, OrderPatchStatusDto dto) {
+    Orders order = findByOrderNumber(orderNumber);
+    order.setStatus(OrderStatus.valueOfStatus(dto.getStatus()));
+    orderRepository.save(order);
+  }
+
   public Orders findOrder(long orderId) {
     return findVerifiedOrder(orderId);
   }
@@ -113,14 +123,14 @@ public class OrderService {
     return findOrder;
   }
 
-  public Orders paidOrder(Orders order) {
+  public void paidOrder(Orders order) {
     order.paid();
-    return orderRepository.save(order);
+    orderRepository.save(order);
   }
 
-  public Page<Orders> getOrdersByDateToPage(OrderGetDto orderGetDto, int page) {
+  public Page<Orders> getOrdersByDateToPage(String date, int page) {
     // 관리자 검증 해야함
-    LocalDate localDate = changeStringToLocalDate(orderGetDto.getDate());
+    LocalDate localDate = changeStringToLocalDate(date);
     LocalDateTime startDate = localDate.atStartOfDay();
     LocalDateTime endDate = localDate.atTime(LocalTime.MAX);
     return orderRepository.findAllByCreatedDateBetweenAndStatusNot(startDate, endDate, OrderStatus.NOT_PAID, PageRequest.of(page, 5, Sort.by("createdDate").descending()));
@@ -136,12 +146,13 @@ public class OrderService {
     return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
   }
 
-  public Orders setDeliveryAddress(OrderPatchDeliveryDto orderPatchDeliveryDto, long orderId) {
+  public void setDeliveryAddress(OrderPatchDeliveryDto orderPatchDeliveryDto, long orderId) {
     Orders order = findVerifiedOrder(orderId);
     order.setAddressee(orderPatchDeliveryDto.getAddressee());
     order.setZipCode(orderPatchDeliveryDto.getZipCode());
     order.setSimpleAddress(orderPatchDeliveryDto.getSimpleAddress());
     order.setDetailAddress(orderPatchDeliveryDto.getDetailAddress());
-    return orderRepository.save(order);
+    order.setPhoneNumber(orderPatchDeliveryDto.getPhoneNumber());
+    orderRepository.save(order);
   }
 }
