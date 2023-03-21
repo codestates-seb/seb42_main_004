@@ -4,14 +4,10 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import checkFooter from '../../util/checkFooter';
 
-function Component() {
+function ToTopButton() {
   const { path } = useLocation();
   const [scroll, setScroll] = useState();
 
-  const toTop = () => {
-    window.scrollTo(0, 0);
-  };
-  // resize, page이동
   const calcHeight = () => {
     setScroll(document.body.scrollHeight > window.innerHeight);
   };
@@ -20,6 +16,7 @@ function Component() {
     calcHeight();
   }, [path]);
 
+  // 아래 두개 합치기
   useEffect(() => {
     window.addEventListener('resize', calcHeight);
     return () => {
@@ -27,18 +24,28 @@ function Component() {
     };
   }, []);
 
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     window.addEventListener('scroll', handleScroll);
+  //   }, 100);
+  //   return () => {
+  //     clearInterval(timer);
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, []);
+
   return (
     <Button
-      onClick={toTop}
+      onClick={() => window.scrollTo(0, 0)}
       scroll={scroll}
-      havefooter={checkFooter() ? 1 : null}
+      havefooter={checkFooter() && 1}
     >
       <VscTriangleUp />
     </Button>
   );
 }
 
-export default Component;
+export default ToTopButton;
 
 const Button = styled.button`
   display: ${(props) => (props.scroll ? 'block' : 'none')};
