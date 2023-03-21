@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
@@ -30,7 +31,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     this.authenticationManager = authenticationManager;
     this.jwtTokenizer = jwtTokenizer;
   }
-  // (3)
+  // (3) 메서드 내부에서 인증을 시도하는 로직
   @SneakyThrows
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
@@ -45,16 +46,24 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     return authenticationManager.authenticate(authenticationToken);  // (3-4)
   }
 
+  // 클라이언트의 인증 정보를 이용해 인증에 성공할 경우 호출
   @Override
   protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
       FilterChain chain, Authentication authResult) throws IOException, ServletException {
-    User user = (User) authResult.getPrincipal();
+    User user = (User) authResult.getPrincipal(); // (4-1)
 
     String accessToken = delegateAccessToken(user);
     String refreshToken = delegateRefreshToken(user);
 
+    Cookie cookie = new Cookie("Authorization",accessToken);
+    cookie.setPath("/");
+    cookie.setMaxAge(30*60);
+
+    response.addCookie(cookie);
     response.setHeader("Authorization", "Bearer " + accessToken);
     response.setHeader("Refresh", refreshToken);
+
+    this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult); // 핸들러 불러옴 (실패 핸들러는 자동호출됨)
   }
 
   // (5)
@@ -64,8 +73,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     claims.put("username", user.getEmail());
     claims.put("roles", user.getRoles());
     claims.put("principal", principal);
-    log.info("principal = {} ", principal);
-    log.info("###### principal = {}", claims.get("principal").getClass());
+    log.info("###### principal = {} ", principal);
 
     String subject = user.getEmail();
     Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());

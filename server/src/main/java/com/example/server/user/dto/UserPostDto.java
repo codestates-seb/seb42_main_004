@@ -15,7 +15,7 @@ public class UserPostDto {
   @Email
   private String email;
   @NotNull
-  @Pattern(regexp = "/(?=.*\\d{1,50})(?=.*[a-zA-Z]{1,50}).{8,20}$/")
+  @Pattern(regexp = "(?=.*\\d{1,50})(?=.*[a-zA-Z]{1,50}).{8,20}$")
   private String password;
   @NotNull
   @Size(min = 2, max = 10)
