@@ -84,9 +84,9 @@ public class OrderController {
     return new ResponseEntity<>(new MultiResponseDto<>(orderResponseDtos, orders),HttpStatus.OK);
   }
 
-  @DeleteMapping("/orders/{order-id}")
-  public ResponseEntity deleteOrder(@PathVariable("order-id") @PositiveOrZero long orderId) {
-    orderService.cancelOrder(orderId);
+  @DeleteMapping("/orders/{order-number}")
+  public ResponseEntity deleteOrder(@PathVariable("order-number") @PositiveOrZero String orderNumber) {
+    orderService.cancelOrder(orderNumber);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
