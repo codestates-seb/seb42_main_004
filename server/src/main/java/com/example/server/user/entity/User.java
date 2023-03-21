@@ -96,7 +96,7 @@ public class User extends BaseEntity {
   @Setter
   private UserImage image;
 
-  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @Setter
   private Cart cart;
 
