@@ -10,9 +10,9 @@ import postData from '../../util/postData';
 
 function ModalDiv({ closeModal, mealBox, product }) {
   const [imgInput, setImgInput] = useState();
-  const [imgInputBuffer, setImgInputBuffer] = useState();
   const subject = mealBox ? mealBox : product;
-  const [subjectInfo, setSubjectInfo] = useState(subject);
+  const [imgInputBuffer, setImgInputBuffer] = useState(subject.imagePath);
+  const [subjectInfo, setSubjectInfo] = useState({ ...subject });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -27,7 +27,6 @@ function ModalDiv({ closeModal, mealBox, product }) {
     }
     setSubjectInfo({ ...subjectInfo, [key]: value });
   };
-  // console.log(imgInput[0]);
 
   useEffect(() => {
     let reader = new FileReader();
@@ -37,20 +36,37 @@ function ModalDiv({ closeModal, mealBox, product }) {
         setImgInputBuffer(reader.result);
       };
     } else {
-      setImgInputBuffer(null);
+      setImgInputBuffer(subject.imagePath);
     }
   }, [imgInput]);
 
+  const addImg = async (data) => {
+    const formData = new FormData();
+    await formData.append('file', imgInput);
+    await formData.append('mealboxDto', JSON.stringify(data));
+    return formData;
+  };
+
   const mealBoxReq = () => {
-    const data = { ...subjectInfo };
-    if (!data.name) return;
+    if (!subject.name) return;
+
     let uri = '/admin/mealboxes';
-    const id = subjectInfo.mealBoxId;
+    let data = { ...subjectInfo, imagePath: null };
+    const id = data.mealBoxId;
     data.products = data.products.forEach((product) => delete product.name);
 
     const haveIdReq = (haveId) => {
+      if (haveId) {
+        uri += `/${id}`;
+        delete data.productId;
+      }
+
+      if (imgInputBuffer && imgInputBuffer !== subject.imagePath) {
+        data = addImg(data);
+      }
+
       let func = haveId ? patchData : postData;
-      func(uri, data)
+      func(uri, data, haveId)
         .then(() => {
           dispatch(initializeCustom());
           alert(`${data.name}이 ${haveId ? '수정' : '추가'}되었습니다.`);
@@ -59,31 +75,34 @@ function ModalDiv({ closeModal, mealBox, product }) {
         .catch(() => alert('등록에 실패했습니다\n관리자에게 문의해주세요.'));
     };
 
-    if (id) {
-      uri += `/${id}`;
-      delete data.mealBoxId;
-      haveIdReq(true);
-    } else {
-      haveIdReq(false);
-    }
+    haveIdReq(Boolean(id));
   };
 
   const productReq = () => {
-    const data = { ...subjectInfo };
     if (
-      !data.name ||
-      data.weight === undefined ||
-      data.kcal === undefined ||
-      data.price === undefined
+      !subject.name ||
+      subject.weight === undefined ||
+      subject.kcal === undefined ||
+      subject.price === undefined
     )
       return;
 
     let uri = '/admin/products';
-    const id = subjectInfo.productId;
+    let data = { ...subjectInfo, imagePath: null };
+    const id = data.productId;
 
     const haveIdReq = (haveId) => {
+      if (haveId) {
+        uri += `/${id}`;
+        delete data.productId;
+      }
+
+      if (imgInputBuffer && imgInputBuffer !== subject.imagePath) {
+        data = addImg(data);
+      }
+
       let func = haveId ? patchData : postData;
-      func(uri, data)
+      func(uri, data, haveId)
         .then(() => {
           alert(`${data.name}이 ${haveId ? '수정' : '추가'}되었습니다.`);
           navigate('/');
@@ -91,13 +110,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
         .catch(() => alert('등록에 실패했습니다\n관리자에게 문의해주세요.'));
     };
 
-    if (id) {
-      uri += `/${id}`;
-      delete data.productId;
-      haveIdReq(true);
-    } else {
-      haveIdReq(false);
-    }
+    haveIdReq(Boolean(id));
   };
 
   return (
