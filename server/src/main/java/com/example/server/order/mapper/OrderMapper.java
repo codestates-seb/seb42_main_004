@@ -37,7 +37,7 @@ public interface OrderMapper {
     orderPageResponseDto.setDeliveryZipCode(orders.getUser().getDeliveryInformation().getAddress().getZipCode());
     orderPageResponseDto.setDeliverySimpleAddress(orders.getUser().getDeliveryInformation().getAddress().getSimpleAddress());
     orderPageResponseDto.setDeliveryDetailAddress(orders.getUser().getDeliveryInformation().getAddress().getDetailAddress());
-    orderPageResponseDto.setDeliveryPhoneNumber(orders.getUser().getDeliveryInformation().getPhoneNumber());
+    orderPageResponseDto.setAddresseePhoneNumber(orders.getUser().getDeliveryInformation().getPhoneNumber());
     orderPageResponseDto.setTotalPrice(orders.getTotalPrice());
     orderPageResponseDto.setEmail(orders.getUser().getEmail());
     return orderPageResponseDto;
