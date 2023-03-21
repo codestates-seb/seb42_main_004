@@ -86,7 +86,7 @@ public class UserController {
     log.info("##### GET USER #####");
     User findUser = userService.getUser(id);
     UserResponseDto userResponseDto = mapper.userToUserResponseDto(findUser);
-    
+
     if(findUser.getImage()!=null){
       ImageInfo imageInfo = findUser.getImage().getImageInfo();
       userResponseDto.setImagePath(imageInfo.getBaseUrl()+imageInfo.getFilePath()+imageInfo.getImageName());
