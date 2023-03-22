@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 function SurveyHome() {
   let navigate = useNavigate();
-  let isLogin = true;
+  let isLogin = false;
 
   useEffect(() => {
     if (isLogin) navigate('/boxes');
