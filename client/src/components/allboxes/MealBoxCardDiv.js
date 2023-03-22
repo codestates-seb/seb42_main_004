@@ -10,14 +10,14 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
   const [notification, setNotification] = useState(false);
 
   const addToCart = () => {
-    postData(`/users/cart/{userId}`).then(() => {
+    postData(`/users/cart`, { mealboxId: mealBox.mealboxId }).then(() => {
       setNotification(true);
       setTimeout(() => setNotification(false), 2000);
     });
     console.log('추가 완료');
   };
 
-  const deleteProduct = () => {
+  const deleteMealBox = () => {
     if (
       window.confirm(
         `${mealBox.name}을 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
@@ -68,7 +68,7 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
         {!custom && (
           <>
             <MainButton
-              handler={admin ? deleteProduct : addToCart}
+              handler={admin ? deleteMealBox : addToCart}
               name={admin ? '밀박스 삭제' : '장바구니 추가'}
             />
             <MainButton name={mealBox.price.toLocaleString('ko-KR') + '원'} />

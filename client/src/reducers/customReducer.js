@@ -12,52 +12,58 @@ const customSlice = createSlice({
     },
   },
   reducers: {
+    totalProducts: (custom) => {
+      return custom.products.reduce((a, c) => a + c.quantity, 0);
+    },
+    updateInfo: (custom, product, plus, all) => {
+      const quantity = all ? product.quantity : 1;
+      if (plus) {
+        custom.weight += product.weight * quantity;
+        custom.kcal += product.kcal * quantity;
+        custom.price += product.price * quantity;
+      } else {
+        custom.weight -= product.weight * quantity;
+        custom.kcal -= product.kcal * quantity;
+        custom.price -= product.price * quantity;
+      }
+    },
     addProduct: (state, action) => {
-      let { custom } = state;
-      const total = custom.products.reduce((a, c) => a + c.quantity, 0);
+      const { custom } = state;
+      const total = customSlice.caseReducers.totalProducts(custom);
       if (total < 10) {
-        const product = action.payload;
-        custom.products.push({
-          productId: product.productId,
-          name: product.name,
-          quantity: product.quantity,
-        });
-        custom.weight += product.weight * product.quantity;
-        custom.kcal += product.kcal * product.quantity;
-        custom.price += product.price * product.quantity;
+        const { product } = action.payload;
+        const { productId, name, quantity } = product;
+        custom.products.push({ productId, name, quantity });
+        customSlice.caseReducers.updateInfo(custom, product, true, true);
       }
     },
     deleteProduct: (state, action) => {
-      const id = action.payload;
-      let { custom } = state;
+      const { id } = action.payload;
+      const { custom } = state;
       const idx = custom.products.map((product) => product.id).indexOf(id);
       const product = custom.products.splice(idx, 1);
-      custom.weight -= product.weight * product.quantity;
-      custom.kcal -= product.kcal * product.quantity;
-      custom.price -= product.price * product.quantity;
-    },
-    temp: () => {
-      console.log('test');
+      customSlice.caseReducers.updateInfo(custom, product, false, true);
     },
     setProduct: (state, action) => {
-      customSlice.caseReducers.temp();
-      const { id, num } = action.payload;
-      if (num <= 0) return;
-      let { custom } = state;
-      const total = custom.products.reduce((a, c) => a + c.quantity, 0);
-      const idx = custom.products.map((product) => product.id).indexOf(id);
-      if (total < 10) {
-        const product = custom.products[idx];
-        if (product.quantity > num) {
-          custom.weight -= product.weight;
-          custom.kcal -= product.kcal;
-          custom.price -= product.price;
+      const { quantity } = action.payload.product;
+      const { custom } = state;
+      const { product } = action.payload;
+      if (quantity > 0) {
+        const idx = custom.products
+          .map((product) => product.productId)
+          .indexOf(product.productId);
+        let beforeQuantity = idx === -1 ? 0 : custom.products[idx].quantity;
+        if (idx === -1) {
+          const { productId, name } = product;
+          custom.products.push({ productId, name, quantity });
         } else {
-          custom.weight += product.weight;
-          custom.kcal += product.kcal;
-          custom.price += product.price;
+          custom.products[idx].quantity = quantity;
         }
-        product.quantity = num;
+        customSlice.caseReducers.updateInfo(
+          custom,
+          product,
+          beforeQuantity < quantity
+        );
       }
     },
     setName: (state, action) => {
