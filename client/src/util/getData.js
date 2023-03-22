@@ -8,6 +8,7 @@ async function getData(url) {
       },
       withCredentials: true,
     });
+    console.log(response);
     return response.data;
   } catch (error) {
     return error.response;
