@@ -4,7 +4,7 @@ import CartAside from '../components/commons/CartAside';
 import { resEx } from '../components/cartPage/dummyData';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCart } from '../reducers/cartReducer';
+import { setGuestCart } from '../reducers/guestCartReducer';
 import getData from '../util/getData';
 function Cart() {
   let dispatch = useDispatch();
@@ -14,7 +14,7 @@ function Cart() {
     if (isLogin) {
       getData(`/users/cart/${`cartId`}`).then(() => {
         let { data } = resEx.data;
-        dispatch(setCart(data));
+        dispatch(setGuestCart(data));
       });
     }
   };
