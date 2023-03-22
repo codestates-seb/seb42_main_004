@@ -19,31 +19,31 @@ function Custom({ admin }) {
   const [sortBy, setSortBy] = useState(['id', 'ASC']);
   const [searchWord, setSearchWord] = useState('');
   const [path, setPath] = useState('page=1&sort=id&dir=ASC');
-  const [res, isPending, error] = useGET(`/products?${path}`);
+  const [res, isPending, error] = useGET(`/products${path}`);
   const { custom } = useSelector((state) => state.customReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const searchProducts = () => {
+  const searchProduct = () => {
     setPage(1);
     getProducts();
   };
 
   const sortProducts = (select) => {
     setSearchWord('');
-    setSortBy(select);
     setPage(1);
-    getProducts();
+    setSortBy(select.split('/'));
   };
 
   const getProducts = () => {
-    if (!searchWord) setPath(`page=${page}&sort=${sortBy[0]}&dir=${sortBy[1]}`);
-    else setPath(`page=${page}&search=${searchWord}`);
+    if (!searchWord)
+      setPath(`?page=${page}&sort=${sortBy[0]}&dir=${sortBy[1]}`);
+    else setPath(`/search?page=${page}&name=${searchWord}`);
   };
 
   useEffect(() => {
     getProducts();
-  }, [page]);
+  }, [page, sortBy]);
 
   const addCustomToCart = () => {
     const data = { ...custom };
@@ -70,10 +70,10 @@ function Custom({ admin }) {
     <GetTemplate isPending={isPending} error={error} res={res.data}>
       <CustomWrapDiv className="margininside">
         {/* <ModalDiv
-        mealBox={0}
-        boxElement={1}
-        closeModal={() => setOpenModal(false)}
-      /> */}
+          mealBox={0}
+          boxElement={1}
+          closeModal={() => setOpenModal(false)}
+        /> */}
         {admin && openModal && (
           <ModalDiv mealBox={custom} closeModal={() => setOpenModal(false)} />
         )}
@@ -82,7 +82,7 @@ function Custom({ admin }) {
           <ElementsContainerDiv>
             <FilterSearchDiv
               sortProducts={sortProducts}
-              searchProducts={searchProducts}
+              searchSubject={searchProduct}
               setSearchWord={setSearchWord}
             />
             <BoxElementCardUl>
@@ -124,6 +124,7 @@ export default Custom;
 const CustomWrapDiv = styled(MealBoxesWrapDiv)`
   @media screen and (max-width: 480px) {
     min-height: calc(100vh - 50px - 5rem);
+    padding-bottom: 76px;
   }
 `;
 const CustomSelectDiv = styled.div`
