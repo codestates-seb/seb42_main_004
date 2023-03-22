@@ -44,8 +44,7 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    public void removeMealboxFromCart(Long cartId, Long cartMealboxId){
-        Cart cart = findCartById(cartId);
+    public void removeMealboxFromCart(Cart cart, Long cartMealboxId){
         CartMealbox cartMealbox = cartMealboxService.findCartMealbox(cartMealboxId);
         Mealbox mealbox = cartMealbox.getMealbox();
 
@@ -61,18 +60,15 @@ public class CartService {
         cartRepository.save(cart);
     }
 
-    public void changeMealboxQuantity(Long cartId, Long cartMealboxId, int quantity) {
+    public void changeMealboxQuantity(Cart cart, Long cartMealboxId, int quantity) {
         cartMealboxService.changeQuantity(cartMealboxId, quantity);
 
-        Cart cart = findCartById(cartId);
         cart.calculateTotalPrice();
         cartRepository.save(cart);
     }
 
-    public Cart createMealboxAndAddCart(Long cartId, Mealbox mealbox,
+    public Cart createMealboxAndAddCart(Cart cart, Mealbox mealbox,
                                         List<MealboxPostDto.Product> mealboxDtoProducts){
-        Cart cart = findCartById(cartId);
-
         mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxDtoProducts, null);
 
         cartMealboxService.createCartMealbox(cart, mealbox);

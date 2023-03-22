@@ -1,5 +1,6 @@
 package com.example.server.auth.filter;
 
+import com.example.server.auth.details.CustomUserDetailsService;
 import com.example.server.auth.jwt.JwtTokenizer;
 import com.example.server.auth.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -25,10 +26,13 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
   private final JwtTokenizer jwtTokenizer;
   private final CustomAuthorityUtils authorityUtils;
+  private final CustomUserDetailsService customUserDetailsService;
 
-  public JwtVerificationFilter(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils) {
+  public JwtVerificationFilter(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils,
+                               CustomUserDetailsService customUserDetailsService) {
     this.jwtTokenizer = jwtTokenizer;
     this.authorityUtils = authorityUtils;
+    this.customUserDetailsService = customUserDetailsService;
   }
 
   @Override
@@ -83,8 +87,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     String username = (String) claims.get("username");   // (4-1)
     List<GrantedAuthority> authorities = authorityUtils.createAuthorities(
         (List) claims.get("roles"));  // (4-2)
-    Authentication authentication = new UsernamePasswordAuthenticationToken(username, null,
-        authorities);  // (4-3)
+    Authentication authentication = new UsernamePasswordAuthenticationToken
+            (customUserDetailsService.loadUserByUsername(username), null, authorities);  // (4-3)
     SecurityContextHolder.getContext().setAuthentication(authentication); // (4-4)
   }
 
