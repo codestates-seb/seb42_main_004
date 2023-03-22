@@ -6,12 +6,17 @@ import surveyQuestionReducer from '../reducers/surveyQuestionReducer';
 import { persistReducer } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session';
 import thunk from 'redux-thunk';
-import cartReducer from '../reducers/cartReducer';
+import guestCartReducer from '../reducers/guestCartReducer';
 
 const persistConfig = {
   key: 'root',
   storage: storageSession,
-  whitelist: ['surveyQuestionReducer', 'customReducer', 'surveyRcmdReducer'],
+  whitelist: [
+    'customReducer',
+    'surveyRcmdReducer',
+    'surveyQuestionReducer',
+    'guestCartReducer',
+  ],
 };
 
 export const rootReducer = combineReducers({
@@ -19,7 +24,7 @@ export const rootReducer = combineReducers({
   customReducer,
   surveyRcmdReducer,
   surveyQuestionReducer,
-  cartReducer,
+  guestCartReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

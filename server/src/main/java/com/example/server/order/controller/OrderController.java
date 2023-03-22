@@ -1,5 +1,6 @@
 package com.example.server.order.controller;
 
+import com.example.server.auth.utils.UriCreator;
 import com.example.server.dto.MultiResponseDto;
 import com.example.server.order.dto.OrderPageResponseDto;
 import com.example.server.order.dto.OrderPatchDeliveryDto;
@@ -45,15 +46,8 @@ public class OrderController {
       throws IamportResponseException, IOException { // 결제 전 주문 생성
     Orders order = mapper.orderPostDtoToOrders(orderPostDto);
     Orders createdOrder = orderService.createOrder(order, orderPostDto);
-//    OrderPostResponseDto response = new OrderPostResponseDto();
-//    response.setOrderId(createdOrder.getOrderId());
-//    return new ResponseEntity<>(response, HttpStatus.CREATED);
-    String uri = String.format("redirect:/orders/checkout/%d",createdOrder.getOrderId());
-    HttpHeaders headers = new HttpHeaders();
-    headers.setLocation(URI.create(uri));
-
-    log.info("------------------- Redirect -------------------");
-    return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+    URI location = UriCreator.createUri("/orders/checkout",createdOrder.getOrderId());
+    return new ResponseEntity<>(location, HttpStatus.MOVED_PERMANENTLY);
   }
 
   @GetMapping("/orders/checkout/{order-id}")
@@ -84,9 +78,9 @@ public class OrderController {
     return new ResponseEntity<>(new MultiResponseDto<>(orderResponseDtos, orders),HttpStatus.OK);
   }
 
-  @DeleteMapping("/orders/{order-id}")
-  public ResponseEntity deleteOrder(@PathVariable("order-id") @PositiveOrZero long orderId) {
-    orderService.cancelOrder(orderId);
+  @DeleteMapping("/orders/{order-number}")
+  public ResponseEntity deleteOrder(@PathVariable("order-number") @PositiveOrZero String orderNumber) {
+    orderService.cancelOrder(orderNumber);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 

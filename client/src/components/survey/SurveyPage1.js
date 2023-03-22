@@ -16,6 +16,7 @@ function SurveyPage1() {
 
   let dispatchProfile = (e) => {
     let { id, value } = e.target;
+    imsi(value);
     dispatch(setProfile({ id, value }));
   };
 
@@ -26,6 +27,18 @@ function SurveyPage1() {
 
   let nextHandler = () => {
     navigate(`/survey/question/2`);
+  };
+
+  let prev = '';
+
+  let regex = new RegExp(/^\d*(\.\d{0,1})?$/);
+  let imsi = (value) => {
+    console.log(regex.test(value));
+    if (regex.test(value)) {
+      value = prev;
+    } else {
+      prev = value;
+    }
   };
 
   return (
@@ -80,7 +93,7 @@ function SurveyPage1() {
           onChange={dispatchProfile}
           placeholder="00.0"
           unit="kg"
-          maxLength="3"
+          maxLength="4"
         />
         <PreAndNextButtons nextHandler={nextHandler} />
       </SurveyContentDiv>
