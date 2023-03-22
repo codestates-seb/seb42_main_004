@@ -8,7 +8,7 @@ import postData from '../../util/postData';
 function MealBoxCardDiv({ mealBox, custom, admin }) {
   const addToCart = () => {
     postData(`/users/cart/{userId}`).then(() =>
-      alert(`${mealBox.mealboxName}이 장바구니에 추가되었습니다.}`)
+      alert(`${mealBox.name}이 장바구니에 추가되었습니다.`)
     );
     console.log('추가 완료');
   };
@@ -16,11 +16,11 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
   const deleteProduct = () => {
     if (
       window.confirm(
-        `${mealBox.mealboxName}을 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
+        `${mealBox.name}을 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
       )
     ) {
       deleteData(`/admin/mealboxes/${mealBox.mealboxId}`).then(() =>
-        alert(`${mealBox.mealboxName}이 삭제되었습니다.}`)
+        alert(`${mealBox.name}이 삭제되었습니다.}`)
       );
       console.log('삭제 완료');
     }
@@ -32,24 +32,24 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
         {mealBox && (
           <p>
             <span>{mealBox.weight.toLocaleString('ko-KR')}g(ml)</span>
-            <span>{mealBox.weight.toLocaleString('ko-KR')}kcal</span>
+            <span>{mealBox.kcal.toLocaleString('ko-KR')}kcal</span>
           </p>
         )}
         <MealBoxImg alt="" src={custom ? blankbucket : mealBox.imagePath} />
         {mealBox && (
           <MealBoxDesUl>
-            {mealBox.products.map((product) => {
+            {mealBox.products.map((product) => (
               <li key={product.productId}>
                 <span>{product.name}</span>
                 <span>{product.weight.toLocaleString('ko-KR')}g(ml)</span>
                 <span>{product.kcal.toLocaleString('ko-KR')}kcal</span>
-              </li>;
-            })}
-            {/* <li>
+              </li>
+            ))}
+            <li>
               <span>케일주스</span>
               <span>100ml</span>
               <span>100kcal</span>
-            </li> */}
+            </li>
           </MealBoxDesUl>
         )}
       </MealBoxImgDiv>
@@ -128,9 +128,12 @@ const MealBoxDesUl = styled.ul`
   border-radius: 4px;
   background-color: var(--gray_070);
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 0 7.5%;
   opacity: 0;
+  list-style: none;
 
   > li {
     width: 100%;

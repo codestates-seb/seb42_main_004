@@ -32,8 +32,8 @@ function App() {
       <div className="marginbase bodymargin">
         <Routes>
           <Route path="/" element={<SurveyHome />} />
-          <Route path="/boxes" element={<AllBoxes />} />
-          <Route path="/boxes/:page" element={<AllBoxes />} />
+          <Route path="/mealboxes" element={<AllBoxes />} />
+          <Route path="/mealboxes/:page" element={<AllBoxes />} />
           <Route path="/survey/question/:page" element={<Survey />} />
           <Route path="/survey/result" element={<SurveyResult />} />
           <Route path="/custom" element={<Custom />} />

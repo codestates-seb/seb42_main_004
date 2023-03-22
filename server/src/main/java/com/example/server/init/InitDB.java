@@ -7,6 +7,10 @@ import com.example.server.image.entity.ProductImage;
 import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.mealbox.entity.MealboxProduct;
 import com.example.server.mealbox.repository.MealboxRepository;
+import com.example.server.mealbox.service.MealboxService;
+import com.example.server.mealboxSet.entity.MealboxSet;
+import com.example.server.mealboxSet.entity.MealboxSetter;
+import com.example.server.mealboxSet.repository.MealboxSetRepository;
 import com.example.server.product.entity.Product;
 import com.example.server.product.repository.ProductRepository;
 import com.example.server.product.service.ProductService;
@@ -21,6 +25,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.matcher.FilterableList;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -31,12 +37,14 @@ public class InitDB {
   private final InitUser initUser;
   private final InitProduct initProduct;
   private final InitMealbox initMealbox;
+  private final InitMealboxSet initMealboxSet;
 
   @PostConstruct
   public void init() {
     initUser.UserInit();
     initProduct.ProductInit();
     initMealbox.MealboxInit();
+    initMealboxSet.MealboxSetInit();
   }
 
 }
@@ -241,15 +249,33 @@ class InitMealbox {
   }
 }
 
-//@Component
-//@Transactional
-//@RequiredArgsConstructor
-//class InitMealboxSet{
-//  private final MealboxSetRepository mealboxSetRepository;
-//
-//  public void MealboxSetInit() {
-//    List<MealboxSet> mealboxSetList = new ArrayList<>();
-//
-//    for(int i=1;i<)
-//  }
-//}
+@Component
+@Transactional
+@RequiredArgsConstructor
+@Slf4j
+class InitMealboxSet{
+  private final MealboxSetRepository mealboxSetRepository;
+  private final MealboxService mealboxService;
+  public void MealboxSetInit() {
+    List<MealboxSet> mealboxSetList = new ArrayList<>();
+
+    for(int i=1;i<=23;i++){
+      MealboxSet mealboxSet = MealboxSet.builder().id((long) i).build();
+      for(int j=0;j<3;j++){
+        long id = i*3 - 2 + j;
+        if(id == 36) id=24;
+        if(id >= 36) id--;
+        if(id == 68) id=62;
+
+        Mealbox mealbox = mealboxService.findMealboxById(id);
+        log.info(mealbox.toString());
+        MealboxSetter.makeMealboxSetter(mealbox, mealboxSet);
+
+        mealboxSet.calculateKcal();
+      }
+      mealboxSetList.add(mealboxSet);
+    }
+
+    mealboxSetRepository.saveAll(mealboxSetList);
+  }
+}
