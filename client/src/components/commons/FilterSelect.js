@@ -1,12 +1,8 @@
 import styled from 'styled-components';
 
 function FilterSelect({ sortProducts }) {
-  const onSelect = (e) => {
-    const select = e.target.value.split('/');
-    sortProducts(select);
-  };
   return (
-    <Select type="select" onChange={onSelect}>
+    <Select type="select" onChange={(e) => sortProducts(e.target.value)}>
       <option value="id/ASC">최신순</option>
       <option value="id/DESC">오래된 순</option>
       <option value="name/ASC">가나다순</option>

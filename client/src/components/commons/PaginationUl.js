@@ -14,9 +14,7 @@ function PaginationUl({ page, totalpage, url, setPage }) {
   return (
     <PaginationContainerUl>
       {!totalLi.includes(1) && (
-        <PaginationLi
-          onClick={() => (url ? navigate(`${url}/${1}`) : setPage(1))}
-        >
+        <PaginationLi onClick={() => (url ? navigate(url(1)) : setPage(1))}>
           {'<<'}
         </PaginationLi>
       )}
@@ -24,16 +22,14 @@ function PaginationUl({ page, totalpage, url, setPage }) {
         <PaginationLi
           key={i}
           now={li === page && 1}
-          onClick={() => (url !==undefined? navigate(`${url}/${li}`) : setPage(li))}
+          onClick={() => (url !== undefined ? navigate(url(li)) : setPage(li))}
         >
           {li}
         </PaginationLi>
       ))}
       {!totalLi.includes(totalpage) && (
         <PaginationLi
-          onClick={() =>
-            url ? navigate(`${url}/${totalpage}`) : setPage(totalpage)
-          }
+          onClick={() => (url ? navigate(url(totalpage)) : setPage(totalpage))}
         >
           {'>>'}
         </PaginationLi>

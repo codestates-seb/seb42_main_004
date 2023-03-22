@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface MealboxSetRepository extends JpaRepository<MealboxSet, Long> {
-    List<MealboxSet> findAllByKcal(int kcal);
+    List<MealboxSet> findAllByKcalBetween(int minKcal, int maxKcal);
 }

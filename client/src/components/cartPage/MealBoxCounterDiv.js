@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { TextButton } from '../commons/ModalDiv';
-function MealBoxCounterDiv() {
+function MealBoxCounterDiv({ quantity }) {
   return (
     <CounterDiv>
       <TextButton className="linkstyle">&#8722;</TextButton>
-      <Count>1</Count>
+      <Count>{quantity}</Count>
       <TextButton className="linkstyle">&#43;</TextButton>
     </CounterDiv>
   );

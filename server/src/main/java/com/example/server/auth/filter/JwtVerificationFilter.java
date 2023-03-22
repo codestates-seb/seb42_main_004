@@ -54,6 +54,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     String authorization = request.getHeader("Authorization");  // (6-1)
 
     return authorization == null || !authorization.startsWith("Bearer");  // (6-2)
+//    return false;
   }
 
   private Map<String, Object> verifyJws(HttpServletRequest request) {
@@ -64,7 +65,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 //        .filter(c -> c.getName().equals("Authorization")).findFirst()
 //        .orElseThrow(() -> new RuntimeException());
 //    String jws = cookie.getValue().replace("Bearer ", "");
-//    log.info("### value is "+jws);
+    log.info("### value is "+jws);
 
 
     String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(
@@ -83,6 +84,5 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         authorities);  // (4-3)
     SecurityContextHolder.getContext().setAuthentication(authentication); // (4-4)
   }
-
 
 }

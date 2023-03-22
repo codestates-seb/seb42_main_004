@@ -1,4 +1,5 @@
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MealBoxCardDiv from '../components/allboxes/MealBoxCardDiv';
 import BannerLink from '../components/commons/BannerLink';
@@ -8,16 +9,33 @@ import SearchBarDiv from '../components/commons/SearchBarDiv';
 import useGET from '../util/useGET';
 
 function AllBoxes() {
-  let { page } = useParams();
-  if (!page) page = 1;
-  const [res, isPending, error] = useGET(`/mealboxes?page=${page}`);
+  const navigate = useNavigate();
+  let { pathname, search } = useLocation();
+  if (!search) navigate('/mealboxes?page=1');
+
+  const [res, isPending, error] = useGET(`${pathname}${search}`);
+  const [searchWord, setSearchWord] = useState('');
+
+  const searchMealBox = () => {
+    navigate(`/mealboxes/search?page=1&name=${searchWord}`);
+  };
+
+  const paginationUrl = (page) => {
+    return searchWord
+      ? `/mealboxes/search?page=${page}&name=${searchWord}`
+      : `/mealboxes?page=${page}`;
+  };
 
   return (
     <GetTemplate isPending={isPending} error={error} res={res?.data}>
       <MealBoxesWrapDiv className="margininside">
         <BannerLink />
         <h1>{'맹쥬'}님 오늘도 건강한 하루되세요(｡•̀ᴗ-)✧</h1>
-        <SearchBarDiv placeholder="healthy day 밀박스" />
+        <SearchBarDiv
+          placeholder="healthy day 밀박스"
+          searchSubject={searchMealBox}
+          setSearchWord={setSearchWord}
+        />
         <MealBoxesUl>
           <li>
             <MealBoxCardDiv custom={1} />
@@ -27,35 +45,11 @@ function AllBoxes() {
               <MealBoxCardDiv mealBox={mealbox} />
             </li>
           ))}
-          {/* <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li> */}
         </MealBoxesUl>
         <PaginationUl
           page={res?.pageInfo?.page}
           totalpage={res?.pageInfo?.totalPages}
-          url=""
+          url={paginationUrl}
         />
       </MealBoxesWrapDiv>
     </GetTemplate>

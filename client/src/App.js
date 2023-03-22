@@ -31,8 +31,9 @@ function App() {
       <Header />
       <div className="marginbase bodymargin">
         <Routes>
-          <Route path="/" element={<AllBoxes />} />
-          <Route path="/:page" element={<AllBoxes />} />
+          <Route path="/" element={<SurveyHome />} />
+          <Route path="/mealboxes" element={<AllBoxes />} />
+          <Route path="/mealboxes/:page" element={<AllBoxes />} />
           <Route path="/survey/question/:page" element={<Survey />} />
           <Route path="/survey/result" element={<SurveyResult />} />
           <Route path="/custom" element={<Custom />} />
@@ -51,7 +52,6 @@ function App() {
           <Route path="/email/send/password" element={<FindPassword />} />
           <Route path="/cart/payment" element={<Payment />} />
           <Route path="/*" element={<Error />} />
-          <Route path="/surveyHome" element={<SurveyHome />} />
         </Routes>
         <ToTopButton />
       </div>

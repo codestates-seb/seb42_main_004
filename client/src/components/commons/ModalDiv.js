@@ -11,7 +11,7 @@ import postData from '../../util/postData';
 function ModalDiv({ closeModal, mealBox, product }) {
   const [imgInput, setImgInput] = useState();
   const subject = mealBox ? mealBox : product;
-  const [imgInputBuffer, setImgInputBuffer] = useState(subject.imagePath);
+  const [imgInputBuffer, setImgInputBuffer] = useState(subject?.imagePath);
   const [subjectInfo, setSubjectInfo] = useState({ ...subject });
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
         setImgInputBuffer(reader.result);
       };
     } else {
-      setImgInputBuffer(subject.imagePath);
+      setImgInputBuffer(subject?.imagePath);
     }
   }, [imgInput]);
 
@@ -146,7 +146,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
           <InputLabelDiv
             label="열량"
             id="kcal"
-            value={subjectInfo.kcal.toLocaleString('ko-KR')}
+            value={subjectInfo.kcal?.toLocaleString('ko-KR')}
             onChange={product && subjectInputHandler('kcal')}
             unit="kcal/10g"
             maxLength={5}
@@ -155,7 +155,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
           <InputLabelDiv
             label="용량"
             id="weight"
-            value={subjectInfo.weight.toLocaleString('ko-KR')}
+            value={subjectInfo.weight?.toLocaleString('ko-KR')}
             onChange={product && subjectInputHandler('weight')}
             unit="g"
             maxLength={5}
@@ -164,7 +164,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
           <InputLabelDiv
             label="금액"
             id="price"
-            value={subjectInfo.price.toLocaleString('ko-KR')}
+            value={subjectInfo.price?.toLocaleString('ko-KR')}
             onChange={product && subjectInputHandler('price')}
             unit="원"
             maxLength={6}
@@ -220,7 +220,7 @@ export const TextButton = styled.button`
   font-weight: bold;
   border: none;
   background: none;
-  padding: 2px;
+  padding: 4px;
 `;
 const ModalCloseButton = styled(TextButton)`
   position: absolute;

@@ -30,7 +30,7 @@ import java.util.List;
 public class ProductController {
     private final ProductMapper mapper;
     private final ProductService productService;
-    private final int productListSize = 11;
+    private final int productListSize = 7;
 
 
     public ProductController(ProductMapper mapper, ProductService productService) {
