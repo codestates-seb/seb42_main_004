@@ -117,8 +117,10 @@ public class UserController {
   @PatchMapping("/password")
   public ResponseEntity updatePassword(Principal principal,
       @RequestBody @Valid PasswordPatchDto passwordPatchDto) {
+    log.info("### PW PATCH 시작합니다!");
     String password = passwordPatchDto.getPassword();
     String afterPassword = passwordPatchDto.getAfterPassword();
+    log.info("###PW = " + password + ", AFTER PW = "+ afterPassword);
     userService.updatePassword(principal.getName(), password, afterPassword);
 
     return ResponseEntity.ok().build();

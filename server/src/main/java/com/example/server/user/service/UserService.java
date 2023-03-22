@@ -91,9 +91,12 @@ public class UserService {
   // 패스워드 변경
   public User updatePassword(String email, String password, String afterPassword) {
     // 회원이 존재하는지 검증
+    log.info("###회원이 존재하는지 검증합니다!");
     User findUser = checkUserExist(email);
+    log.info("### 검증 완료!");
     // 비밀번호가 일치하는지 검증
-    if (passwordEncoder.encode(password).equals(passwordEncoder.encode(findUser.getPassword()))) {
+    log.info("### 비밀번호가 일치하는지 검증합니다!");
+    if (passwordEncoder.matches(password, findUser.getPassword())) {
       findUser.setPassword(passwordEncoder.encode(afterPassword));
       userRepository.save(findUser);
     } else {
@@ -119,6 +122,7 @@ public class UserService {
 
 
   // recovery email send
+  @Async
   public void recoveryEmailSend(String emailSignUp, String emailNeedToSend)
       throws MessagingException, UnsupportedEncodingException {
     String newMailKey = createCode();
@@ -134,6 +138,7 @@ public class UserService {
   }
 
   // recovery PW email send
+  @Async
   public void recoveryPWEmailSend(String email)
       throws MessagingException, UnsupportedEncodingException {
     String newMailKey = createCode();
@@ -348,7 +353,7 @@ public class UserService {
     return mailKey;
   }
 
-  @Async
+
   public String sendEmailRecovery(String toEmail, String mailKey)
       throws MessagingException, UnsupportedEncodingException {
 
@@ -360,7 +365,7 @@ public class UserService {
     return mailKey;
   }
 
-  @Async
+
   public void sendEmailDismatch(String toEmail)
       throws MessagingException, UnsupportedEncodingException {
 
@@ -371,7 +376,7 @@ public class UserService {
 
   }
 
-  @Async
+
   public void sendEmailNoExist(String toEmail)
       throws MessagingException, UnsupportedEncodingException {
 
