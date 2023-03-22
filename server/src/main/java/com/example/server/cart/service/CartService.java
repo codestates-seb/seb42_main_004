@@ -35,8 +35,7 @@ public class CartService {
         return findCart.orElseThrow(() -> new BusinessLogicException(CartException.CART_NOT_FOUND));
     }
 
-    public Cart createCartMealboxAndAddMealbox(Long cartId, Long mealboxId){
-        Cart cart = findCartById(cartId);
+    public Cart createCartMealboxAndAddMealbox(Cart cart, Long mealboxId){
         Mealbox mealbox = mealboxService.findMealboxById(mealboxId);
 
         cartMealboxService.createCartMealbox(cart, mealbox);

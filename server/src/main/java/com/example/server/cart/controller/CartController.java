@@ -1,5 +1,6 @@
 package com.example.server.cart.controller;
 
+import com.example.server.auth.dto.PrincipalDto;
 import com.example.server.cart.dto.CartPatchDto;
 import com.example.server.cart.dto.CartPostDto;
 
@@ -11,32 +12,35 @@ import com.example.server.dto.SingleResponseDto;
 import com.example.server.mealbox.dto.MealboxPostDto;
 import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.mealbox.mapper.MealboxMapper;
+import com.example.server.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 @RequestMapping("/users/cart")
 @Validated
 public class CartController {
   private final CartService cartService;
   private final CartMapper cartMapper;
   private final MealboxMapper mealboxMapper;
-  public CartController(CartService cartService, CartMapper cartMapper, MealboxMapper mealboxMapper) {
-    this.cartService = cartService;
-    this.cartMapper = cartMapper;
-    this.mealboxMapper = mealboxMapper;
-  }
+  private final UserService userService;
 
   //장바구니에 바로 추천밀박스추가
   @PostMapping("/{cartId}")
-  public ResponseEntity addRecMealboxToCart(@PathVariable("cartId") Long cartId,
+  public ResponseEntity addRecMealboxToCart(@AuthenticationPrincipal PrincipalDto principalDto,
                                             @RequestBody CartPostDto cartPostDto){
     log.info("------RecMealboxAddCart------");
-    cartService.createCartMealboxAndAddMealbox(cartId, cartPostDto.getMealboxId());
+    log.info(principalDto.getEmail());
+    Cart cart = userService.getUser(principalDto.getId()).getCart();
+    cartService.createCartMealboxAndAddMealbox(cart, cartPostDto.getMealboxId());
     return new ResponseEntity(HttpStatus.OK);
   }
 

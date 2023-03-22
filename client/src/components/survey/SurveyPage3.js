@@ -26,7 +26,7 @@ function SurveyPage3() {
 
   let nextHandler = () => {
     let page3Param = `?kcal=${dietPlan}`;
-    let data = getData(`${page3Param}`); // uri 추가
+    let data = getData(`/survey${page3Param}`); // uri 추가
     setSurveyRcmd(data);
     navigate(`/survey/result`, data);
     dispatch(setReset());
