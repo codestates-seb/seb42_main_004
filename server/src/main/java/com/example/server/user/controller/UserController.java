@@ -4,6 +4,7 @@ import com.example.server.auth.utils.UriCreator;
 import com.example.server.image.entity.ImageInfo;
 import com.example.server.user.dto.PasswordPatchDto;
 import com.example.server.user.dto.RecoveryEmailSendDto;
+import com.example.server.user.dto.RecoveryPWEmailSendDto;
 import com.example.server.user.dto.RecoveryPasswordPatchDto;
 import com.example.server.user.dto.UserPatchDto;
 import com.example.server.user.dto.UserPostDto;
@@ -124,7 +125,7 @@ public class UserController {
   }
 
   // 리커버리 이메일 샌드
-  @PostMapping("/recovery_email_send")
+  @PostMapping("/recovery/signup/send")
   public ResponseEntity recoveryEmailSend(@RequestBody @Valid RecoveryEmailSendDto dto)
       throws MessagingException, UnsupportedEncodingException {
     String emailSignUp = dto.getEmailSignUp();
@@ -132,6 +133,15 @@ public class UserController {
 
     userService.recoveryEmailSend(emailSignUp, emailNeedToSend);
 
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/recovery/password/send")
+  public ResponseEntity recoveryPWEmailSend(@RequestBody @Valid RecoveryPWEmailSendDto dto)
+      throws MessagingException, UnsupportedEncodingException {
+    String email = dto.getEmail();
+
+    userService.recoveryPWEmailSend(email);
     return ResponseEntity.ok().build();
   }
 
