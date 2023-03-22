@@ -25,13 +25,13 @@ function SurveyResult() {
 
   return (
     <>
-      {surveyRcmd.morning ? (
+      {surveyRcmd.breakfast ? (
         <MealBoxesWrapDiv className="margininside">
           <h1>추천 결과 페이지(｡•̀ᴗ-)✧</h1>
           <MealBoxesUl>
             <li>
               <h2>아침</h2>
-              <MealBoxCardDiv mealBox={surveyRcmd.morning} />
+              <MealBoxCardDiv mealBox={surveyRcmd.breakfast} />
             </li>
             <li>
               <h2>점심</h2>

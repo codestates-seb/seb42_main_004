@@ -2,14 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const surveyRcmdSlice = createSlice({
   name: 'surveyRcmd',
-  initialState: { surveyRcmd: { morning: null, lunch: null, dinner: null } },
+  initialState: { surveyRcmd: { breakfast: null, lunch: null, dinner: null } },
   reducers: {
     setSurveyRcmd: (state, action) => {
       state.surveyRcmd = { ...action.payload };
     },
     deleteSurveyRcmd: (state) => {
       const { surveyRcmd } = state;
-      surveyRcmd.morning = null;
+      surveyRcmd.breakfast = null;
       surveyRcmd.lunch = null;
       surveyRcmd.dinner = null;
     },
