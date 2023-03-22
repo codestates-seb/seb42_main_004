@@ -11,7 +11,7 @@ const useGET = (url) => {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}${url}`
       );
-      setRes(response);
+      setRes(response.data);
       setIsPending(false);
     } catch (err) {
       setError(err);

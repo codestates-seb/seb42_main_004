@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 function SurveyBox({
   id,
+  title,
   group,
   info,
   detail,
@@ -17,12 +18,13 @@ function SurveyBox({
         type="radio"
         name={group}
         id={id}
+        title={title}
         onChange={changeHandler}
         checked={checked}
       />
       <SurveyBoxLabel htmlFor={id}>
         <BoxTop>
-          <h3>{id === '매우' ? id + ' 활동적' : id}</h3>
+          <h3>{title}</h3>
           {info}
         </BoxTop>
         <div>{detail ? detail : children}</div>
