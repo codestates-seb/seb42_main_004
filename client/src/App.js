@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Header from './components/commons/Header';
 import GlobalStyle from './global/globalstyles';
 import Footer from './components/commons/Footer';
@@ -23,6 +23,7 @@ import SendEmail from './pages/SendEmail';
 import FindPassword from './pages/FindPassword';
 import SurveyHome from './pages/SurveyHome';
 import ToTopButton from './components/commons/ToTopButton';
+import isLogin from './util/isLogin';
 
 function App() {
   return (
@@ -40,12 +41,30 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/myinfo/orderhistory" element={<OrderHistory />} />
           <Route path="/product" element={<Product />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/signup/oauth" element={<SignupOauth />} />
-          <Route path="/myinfo" element={<MyInfo />} />
-          <Route path="/myinfo/edit" element={<EditMyInfo />} />
-          <Route path="/myinfo/edit/password" element={<EditPassword />} />
+          <Route
+            path="/login"
+            element={isLogin() ? <Navigate to="/" /> : <Login />}
+          />
+          <Route
+            path="/signup"
+            element={isLogin() ? <Navigate to="/" /> : <Signup />}
+          />
+          <Route
+            path="/signup/oauth"
+            element={isLogin() ? <Navigate to="/" /> : <SignupOauth />}
+          />
+          <Route
+            path="/myinfo"
+            element={isLogin() ? <MyInfo /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/myinfo/edit"
+            element={isLogin() ? <EditMyInfo /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/myinfo/edit/password"
+            element={isLogin() ? <EditPassword /> : <Navigate to="/login" />}
+          />
           <Route path="/email/complete" element={<CompleteEmail />} />
           <Route path="/email/confirm" element={<ConfirmEmail />} />
           <Route path="/email/send" element={<SendEmail />} />
