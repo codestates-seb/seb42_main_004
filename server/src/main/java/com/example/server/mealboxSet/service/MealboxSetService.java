@@ -15,8 +15,8 @@ public class MealboxSetService {
     }
 
     public MealboxSet findMealboxSet(int kcal){
-        List<MealboxSet> mealboxSets = mealboxSetRepository.findAllByKcal(kcal);
-        int randomNum = (int) (Math.random()*mealboxSets.size()+1);
+        List<MealboxSet> mealboxSets = mealboxSetRepository.findAllByKcalBetween(kcal-20,kcal+20);
+        int randomNum = (int) (Math.random()*mealboxSets.size());
         return mealboxSets.get(randomNum);
     }
 }
