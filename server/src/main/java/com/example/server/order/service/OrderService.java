@@ -53,6 +53,8 @@ public class OrderService {
     orderRepository.save(order);
     log.info("------------------- CREATE OrderMealboxes -------------------");
     OrderMealboxPostDtoToOrdersMealbox(orderPostDto.getMealboxes(), order);
+    order.setTotalPrice(order.getOrdersMealboxes().stream().
+        mapToInt(ordersMealbox -> ordersMealbox.getPrice() * ordersMealbox.getQuantity()).sum());
     //결제 사전 정보
     PreparePostDto preparePostDto = new PreparePostDto(order.getOrderNumber(), new BigDecimal(order.getTotalPrice()));
     paymentController.postPrepare(preparePostDto);
