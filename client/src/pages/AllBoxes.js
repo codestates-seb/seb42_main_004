@@ -45,30 +45,6 @@ function AllBoxes() {
               <MealBoxCardDiv mealBox={mealbox} />
             </li>
           ))}
-          {/* <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li>
-          <li>
-            <MealBoxCardDiv mealBox={1} />
-          </li> */}
         </MealBoxesUl>
         <PaginationUl
           page={res?.pageInfo?.page}
