@@ -49,16 +49,18 @@ function SurveyPage1() {
           <div>성별</div>
           <GenderOptionDiv>
             <SurveyBox
-              id="남성"
+              id="MALE"
+              title="남성"
               group="gender"
               changeHandler={dispatchGender}
-              checked={gender === '남성'}
+              checked={gender === 'MALE'}
             />
             <SurveyBox
-              id="여성"
+              id="FEMALE"
+              title="여성"
               group="gender"
               changeHandler={dispatchGender}
-              checked={gender === '여성'}
+              checked={gender === 'FEMALE'}
             />
           </GenderOptionDiv>
         </div>

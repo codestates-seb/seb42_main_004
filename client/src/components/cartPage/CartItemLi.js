@@ -4,23 +4,24 @@ import MealBoxCounterDiv from './MealBoxCounterDiv';
 import MealBoxItemsDiv from './MealBoxItemsDiv';
 import styled from 'styled-components';
 
-function CartItemLi() {
+function CartItemLi({ mealbox }) {
+  let { name, kcal, price, quantity, products } = mealbox;
   return (
     <CartItemWrapperLi>
       <CartItemTopDiv>
         <CheckBoxInput type={'checkbox'} checked />
-        <h2>Custom</h2>
+        <h2>{name}</h2>
         <CartItemTopButtonsDiv>
           <div>수량</div>
-          <MealBoxCounterDiv />
+          <MealBoxCounterDiv quantity={quantity} />
           <MealBoxDeleteButton />
         </CartItemTopButtonsDiv>
       </CartItemTopDiv>
       <CartItemBottomDiv>
-        <MealBoxItemsDiv />
+        <MealBoxItemsDiv product={products} />
         <CartItemBottomButtonsDiv>
-          <div>320kcal</div>
-          <div>17,000원</div>
+          <div>{`${kcal}kcal`}</div>
+          <div>{`${price}원`}</div>
           <MealBoxEditLink />
         </CartItemBottomButtonsDiv>
       </CartItemBottomDiv>
