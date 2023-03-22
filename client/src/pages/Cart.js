@@ -3,27 +3,22 @@ import CartItemLi from '../components/cartPage/CartItemLi';
 import CartAside from '../components/commons/CartAside';
 import { resEx } from '../components/cartPage/dummyData';
 import { useEffect } from 'react';
-import getData from '../util/getData';
-// import { useSelector } from 'react-redux';
-function Cart() {
-  let isLogin = true;
-  // let [data, setData] = useState();
-  let render = () => {
-    if (isLogin) {
-      getData(`/users/cart/${`cartId`}`).then(() => {
-        console.log(resEx.data);
-        // setData(resEx.data);
-      });
-    } else {
-      // let {} = useSelector();
-      // setData();
-    }
-  };
+// import getData from '../util/getData';
+import { useSelector, useDispatch } from 'react-redux';
+import { setLoginCart } from '../reducers/guestCartReducer';
 
-  let { totalPrice, mealboxes } = resEx.data;
+function Cart() {
+  let dispatch = useDispatch();
+  let isLogin = true;
+  let { totalPrice, mealboxes } = useSelector(
+    (state) => state.guestCartReducer.guestCart
+  );
 
   useEffect(() => {
-    render();
+    if (isLogin) {
+      // getData(`/users/cart/${`cartId`}`);
+      dispatch(setLoginCart(resEx.data));
+    }
   }, []);
 
   return (

@@ -6,6 +6,9 @@ const guestCartSlice = createSlice({
   name: 'guestCart',
   initialState,
   reducers: {
+    setLoginCart: (state, action) => {
+      state.guestCart = action.payload;
+    },
     addGuestCart: (state, action) => {
       const { guestCart } = state;
       const mealBox = action.payload;
@@ -42,6 +45,7 @@ const guestCartSlice = createSlice({
 });
 
 export const {
+  setLoginCart,
   addGuestCart,
   deleteGuestCart,
   setGuestCart,
