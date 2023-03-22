@@ -13,8 +13,14 @@ function SurveyResult() {
   const dispatch = useDispatch();
 
   const surveyRetry = () => {
-    dispatch(deleteSurveyRcmd());
-    navigate('/survey/question/1');
+    if (
+      window.confirm(
+        '추천 페이지로 돌아갑니다\n현재 추천 받은 밀박스는 삭제됩니다.'
+      )
+    ) {
+      dispatch(deleteSurveyRcmd());
+      navigate('/survey/question/1');
+    }
   };
 
   return (
@@ -40,7 +46,7 @@ function SurveyResult() {
             <TextButton onClick={surveyRetry} className="linkstyle">
               다시 추천 받기
             </TextButton>
-            <p>현재 추천받은 밀박스가 사라집니다</p>
+            <p>현재 추천 받은 밀박스가 사라집니다</p>
           </SurveyRetryDiv>
         </MealBoxesWrapDiv>
       ) : (
