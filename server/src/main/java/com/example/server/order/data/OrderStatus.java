@@ -1,5 +1,6 @@
 package com.example.server.order.data;
 
+import java.util.Arrays;
 import lombok.Getter;
 
 public enum OrderStatus {
@@ -19,5 +20,12 @@ public enum OrderStatus {
   OrderStatus(int index, String status) {
     this.index = index;
     this.status = status;
+  }
+
+  public static OrderStatus valueOfStatus(String status) {
+    return Arrays.stream(values())
+        .filter(value -> value.status.equals(status))
+        .findAny()
+        .orElse(null);
   }
 }

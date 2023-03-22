@@ -24,7 +24,7 @@ const useGET = (url) => {
       getData();
     }
   }, [url]);
-  console.log(res);
+
   return [res, isPending, error];
 };
 

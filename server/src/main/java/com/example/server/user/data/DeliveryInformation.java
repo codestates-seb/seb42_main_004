@@ -1,26 +1,36 @@
 package com.example.server.user.data;
 
+import static lombok.AccessLevel.PROTECTED;
+
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Embeddable
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(access = PROTECTED)
 public class DeliveryInformation {
   @NotNull
   @Size(min = 2, max = 10)
-  private String name;
+  @Default
+  private String name = "";
   @NotNull
   @Pattern(regexp = "01(?:0|1|[6-9])[.-]?(\\d{3}|\\d{4})[.-]?(\\d{4})$")
-  private String phoneNumber;
+  @Default
+  private String phoneNumber = "";
   @Embedded
-  private Address address;
+  @Default
+  private Address address = new Address();
 
 }
