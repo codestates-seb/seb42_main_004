@@ -4,12 +4,16 @@ import blankbucket from '../../assets/blankbucket.png';
 import goToCustom from '../../util/goToCustom';
 import deleteData from '../../util/deleteData';
 import postData from '../../util/postData';
+import { useState } from 'react';
 
 function MealBoxCardDiv({ mealBox, custom, admin }) {
+  const [notification, setNotification] = useState(false);
+
   const addToCart = () => {
-    postData(`/users/cart/{userId}`).then(() =>
-      alert(`${mealBox.name}이 장바구니에 추가되었습니다.`)
-    );
+    postData(`/users/cart/{userId}`).then(() => {
+      setNotification(true);
+      setTimeout(() => setNotification(false), 2000);
+    });
     console.log('추가 완료');
   };
 
@@ -70,6 +74,9 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
             <MainButton name={mealBox.price.toLocaleString('ko-KR') + '원'} />
           </>
         )}
+        <NotificationDiv add={notification && 1}>
+          {mealBox?.name}이(가) 장바구니에 추가되었습니다.
+        </NotificationDiv>
       </MealBoxCardButtonDiv>
     </MealBoxCardContainerDiv>
   );
@@ -151,6 +158,7 @@ const MealBoxH3 = styled.h3`
   text-align: ${(props) => props.custom && 'center'};
 `;
 const MealBoxCardButtonDiv = styled.div`
+  position: relative;
   display: ${(props) => (props.custom ? 'flex' : 'grid')};
   grid-template-columns: repeat(3, auto);
   column-gap: 0.5rem;
@@ -171,5 +179,32 @@ const MealBoxCardButtonDiv = styled.div`
     :active {
       box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
     }
+  }
+`;
+const NotificationDiv = styled.div`
+  visibility: ${(props) => (props.add ? 'visible' : 'hidden')};
+  transition: all 0.5s;
+  position: absolute;
+  z-index: 11;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 80%;
+  background-color: var(--signature);
+  color: var(--white);
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 0 2px var(--signature) inset, 2px 2px 2px rgba(0, 0, 0, 0.4);
+  word-break: keep-all;
+  text-align: center;
+
+  ::before {
+    content: '';
+    border-bottom: calc(4px * 1.732) solid var(--signature);
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    position: absolute;
+    top: -6.4px;
+    left: 50%;
   }
 `;
