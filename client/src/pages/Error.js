@@ -11,7 +11,7 @@ function Error() {
           <br />
           Page Not Found
         </h1>
-        <Link to="/" className="linkstyle">
+        <Link to="/mealboxes" className="linkstyle">
           메인으로 돌아가기
         </Link>
       </ErrorWrapDiv>
