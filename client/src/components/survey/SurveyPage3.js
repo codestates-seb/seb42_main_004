@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDietPlan, setReset } from '../../reducers/surveyQuestionReducer';
 import { Option, ExplanationDiv } from './SurveyPage2';
@@ -7,11 +7,10 @@ import PreAndNextButtons from './PreAndNextButtons';
 import getData from '../../util/getData';
 import SurveyBox from './SurveyBox';
 import DietInfo from './DietInfo';
-import { resEx } from './dummyData.js';
-
+import { setSurveyRcmd } from '../../reducers/surveyRcmdReducer';
 function SurveyPage3() {
-  // let { state } = useLocation();
-  let { easy, normal, hard } = resEx.data;
+  let { state } = useLocation();
+  let { easy, normal, hard } = state;
 
   let dispatch = useDispatch();
   let navigate = useNavigate();
@@ -28,6 +27,7 @@ function SurveyPage3() {
   let nextHandler = () => {
     let page3Param = `?kcal=${dietPlan}`;
     let data = getData(`${page3Param}`); // uri 추가
+    setSurveyRcmd(data);
     navigate(`/survey/result`, data);
     dispatch(setReset());
   };
