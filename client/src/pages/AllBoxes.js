@@ -11,7 +11,7 @@ import useGET from '../util/useGET';
 function AllBoxes() {
   const navigate = useNavigate();
   let { pathname, search } = useLocation();
-  if (!search) navigate('/mealboxes?page=1');
+  if (!search) search = '?page=1';
 
   const [res, isPending, error] = useGET(`${pathname}${search}`);
   const [searchWord, setSearchWord] = useState('');

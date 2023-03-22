@@ -36,9 +36,13 @@ const customSlice = createSlice({
       custom.kcal -= product.kcal * product.quantity;
       custom.price -= product.price * product.quantity;
     },
+    temp: () => {
+      console.log('test');
+    },
     setProduct: (state, action) => {
+      customSlice.caseReducers.temp();
       const { id, num } = action.payload;
-      if (num === 0) return;
+      if (num <= 0) return;
       let { custom } = state;
       const total = custom.products.reduce((a, c) => a + c.quantity, 0);
       const idx = custom.products.map((product) => product.id).indexOf(id);
@@ -62,6 +66,7 @@ const customSlice = createSlice({
     setId: (state, action) => {
       state.custom.id = action.payload;
     },
+
     initializeCustom: (state) => {
       state.custom = {
         products: [],

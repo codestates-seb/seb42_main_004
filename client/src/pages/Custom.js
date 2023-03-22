@@ -18,7 +18,7 @@ function Custom({ admin }) {
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState(['id', 'ASC']);
   const [searchWord, setSearchWord] = useState('');
-  const [path, setPath] = useState('page=1&sort=id&dir=ASC');
+  const [path, setPath] = useState('?page=1&sort=id&dir=ASC');
   const [res, isPending, error] = useGET(`/products${path}`);
   const { custom } = useSelector((state) => state.customReducer);
   const navigate = useNavigate();
