@@ -20,7 +20,7 @@ function Cart() {
   };
 
   let { data } = useSelector((state) => {
-    return state.cartReducer;
+    return state.guestCartReducer;
   });
 
   let { totalPrice, mealboxes } = data;
