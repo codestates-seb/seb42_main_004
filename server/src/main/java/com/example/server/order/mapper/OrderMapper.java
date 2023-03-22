@@ -17,7 +17,6 @@ public interface OrderMapper {
 
   default Orders orderPostDtoToOrders(OrderPostDto orderPostDto) {
     Orders order = new Orders();
-    order.setTotalPrice(orderPostDto.getTotalPrice());
     List<Long> cartMealboxIds = orderPostDto.getMealboxes().stream().map(mb -> mb.getCartMealboxId()).collect(
         Collectors.toList());
     for(Long cartMealboxId: cartMealboxIds) {
@@ -37,6 +36,7 @@ public interface OrderMapper {
     orderPageResponseDto.setDeliveryZipCode(orders.getUser().getDeliveryInformation().getAddress().getZipCode());
     orderPageResponseDto.setDeliverySimpleAddress(orders.getUser().getDeliveryInformation().getAddress().getSimpleAddress());
     orderPageResponseDto.setDeliveryDetailAddress(orders.getUser().getDeliveryInformation().getAddress().getDetailAddress());
+    orderPageResponseDto.setAddresseePhoneNumber(orders.getUser().getDeliveryInformation().getPhoneNumber());
     orderPageResponseDto.setTotalPrice(orders.getTotalPrice());
     orderPageResponseDto.setEmail(orders.getUser().getEmail());
     return orderPageResponseDto;

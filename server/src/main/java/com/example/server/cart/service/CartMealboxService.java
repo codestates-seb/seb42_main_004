@@ -5,7 +5,7 @@ import com.example.server.cart.entity.CartMealbox;
 import com.example.server.cart.exception.CartMealboxException;
 import com.example.server.cart.repository.CartMealboxRepository;
 import com.example.server.exception.BusinessLogicException;
-import java.util.List;
+import com.example.server.order.entity.Orders;
 import java.util.Optional;
 
 import com.example.server.mealbox.entity.Mealbox;
@@ -25,8 +25,9 @@ public class CartMealboxService {
         CartMealboxException.CART_MEALBOX_NOT_FOUND));
   }
 
-  public void deleteCartMealboxAfterPayment(List<Long> cartMealboxIds) {
-    cartMealboxIds.stream().forEach(id -> {
+  public void deleteCartMealboxAfterPayment(Orders order) {
+
+    order.getCartMealboxIds().stream().forEach(id -> {
       CartMealbox cartMealbox = findCartMealbox(id);
       cartMealboxRepository.delete(cartMealbox);
     });
