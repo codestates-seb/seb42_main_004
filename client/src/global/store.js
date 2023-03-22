@@ -7,6 +7,7 @@ import { persistReducer } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session';
 import thunk from 'redux-thunk';
 import guestCartReducer from '../reducers/guestCartReducer';
+import userReducer from '../reducers/userReducer';
 
 const persistConfig = {
   key: 'root',
@@ -25,6 +26,7 @@ export const rootReducer = combineReducers({
   surveyRcmdReducer,
   surveyQuestionReducer,
   guestCartReducer,
+  userReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
