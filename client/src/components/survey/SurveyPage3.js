@@ -7,7 +7,7 @@ import PreAndNextButtons from './PreAndNextButtons';
 import getData from '../../util/getData';
 import SurveyBox from './SurveyBox';
 import DietInfo from './DietInfo';
-// import { setSurveyRcmd } from '../../reducers/surveyRcmdReducer';
+import { setSurveyRcmd } from '../../reducers/surveyRcmdReducer';
 function SurveyPage3() {
   let { state } = useLocation();
 
@@ -27,12 +27,15 @@ function SurveyPage3() {
 
   let nextHandler = () => {
     // let page3Param = `&kcal=${dietPlan}`;
-    getData(`/mealboxes/rec/survey/${dietPlan}`).then((res) => {
-      console.log(res.data);
-    });
-    // setSurveyRcmd(data);
-    navigate(`/survey/result`);
-    dispatch(setReset());
+    getData(`/mealboxes/rec/survey/${dietPlan}`)
+      .then((res) => {
+        console.log(res.data);
+        setSurveyRcmd(res.data);
+      })
+      .then(() => {
+        dispatch(setReset());
+        navigate(`/survey/result`);
+      });
   };
 
   return (
