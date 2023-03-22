@@ -15,13 +15,13 @@ function BoxElementCardDiv({ product, quantity, totalQuantity }) {
 
   const minusProduct = () => {
     if (quantity <= 0) return;
-    dispatch(setProduct(quantity - 1));
+    dispatch(setProduct(product.productId, quantity - 1));
   };
 
   const plusProduct = () => {
     if (totalQuantity >= 10)
       return alert('구성품은 10개까지 추가할 수 있습니다');
-    dispatch(setProduct(quantity + 1));
+    dispatch(setProduct(product.productId, quantity + 1));
   };
 
   return (
