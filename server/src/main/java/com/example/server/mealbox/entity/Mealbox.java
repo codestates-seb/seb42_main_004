@@ -3,6 +3,7 @@ package com.example.server.mealbox.entity;
 import com.example.server.cart.entity.CartMealbox;
 import com.example.server.image.entity.MealboxImage;
 import com.example.server.mealboxSet.entity.MealboxSet;
+import com.example.server.mealboxSet.entity.MealboxSetter;
 import com.example.server.order.entity.OrdersMealbox;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
@@ -46,9 +47,9 @@ public class Mealbox {
     @Setter
     private MealboxImage image;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "MEALBOX_SETS_ID")
-    private MealboxSet mealboxSet;
+    @OneToMany(mappedBy = "mealbox", orphanRemoval = true)
+    @Builder.Default
+    private List<MealboxSetter> mealboxSetters = new ArrayList<>();
 
     public void addMealboxProduct(MealboxProduct mealboxProduct) {
         if(mealboxProducts==null){
@@ -71,12 +72,25 @@ public class Mealbox {
         cartMealboxes.add(cartMealbox);
     }
 
+    public void addMealboxSetter(MealboxSetter mealboxSetter){
+        mealboxSetters.add(mealboxSetter);
+    }
+
     public void patchMealbox(String name, int price, int kcal, int weight){
         this.name = name;
         this.price = price;
         this.kcal = kcal;
         this.weight = weight;
         this.mealboxProducts.clear();
+    }
+
+    public void calculateDetails() {
+        this.weight = mealboxProducts.stream().mapToInt(mealboxProduct->
+                mealboxProduct.getProduct().getWeight()*mealboxProduct.getQuantity()).sum();
+        this.price = mealboxProducts.stream().mapToInt(mealboxProduct->
+                mealboxProduct.getProduct().getPrice()*mealboxProduct.getQuantity()).sum();
+        this.kcal = mealboxProducts.stream().mapToInt(mealboxProduct->
+                mealboxProduct.getProduct().getKcal()*mealboxProduct.getQuantity()).sum();
     }
 
     @Getter

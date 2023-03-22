@@ -23,7 +23,7 @@ public class UploadImageS3 {
      * s3에 업로드
      */
     public String upload(File uploadFile, String filePath, String saveFileName) {
-        String fileName = filePath + "/" + saveFileName;
+        String fileName = filePath + saveFileName;
         amazonS3.putObject(new PutObjectRequest(bucket, fileName, uploadFile)
                 .withCannedAcl(CannedAccessControlList.PublicRead)); // public 권한으로 설정
 

@@ -1,7 +1,9 @@
 package com.example.server.order.dto;
 
+import lombok.Getter;
 import lombok.Setter;
 
+@Getter
 @Setter
 public class OrderPageResponseDto { // 결제창에서 넘겨줄 값
   private String orderNumber; // 주문번호

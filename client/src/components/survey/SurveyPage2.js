@@ -22,11 +22,10 @@ function SurveyPage2({ name = '맹쥬' }) {
     (state) => state.surveyQuestionReducer
   );
 
-  let api = `${process.env.REACT_APP_API_URL}`;
-
   let nextHandler = () => {
-    let page2Param = `?age=${age}&gender=${gender}&height=${height}&weight=${weight}&active=${active}`;
-    let data = getData(api + page2Param);
+    let page2Param = `?age=${age}&gender=${gender}&height=${height}&weight=${weight}&activityAmount=${active}`;
+    let data = getData(`/survey${page2Param}`);
+    console.log(data);
     navigate(`/survey/question/3`, data);
   };
 
@@ -38,32 +37,36 @@ function SurveyPage2({ name = '맹쥬' }) {
       </ExplanationDiv>
       <Option>
         <SurveyBox
-          id="비활동적"
+          id="NOT_ACTIVE"
+          title="비활동적"
           group="active"
           detail="대부분 앉아있는 직장인 등"
           changeHandler={dispatchActive}
-          checked={active === '비활동적'}
+          checked={active === 'NOT_ACTIVE'}
         />
         <SurveyBox
-          id="저활동적"
+          id="LOW_ACTIVE"
+          title="저활동적"
           group="active"
           detail="주 1~3회 가벼운 운동"
           changeHandler={dispatchActive}
-          checked={active === '저활동적'}
+          checked={active === 'LOW_ACTIVE'}
         />
         <SurveyBox
-          id="활동적"
+          id="NORMAL_ACTIVE"
+          title="활동적"
           group="active"
           detail="매일 30분 이상 자발적 운동"
           changeHandler={dispatchActive}
-          checked={active === '활동적'}
+          checked={active === 'NORMAL_ACTIVE'}
         />
         <SurveyBox
-          id="매우"
+          id="HIGH_ACTIVE"
+          title="매우 활동적"
           group="active"
           detail="주로 선수, 거의 매일 2회 운동"
           changeHandler={dispatchActive}
-          checked={active === '매우'}
+          checked={active === 'HIGH_ACTIVE'}
         />
       </Option>
       <PreAndNextButtons nextHandler={nextHandler} />

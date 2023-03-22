@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import { CartItemListUl } from '../../pages/Cart';
 import OrderHistoryItemLi from './OrderHistoryItemLi';
 
-function OrderHistoryUl() {
+function OrderHistoryUl({ mealBoxes }) {
   return (
     <HistoryUl>
-      <OrderHistoryItemLi />
-      <OrderHistoryItemLi />
+      {mealBoxes.map((el, idx) => {
+        return <OrderHistoryItemLi key={idx} mealBox={el} />;
+      })}
     </HistoryUl>
   );
 }
