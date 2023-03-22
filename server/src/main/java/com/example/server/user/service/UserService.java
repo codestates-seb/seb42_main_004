@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,8 +68,8 @@ public class UserService {
     return save;
   }
 
-  public void deleteUser(Long userId) {
-    User findUser = userRepository.findById(userId)
+  public void deleteUser(String email) {
+    User findUser = userRepository.findByEmail(email)
         .orElseThrow(() -> new BusinessLogicException(UserException.USER_NOT_FOUND));
 
     //지금은 완전삭제
@@ -78,7 +77,7 @@ public class UserService {
   }
 
   public User updatedUser(User user) {
-    User findUser = checkUserExist(user.getId());
+    User findUser = checkUserExist(user.getEmail());
     //검증 성공
     Optional.ofNullable(user.getName()).ifPresent(findUser::setName);
     Optional.ofNullable(user.getAddress()).ifPresent(findUser::setAddress);
@@ -90,9 +89,9 @@ public class UserService {
   }
 
   // 패스워드 변경
-  public User updatePassword(Long id, String password, String afterPassword) {
+  public User updatePassword(String email, String password, String afterPassword) {
     // 회원이 존재하는지 검증
-    User findUser = checkUserExist(id);
+    User findUser = checkUserExist(email);
     // 비밀번호가 일치하는지 검증
     if (passwordEncoder.encode(password).equals(passwordEncoder.encode(findUser.getPassword()))) {
       findUser.setPassword(passwordEncoder.encode(afterPassword));
