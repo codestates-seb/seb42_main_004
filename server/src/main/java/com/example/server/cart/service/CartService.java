@@ -81,4 +81,9 @@ public class CartService {
         cart.calculateTotalPrice();
         return cartRepository.save(cart);
     }
+
+    public void refreshTotalPrice(Cart cart) {
+        cart.calculateTotalPrice();
+        cartRepository.save(cart);
+    }
 }
