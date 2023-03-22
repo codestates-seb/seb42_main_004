@@ -7,8 +7,7 @@ import lombok.Getter;
 
 @Data
 @Getter
-public class ResendEmailDto {
-
+public class RecoveryPWEmailSendDto {
   @NotNull
   @Email
   private String email;

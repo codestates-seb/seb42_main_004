@@ -10,10 +10,9 @@ import lombok.Getter;
 public class PasswordPatchDto {
 
   @NotNull
-  @Pattern(regexp = "^(?=.\\d{1,50})(?=.[a-zA-Z]{1,50}).{8,20}$")
   private String password;
   @NotNull
-  @Pattern(regexp = "^(?=.\\d{1,50})(?=.[a-zA-Z]{1,50}).{8,20}$")
+  @Pattern(regexp = "(?=.*\\d{1,50})(?=.*[a-zA-Z]{1,50}).{8,20}$")
   private String afterPassword;
 
 }

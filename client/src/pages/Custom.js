@@ -18,7 +18,7 @@ function Custom({ admin }) {
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState(['id', 'ASC']);
   const [searchWord, setSearchWord] = useState('');
-  const [path, setPath] = useState('page=1&sort=id&dir=ASC');
+  const [path, setPath] = useState('?page=1&sort=id&dir=ASC');
   const [res, isPending, error] = useGET(`/products${path}`);
   const { custom } = useSelector((state) => state.customReducer);
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ function Custom({ admin }) {
   const addCustomToCart = () => {
     const data = { ...custom };
     data.products = data.products.forEach((product) => delete product.name);
-    postData(`/users/cart/custom/${'cartId'}`, data).then(() => {
+    postData(`/users/cart/custom`, data).then(() => {
       dispatch(initializeCustom());
       if (
         window.confirm(
@@ -61,7 +61,7 @@ function Custom({ admin }) {
   };
 
   const totalQuantity = custom.products.reduce((a, c) => a + c.quantity, 0);
-  const productsId = custom.products.map((product) => product.id);
+  const productsId = custom.products.map((product) => product.productId);
   const productInCustom = (id) => {
     return productsId.indexOf(id);
   };

@@ -15,41 +15,29 @@ function CustomAside({ admin, custom, buttonClick }) {
         </InAsideH2>
         {custom && (
           <ElementInBucketUl>
-            {custom.products.map((product) => {
+            {custom.products.map((product) => (
               <ElementInBucketLi key={product.productId}>
                 <span>{`${product.name}`}</span>
                 <span>
                   {`${product.quantity}`}
                   <TextButton
-                    onClick={() => dispatch(deleteProduct(product.productId))}
+                    onClick={() =>
+                      dispatch(deleteProduct({ id: product.productId }))
+                    }
                     className="linkstyle"
                   >
                     &#10005;
                   </TextButton>
                 </span>
-              </ElementInBucketLi>;
-            })}
-            {/* <ElementInBucketLi>
-              <span>{`${'오렌지주스'}`}</span>
-              <span>
-                {`${1}`}
-                <TextButton className="linkstyle">&#10005;</TextButton>
-              </span>
-            </ElementInBucketLi>
-            <ElementInBucketLi>
-              <span>{`${'오렌지주스'}`}</span>
-              <span>
-                {`${1}`}
-                <TextButton className="linkstyle">&#10005;</TextButton>
-              </span>
-            </ElementInBucketLi> */}
+              </ElementInBucketLi>
+            ))}
           </ElementInBucketUl>
         )}
         <InAsidePriceDiv>
           <span>
-            합계 <span>({custom.kcal.toLocaleString('ko-KR')}kcal)</span>
+            합계 <span>({custom.kcal?.toLocaleString('ko-KR')}kcal)</span>
           </span>
-          <span>{`${custom.price.toLocaleString('ko-KR')}원`}</span>
+          <span>{`${custom.price?.toLocaleString('ko-KR')}원`}</span>
         </InAsidePriceDiv>
       </InAsideBoxDiv>
       <AsideSignatureButton onClick={buttonClick}>
@@ -69,11 +57,11 @@ const InAsideBoxDiv = styled.div`
   background-color: var(--bucket_brown);
   padding: 1rem;
   border-radius: 10px 10px 0 0;
-  box-shadow: 0 0 0 2px var(--bucket_brown) inset,
-    2px 2px 2px rgba(0, 0, 0, 0.4);
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
 
   @media (max-width: 480px) {
     border-radius: 0;
+    box-shadow: -2px -2px 2px rgba(0, 0, 0, 0.4);
 
     ::before {
       content: '';
