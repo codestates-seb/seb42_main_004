@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -59,30 +58,30 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     String refreshToken = delegateRefreshToken(user);
 
     //쿠키에 토큰 실어서 보내기
-    ResponseCookie accessCookie =
-        ResponseCookie.from("Authorization", accessToken)
-            .path("/")
-            .sameSite("None")
-            .httpOnly(false)
-            .build();
-    response.addHeader("Set-Cookie", accessCookie.toString());
-
-    ResponseCookie refreshCookie =
-        ResponseCookie.from("Refresh", refreshToken)
-            .path("/")
-            .sameSite("None")
-            .httpOnly(false)
-            .build();
-    response.addHeader("Set-Cookie", refreshCookie.toString());
+//    ResponseCookie accessCookie =
+//        ResponseCookie.from("Authorization", accessToken)
+//            .path("/")
+//            .sameSite("None")
+//            .httpOnly(false)
+//            .build();
+//    response.addHeader("Set-Cookie", accessCookie.toString());
+//
+//    ResponseCookie refreshCookie =
+//        ResponseCookie.from("Refresh", refreshToken)
+//            .path("/")
+//            .sameSite("None")
+//            .httpOnly(false)
+//            .build();
+//    response.addHeader("Set-Cookie", refreshCookie.toString());
 
 //    Cookie refreshCookie = new Cookie("Refresh", refreshToken);
 //    refreshCookie.setPath("/");
 //    refreshCookie.setMaxAge(30 * 60);
 //    response.addCookie(refreshCookie);
 
-    //헤더에 토큰 실어서 보내기
-//    response.setHeader("Authorization", "Bearer " + accessToken);
-//    response.setHeader("Refresh", refreshToken);
+//    헤더에 토큰 실어서 보내기
+    response.setHeader("Authorization", "Bearer " + accessToken);
+    response.setHeader("Refresh", refreshToken);
 
     this.getSuccessHandler()
         .onAuthenticationSuccess(request, response, authResult); // 핸들러 불러옴 (실패 핸들러는 자동호출됨)
