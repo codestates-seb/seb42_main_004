@@ -76,7 +76,7 @@ public class OrderService {
   public Orders cancelOrder(String orderNumber) {
     Orders order = findByOrderNumber(orderNumber);
     int index = order.getStatus().getIndex();
-    if (LocalDate.now().isAfter(order.getDeliveryDate().plusDays(1))) {
+    if ((order.getDeliveryDate() != null) && LocalDate.now().isAfter(order.getDeliveryDate().plusDays(1))) {
       throw new BusinessLogicException(OrderException.NOT_REFUNDABLE_DATE);
     } else if (index == 4 || index == 3) {
       order.applyRefund();
