@@ -55,18 +55,19 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
   protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
     String authorization = request.getHeader("Authorization");  // (6-1)
 
-//    return authorization == null || !authorization.startsWith("Bearer");  // (6-2)
-    return false;
+    return authorization == null || !authorization.startsWith("Bearer");  // (6-2)
+//    return false;
+
   }
 
   private Map<String, Object> verifyJws(HttpServletRequest request) {
-//    String jws = request.getHeader("Authorization").replace("Bearer ", ""); // (3-1)
+    String jws = request.getHeader("Authorization").replace("Bearer ", ""); // (3-1)
 
     //쿠키에 담긴 jwt 사용?
-    Cookie cookie = Arrays.stream(request.getCookies())
-        .filter(c -> c.getName().equals("Authorization")).findFirst()
-        .orElseThrow(() -> new RuntimeException());
-    String jws = cookie.getValue().replace("Bearer ", "");
+//    Cookie cookie = Arrays.stream(request.getCookies())
+//        .filter(c -> c.getName().equals("Authorization")).findFirst()
+//        .orElseThrow(() -> new RuntimeException());
+//    String jws = cookie.getValue().replace("Bearer ", "");
     log.info("### value is "+jws);
 
 
@@ -86,6 +87,5 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         authorities);  // (4-3)
     SecurityContextHolder.getContext().setAuthentication(authentication); // (4-4)
   }
-
 
 }

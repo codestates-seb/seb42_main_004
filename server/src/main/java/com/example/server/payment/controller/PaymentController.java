@@ -71,7 +71,7 @@ public class PaymentController {
     PayInfo payInfo = new PayInfo(validatePaymentDto.getImpUid());
     payInfo.addOrder(order);
     payInfoRepository.save(payInfo);
-    cartMealboxService.deleteCartMealboxAfterPayment(validatePaymentDto.getCartMealboxIds());
+    cartMealboxService.deleteCartMealboxAfterPayment(order);
     Cart findCart = order.getUser().getCart();
     cartService.refreshTotalPrice(findCart);
     return new ResponseEntity<>(HttpStatus.OK);
