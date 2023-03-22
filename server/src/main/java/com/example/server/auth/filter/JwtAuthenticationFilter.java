@@ -55,13 +55,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     String accessToken = delegateAccessToken(user);
     String refreshToken = delegateRefreshToken(user);
 
-    Cookie cookie = new Cookie("Authorization",accessToken);
-    cookie.setPath("/");
-    cookie.setMaxAge(30*60);
+    //쿠키에 토큰 실어서 보내기
+    Cookie accessCookie = new Cookie("Authorization",accessToken);
+    accessCookie.setPath("/");
+    accessCookie.setMaxAge(30*60);
+    response.addCookie(accessCookie);
 
-    response.addCookie(cookie);
-    response.setHeader("Authorization", "Bearer " + accessToken);
-    response.setHeader("Refresh", refreshToken);
+    Cookie refreshCookie = new Cookie("Refresh",refreshToken);
+    refreshCookie.setPath("/");
+    refreshCookie.setMaxAge(30*60);
+    response.addCookie(refreshCookie);
+
+    //헤더에 토큰 실어서 보내기
+//    response.setHeader("Authorization", "Bearer " + accessToken);
+//    response.setHeader("Refresh", refreshToken);
 
     this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult); // 핸들러 불러옴 (실패 핸들러는 자동호출됨)
   }

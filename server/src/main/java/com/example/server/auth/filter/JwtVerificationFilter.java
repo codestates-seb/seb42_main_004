@@ -5,10 +5,12 @@ import com.example.server.auth.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -53,18 +55,19 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
   protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
     String authorization = request.getHeader("Authorization");  // (6-1)
 
-    return authorization == null || !authorization.startsWith("Bearer");  // (6-2)
+//    return authorization == null || !authorization.startsWith("Bearer");  // (6-2)
+    return false;
   }
 
   private Map<String, Object> verifyJws(HttpServletRequest request) {
-    String jws = request.getHeader("Authorization").replace("Bearer ", ""); // (3-1)
+//    String jws = request.getHeader("Authorization").replace("Bearer ", ""); // (3-1)
 
     //쿠키에 담긴 jwt 사용?
-//    Cookie cookie = Arrays.stream(request.getCookies())
-//        .filter(c -> c.getName().equals("Authorization")).findFirst()
-//        .orElseThrow(() -> new RuntimeException());
-//    String jws = cookie.getValue().replace("Bearer ", "");
-//    log.info("### value is "+jws);
+    Cookie cookie = Arrays.stream(request.getCookies())
+        .filter(c -> c.getName().equals("Authorization")).findFirst()
+        .orElseThrow(() -> new RuntimeException());
+    String jws = cookie.getValue().replace("Bearer ", "");
+    log.info("### value is "+jws);
 
 
     String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(
