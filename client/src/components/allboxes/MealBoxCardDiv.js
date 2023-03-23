@@ -31,7 +31,7 @@ function MealBoxCardDiv({ mealBox, custom }) {
       )
     ) {
       deleteData(`/admin/mealboxes/${mealBox.mealboxId}`)
-        .then(() => alert(`${mealBox.name}이 삭제되었습니다.}`))
+        .then(() => alert(`${mealBox.name}이 삭제되었습니다.`))
         .then(() => {
           window.location.reload();
         });

@@ -40,9 +40,9 @@ function ModalDiv({ closeModal, mealBox, product }) {
     }
   }, [imgInput]);
 
-  const addImg = (data) => {
+  const addImg = (data, hasImg) => {
     const formData = new FormData();
-    formData.append('file', imgInput);
+    if (hasImg) formData.append('file', imgInput);
     formData.append('mealboxDto', JSON.stringify(data));
     return formData;
   };
@@ -58,12 +58,12 @@ function ModalDiv({ closeModal, mealBox, product }) {
 
     let hasImg = false;
     if (imgInputBuffer && imgInputBuffer !== subject.imagePath) {
-      data = addImg(data);
       hasImg = true;
       func = postData;
     }
+    data = addImg(data, hasImg);
 
-    func(uri, data, hasImg).then(() => {
+    func(uri, data, true).then(() => {
       isMealBox && dispatch(initializeCustom());
       alert(
         `${data.name}이(가) ${id !== undefined ? '수정' : '추가'}되었습니다.`

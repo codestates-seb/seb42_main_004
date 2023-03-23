@@ -32,8 +32,9 @@ function AllBoxes() {
 
   const sortProducts = (select) => {
     setSearchWord('');
-    setSortBy(select.split('/'));
-    navigate(paginationUrl(1));
+    const sortBy = select.split('/');
+    setSortBy(sortBy);
+    navigate(`/mealboxes?page=1&sort=${sortBy[0]}&dir=${sortBy[1]}`);
   };
 
   return (
