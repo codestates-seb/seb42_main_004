@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { deleteCartItem } from '../../reducers/cartReducer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import deleteData from '../../util/deleteData';
 function MealBoxDeleteButton({ calRenderPrice }) {
-  let isLogin = false;
+  let { isLogin } = useSelector((state) => state.authReducer);
   let dispatch = useDispatch();
   let deleteHandler = (e) => {
     let cartMealboxId =

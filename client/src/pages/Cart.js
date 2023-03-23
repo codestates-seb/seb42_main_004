@@ -10,10 +10,11 @@ import postData from '../util/postData';
 
 function Cart() {
   let dispatch = useDispatch();
-  let isLogin = false;
+  let { isLogin } = useSelector((state) => state.authReducer);
   let { totalPrice, mealboxes } = useSelector(
     (state) => state.cartReducer.cart
   );
+  console.log(totalPrice, mealboxes);
   let [renderPrice, setRenderPrice] = useState(totalPrice);
 
   let calRenderPrice = () => {
@@ -59,6 +60,7 @@ function Cart() {
 
   useEffect(() => {
     calRenderPrice();
+    console.log(isLogin);
     if (isLogin) {
       getData('/users/cart').then((data) => {
         console.log(data);
