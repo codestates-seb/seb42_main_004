@@ -1,20 +1,38 @@
 import styled from 'styled-components';
 import ContentDiv from './ContentDiv';
-import logo from '../../assets/logo_black.png';
 import PasswordInputDiv from './PasswordInputDiv';
 import MyInfoButton from './MyInfoButton';
+import { useEffect, useState } from 'react';
 
 function MyInfoUl({ pathName }) {
+  const [imgInput, setImgInput] = useState();
+  const [imgInputBuffer, setImgInputBuffer] = useState();
+
+  useEffect(() => {
+    let reader = new FileReader();
+    if (imgInput) {
+      reader.readAsDataURL(imgInput);
+      reader.onloadend = () => {
+        setImgInputBuffer(reader.result);
+      };
+    }
+    console.log(imgInput);
+  }, [imgInput]);
+
   return (
     <ContainerUl>
       <li>
         <h2>내 정보</h2>
         <OrderDiv>
           <ImgDiv>
-            <img src={logo} alt="logo" />
+            <Img img={imgInputBuffer}></Img>
           </ImgDiv>
           <InfoDiv>
-            <ContentDiv name="프로필 사진" content="첨부하기" />
+            <ContentDiv
+              name="프로필 사진"
+              content="맹쥬"
+              onInput={(e) => setImgInput(e.target.files[0])}
+            />
             <ContentDiv name="닉네임" content="맹쥬" />
             <ContentDiv name="이메일" content="myungju030@gmail.com" />
             <ContentDiv name="연락처" content="01012345678" />
@@ -134,5 +152,17 @@ const ButtonDiv = styled.div`
 
   > button {
     margin-top: 2rem;
+  }
+`;
+const Img = styled.img`
+  background-color: var(${(props) => (props.img ? '--white' : '--gray')});
+  background-image: url(${(props) => props.img && props.img});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  @media (max-width: 480px) {
+    width: 35vw;
+    height: 35vw;
   }
 `;

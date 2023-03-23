@@ -29,7 +29,7 @@ function SignupUl() {
   const handleClick = () => {
     let obj = {};
     for (const el in isValid) {
-      if (!isValid[el] && !inputValue[el]) {
+      if (!inputValue[el]) {
         obj = { ...obj, [el]: '필수 항목입니다.' };
       }
     }
@@ -40,11 +40,11 @@ function SignupUl() {
       isValid.password &&
       isValid.passwordConfirm
     ) {
-      postData('/users', { name, email, password }).then((data) => {
-        if (data.status === 409) {
+      postData('/users', { name, email, password }).then((res) => {
+        if (res.status === 409) {
           navigate('/email/send', { state: { email } });
         } else {
-          navigate('/email/confirm');
+          navigate('/email/confirm', { state: { email } });
         }
       });
     } else if (!isValid.name) {
