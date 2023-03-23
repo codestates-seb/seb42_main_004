@@ -86,7 +86,7 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route
             path="/myinfo/orderhistory"
-            element={accessToken ? <OrderHistory /> : <Login />}
+            element={cookies.accessToken ? <OrderHistory /> : <Login />}
           />
           <Route path="/product" element={<Product />} />
           <Route
