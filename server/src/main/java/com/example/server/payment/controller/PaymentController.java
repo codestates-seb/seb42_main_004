@@ -64,6 +64,8 @@ public class PaymentController {
     Orders order = orderService.findByOrderNumber(validatePaymentDto.getMerchantUid());
     int serverPrice = order.getTotalPrice();
     int impPrice = iamportClient.paymentByImpUid(validatePaymentDto.getImpUid()).getResponse().getAmount().intValue();
+    log.info("impPrice = {}", impPrice);
+    log.info("serverPrice = {}", serverPrice);
     if(serverPrice != impPrice) {
       throw new BusinessLogicException(PaymentException.FABRICATED_PAYMENT);
     }
@@ -77,14 +79,13 @@ public class PaymentController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
   // 결제금액 사전등록
-  @PostMapping("/prepare")
+  @PostMapping("/prepare") // 테스트용
   public ResponseEntity postPrepare(@RequestBody PreparePostDto preparePostDto)
       throws IamportResponseException, IOException {
     log.info("------------------- POST PREPARE -------------------");
     PrepareData prepareData = new PrepareData(preparePostDto.getMerchantUid(), preparePostDto.getAmount());
     IamportResponse impResponse = iamportClient.postPrepare(prepareData);
     String response = gson.toJson(impResponse);
-    log.info(response);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 
