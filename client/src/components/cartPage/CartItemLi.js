@@ -5,15 +5,14 @@ import MealBoxItemsDiv from './MealBoxItemsDiv';
 import styled from 'styled-components';
 import { useState } from 'react';
 
-function CartItemLi({ mealbox, value, setRenderPrice }) {
+function CartItemLi({ mealbox, value, calRenderPrice }) {
   let { name, kcal, price, quantity, products } = mealbox;
   let [isChecked, setIsChecked] = useState(true);
 
   let IsCheckedHandler = () => {
     setIsChecked(!isChecked);
     // unchecked => 화면에서만 총액 변경, 구매하기 클릭 시 해당 밀박스 제외
-
-    setRenderPrice(2);
+    calRenderPrice();
   };
 
   return (
@@ -21,15 +20,18 @@ function CartItemLi({ mealbox, value, setRenderPrice }) {
       <CartItemTopDiv>
         <CheckBoxInput
           id={value}
-          type={'checkbox'}
+          type="checkbox"
           onChange={IsCheckedHandler}
           checked={isChecked}
         />
         <h2>{name}</h2>
         <CartItemTopButtonsDiv>
           <div>수량</div>
-          <MealBoxCounterDiv quantity={quantity} />
-          <MealBoxDeleteButton />
+          <MealBoxCounterDiv
+            quantity={quantity}
+            calRenderPrice={calRenderPrice}
+          />
+          <MealBoxDeleteButton calRenderPrice={calRenderPrice} />
         </CartItemTopButtonsDiv>
       </CartItemTopDiv>
       <CartItemBottomDiv>
