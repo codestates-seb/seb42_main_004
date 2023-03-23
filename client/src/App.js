@@ -60,7 +60,7 @@ function App() {
         accessToken: accessToken,
         tokenExpirationDate: new Date(exp),
         user: principal,
-        roles: roles,
+        admin: roles.includes('ADMIN'),
       })
     );
   }
