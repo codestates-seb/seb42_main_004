@@ -123,14 +123,12 @@ public class OrderService {
   // 주문번호로 주문 찾기
   public Orders findByOrderNumber(String orderNumber) {
     Optional<Orders> order = orderRepository.findByOrderNumber(orderNumber);
-    Orders findOrder = order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
-    return findOrder;
+    return order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
   }
 
   private Orders findVerifiedOrder(long orderId) {
     Optional<Orders> order = orderRepository.findById(orderId);
-    Orders findOrder = order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
-    return findOrder;
+    return order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
   }
 
   public void paidOrder(Orders order) {
