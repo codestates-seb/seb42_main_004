@@ -31,7 +31,7 @@ function SurveyPage3() {
     getData(`/mealboxes/rec/survey/${dietPlan}`)
       .then((res) => {
         console.log(res.data);
-        setSurveyRcmd(res.data);
+        dispatch(setSurveyRcmd(res.data));
       })
       .then(() => {
         dispatch(setReset());
