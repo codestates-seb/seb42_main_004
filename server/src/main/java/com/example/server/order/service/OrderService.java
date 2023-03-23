@@ -74,7 +74,7 @@ public class OrderService {
     });
   }
 
-  public Orders cancelOrder(String orderNumber) {
+  public void cancelOrder(String orderNumber) {
     Orders order = findByOrderNumber(orderNumber);
     int index = order.getStatus().getIndex();
     if ((order.getDeliveryDate() != null) && LocalDate.now().isAfter(order.getDeliveryDate().plusDays(1))) {
@@ -91,7 +91,7 @@ public class OrderService {
     } else {
       throw new BusinessLogicException(OrderException.NOT_YET_PAID);
     }
-    return orderRepository.save(order);
+    orderRepository.save(order);
   }
 
   //추후 관리자가 주문 상태 변경시 사용할 예정
