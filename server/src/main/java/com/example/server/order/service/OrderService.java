@@ -48,7 +48,9 @@ public class OrderService {
   public Orders createOrder(Orders order, OrderPostDto orderPostDto, long userId) throws IamportResponseException, IOException {
     order.makeOrderNumber();
 //    orderRepository.save(order);
-    order.addUser(userService.getUser(userId));
+    User user = userService.getUser(userId);
+    userService.checkEmailAuthentication(user);
+    order.addUser(user);
     orderRepository.save(order);
     log.info("------------------- CREATE OrderMealboxes -------------------");
     OrderMealboxPostDtoToOrdersMealbox(orderPostDto.getMealboxes(), order);
@@ -104,17 +106,13 @@ public class OrderService {
     orderRepository.save(order);
   }
 
-  public Orders findOrder(long orderId) {
-    return findVerifiedOrder(orderId);
-  }
-
   // 주문번호로 주문 찾기
   public Orders findByOrderNumber(String orderNumber) {
     Optional<Orders> order = orderRepository.findByOrderNumber(orderNumber);
     return order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
   }
 
-  private Orders findVerifiedOrder(long orderId) {
+  public Orders findOrder(long orderId) {
     Optional<Orders> order = orderRepository.findById(orderId);
     return order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
   }
@@ -143,7 +141,7 @@ public class OrderService {
   }
 
   public void setDeliveryAddress(OrderPatchDeliveryDto orderPatchDeliveryDto, long orderId) {
-    Orders order = findVerifiedOrder(orderId);
+    Orders order = findOrder(orderId);
     order.setAddressee(orderPatchDeliveryDto.getAddressee());
     order.setZipCode(orderPatchDeliveryDto.getZipCode());
     order.setSimpleAddress(orderPatchDeliveryDto.getSimpleAddress());
@@ -161,7 +159,7 @@ public class OrderService {
   }
 
   public void checkOrderHolder(long orderId, long userId) {
-    long orderHolderId = findVerifiedOrder(orderId).getUser().getId();
+    long orderHolderId = findOrder(orderId).getUser().getId();
     if(orderHolderId != userId) {
       throw new BusinessLogicException(OrderException.NOT_ORDER_HOLDER);
     }
