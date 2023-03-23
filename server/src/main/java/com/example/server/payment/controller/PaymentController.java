@@ -1,5 +1,6 @@
 package com.example.server.payment.controller;
 
+import com.example.server.auth.details.PrincipalDetails;
 import com.example.server.cart.entity.Cart;
 import com.example.server.cart.service.CartMealboxService;
 import com.example.server.cart.service.CartService;
@@ -22,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,12 +60,16 @@ public class PaymentController {
     return iamportClient.paymentByImpUid(impUid);
   }
   @PostMapping("/validation")
-  public ResponseEntity validatePayment(@RequestBody ValidatePaymentDto validatePaymentDto)
+  public ResponseEntity<?> validatePayment(@RequestBody ValidatePaymentDto validatePaymentDto,
+      @AuthenticationPrincipal PrincipalDetails principalDetails)
       throws IamportResponseException, IOException {
     log.info("------------------- PAYMENT VALIDATION -------------------");
     Orders order = orderService.findByOrderNumber(validatePaymentDto.getMerchantUid());
+    orderService.checkOrderHolder(order, principalDetails.getId());
     int serverPrice = order.getTotalPrice();
     int impPrice = iamportClient.paymentByImpUid(validatePaymentDto.getImpUid()).getResponse().getAmount().intValue();
+    log.info("impPrice = {}", impPrice);
+    log.info("serverPrice = {}", serverPrice);
     if(serverPrice != impPrice) {
       throw new BusinessLogicException(PaymentException.FABRICATED_PAYMENT);
     }
@@ -77,23 +83,22 @@ public class PaymentController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
   // 결제금액 사전등록
-  @PostMapping("/prepare")
-  public ResponseEntity postPrepare(@RequestBody PreparePostDto preparePostDto)
+  @PostMapping("/prepare") // 테스트용
+  public ResponseEntity<?> postPrepare(@RequestBody PreparePostDto preparePostDto)
       throws IamportResponseException, IOException {
     log.info("------------------- POST PREPARE -------------------");
     PrepareData prepareData = new PrepareData(preparePostDto.getMerchantUid(), preparePostDto.getAmount());
-    IamportResponse impResponse = iamportClient.postPrepare(prepareData);
+    IamportResponse<?> impResponse = iamportClient.postPrepare(prepareData);
     String response = gson.toJson(impResponse);
-    log.info(response);
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }
 
   // 사전등록된 결제정보 조회
   @GetMapping("/prepare/{merchant-uid}")
-  public ResponseEntity getPrepare(@PathVariable("merchant-uid") String merchantUid)
+  public ResponseEntity<?> getPrepare(@PathVariable("merchant-uid") String merchantUid)
       throws IamportResponseException, IOException {
     log.info("------------------- GET PREPARE -------------------");
-    IamportResponse impResponse = iamportClient.getPrepare(merchantUid);
+    IamportResponse<?> impResponse = iamportClient.getPrepare(merchantUid);
     String json = gson.toJson(impResponse);
     return new ResponseEntity<>(json, HttpStatus.OK);
   }

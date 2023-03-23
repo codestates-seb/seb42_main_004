@@ -1,10 +1,19 @@
 import styled from 'styled-components';
 
-function ContentDiv({ name, content }) {
+function ContentDiv({ name, content, onInput }) {
   return (
     <ContainerDiv>
       <TitleDiv>{name}</TitleDiv>
-      <div>{content}</div>
+      {name && name === '프로필 사진' ? (
+        <UploadDiv>
+          <label htmlFor="file" className="buttonstyle shadow">
+            변경 하기
+          </label>
+          <input id="file" type="file" accept="image/*" onInput={onInput} />
+        </UploadDiv>
+      ) : (
+        <div>{content}</div>
+      )}
     </ContainerDiv>
   );
 }
@@ -38,5 +47,21 @@ const TitleDiv = styled.div`
     width: 60%;
     justify-content: flex-start;
     margin-right: 0;
+  }
+`;
+const UploadDiv = styled.span`
+  display: flex;
+
+  > label {
+    padding: 0 0.5rem;
+    background-color: var(--gray);
+
+    :hover {
+      cursor: pointer;
+    }
+  }
+
+  > input {
+    display: none;
   }
 `;
