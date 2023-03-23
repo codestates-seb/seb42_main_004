@@ -3,7 +3,8 @@ import { TextButton } from '../commons/ModalDiv';
 import { useDispatch } from 'react-redux';
 import { setMinus, setPlus } from '../../reducers/cartReducer';
 import patchData from '../../util/patchData';
-function MealBoxCounterDiv({ quantity }) {
+function MealBoxCounterDiv({ quantity, calRenderPrice }) {
+  console.log(quantity);
   let isLogin = true;
   let dispatch = useDispatch();
 
@@ -16,14 +17,17 @@ function MealBoxCounterDiv({ quantity }) {
 
   let handleMinus = (e) => {
     let cartMealboxId = getCartMealboxId(e);
+    console.log(quantity);
     quantity && dispatch(setMinus(cartMealboxId));
     isLogin && patchReq(cartMealboxId); // 안되면 윗 줄로 올리고 quantity--
+    calRenderPrice();
   };
 
   let handlePlus = (e) => {
     let cartMealboxId = getCartMealboxId(e);
     dispatch(setPlus(cartMealboxId));
     isLogin && patchReq(cartMealboxId);
+    calRenderPrice();
   };
 
   return (
