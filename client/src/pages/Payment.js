@@ -37,7 +37,7 @@ function Payment() {
 
   const handleClick = () => {
     onClickPayment();
-    patchData('/orders/delivery/10', {
+    patchData('/orders/delivery/11', {
       addressee: inputValue.addressee,
       zipCode: inputValue.deliveryZipCode,
       simpleAddress: inputValue.deliverySimpleAddress,
@@ -68,7 +68,13 @@ function Payment() {
       postData('/payments/validation', {
         impUid: response.imp_uid,
         merchantUid: response.merchant_uid,
-      }).then((data) => console.log(data));
+      }).then((data) => {
+        if (data.status === 200) {
+          alert('결제가 완료되었습니다.');
+        } else {
+          alert('관리자에게 문의하세요.');
+        }
+      });
     } else {
       alert(`결제 실패 : ${error_msg}`);
     }

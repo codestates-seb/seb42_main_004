@@ -7,7 +7,7 @@ import useGET from '../../util/useGET';
 import { useEffect } from 'react';
 
 function PaymentUl({ inputValue, setInputValue }) {
-  const [res, isPending, error] = useGET(`/orders/checkout/10`);
+  const [res, isPending, error] = useGET(`/orders/checkout/11`);
 
   useEffect(() => {
     if (res) {
