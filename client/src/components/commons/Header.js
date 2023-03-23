@@ -79,7 +79,12 @@ function Header() {
               )}
             </li>
             <li>
-              <FaShoppingCart size={25} />
+              <FaShoppingCart
+                size={25}
+                onClick={() => {
+                  navigate('/cart');
+                }}
+              />
               <CartCounter />
             </li>
           </IconsUl>
