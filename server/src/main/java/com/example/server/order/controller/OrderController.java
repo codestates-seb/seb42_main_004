@@ -15,6 +15,7 @@ import com.siot.IamportRestClient.exception.IamportResponseException;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,7 @@ public class OrderController {
   private final OrderService orderService;
   private final OrderMapper mapper;
   @PostMapping("/orders")
-  public ResponseEntity<?> postOrder(@RequestBody OrderPostDto orderPostDto,
+  public ResponseEntity<?> postOrder(@Valid @RequestBody OrderPostDto orderPostDto,
       @AuthenticationPrincipal PrincipalDetails principalDetails)
       throws IamportResponseException, IOException { // 결제 전 주문 생성
     Orders order = mapper.orderPostDtoToOrders(orderPostDto);
@@ -60,7 +61,7 @@ public class OrderController {
   }
   @PatchMapping("/orders/delivery/{order-id}")
   public ResponseEntity<?> setDeliveryAddress(@PathVariable("order-id") @PositiveOrZero long orderId,
-      @RequestBody OrderPatchDeliveryDto orderPatchDeliveryDto,
+      @Valid @RequestBody OrderPatchDeliveryDto orderPatchDeliveryDto,
       @AuthenticationPrincipal PrincipalDetails principalDetails) {  // 결제시 주문에 배송지 입력
     orderService.checkOrderHolder(orderId, principalDetails.getId());
     orderService.setDeliveryAddress(orderPatchDeliveryDto, orderId);
@@ -83,7 +84,7 @@ public class OrderController {
   }
 
   @DeleteMapping("/orders/{order-number}")
-  public ResponseEntity<?> deleteOrder(@PathVariable("order-number") @PositiveOrZero String orderNumber,
+  public ResponseEntity<?> deleteOrder(@PathVariable("order-number") String orderNumber,
       @AuthenticationPrincipal PrincipalDetails principalDetails) {
     orderService.checkOrderHolder(orderNumber, principalDetails.getId());
     orderService.cancelOrder(orderNumber);

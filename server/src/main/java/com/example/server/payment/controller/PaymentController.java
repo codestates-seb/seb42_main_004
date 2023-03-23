@@ -19,11 +19,13 @@ import com.siot.IamportRestClient.request.PrepareData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import java.io.IOException;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/payments")
+@Validated
 public class PaymentController {
 
     // IamPort 결제 검증 컨트롤러
@@ -60,7 +63,7 @@ public class PaymentController {
     return iamportClient.paymentByImpUid(impUid);
   }
   @PostMapping("/validation")
-  public ResponseEntity<?> validatePayment(@RequestBody ValidatePaymentDto validatePaymentDto,
+  public ResponseEntity<?> validatePayment(@Valid @RequestBody ValidatePaymentDto validatePaymentDto,
       @AuthenticationPrincipal PrincipalDetails principalDetails)
       throws IamportResponseException, IOException {
     log.info("------------------- PAYMENT VALIDATION -------------------");
@@ -84,7 +87,7 @@ public class PaymentController {
   }
   // 결제금액 사전등록
   @PostMapping("/prepare") // 테스트용
-  public ResponseEntity<?> postPrepare(@RequestBody PreparePostDto preparePostDto)
+  public ResponseEntity<?> postPrepare(@Valid @RequestBody PreparePostDto preparePostDto)
       throws IamportResponseException, IOException {
     log.info("------------------- POST PREPARE -------------------");
     PrepareData prepareData = new PrepareData(preparePostDto.getMerchantUid(), preparePostDto.getAmount());
