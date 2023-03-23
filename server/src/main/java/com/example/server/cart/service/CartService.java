@@ -78,7 +78,7 @@ public class CartService {
 
     /* ####### private 메서드 ####### */
 
-//    private void verifyExistsCartMealboxInsCart(Cart cart) {
-//        cart.getCartMealboxes().contains()
-//    }
+    private void verifyExistsCartMealboxInsCart(Cart cart) {
+        cartRepository.
+    }
 }
