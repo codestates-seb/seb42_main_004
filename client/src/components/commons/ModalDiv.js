@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from './MainButton';
 import InputLabelDiv from './InputLabelDiv';
@@ -14,7 +14,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
   const [imgInputBuffer, setImgInputBuffer] = useState(subject?.imagePath);
   const [subjectInfo, setSubjectInfo] = useState({ ...subject });
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const subjectInputHandler = (key) => (e) => {
     let value = e.target.value;
@@ -40,14 +40,14 @@ function ModalDiv({ closeModal, mealBox, product }) {
     }
   }, [imgInput]);
 
-  const addImg = async (data) => {
+  const addImg = (data) => {
     const formData = new FormData();
-    await formData.append('file', imgInput);
-    await formData.append('mealboxDto', JSON.stringify(data));
+    formData.append('file', imgInput);
+    formData.append('mealboxDto', JSON.stringify(data));
     return formData;
   };
 
-  const hasIdReq = (id, data, isMealBox) => {
+  const hasIdReq = async (id, data, isMealBox) => {
     let func = postData;
     let uri = isMealBox ? '/admin/mealboxes' : '/admin/products';
     if (id !== undefined) {
@@ -60,38 +60,34 @@ function ModalDiv({ closeModal, mealBox, product }) {
     if (imgInputBuffer && imgInputBuffer !== subject.imagePath) {
       data = addImg(data);
       hasImg = true;
+      func = postData;
     }
 
-    func(uri, data, hasImg)
-      .then(() => {
-        isMealBox && dispatch(initializeCustom());
-        alert(
-          `${data.name}이 ${id !== undefined ? '수정' : '추가'}되었습니다.`
-        );
-        navigate('/mealboxes');
-      })
-      .catch(() => alert('등록에 실패했습니다\n관리자에게 문의해주세요.'));
+    func(uri, data, hasImg).then(() => {
+      isMealBox && dispatch(initializeCustom());
+      alert(`${data.name}이 ${id !== undefined ? '수정' : '추가'}되었습니다.`);
+      // navigate(isMealBox ? '/mealboxes' : '/product');
+    });
   };
 
   const mealBoxReq = () => {
-    if (!subject.name) return;
+    if (!subjectInfo.name) return;
 
     let data = { ...subjectInfo, imagePath: null };
-    const id = data.mealBoxId;
+    const id = data.mealboxId;
     data.products = data.products.map((product) => {
       const { productId, quantity } = product;
       return { productId, quantity };
     });
-
     hasIdReq(id, data, true);
   };
 
   const productReq = () => {
     if (
-      !subject.name ||
-      subject.weight === undefined ||
-      subject.kcal === undefined ||
-      subject.price === undefined
+      !subjectInfo.name ||
+      subjectInfo.weight === undefined ||
+      subjectInfo.kcal === undefined ||
+      subjectInfo.price === undefined
     )
       return;
 

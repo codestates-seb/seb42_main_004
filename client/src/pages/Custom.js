@@ -89,7 +89,7 @@ function Custom() {
               setPage={setPage}
             />
           </ElementsContainerDiv>
-          <CustomAside admin={0} custom={custom} />
+          <CustomAside custom={custom} />
         </CustomSelectDiv>
       </CustomWrapDiv>
     </GetTemplate>
