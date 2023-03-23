@@ -84,6 +84,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     response.setHeader("Authorization", "Bearer " + accessToken);
     response.setHeader("Refresh", refreshToken);
 
+    response.setContentType("application/json");
+    response.setCharacterEncoding("utf-8");
+
+
+
     this.getSuccessHandler()
         .onAuthenticationSuccess(request, response, authResult); // 핸들러 불러옴 (실패 핸들러는 자동호출됨)
   }

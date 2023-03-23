@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 // import getData from '../util/getData';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCart } from '../reducers/cartReducer';
+import postData from '../util/postData';
 
 function Cart() {
   let dispatch = useDispatch();
@@ -15,20 +16,49 @@ function Cart() {
   );
   let [renderPrice, setRenderPrice] = useState(totalPrice);
 
-  // let calRenderPrice = (e, isChecked) => {
-  //   let id = e.target.id;
-  //   let idx = mealboxes.findIndex((el) => el.cartMealboxId === id);
-  //   if (isChecked) {
-  //     renderPrice += mealboxes[idx].price * mealboxes[idx].quantity;
-  //   } else {
-  //     renderPrice -= mealboxes[idx].price * mealboxes[idx].quantity;
-  //   }
-  // };
+  let calRenderPrice = () => {
+    let checkedItem = document.querySelectorAll(
+      'input[type="checkbox"]:checked'
+    );
 
-  // let checkItem = document.querySelectorAll('input')[0];
-  // console.log(checkItem);
+    let checkedCartMealBoxId = Array.from(checkedItem).map((el) =>
+      Number(el.id)
+    );
+
+    let checkedPrice = mealboxes.reduce(
+      (acc, cur) =>
+        checkedCartMealBoxId.includes(cur.cartMealboxId)
+          ? acc + cur.price * cur.quantity
+          : acc,
+      0
+    );
+
+    setRenderPrice(checkedPrice);
+  };
+
+  let purchaseHandler = () => {
+    let checkedItem = document.querySelectorAll(
+      'input[type="checkbox"]:checked'
+    );
+
+    let checkedCartMealBoxId = Array.from(checkedItem).map((el) =>
+      Number(el.id)
+    );
+
+    let postReqData = mealboxes
+      .filter((el) => {
+        return checkedCartMealBoxId.includes(el.cartMealboxId);
+      })
+      .map((el) => {
+        let { cartMealboxId, mealboxId, quantity } = el;
+        return { cartMealboxId, mealboxId, quantity };
+      });
+    console.log(postReqData);
+    postData('/orders', { orderMealboxes: postReqData }, false);
+  };
 
   useEffect(() => {
+    calRenderPrice();
     if (isLogin) {
       // getData(`/users/cart/${`cartId`}`);
       dispatch(setCart(resEx.data));
@@ -46,12 +76,12 @@ function Cart() {
                 key={el.cartMealboxId}
                 mealbox={el}
                 value={el.cartMealboxId}
-                setRenderPrice={setRenderPrice}
+                calRenderPrice={calRenderPrice}
               />
             );
           })}
         </CartItemListUl>
-        <CartAside totalPrice={renderPrice ? renderPrice : totalPrice} />
+        <CartAside totalPrice={renderPrice} buttonClick={purchaseHandler} />
       </CartPageContent>
     </CartPageWrapper>
   );
