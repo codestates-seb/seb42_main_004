@@ -65,7 +65,9 @@ function ModalDiv({ closeModal, mealBox, product }) {
 
     func(uri, data, hasImg).then(() => {
       isMealBox && dispatch(initializeCustom());
-      alert(`${data.name}이 ${id !== undefined ? '수정' : '추가'}되었습니다.`);
+      alert(
+        `${data.name}이(가) ${id !== undefined ? '수정' : '추가'}되었습니다.`
+      );
       // navigate(isMealBox ? '/mealboxes' : '/product');
     });
   };
