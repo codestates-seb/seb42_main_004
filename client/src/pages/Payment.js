@@ -1,9 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CartAside from '../components/commons/CartAside';
 import PaymentUl from '../components/payment/PaymentUl';
+import patchData from '../util/patchData';
+import postData from '../util/postData';
 
 function Payment() {
+  const [inputValue, setInputValue] = useState({
+    addressee: '',
+    addresseePhoneNumber: '',
+    deliveryDetailAddress: '',
+    deliverySimpleAddress: '',
+    deliveryZipCode: '',
+    email: '',
+    orderNumber: '',
+    totalPrice: '',
+    userDetailAddress: '',
+    userPhoneNumber: '',
+    userSimpleAddress: '',
+    userZipCode: '',
+    username: '',
+  });
+
   useEffect(() => {
     const jquery = document.createElement('script');
     jquery.src = 'https://code.jquery.com/jquery-1.12.4.min.js';
@@ -17,20 +35,29 @@ function Payment() {
     };
   }, []);
 
+  const handleClick = () => {
+    onClickPayment();
+    patchData('/orders/delivery/11', {
+      addressee: inputValue.addressee,
+      zipCode: inputValue.deliveryZipCode,
+      simpleAddress: inputValue.deliverySimpleAddress,
+      detailAddress: inputValue.deliveryDetailAddress,
+      phoneNumber: inputValue.addresseePhoneNumber,
+    }).then((data) => console.log(data));
+  };
+
   const onClickPayment = () => {
     const { IMP } = window;
     IMP.init('imp88722047');
     const data = {
       pg: 'html5_inicis',
       pay_method: 'card',
-      merchant_uid: `mid_${new Date().getTime()}`,
-      name: '결제 테스트',
-      amount: '100',
-      buyer_name: '강명주',
-      buyer_tel: '01012345678',
-      buyer_email: 'myungju030@gmail.com',
-      buyer_addr: '주소',
-      buyer_postalcode: '1234',
+      merchant_uid: inputValue.orderNumber,
+      name: '밀박스',
+      amount: inputValue.totalPrice,
+      buyer_name: inputValue.username,
+      buyer_tel: inputValue.userPhoneNumber,
+      buyer_email: inputValue.email,
     };
     IMP.request_pay(data, callback);
   };
@@ -38,7 +65,16 @@ function Payment() {
   const callback = (response) => {
     const { success, error_msg } = response;
     if (success) {
-      alert(`결제 성공`);
+      postData('/payments/validation', {
+        impUid: response.imp_uid,
+        merchantUid: response.merchant_uid,
+      }).then((data) => {
+        if (data.status === 200) {
+          alert('결제가 완료되었습니다.');
+        } else {
+          alert('관리자에게 문의하세요.');
+        }
+      });
     } else {
       alert(`결제 실패 : ${error_msg}`);
     }
@@ -46,8 +82,8 @@ function Payment() {
 
   return (
     <ContainerDiv className="margininside">
-      <PaymentUl />
-      <CartAside totalPrice={2000} buttonClick={onClickPayment} />
+      <PaymentUl inputValue={inputValue} setInputValue={setInputValue} />
+      <CartAside totalPrice={inputValue.totalPrice} buttonClick={handleClick} />
     </ContainerDiv>
   );
 }

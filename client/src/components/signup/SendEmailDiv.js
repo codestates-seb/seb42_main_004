@@ -53,6 +53,7 @@ function SendEmailDiv() {
         </div>
         <ContentInputDiv
           id="email"
+          name="email"
           labelName="이메일"
           placeholder="example@email.com"
           value={email}

@@ -41,6 +41,6 @@ export const {
   setAccessToken,
   setTokenExpirationDate,
   setUser,
-  setRoles,
+  setAdmin,
 } = authSlice.actions;
 export default authSlice.reducer;
