@@ -226,4 +226,8 @@ const ModalContainerDiv = styled.div`
   :hover {
     cursor: pointer;
   }
+
+  @media (min-width: 768px) {
+    display: none;
+  }
 `;

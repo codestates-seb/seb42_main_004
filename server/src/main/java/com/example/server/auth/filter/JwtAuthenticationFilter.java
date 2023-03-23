@@ -58,6 +58,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     String refreshToken = delegateRefreshToken(user);
 
     //쿠키에 토큰 실어서 보내기
+
 //    ResponseCookie accessCookie =
 //        ResponseCookie.from("Authorization", accessToken)
 //            .path("/")

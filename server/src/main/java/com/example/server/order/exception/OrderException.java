@@ -13,7 +13,8 @@ public enum OrderException implements ExceptionCode {
   NOT_REFUNDABLE_DATE(HttpStatus.FORBIDDEN, "This Is Not A Refundable Date"),
   ALREADY_APPLIED_REFUND(HttpStatus.FORBIDDEN, "Already Applied Refund For This Order"),
   ALREADY_CANCELED(HttpStatus.FORBIDDEN, "Already Canceled Order"),
-  NOT_YET_PAID(HttpStatus.FORBIDDEN, "Not Yet Paid");
+  NOT_YET_PAID(HttpStatus.FORBIDDEN, "Not Yet Paid"),
+  NOT_ORDER_HOLDER(HttpStatus.FORBIDDEN, "Not The Order Holder");
 
   private final HttpStatus status;
   private final String message;
