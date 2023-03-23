@@ -53,6 +53,8 @@ public class OrderService {
     orderRepository.save(order);
     log.info("------------------- CREATE OrderMealboxes -------------------");
     OrderMealboxPostDtoToOrdersMealbox(orderPostDto.getMealboxes(), order);
+    order.setTotalPrice(order.getOrdersMealboxes().stream().
+        mapToInt(ordersMealbox -> ordersMealbox.getPrice() * ordersMealbox.getQuantity()).sum());
     //결제 사전 정보
     PreparePostDto preparePostDto = new PreparePostDto(order.getOrderNumber(), new BigDecimal(order.getTotalPrice()));
     paymentController.postPrepare(preparePostDto);
@@ -73,18 +75,22 @@ public class OrderService {
     return ordersMealboxList;
   }
 
-  public Orders cancelOrder(long orderId) {
-    Orders order = findVerifiedOrder(orderId);
+  public Orders cancelOrder(String orderNumber) {
+    Orders order = findByOrderNumber(orderNumber);
     int index = order.getStatus().getIndex();
-    if(index == 3) {
-      order.applyRefund();
-    } else if (index == 4 & LocalDate.now().isAfter(order.getDeliveryDate().plusDays(1))) {
+    if ((order.getDeliveryDate() != null) && LocalDate.now().isAfter(order.getDeliveryDate().plusDays(1))) {
       throw new BusinessLogicException(OrderException.NOT_REFUNDABLE_DATE);
-    } else if (index == 4) {
+    } else if (index == 4 || index == 3) {
       order.applyRefund();
     } else if (index == 1) {
       // 주문 취소 메서드 필요 (아임포트)
       order.cancelOrder();
+    } else if (index == 5) {
+      throw new BusinessLogicException(OrderException.ALREADY_APPLIED_REFUND);
+    } else if (index == 2) {
+      throw new BusinessLogicException(OrderException.ALREADY_CANCELED);
+    } else {
+      throw new BusinessLogicException(OrderException.NOT_YET_PAID);
     }
     return orderRepository.save(order);
   }
@@ -102,7 +108,12 @@ public class OrderService {
 
   public void changeStatus(String orderNumber, OrderPatchStatusDto dto) {
     Orders order = findByOrderNumber(orderNumber);
-    order.setStatus(OrderStatus.valueOfStatus(dto.getStatus()));
+    if(dto.getStatus().equals("배송완료")) {
+      order.completeDelivery();
+    } else {
+      order.setStatus(OrderStatus.valueOfStatus(dto.getStatus()));
+    }
+
     orderRepository.save(order);
   }
 

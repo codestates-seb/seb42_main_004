@@ -7,5 +7,4 @@ import lombok.Getter;
 public class ValidatePaymentDto {
   private String impUid;
   private String merchantUid;
-  private List<Long> cartMealboxIds;
 }
