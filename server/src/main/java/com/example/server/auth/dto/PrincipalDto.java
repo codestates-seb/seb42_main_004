@@ -1,9 +1,12 @@
 package com.example.server.auth.dto;
 
+import io.jsonwebtoken.Claims;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.Map;
 
 @Getter
 @Setter

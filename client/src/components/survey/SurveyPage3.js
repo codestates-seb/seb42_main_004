@@ -26,12 +26,19 @@ function SurveyPage3() {
   let { dietPlan } = useSelector((state) => state.surveyQuestionReducer);
 
   let nextHandler = () => {
+<<<<<<< HEAD
+    let page3Param = `?kcal=${dietPlan}`;
+    let data = getData(`/survey${page3Param}`); // uri 추가
+    setSurveyRcmd(data);
+    navigate(`/survey/result`, data);
+=======
     // let page3Param = `&kcal=${dietPlan}`;
     getData(`/mealboxes/rec/survey/${dietPlan}`).then((res) => {
       console.log(res.data);
     });
     // setSurveyRcmd(data);
     navigate(`/survey/result`);
+>>>>>>> 69333d14e3e54c4d2c48c6132b6ee4235028e8fa
     dispatch(setReset());
   };
 
