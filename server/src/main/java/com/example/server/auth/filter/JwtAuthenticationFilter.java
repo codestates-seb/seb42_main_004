@@ -58,6 +58,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     String refreshToken = delegateRefreshToken(user);
 
     //쿠키에 토큰 실어서 보내기
+
 //    ResponseCookie accessCookie =
 //        ResponseCookie.from("Authorization", accessToken)
 //            .path("/")
@@ -82,6 +83,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 //    헤더에 토큰 실어서 보내기
     response.setHeader("Authorization", "Bearer " + accessToken);
     response.setHeader("Refresh", refreshToken);
+
+    response.setContentType("application/json");
+    response.setCharacterEncoding("utf-8");
+
+
 
     this.getSuccessHandler()
         .onAuthenticationSuccess(request, response, authResult); // 핸들러 불러옴 (실패 핸들러는 자동호출됨)

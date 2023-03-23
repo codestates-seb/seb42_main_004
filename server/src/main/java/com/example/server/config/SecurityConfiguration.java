@@ -1,5 +1,6 @@
 package com.example.server.config;
 
+import com.example.server.auth.details.CustomUserDetailsService;
 import com.example.server.auth.filter.JwtAuthenticationFilter;
 import com.example.server.auth.filter.JwtVerificationFilter;
 import com.example.server.auth.handler.UserAccessDeniedHandler;
@@ -24,10 +25,13 @@ public class SecurityConfiguration {
 
   private final JwtTokenizer jwtTokenizer;
   private final CustomAuthorityUtils authorityUtils;
+  private final CustomUserDetailsService customUserDetailsService;
 
-  public SecurityConfiguration(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils) {
+  public SecurityConfiguration(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils,
+                               CustomUserDetailsService customUserDetailsService) {
     this.jwtTokenizer = jwtTokenizer;
     this.authorityUtils = authorityUtils;
+    this.customUserDetailsService = customUserDetailsService;
   }
 
   @Bean
@@ -110,7 +114,8 @@ public class SecurityConfiguration {
       jwtAuthenticationFilter.setAuthenticationSuccessHandler(
           new UserAuthenticationSuccessHandler()); // 성공 핸들러 적용
 
-      JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+      JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils,
+              customUserDetailsService);
 
 
       builder.addFilter(jwtAuthenticationFilter)  // (2-6)

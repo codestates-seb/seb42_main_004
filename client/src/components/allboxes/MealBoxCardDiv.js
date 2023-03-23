@@ -1,20 +1,26 @@
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
 import blankbucket from '../../assets/blankbucket.png';
-import goToCustom from '../../util/goToCustom';
-import deleteData from '../../util/deleteData';
 import postData from '../../util/postData';
-import { useState } from 'react';
+import deleteData from '../../util/deleteData';
+import goToCustom from '../../util/goToCustom';
+import { addCartItem } from '../../reducers/cartReducer';
+import { TextButton } from '../commons/ModalDiv';
 
-function MealBoxCardDiv({ mealBox, custom, admin }) {
+function MealBoxCardDiv({ mealBox, custom, admin, login }) {
   const [notification, setNotification] = useState(false);
+  const dispatch = useDispatch();
 
-  const addToCart = () => {
-    postData(`/users/cart`, { mealboxId: mealBox.mealboxId }).then(() => {
-      setNotification(true);
-      setTimeout(() => setNotification(false), 2000);
-    });
-    console.log('추가 완료');
+  const addToCart = async () => {
+    if (login) {
+      await postData(`/users/cart`, { mealboxId: mealBox.mealboxId });
+    } else {
+      dispatch(addCartItem(mealBox));
+    }
+    setNotification(true);
+    setTimeout(() => setNotification(false), 2000);
   };
 
   const deleteMealBox = () => {
@@ -43,17 +49,12 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
         {mealBox && (
           <MealBoxDesUl>
             {mealBox.products.map((product) => (
-              <li key={product.productId}>
+              <MealBoxDesLi key={product.productId}>
                 <span>{product.name}</span>
                 <span>{product.weight.toLocaleString('ko-KR')}g(ml)</span>
                 <span>{product.kcal.toLocaleString('ko-KR')}kcal</span>
-              </li>
+              </MealBoxDesLi>
             ))}
-            <li>
-              <span>케일주스</span>
-              <span>100ml</span>
-              <span>100kcal</span>
-            </li>
           </MealBoxDesUl>
         )}
       </MealBoxImgDiv>
@@ -76,6 +77,7 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
         )}
         <NotificationDiv add={notification && 1}>
           {mealBox?.name}이(가) 장바구니에 추가되었습니다.
+          <TextButton className="linkstyle">장바구니로 이동하기</TextButton>
         </NotificationDiv>
       </MealBoxCardButtonDiv>
     </MealBoxCardContainerDiv>
@@ -138,18 +140,27 @@ const MealBoxDesUl = styled.ul`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 7.5%;
+  padding: 5%;
   opacity: 0;
   list-style: none;
 
-  > li {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-  }
-
   :hover {
     opacity: 1;
+  }
+`;
+const MealBoxDesLi = styled.h3`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  word-break: keep-all;
+
+  > span:first-child {
+    flex: 1;
+  }
+
+  > span:not(:first-child) {
+    flex: 0.5;
+    text-align: right;
   }
 `;
 const MealBoxH3 = styled.h3`
@@ -159,12 +170,11 @@ const MealBoxH3 = styled.h3`
 `;
 const MealBoxCardButtonDiv = styled.div`
   position: relative;
-  display: ${(props) => (props.custom ? 'flex' : 'grid')};
-  grid-template-columns: repeat(3, auto);
-  column-gap: 0.5rem;
+  display: flex;
   width: 100%;
 
   > button {
+    margin-right: 0.5rem;
     font-size: 1rem !important;
     width: 100%;
     padding: 0.7rem;
@@ -173,8 +183,14 @@ const MealBoxCardButtonDiv = styled.div`
     word-break: keep-all;
   }
 
+  > button:not(:last-child) {
+    flex: 1;
+  }
+
   button:nth-child(3) {
+    flex: 0.7;
     cursor: default;
+    margin-right: 0;
 
     :active {
       box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
@@ -192,7 +208,7 @@ const NotificationDiv = styled.div`
   min-width: 80%;
   background-color: var(--signature);
   color: var(--white);
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 10px;
   box-shadow: 0 0 0 2px var(--signature) inset, 2px 2px 2px rgba(0, 0, 0, 0.4);
   word-break: keep-all;

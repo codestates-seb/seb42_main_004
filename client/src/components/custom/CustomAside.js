@@ -1,14 +1,50 @@
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { TextButton } from '../commons/ModalDiv';
+import ModalDiv, { TextButton } from '../commons/ModalDiv';
+import postData from '../../util/postData';
 import { AsideSignatureButton, AsideWrapper } from '../commons/CartAside';
-import { deleteProduct } from '../../reducers/customReducer';
+import { deleteProduct, initializeCustom } from '../../reducers/customReducer';
+import { addCartItem } from '../../reducers/cartReducer';
 
-function CustomAside({ admin, custom, buttonClick }) {
+function CustomAside({ admin, custom, login }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState(false);
+
+  const addCustomToCart = async () => {
+    const data = { ...custom };
+    if (login) {
+      data.products = data.products.map((product) => {
+        const { productId, quantity } = product;
+        return { productId, quantity };
+      });
+      await postData(`/users/cart/custom`, data);
+    } else {
+      dispatch(addCartItem(data));
+    }
+
+    dispatch(initializeCustom());
+    if (
+      window.confirm(
+        'Custom 밀박스가 장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?'
+      )
+    ) {
+      navigate('/cart');
+    } else navigate('/mealboxes');
+  };
 
   return (
     <AsideWrapper>
+      {/* <ModalDiv
+        mealBox={0}
+        boxElement={1}
+        closeModal={() => setOpenModal(false)}
+      /> */}
+      {admin !== undefined && openModal && (
+        <ModalDiv mealBox={custom} closeModal={() => setOpenModal(false)} />
+      )}
       <InAsideBoxDiv>
         <InAsideH2 className="hidden">
           {custom?.id ? custom.name : 'Custom'}
@@ -21,9 +57,7 @@ function CustomAside({ admin, custom, buttonClick }) {
                 <span>
                   {`${product.quantity}`}
                   <TextButton
-                    onClick={() =>
-                      dispatch(deleteProduct({ id: product.productId }))
-                    }
+                    onClick={() => dispatch(deleteProduct(product.productId))}
                     className="linkstyle"
                   >
                     &#10005;
@@ -40,10 +74,12 @@ function CustomAside({ admin, custom, buttonClick }) {
           <span>{`${custom.price?.toLocaleString('ko-KR')}원`}</span>
         </InAsidePriceDiv>
       </InAsideBoxDiv>
-      <AsideSignatureButton onClick={buttonClick}>
+      <AsideSignatureButton
+        onClick={() => (admin ? setOpenModal(true) : addCustomToCart())}
+      >
         {!admin
           ? '장바구니 담기'
-          : custom?.id
+          : custom?.mealboxId
           ? '밀박스 수정 진행하기'
           : '밀박스 생성 진행하기'}
       </AsideSignatureButton>
