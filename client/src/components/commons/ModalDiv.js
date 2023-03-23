@@ -40,10 +40,12 @@ function ModalDiv({ closeModal, mealBox, product }) {
     }
   }, [imgInput]);
 
-  const addImg = (data, hasImg) => {
+  const addImg = (data) => {
     const formData = new FormData();
-    if (hasImg) formData.append('file', imgInput);
+    // if (hasImg) formData.append('file', imgInput);
+    formData.append('file', null);
     formData.append('mealboxDto', JSON.stringify(data));
+
     return formData;
   };
 
@@ -61,6 +63,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
       hasImg = true;
       func = postData;
     }
+
     data = addImg(data, hasImg);
 
     func(uri, data, true).then(() => {
