@@ -12,9 +12,6 @@ const customSlice = createSlice({
     },
   },
   reducers: {
-    totalProducts: (custom) => {
-      return custom.products.reduce((a, c) => a + c.quantity, 0);
-    },
     updateInfo: (custom, product, plus, all) => {
       const quantity = all ? product.quantity : 1;
       if (plus) {
@@ -27,35 +24,34 @@ const customSlice = createSlice({
         custom.price -= product.price * quantity;
       }
     },
-    addProduct: (state, action) => {
+    addProductInBox: (state, action) => {
       const { custom } = state;
-      const total = customSlice.caseReducers.totalProducts(custom);
-      if (total < 10) {
-        const { product } = action.payload;
-        const { productId, name, quantity } = product;
-        custom.products.push({ productId, name, quantity });
-        customSlice.caseReducers.updateInfo(custom, product, true, true);
-      }
+      const { products, weight, kcal, price } = action.payload.mealBox;
+      custom.products = [...products];
+      custom.weight = weight;
+      custom.kcal = kcal;
+      custom.price = price;
     },
     deleteProduct: (state, action) => {
       const { id } = action.payload;
       const { custom } = state;
-      const idx = custom.products.map((product) => product.id).indexOf(id);
-      const product = custom.products.splice(idx, 1);
+      const idx = custom.products
+        .map((product) => product.productId)
+        .indexOf(id);
+      const product = custom.products.splice(idx, 1)[0];
       customSlice.caseReducers.updateInfo(custom, product, false, true);
     },
     setProduct: (state, action) => {
-      const { quantity } = action.payload.product;
       const { custom } = state;
       const { product } = action.payload;
+      const { quantity } = product;
       if (quantity > 0) {
         const idx = custom.products
           .map((product) => product.productId)
           .indexOf(product.productId);
         let beforeQuantity = idx === -1 ? 0 : custom.products[idx].quantity;
         if (idx === -1) {
-          const { productId, name } = product;
-          custom.products.push({ productId, name, quantity });
+          custom.products.push({ ...product });
         } else {
           custom.products[idx].quantity = quantity;
         }
@@ -66,13 +62,10 @@ const customSlice = createSlice({
         );
       }
     },
-    setName: (state, action) => {
-      state.custom.name = action.payload;
+    setIdName: (state, action) => {
+      state.custom.name = action.payload.name;
+      state.custom.id = action.payload.id;
     },
-    setId: (state, action) => {
-      state.custom.id = action.payload;
-    },
-
     initializeCustom: (state) => {
       state.custom = {
         products: [],
@@ -86,11 +79,10 @@ const customSlice = createSlice({
 });
 
 export const {
-  addProduct,
+  addProductInBox,
   deleteProduct,
   setProduct,
-  setName,
-  setId,
+  setIdName,
   initializeCustom,
 } = customSlice.actions;
 export default customSlice.reducer;
