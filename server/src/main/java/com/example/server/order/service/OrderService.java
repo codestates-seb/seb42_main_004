@@ -26,7 +26,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -92,17 +91,6 @@ public class OrderService {
       throw new BusinessLogicException(OrderException.NOT_YET_PAID);
     }
     orderRepository.save(order);
-  }
-
-  //추후 관리자가 주문 상태 변경시 사용할 예정
-  public Orders completeDelivery(long orderId) {
-    Orders order = findVerifiedOrder(orderId);
-    int index = order.getStatus().getIndex();
-    if(index != 3) {
-      throw new BusinessLogicException(OrderException.DELIVERY_IS_NOT_IN_PROGRESS);
-    }
-    order.completeDelivery();
-    return orderRepository.save(order);
   }
 
   public void changeStatus(String orderNumber, OrderPatchStatusDto dto) {
