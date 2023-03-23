@@ -81,6 +81,13 @@ public class MealboxService {
                 Mealbox.MealboxInfo.CUSTOM_MEALBOX, search);
     }
 
+    public Page<Mealbox> getDetailSearchedMealboxes(int page, int size, String search) {
+        CustomPageRequest pageRequest = CustomPageRequest.of(page-1, size);
+        return mealboxRepository
+                .findAllDistinctByMealboxInfoIsNotAndNameContainingOrMealboxProductsProductNameContains
+                        (pageRequest, Mealbox.MealboxInfo.CUSTOM_MEALBOX, search, search);
+    }
+
     /* ####### private 메서드 ####### */
 
     private void createMealboxProducts(Mealbox mealbox, List<MealboxDto.Product> mealboxDtoProducts){
@@ -91,7 +98,7 @@ public class MealboxService {
     }
 
     private void uploadImage(Mealbox mealbox, MultipartFile file){
-        if(file!=null & !file.isEmpty()){
+        if(file!=null && !file.isEmpty()){
             MealboxImage mealboxImage = imageService.uploadMealboxImage(file,mealbox);
             mealbox.setImage(mealboxImage);
         }

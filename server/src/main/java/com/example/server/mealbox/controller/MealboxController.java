@@ -83,8 +83,20 @@ public class MealboxController {
     public ResponseEntity getSearchedMealboxes(@Positive @RequestParam int page,
                                                @RequestParam String name) {
         log.info("------getSearchedMealboxList------");
-        log.info(name);
         Page<Mealbox> mealboxPage = mealboxService.getSearchedMealboxes(page,mealboxListSize, name);
+        List<Mealbox> mealboxes = mealboxPage.getContent();
+        List<OnlyMealboxResponseDto> response = mapper.mealboxListToMealboxResponseDtoList(mealboxes);
+
+        PageInfo pageInfo = new PageInfo(mealboxPage.getNumber()+1, mealboxPage.getSize(),
+                (int) mealboxPage.getTotalElements());
+        return new ResponseEntity(new MultiResponseDto(response, pageInfo), HttpStatus.OK);
+    }
+
+    @GetMapping("/mealboxes/search/detail")
+    public ResponseEntity getDetailSearchedMealboxes(@Positive @RequestParam int page,
+                                                     @RequestParam String name) {
+        log.info("------getDetailSearchedMealboxList------");
+        Page<Mealbox> mealboxPage = mealboxService.getDetailSearchedMealboxes(page, mealboxListSize, name);
         List<Mealbox> mealboxes = mealboxPage.getContent();
         List<OnlyMealboxResponseDto> response = mapper.mealboxListToMealboxResponseDtoList(mealboxes);
 
