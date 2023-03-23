@@ -25,25 +25,26 @@ const customSlice = createSlice({
       }
     },
     addProductInBox: (state, action) => {
+      customSlice.caseReducers.initializeCustom(state);
       const { custom } = state;
-      const { products, weight, kcal, price } = action.payload.mealBox;
+      const products = action.payload;
       custom.products = [...products];
-      custom.weight = weight;
-      custom.kcal = kcal;
-      custom.price = price;
+      products.forEach((product) => {
+        customSlice.caseReducers.updateInfo(custom, product, true, true);
+      });
     },
     deleteProduct: (state, action) => {
-      const { id } = action.payload;
+      const productId = action.payload;
       const { custom } = state;
       const idx = custom.products
         .map((product) => product.productId)
-        .indexOf(id);
+        .indexOf(productId);
       const product = custom.products.splice(idx, 1)[0];
       customSlice.caseReducers.updateInfo(custom, product, false, true);
     },
     setProduct: (state, action) => {
       const { custom } = state;
-      const { product } = action.payload;
+      const product = action.payload;
       const { quantity } = product;
       if (quantity > 0) {
         const idx = custom.products

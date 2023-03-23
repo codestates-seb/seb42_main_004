@@ -57,9 +57,7 @@ function CustomAside({ admin, custom, login }) {
                 <span>
                   {`${product.quantity}`}
                   <TextButton
-                    onClick={() =>
-                      dispatch(deleteProduct({ id: product.productId }))
-                    }
+                    onClick={() => dispatch(deleteProduct(product.productId))}
                     className="linkstyle"
                   >
                     &#10005;

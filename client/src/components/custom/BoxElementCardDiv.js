@@ -20,7 +20,7 @@ function BoxElementCardDiv({ product, quantity, totalQuantity }) {
 
     const payload = { ...product };
     payload.quantity = key === 'minus' ? quantity - 1 : quantity + 1;
-    dispatch(setProduct({ product: payload }));
+    dispatch(setProduct(payload));
   };
 
   return (
