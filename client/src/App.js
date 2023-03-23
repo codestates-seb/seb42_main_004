@@ -1,4 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
+// import { useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+import { useDispatch } from 'react-redux';
+import { setAuth } from './reducers/authReducer';
 import Header from './components/commons/Header';
 import GlobalStyle from './global/globalstyles';
 import Footer from './components/commons/Footer';
@@ -23,9 +27,44 @@ import SendEmail from './pages/SendEmail';
 import FindPassword from './pages/FindPassword';
 import SurveyHome from './pages/SurveyHome';
 import ToTopButton from './components/commons/ToTopButton';
-import isLogin from './util/isLogin';
+import setAuthorizationToken from './util/setAuthorizationToken';
+import parseToken from './util/parseToken';
 
 function App() {
+  // const [cookies, , removeCookie] = useCookies();
+  // const { accessToken, tokenExpirationDate } = cookies;
+  // let logoutTimer;
+
+  // useEffect(() => {
+  //   if (accessToken && tokenExpirationDate) {
+  //     const remainingTime =
+  //       tokenExpirationDate.getTime() - new Date().getTime();
+  //     logoutTimer = setTimeout(() => {
+  //       removeCookie(accessToken);
+  //       removeCookie(tokenExpirationDate);
+  //     }, remainingTime);
+  //   } else {
+  //     clearTimeout(logoutTimer);
+  //   }
+  // }, [accessToken, tokenExpirationDate]);
+  const dispatch = useDispatch();
+  const [cookies, ,] = useCookies();
+  const { accessToken } = cookies;
+
+  if (accessToken) {
+    const { exp, principal, roles } = parseToken(accessToken);
+    setAuthorizationToken(accessToken);
+    dispatch(
+      setAuth({
+        isLogin: true,
+        accessToken: accessToken,
+        tokenExpirationDate: new Date(exp),
+        user: principal,
+        roles: roles,
+      })
+    );
+  }
+
   return (
     <>
       <GlobalStyle />
@@ -43,27 +82,27 @@ function App() {
           <Route path="/product" element={<Product />} />
           <Route
             path="/login"
-            element={isLogin() ? <Navigate to="/" /> : <Login />}
+            element={accessToken ? <Navigate to="/" /> : <Login />}
           />
           <Route
             path="/signup"
-            element={isLogin() ? <Navigate to="/" /> : <Signup />}
+            element={accessToken ? <Navigate to="/" /> : <Signup />}
           />
           <Route
             path="/signup/oauth"
-            element={isLogin() ? <Navigate to="/" /> : <SignupOauth />}
+            element={accessToken ? <Navigate to="/" /> : <SignupOauth />}
           />
           <Route
             path="/myinfo"
-            element={isLogin() ? <MyInfo /> : <Navigate to="/login" />}
+            element={accessToken ? <MyInfo /> : <Navigate to="/login" />}
           />
           <Route
             path="/myinfo/edit"
-            element={isLogin() ? <EditMyInfo /> : <Navigate to="/login" />}
+            element={accessToken ? <EditMyInfo /> : <Navigate to="/login" />}
           />
           <Route
             path="/myinfo/edit/password"
-            element={isLogin() ? <EditPassword /> : <Navigate to="/login" />}
+            element={accessToken ? <EditPassword /> : <Navigate to="/login" />}
           />
           <Route path="/email/complete" element={<CompleteEmail />} />
           <Route path="/email/confirm" element={<ConfirmEmail />} />

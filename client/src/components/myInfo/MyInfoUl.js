@@ -3,11 +3,10 @@ import ContentDiv from './ContentDiv';
 import PasswordInputDiv from './PasswordInputDiv';
 import MyInfoButton from './MyInfoButton';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+
 function MyInfoUl({ pathName }) {
   const [imgInput, setImgInput] = useState();
   const [imgInputBuffer, setImgInputBuffer] = useState();
-  console.log(useSelector((state) => state.userReducer));
 
   useEffect(() => {
     let reader = new FileReader();
