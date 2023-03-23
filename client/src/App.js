@@ -29,6 +29,7 @@ import SurveyHome from './pages/SurveyHome';
 import ToTopButton from './components/commons/ToTopButton';
 import setAuthorizationToken from './util/setAuthorizationToken';
 import parseToken from './util/parseToken';
+import { useEffect } from 'react';
 
 function App() {
   // const [cookies, , removeCookie] = useCookies();
@@ -51,19 +52,21 @@ function App() {
   const [cookies, ,] = useCookies();
   const { accessToken } = cookies;
 
-  if (accessToken) {
-    const { exp, principal, roles } = parseToken(accessToken);
-    setAuthorizationToken(accessToken);
-    dispatch(
-      setAuth({
-        isLogin: true,
-        accessToken: accessToken,
-        tokenExpirationDate: new Date(exp),
-        user: principal,
-        admin: roles.includes('ADMIN'),
-      })
-    );
-  }
+  useEffect(() => {
+    if (accessToken) {
+      const { exp, principal, roles } = parseToken(accessToken);
+      setAuthorizationToken(accessToken);
+      dispatch(
+        setAuth({
+          isLogin: true,
+          accessToken: accessToken,
+          tokenExpirationDate: new Date(exp),
+          user: principal,
+          admin: roles.includes('ADMIN'),
+        })
+      );
+    }
+  }, [accessToken]);
 
   return (
     <>

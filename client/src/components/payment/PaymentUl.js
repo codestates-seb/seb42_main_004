@@ -1,17 +1,44 @@
+// import { useState } from 'react';
 import styled from 'styled-components';
 import ContentDiv from '../myInfo/ContentDiv';
 import ContentInputDiv from '../myInfo/ContentInputDiv';
 import AddressDiv from './AddessDiv';
+import useGET from '../../util/useGET';
+import { useEffect } from 'react';
 
-function PaymentUl() {
+function PaymentUl({ inputValue, setInputValue }) {
+  const [res, isPending, error] = useGET(`/orders/checkout/11`);
+
+  useEffect(() => {
+    if (res) {
+      setInputValue(res);
+    }
+  }, [res]);
+
+  console.log(res);
+  console.log(isPending);
+  console.log(error);
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
+    console.log(inputValue);
+  };
+
   return (
     <ContainerUl>
       <li>
         <h2>주문자 정보</h2>
         <OrderDiv>
-          <ContentDiv name="이름" content="강명주" />
-          <ContentDiv name="연락처" content="01012345678" />
-          <ContentDiv name="주소" content="주소" />
+          <ContentDiv name="이름" value={inputValue.username} />
+          <ContentDiv name="연락처" value={inputValue.userPhoneNumber} />
+          <ContentDiv
+            name="주소"
+            value={`${inputValue.userSimpleAddress} ${inputValue.userDetailAddress}`}
+          />
         </OrderDiv>
       </li>
       <li>
@@ -23,13 +50,27 @@ function PaymentUl() {
           </div>
         </TopDiv>
         <DeliveryDiv>
-          <ContentInputDiv id="orderName" labelName="받는분" value="강명주" />
           <ContentInputDiv
-            id="orderPhone"
-            labelName="연락처"
-            value="01012345678"
+            id="addressee"
+            name="addressee"
+            labelName="받는분"
+            placeholder="받는분"
+            value={inputValue.addressee}
+            onChange={handleInput}
           />
-          <AddressDiv />
+          <ContentInputDiv
+            id="addresseePhoneNumber"
+            name="addresseePhoneNumber"
+            labelName="연락처"
+            placeholder="받는분"
+            value={inputValue.addresseePhoneNumber}
+            onChange={handleInput}
+          />
+          <AddressDiv
+            inputValue={inputValue}
+            onChange={handleInput}
+            setInputValue={setInputValue}
+          />
           <div>
             <input type="checkbox" id="save"></input>
             <label htmlFor="save">기본 배송지로 저장</label>

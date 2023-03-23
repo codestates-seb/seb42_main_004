@@ -2,22 +2,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Post from './Post';
 
-function AddressDiv() {
-  const [enroll_company, setEnroll_company] = useState({
-    zonecode: '',
-    address: '',
-    extra: '',
-  });
-
+function AddressDiv({ inputValue, onChange, setInputValue }) {
   const [popup, setPopup] = useState(false);
-
-  const handleInput = (e) => {
-    setEnroll_company({
-      ...enroll_company,
-      [e.target.name]: e.target.value,
-    });
-    console.log(enroll_company);
-  };
 
   const handleComplete = () => {
     setPopup(!popup);
@@ -33,9 +19,9 @@ function AddressDiv() {
             placeholder="우편번호"
             type="text"
             required={true}
-            name="zonecode"
-            onChange={handleInput}
-            value={enroll_company.zonecode}
+            name="deliveryZipCode"
+            onChange={onChange}
+            value={inputValue.deliveryZipCode}
           />
           <AddressButton
             className="buttonstyle shadow"
@@ -45,25 +31,25 @@ function AddressDiv() {
           </AddressButton>
         </ButtonDiv>
         {popup && (
-          <Post company={enroll_company} setcompany={setEnroll_company}></Post>
+          <Post inputValue={inputValue} setInputValue={setInputValue}></Post>
         )}
         <input
           className="inputstyle"
           placeholder="주소"
           type="text"
           required={true}
-          name="address"
-          onChange={handleInput}
-          value={enroll_company.address}
+          name="deliverySimpleAddress"
+          onChange={onChange}
+          value={inputValue.deliverySimpleAddress}
         />
         <input
           className="inputstyle"
           placeholder="상세주소"
           type="text"
           required={true}
-          name="extra"
-          onChange={handleInput}
-          value={enroll_company.extra}
+          name="deliveryDetailAddress"
+          onChange={onChange}
+          value={inputValue.deliveryDetailAddress}
         />
       </InputDiv>
     </ContainerDiv>
