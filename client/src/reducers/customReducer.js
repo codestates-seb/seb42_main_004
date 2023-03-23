@@ -69,7 +69,7 @@ const customSlice = createSlice({
     },
     setIdName: (state, action) => {
       state.custom.name = action.payload.name;
-      state.custom.id = action.payload.id;
+      state.custom.mealboxId = action.payload.mealboxId;
     },
     initializeCustom: (state) => {
       state.custom = {

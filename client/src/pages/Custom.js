@@ -16,6 +16,7 @@ function Custom() {
   const [sortBy, setSortBy] = useState(['id', 'ASC']);
   const [searchWord, setSearchWord] = useState('');
   const [path, setPath] = useState('?page=1&sort=id&dir=ASC');
+  const [openCustom, setOpenCustom] = useState(false);
   const [res, isPending, error] = useGET(`/products${path}`);
   const { custom } = useSelector((state) => state.customReducer);
   const dispatch = useDispatch();
@@ -46,18 +47,27 @@ function Custom() {
   const productInCustom = (id) => {
     return productsId.indexOf(id);
   };
+  const products = openCustom ? custom.products : res?.data;
 
   return (
     <GetTemplate isPending={isPending} error={error} res={res.data}>
       <CustomWrapDiv className="margininside">
         <CustomTitleDiv>
           <h1>커스텀 밀박스</h1>
-          <TextButton
-            onClick={() => dispatch(initializeCustom())}
-            className="linkstyle"
-          >
-            다시 담기
-          </TextButton>
+          <AsideButtonDiv>
+            <TextButton
+              onClick={() => setOpenCustom(!openCustom)}
+              className="linkstyle"
+            >
+              선택된 목록 {openCustom ? '닫기' : '보기'}
+            </TextButton>
+            <TextButton
+              onClick={() => dispatch(initializeCustom())}
+              className="linkstyle"
+            >
+              다시 담기
+            </TextButton>
+          </AsideButtonDiv>
         </CustomTitleDiv>
         <CustomSelectDiv>
           <ElementsContainerDiv>
@@ -67,7 +77,7 @@ function Custom() {
               setSearchWord={setSearchWord}
             />
             <BoxElementCardUl>
-              {res?.data?.map((product) => (
+              {products?.map((product) => (
                 <li key={product.productId}>
                   <BoxElementCardDiv
                     product={product}
@@ -79,9 +89,6 @@ function Custom() {
                   />
                 </li>
               ))}
-              {/* <li>
-                <BoxElementCardDiv />
-              </li> */}
             </BoxElementCardUl>
             <PaginationUl
               page={res?.pageInfo?.page}
@@ -89,7 +96,7 @@ function Custom() {
               setPage={setPage}
             />
           </ElementsContainerDiv>
-          <CustomAside admin={0} custom={custom} />
+          <CustomAside custom={custom} />
         </CustomSelectDiv>
       </CustomWrapDiv>
     </GetTemplate>
@@ -111,10 +118,12 @@ const CustomSelectDiv = styled.div`
 `;
 const CustomTitleDiv = styled(CustomSelectDiv)`
   align-items: flex-end;
-
-  > button {
+`;
+const AsideButtonDiv = styled(CustomSelectDiv)`
+  min-width: 30%;
+  /* > button {
     margin-bottom: 1rem;
-  }
+  } */
 `;
 const ElementsContainerDiv = styled.div`
   display: flex;
