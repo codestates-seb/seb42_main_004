@@ -18,7 +18,7 @@ import Signup from './pages/Signup';
 import SignupOauth from './pages/SignupOauth';
 import MyInfo from './pages/MyInfo';
 import Payment from './pages/Payment';
-import Product from './pages/Product';
+import Products from './pages/Products';
 import EditMyInfo from './pages/EditMyInfo';
 import EditPassword from './pages/EditPassword';
 import CompleteEmail from './pages/CompleteEmail';
@@ -88,7 +88,7 @@ function App() {
             path="/myinfo/orderhistory"
             element={cookies.accessToken ? <OrderHistory /> : <Login />}
           />
-          <Route path="/product" element={<Product />} />
+          <Route path="/products" element={<Products />} />
           <Route
             path="/login"
             element={cookies.accessToken ? <Navigate to="/" /> : <Login />}

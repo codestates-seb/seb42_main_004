@@ -1,14 +1,24 @@
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import blankbucket from '../../assets/blankbucket.png';
-function ProductLi({ el }) {
+import { TextButton } from '../commons/ModalDiv';
+// import blankbucket from '../../assets/blankbucket.png';
+function ProductLi({ product }) {
+  const { admin } = useSelector((state) => state.authReducer);
+
   return (
     <ContainerLi>
       <CardDiv className="shadow">
-        <img src={blankbucket} alt="blankbucket" />
-        <div>{el}</div>
-        <div>100kal</div>
-        <div>10g</div>
-        <div>300원</div>
+        <img src={product.imagePath} alt="blankbucket" />
+        <div>{product.name}</div>
+        <div>{product.weight.toLocaleString('ko-KR')}g(ml)</div>
+        <div>{product.kcal.toLocaleString('ko-KR')}kcal</div>
+        <div>{product.price.toLocaleString('ko-KR')}원</div>
+        {admin && (
+          <ButtonDiv>
+            <TextButton>수정</TextButton>
+            <TextButton>삭제</TextButton>
+          </ButtonDiv>
+        )}
       </CardDiv>
     </ContainerLi>
   );
@@ -35,6 +45,7 @@ const CardDiv = styled.div`
   border-radius: 4px;
   background-color: var(--white);
   margin: 0.5rem;
+  padding: 0.5rem;
 
   > img {
     width: 200px;
@@ -43,6 +54,16 @@ const CardDiv = styled.div`
   }
 
   > div {
+    font-weight: bold;
     height: 25px;
+  }
+`;
+const ButtonDiv = styled.div`
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+
+  > button {
+    flex: 1;
   }
 `;
