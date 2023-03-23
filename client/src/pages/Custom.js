@@ -1,27 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import ModalDiv, { TextButton } from '../components/commons/ModalDiv';
 import CustomAside from '../components/custom/CustomAside';
 import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
 import FilterSearchDiv from '../components/commons/FilterSearchDiv';
 import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
+import { TextButton } from '../components/commons/ModalDiv';
 import { MealBoxesWrapDiv } from './AllBoxes';
 import useGET from '../util/useGET';
-import postData from '../util/postData';
 import { initializeCustom } from '../reducers/customReducer';
 
-function Custom({ admin }) {
-  const [openModal, setOpenModal] = useState(false);
+function Custom() {
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState(['id', 'ASC']);
   const [searchWord, setSearchWord] = useState('');
   const [path, setPath] = useState('?page=1&sort=id&dir=ASC');
   const [res, isPending, error] = useGET(`/products${path}`);
   const { custom } = useSelector((state) => state.customReducer);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const searchProduct = () => {
@@ -45,23 +41,6 @@ function Custom({ admin }) {
     getProducts();
   }, [page, sortBy]);
 
-  const addCustomToCart = () => {
-    const data = { ...custom };
-    data.products = data.products.map((product) => {
-      const { productId, quantity } = product;
-      return { productId, quantity };
-    });
-    postData(`/users/cart/custom`, data).then(() => {
-      dispatch(initializeCustom());
-      if (
-        window.confirm(
-          'Custom 밀박스가 장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?'
-        )
-      ) {
-        navigate('/cart');
-      } else navigate('/');
-    });
-  };
   const totalQuantity = custom.products.reduce((a, c) => a + c.quantity, 0);
   const productsId = custom.products.map((product) => product.productId);
   const productInCustom = (id) => {
@@ -71,14 +50,6 @@ function Custom({ admin }) {
   return (
     <GetTemplate isPending={isPending} error={error} res={res.data}>
       <CustomWrapDiv className="margininside">
-        {/* <ModalDiv
-          mealBox={0}
-          boxElement={1}
-          closeModal={() => setOpenModal(false)}
-        /> */}
-        {admin && openModal && (
-          <ModalDiv mealBox={custom} closeModal={() => setOpenModal(false)} />
-        )}
         <CustomTitleDiv>
           <h1>커스텀 밀박스</h1>
           <TextButton
@@ -118,11 +89,7 @@ function Custom({ admin }) {
               setPage={setPage}
             />
           </ElementsContainerDiv>
-          <CustomAside
-            admin={0}
-            custom={custom}
-            buttonClick={() => (admin ? setOpenModal(true) : addCustomToCart())}
-          />
+          <CustomAside admin={0} custom={custom} />
         </CustomSelectDiv>
       </CustomWrapDiv>
     </GetTemplate>
