@@ -6,11 +6,12 @@ import OrderHistoryByOrderNumber from './OrderHistoryByOrderNumber';
 
 function OrderHistoryByDateDiv({ ordersPerDate }) {
   let { date, orders } = ordersPerDate;
+  console.log(date, orders);
 
   return (
     <HistoryByDateDiv>
       <H3>{date}</H3>
-      {orders.map((el) => {
+      {orders?.map((el) => {
         return <OrderHistoryByOrderNumber key={el.orderNumber} orders={el} />;
       })}
       <hr />

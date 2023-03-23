@@ -29,6 +29,7 @@ import SurveyHome from './pages/SurveyHome';
 import ToTopButton from './components/commons/ToTopButton';
 import setAuthorizationToken from './util/setAuthorizationToken';
 import parseToken from './util/parseToken';
+import { useEffect } from 'react';
 
 function App() {
   // const [cookies, , removeCookie] = useCookies();
@@ -51,19 +52,24 @@ function App() {
   const [cookies, ,] = useCookies();
   const { accessToken } = cookies;
 
-  if (accessToken) {
-    const { exp, principal, roles } = parseToken(accessToken);
+  if (cookies.accessToken) {
     setAuthorizationToken(accessToken);
-    dispatch(
-      setAuth({
-        isLogin: true,
-        accessToken: accessToken,
-        tokenExpirationDate: new Date(exp),
-        user: principal,
-        admin: roles.includes('ADMIN'),
-      })
-    );
   }
+
+  useEffect(() => {
+    if (cookies.accessToken) {
+      const { exp, principal, roles } = parseToken(accessToken);
+      dispatch(
+        setAuth({
+          isLogin: true,
+          accessToken: accessToken,
+          tokenExpirationDate: new Date(exp),
+          user: principal,
+          admin: roles.includes('ADMIN'),
+        })
+      );
+    }
+  }, [cookies.accessToken]);
 
   return (
     <>
@@ -78,37 +84,53 @@ function App() {
           <Route path="/survey/result" element={<SurveyResult />} />
           <Route path="/custom" element={<Custom />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/myinfo/orderhistory" element={<OrderHistory />} />
+          <Route
+            path="/myinfo/orderhistory"
+            element={cookies.accessToken ? <OrderHistory /> : <Login />}
+          />
           <Route path="/product" element={<Product />} />
           <Route
             path="/login"
-            element={accessToken ? <Navigate to="/" /> : <Login />}
+            element={cookies.accessToken ? <Navigate to="/" /> : <Login />}
           />
           <Route
             path="/signup"
-            element={accessToken ? <Navigate to="/" /> : <Signup />}
+            element={cookies.accessToken ? <Navigate to="/" /> : <Signup />}
           />
           <Route
             path="/signup/oauth"
-            element={accessToken ? <Navigate to="/" /> : <SignupOauth />}
+            element={
+              cookies.accessToken ? <Navigate to="/" /> : <SignupOauth />
+            }
           />
           <Route
             path="/myinfo"
-            element={accessToken ? <MyInfo /> : <Navigate to="/login" />}
+            element={
+              cookies.accessToken ? <MyInfo /> : <Navigate to="/login" />
+            }
           />
           <Route
             path="/myinfo/edit"
-            element={accessToken ? <EditMyInfo /> : <Navigate to="/login" />}
+            element={
+              cookies.accessToken ? <EditMyInfo /> : <Navigate to="/login" />
+            }
           />
           <Route
             path="/myinfo/edit/password"
-            element={accessToken ? <EditPassword /> : <Navigate to="/login" />}
+            element={
+              cookies.accessToken ? <EditPassword /> : <Navigate to="/login" />
+            }
           />
           <Route path="/email/complete" element={<CompleteEmail />} />
           <Route path="/email/confirm" element={<ConfirmEmail />} />
           <Route path="/email/send" element={<SendEmail />} />
           <Route path="/email/send/password" element={<FindPassword />} />
-          <Route path="/cart/payment" element={<Payment />} />
+          <Route
+            path="/cart/payment"
+            element={
+              cookies.accessToken ? <Payment /> : <Navigate to="/login" />
+            }
+          />
           <Route path="/*" element={<Error />} />
         </Routes>
         <ToTopButton />

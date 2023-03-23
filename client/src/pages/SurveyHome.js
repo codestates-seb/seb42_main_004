@@ -2,12 +2,13 @@ import styled from 'styled-components';
 import SurveyHomeArticle from '../components/survey/SurveyHomeArticle';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 function SurveyHome() {
+  let { isLogin, admin } = useSelector((state) => state.authReducer);
   let navigate = useNavigate();
-  let isLogin = false;
 
   useEffect(() => {
-    if (isLogin) navigate('/boxes');
+    if (isLogin || admin) navigate('/mealboxes');
   }, []);
 
   return (
