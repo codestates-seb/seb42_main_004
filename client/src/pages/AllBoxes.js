@@ -3,20 +3,21 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MealBoxCardDiv from '../components/allboxes/MealBoxCardDiv';
 import BannerLink from '../components/commons/BannerLink';
+import FilterSearchDiv from '../components/commons/FilterSearchDiv';
 import GetTemplate from '../components/commons/GetTemplate';
 import { TextButton } from '../components/commons/ModalDiv';
 import PaginationUl from '../components/commons/PaginationUl';
-import SearchBarDiv from '../components/commons/SearchBarDiv';
 import useGET from '../util/useGET';
 
 function AllBoxes() {
   const navigate = useNavigate();
   let { pathname, search } = useLocation();
-  if (!search) search = '?page=1';
+  if (!search) search = '?page=1&sort=id&dir=ASC';
 
   const [res, isPending, error] = useGET(`${pathname}${search}`);
   const [searchWord, setSearchWord] = useState('');
   const [errorWord, setErrorWord] = useState(searchWord);
+  const [sortBy, setSortBy] = useState(['id', 'ASC']);
 
   const searchMealBox = () => {
     navigate(paginationUrl(1));
@@ -26,7 +27,13 @@ function AllBoxes() {
     setErrorWord(searchWord);
     return searchWord
       ? `/mealboxes/search?page=${page}&name=${searchWord}`
-      : `/mealboxes?page=${page}`;
+      : `/mealboxes?page=${page}&sort=${sortBy[0]}&dir=${sortBy[1]}`;
+  };
+
+  const sortProducts = (select) => {
+    setSearchWord('');
+    setSortBy(select.split('/'));
+    navigate(paginationUrl(1));
   };
 
   return (
@@ -34,8 +41,9 @@ function AllBoxes() {
       <MealBoxesWrapDiv className="margininside">
         <BannerLink />
         <h1>{'맹쥬'}님 오늘도 건강한 하루되세요(｡•̀ᴗ-)✧</h1>
-        <SearchBarDiv
+        <FilterSearchDiv
           placeholder="healthy day 밀박스"
+          sortProducts={sortProducts}
           searchSubject={searchMealBox}
           setSearchWord={setSearchWord}
         />
@@ -45,7 +53,7 @@ function AllBoxes() {
           </SearchResultH3>
         )}
         <MealBoxesUl>
-          {(search === '?page=1' || res.data?.length === 0) && (
+          {(search.includes('?page=1&') || res.data?.length === 0) && (
             <li>
               <MealBoxCardDiv custom={1} />
             </li>

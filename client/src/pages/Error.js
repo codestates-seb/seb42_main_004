@@ -39,6 +39,7 @@ const ErrorWrapDiv = styled.div`
   position: fixed;
   left: 0;
   width: 100vw;
+  min-width: 360px;
   height: inherit;
   display: flex;
   flex-direction: column;

@@ -33,9 +33,8 @@ function Custom() {
   };
 
   const getProducts = () => {
-    if (!searchWord)
-      setPath(`?page=${page}&sort=${sortBy[0]}&dir=${sortBy[1]}`);
-    else setPath(`/search?page=${page}&name=${searchWord}`);
+    if (searchWord) setPath(`/search?page=${page}&name=${searchWord}`);
+    else setPath(`?page=${page}&sort=${sortBy[0]}&dir=${sortBy[1]}`);
   };
 
   useEffect(() => {
@@ -73,6 +72,7 @@ function Custom() {
           <ElementsContainerDiv>
             <FilterSearchDiv
               sortProducts={sortProducts}
+              placeholder="고구마"
               searchSubject={searchProduct}
               setSearchWord={setSearchWord}
             />
