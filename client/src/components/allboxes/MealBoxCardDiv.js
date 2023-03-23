@@ -7,6 +7,7 @@ import postData from '../../util/postData';
 import deleteData from '../../util/deleteData';
 import goToCustom from '../../util/goToCustom';
 import { addCartItem } from '../../reducers/cartReducer';
+import { TextButton } from '../commons/ModalDiv';
 
 function MealBoxCardDiv({ mealBox, custom, admin, login }) {
   const [notification, setNotification] = useState(false);
@@ -76,6 +77,7 @@ function MealBoxCardDiv({ mealBox, custom, admin, login }) {
         )}
         <NotificationDiv add={notification && 1}>
           {mealBox?.name}이(가) 장바구니에 추가되었습니다.
+          <TextButton className="linkstyle">장바구니로 이동하기</TextButton>
         </NotificationDiv>
       </MealBoxCardButtonDiv>
     </MealBoxCardContainerDiv>
@@ -161,7 +163,6 @@ const MealBoxDesLi = styled.h3`
     text-align: right;
   }
 `;
-
 const MealBoxH3 = styled.h3`
   font-size: 1.3rem;
   margin-bottom: 0.5rem;
@@ -207,7 +208,7 @@ const NotificationDiv = styled.div`
   min-width: 80%;
   background-color: var(--signature);
   color: var(--white);
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 10px;
   box-shadow: 0 0 0 2px var(--signature) inset, 2px 2px 2px rgba(0, 0, 0, 0.4);
   word-break: keep-all;
