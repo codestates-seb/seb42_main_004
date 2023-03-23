@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import MealBoxCardDiv from '../components/allboxes/MealBoxCardDiv';
 import BannerLink from '../components/commons/BannerLink';
 import GetTemplate from '../components/commons/GetTemplate';
+import { TextButton } from '../components/commons/ModalDiv';
 import PaginationUl from '../components/commons/PaginationUl';
 import SearchBarDiv from '../components/commons/SearchBarDiv';
 import useGET from '../util/useGET';
@@ -15,12 +16,14 @@ function AllBoxes() {
 
   const [res, isPending, error] = useGET(`${pathname}${search}`);
   const [searchWord, setSearchWord] = useState('');
-
+  const [errorWord, setErrorWord] = useState(searchWord);
+  console.log(res);
   const searchMealBox = () => {
-    navigate(`/mealboxes/search?page=1&name=${searchWord}`);
+    navigate(paginationUrl(1));
   };
 
   const paginationUrl = (page) => {
+    setErrorWord(searchWord);
     return searchWord
       ? `/mealboxes/search?page=${page}&name=${searchWord}`
       : `/mealboxes?page=${page}`;
@@ -36,18 +39,43 @@ function AllBoxes() {
           searchSubject={searchMealBox}
           setSearchWord={setSearchWord}
         />
+        {errorWord && (
+          <SearchResultH3>
+            검색결과 {res?.pageInfo?.totalElements?.toLocaleString('ko-KR')}개
+          </SearchResultH3>
+        )}
         <MealBoxesUl>
           {!search ||
-            (search.slice(-2) === '=1' && (
+            search === '?page=1' ||
+            (res.data?.length === 0 && (
               <li>
                 <MealBoxCardDiv custom={1} />
               </li>
             ))}
-          {res?.data?.map((mealbox) => (
-            <li key={mealbox.mealboxId}>
-              <MealBoxCardDiv mealBox={mealbox} />
-            </li>
-          ))}
+          {res.data?.length !== 0 ? (
+            res.data?.map((mealbox) => (
+              <li key={mealbox.mealboxId}>
+                <MealBoxCardDiv mealBox={mealbox} />
+              </li>
+            ))
+          ) : (
+            <div>
+              찾고 계신 <span>{errorWord}</span>은(는) 목록에 추가될 예정입니다
+              <br />
+              {errorWord} 대신
+              <TextButton
+                className="linkstyle"
+                onClick={() =>
+                  navigate(
+                    '/mealboxes/search?page=1&name=고단백질%20아침%20세트'
+                  )
+                }
+              >
+                고단백질 아침 세트
+              </TextButton>
+              는 어떠세요?
+            </div>
+          )}
         </MealBoxesUl>
         <PaginationUl
           page={res?.pageInfo?.page}
@@ -72,6 +100,9 @@ export const MealBoxesWrapDiv = styled.div`
   @media screen and (max-width: 480px) {
     min-height: calc(100vh - 230px - 5rem);
   }
+`;
+const SearchResultH3 = styled.h3`
+  margin-bottom: 0.5rem;
 `;
 export const MealBoxesUl = styled.ul`
   display: grid;
