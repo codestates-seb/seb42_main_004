@@ -414,4 +414,10 @@ public class UserService {
     userRepository.save(user);
   }
 
+  public void checkEmailAuthentication(User user) {
+    if(user.getStatus() == UserStatus.USER_TMP) {
+      throw new BusinessLogicException(UserException.NOT_YET_AUTHENTICATE_EMAIL);
+    }
+  }
+
 }
