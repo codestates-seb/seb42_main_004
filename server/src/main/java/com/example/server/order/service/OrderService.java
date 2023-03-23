@@ -62,17 +62,16 @@ public class OrderService {
   }
 
   // MealboxId 와 quantity, user로 OrdersMealbox를 저장
-  private List<OrdersMealbox> OrderMealboxPostDtoToOrdersMealbox(List<OrderMealboxPostDto> orderMealboxPostDtos, Orders order) {
-    List<OrdersMealbox> ordersMealboxList = orderMealboxPostDtos.stream().map(orderMealboxPostDto -> {
+  private void OrderMealboxPostDtoToOrdersMealbox(List<OrderMealboxPostDto> orderMealboxPostDtos, Orders order) {
+    orderMealboxPostDtos.stream().forEach(orderMealboxPostDto -> {
       Mealbox mealbox = mealboxService.findMealboxById(orderMealboxPostDto.getMealboxId());
       int quantity = orderMealboxPostDto.getQuantity();
       OrdersMealbox ordersMealbox = new OrdersMealbox(quantity, mealbox);
       ordersMealbox.addOrders(order);
       ordersMealbox.setPrice(mealbox.getPrice());
       ordersMealbox.setKcal(mealbox.getKcal());
-      return orderMealboxRepository.save(ordersMealbox);
-    }).collect(Collectors.toList());
-    return ordersMealboxList;
+      orderMealboxRepository.save(ordersMealbox);
+    });
   }
 
   public Orders cancelOrder(String orderNumber) {
