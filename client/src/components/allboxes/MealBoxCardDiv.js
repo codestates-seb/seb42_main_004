@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
 import blankbucket from '../../assets/blankbucket.png';
@@ -9,10 +9,10 @@ import goToCustom from '../../util/goToCustom';
 import { addCartItem } from '../../reducers/cartReducer';
 import { TextButton } from '../commons/ModalDiv';
 
-function MealBoxCardDiv({ mealBox, custom, admin, login }) {
+function MealBoxCardDiv({ mealBox, custom, login }) {
   const [notification, setNotification] = useState(false);
+  const { admin } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
-
   const addToCart = async () => {
     if (login) {
       await postData(`/users/cart`, { mealboxId: mealBox.mealboxId });
