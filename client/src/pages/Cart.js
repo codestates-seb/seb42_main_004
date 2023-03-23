@@ -94,6 +94,7 @@ function Cart() {
 export default Cart;
 
 const CartPageWrapper = styled.div`
+  min-height: calc(100vh - 5rem - 50px);
   flex-direction: column;
 `;
 

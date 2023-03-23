@@ -17,18 +17,16 @@ function OrderHistory() {
   let render = () => {
     getData(admin ? `/admin/orders?page=${page}&date=${date}` : `/orders/users`)
       .then((res) => {
-        console.log(res.data);
         let filterByDateObj = res.data.reduce((acc, cur) => {
           let orderDate = cur.createdAt.slice(0, 10);
           acc[orderDate] ? acc[orderDate].push(cur) : (acc[orderDate] = [cur]);
           return acc;
         }, {});
-        console.log(filterByDateObj);
+
         let filterByDateArr = [];
         for (let date in filterByDateObj) {
           filterByDateArr.push({ date, orders: filterByDateObj[date] });
         }
-        console.log(filterByDateArr);
 
         return filterByDateArr;
       })
@@ -85,5 +83,6 @@ const ManagerMenuDiv = styled.div`
 `;
 
 const OrderHistoryPageWrapper = styled.div`
+  min-height: calc(100vh - 5rem - 50px);
   flex-direction: column;
 `;
