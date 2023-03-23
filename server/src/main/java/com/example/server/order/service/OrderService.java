@@ -46,10 +46,10 @@ public class OrderService {
   private final UserService userService;
   private final PaymentController paymentController;
 
-  public Orders createOrder(Orders order, OrderPostDto orderPostDto) throws IamportResponseException, IOException {
+  public Orders createOrder(Orders order, OrderPostDto orderPostDto, long userId) throws IamportResponseException, IOException {
     order.makeOrderNumber();
 //    orderRepository.save(order);
-    order.addUser(userService.getUser(orderPostDto.getUserId()));
+    order.addUser(userService.getUser(userId));
     orderRepository.save(order);
     log.info("------------------- CREATE OrderMealboxes -------------------");
     OrderMealboxPostDtoToOrdersMealbox(orderPostDto.getMealboxes(), order);

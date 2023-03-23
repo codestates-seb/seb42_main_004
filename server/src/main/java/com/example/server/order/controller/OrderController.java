@@ -1,5 +1,6 @@
 package com.example.server.order.controller;
 
+import com.example.server.auth.details.PrincipalDetails;
 import com.example.server.auth.utils.UriCreator;
 import com.example.server.dto.MultiResponseDto;
 import com.example.server.order.dto.OrderPageResponseDto;
@@ -19,9 +20,9 @@ import javax.validation.constraints.PositiveOrZero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,11 +41,11 @@ public class OrderController {
   private final OrderService orderService;
   private final OrderMapper mapper;
   @PostMapping("/orders")
-  public ResponseEntity postOrder(@RequestBody OrderPostDto orderPostDto,
-      @RequestHeader("Authorization") String auth)
+  public ResponseEntity<?> postOrder(@RequestBody OrderPostDto orderPostDto,
+      @AuthenticationPrincipal PrincipalDetails principalDetails)
       throws IamportResponseException, IOException { // 결제 전 주문 생성
     Orders order = mapper.orderPostDtoToOrders(orderPostDto);
-    Orders createdOrder = orderService.createOrder(order, orderPostDto);
+    Orders createdOrder = orderService.createOrder(order, orderPostDto, principalDetails.getId());
     URI location = UriCreator.createUri("/orders/checkout",createdOrder.getOrderId());
     return new ResponseEntity<>(location, HttpStatus.MOVED_PERMANENTLY);
   }
