@@ -58,21 +58,21 @@ public class ProductService {
     public Page<Product> findProducts(int page, int size, String sort,
                                       Sort.Direction direction, boolean adminPage){
         PageRequest pageRequest = adminPage ?
-                makeCustomPageRequest(page, size, sort, direction) : makePageRequest(page, size, sort, direction);
+                makePageRequest(page, size, sort, direction) : makeCustomPageRequest(page, size, sort, direction);
         return productRepository.findAll(pageRequest);
     }
 
     public Page<Product> searchProducts(String search, int page, int size, String sort,
                                         Sort.Direction direction, boolean adminPage){
         if(search.trim().equals("")){
-            if(!adminPage){
+            if(adminPage){
                 size --;
             }
             return new PageImpl<Product>(new ArrayList<>(), PageRequest.ofSize(size),0);
         }
 
         PageRequest pageRequest = adminPage ?
-                makeCustomPageRequest(page, size, sort, direction) : makePageRequest(page, size, sort, direction);
+                makePageRequest(page, size, sort, direction) : makeCustomPageRequest(page, size, sort, direction);
         return productRepository.findAllByNameContains(search, pageRequest);
     }
 

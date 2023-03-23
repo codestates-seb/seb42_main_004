@@ -62,12 +62,12 @@ public class ProductController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/products")
+    @GetMapping("/admin/products")
     public ResponseEntity getProductList (@Positive @RequestParam int page,
                                           @RequestParam String sort,
                                           @RequestParam Sort.Direction dir) {
-        log.info("------getProductList-------");
-        Page<Product> productPage = productService.findProducts(page, productListSize, sort, dir, true);
+        log.info("------adminGetProductList-------");
+        Page<Product> productPage = productService.findProducts(page, productListSize, sort, dir, false);
 
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
@@ -75,12 +75,12 @@ public class ProductController {
         return new ResponseEntity(new MultiResponseDto(response,productPage), HttpStatus.OK);
     }
 
-    @GetMapping("/products/search")
+    @GetMapping("/admin/products/search")
     public ResponseEntity getSearchedProductList(@Positive @RequestParam int page,
                                                  @RequestParam String name){
-        log.info("------searchProduct------");
+        log.info("------adminGetsearchProductList------");
         Page<Product> productPage =
-                productService.searchProducts(name, page, productListSize, "id", Sort.Direction.ASC, true);
+                productService.searchProducts(name, page, productListSize, "id", Sort.Direction.ASC, false);
 
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
@@ -88,12 +88,12 @@ public class ProductController {
         return new ResponseEntity(new MultiResponseDto(response, productPage), HttpStatus.OK);
     }
     //개별상품리스트 얻기 (추천조합 밀박스 만들때 + 구성품 조회할때)
-    @GetMapping("/admin/products")
+    @GetMapping("/products")
     public ResponseEntity adminGetProductList (@Positive @RequestParam int page,
                                                @RequestParam String sort,
                                                @RequestParam Sort.Direction dir) {//여기서 이넘타입을 받을수있다!
-        log.info("------getAdminProductList-------");
-        Page<Product> productPage = productService.findProducts(page, productListSize, sort, dir, false);
+        log.info("------getProductList-------");
+        Page<Product> productPage = productService.findProducts(page, productListSize, sort, dir, true);
 
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
@@ -103,12 +103,12 @@ public class ProductController {
         return new ResponseEntity(new MultiResponseDto(response,pageInfo), HttpStatus.OK);
     }
 
-    @GetMapping("/admin/products/search")
+    @GetMapping("/products/search")
     public ResponseEntity adminGetSearchedProductList(@Positive @RequestParam int page,
                                                       @RequestParam String name) {
-        log.info("------adminGetsearchProduct------");
+        log.info("------getsearchProduct------");
         Page<Product> productPage =
-                productService.searchProducts(name, page, productListSize, "id", Sort.Direction.ASC, false);
+                productService.searchProducts(name, page, productListSize, "id", Sort.Direction.ASC, true);
 
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
