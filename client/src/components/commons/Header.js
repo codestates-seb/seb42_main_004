@@ -25,8 +25,8 @@ function Header() {
 
   const handleLogout = () => {
     if (confirm('정말 로그아웃하시겠습니까?')) {
-      removeCookie('accessToken');
-      removeCookie('tokenExpirationDate');
+      removeCookie('accessToken', { path: '/' });
+      removeCookie('tokenExpirationDate', { path: '/' });
       dispatch(
         setAuth({
           isLogin: false,
@@ -79,7 +79,12 @@ function Header() {
               )}
             </li>
             <li>
-              <FaShoppingCart size={25} />
+              <FaShoppingCart
+                size={25}
+                onClick={() => {
+                  navigate('/cart');
+                }}
+              />
               <CartCounter />
             </li>
           </IconsUl>

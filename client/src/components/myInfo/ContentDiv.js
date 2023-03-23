@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-function ContentDiv({ name, content, onInput }) {
+function ContentDiv({ name, value, onInput }) {
   return (
     <ContainerDiv>
       <TitleDiv>{name}</TitleDiv>
@@ -12,7 +12,7 @@ function ContentDiv({ name, content, onInput }) {
           <input id="file" type="file" accept="image/*" onInput={onInput} />
         </UploadDiv>
       ) : (
-        <div>{content}</div>
+        <div>{value}</div>
       )}
     </ContainerDiv>
   );

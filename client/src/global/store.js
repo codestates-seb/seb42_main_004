@@ -16,7 +16,6 @@ const persistConfig = {
     'customReducer',
     'surveyRcmdReducer',
     'surveyQuestionReducer',
-    'authReducer',
     'cartReducer',
   ],
 };

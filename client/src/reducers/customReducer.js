@@ -50,12 +50,16 @@ const customSlice = createSlice({
         const idx = custom.products
           .map((product) => product.productId)
           .indexOf(product.productId);
-        let beforeQuantity = idx === -1 ? 0 : custom.products[idx].quantity;
+
+        let beforeQuantity;
         if (idx === -1) {
+          beforeQuantity = 0;
           custom.products.push({ ...product });
         } else {
+          beforeQuantity = custom.products[idx].quantity;
           custom.products[idx].quantity = quantity;
         }
+
         customSlice.caseReducers.updateInfo(
           custom,
           product,
@@ -65,7 +69,7 @@ const customSlice = createSlice({
     },
     setIdName: (state, action) => {
       state.custom.name = action.payload.name;
-      state.custom.id = action.payload.id;
+      state.custom.mealboxId = action.payload.mealboxId;
     },
     initializeCustom: (state) => {
       state.custom = {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ModalDiv, { TextButton } from '../commons/ModalDiv';
@@ -8,14 +8,15 @@ import { AsideSignatureButton, AsideWrapper } from '../commons/CartAside';
 import { deleteProduct, initializeCustom } from '../../reducers/customReducer';
 import { addCartItem } from '../../reducers/cartReducer';
 
-function CustomAside({ admin, custom, login }) {
+function CustomAside({ custom }) {
+  const { isLogin, admin } = useSelector((state) => state.authReducer);
+  const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [openModal, setOpenModal] = useState(false);
 
   const addCustomToCart = async () => {
     const data = { ...custom };
-    if (login) {
+    if (isLogin) {
       data.products = data.products.map((product) => {
         const { productId, quantity } = product;
         return { productId, quantity };
@@ -42,7 +43,7 @@ function CustomAside({ admin, custom, login }) {
         boxElement={1}
         closeModal={() => setOpenModal(false)}
       /> */}
-      {admin !== undefined && openModal && (
+      {admin && openModal && (
         <ModalDiv mealBox={custom} closeModal={() => setOpenModal(false)} />
       )}
       <InAsideBoxDiv>
@@ -75,7 +76,10 @@ function CustomAside({ admin, custom, login }) {
         </InAsidePriceDiv>
       </InAsideBoxDiv>
       <AsideSignatureButton
-        onClick={() => (admin ? setOpenModal(true) : addCustomToCart())}
+        onClick={() =>
+          custom.products.length !== 0 &&
+          (admin ? setOpenModal(true) : addCustomToCart())
+        }
       >
         {!admin
           ? '장바구니 담기'

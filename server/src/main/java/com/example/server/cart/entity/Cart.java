@@ -23,20 +23,17 @@ public class Cart extends BaseEntity {
   @Setter
   private int totalPrice = 0;
 
+  /* ####### JPA 매핑 ####### */
+
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 
-  @OneToMany(mappedBy = "cart", orphanRemoval = true)
+  @OneToMany(mappedBy = "cart", orphanRemoval = true, cascade = CascadeType.ALL)
   @Builder.Default
   private List<CartMealbox> cartMealboxes = new ArrayList<>();
 
-  public void addCartMealbox(CartMealbox cartMealbox) {
-    cartMealboxes.add(cartMealbox);
-    if(cartMealbox.getCart() != this) {
-      cartMealbox.setCart(this);
-    }
-  }
+  /* ####### 편의 메서드 ####### */
 
   public void calculateTotalPrice() {
     this.totalPrice = this.getCartMealboxes().stream().mapToInt(cartMealbox ->

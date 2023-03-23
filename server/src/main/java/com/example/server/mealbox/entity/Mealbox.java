@@ -34,14 +34,30 @@ public class Mealbox {
     @Column(nullable = false)
     private MealboxInfo mealboxInfo;
 
+    @Getter
+    @AllArgsConstructor
+    public enum MealboxInfo{
+        CUSTOM_MEALBOX("Custom Mealbox"),
+        NO_REC_MEALBOX("Not Rec Mealbox"),
+        BREAKFAST_REC_MEALBOX("Breakfast Rec Mealbox"),
+        LUNCH_REC_MEALBOX("Lunch Rec Mealbox"),
+        DINNER_REC_MEALBOX("Dinner Rec Mealbox");
+        private String info;
+    }
+
+    /* ####### JPA 매핑 ####### */
+
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MealboxProduct> mealboxProducts;
+    @Builder.Default
+    private List<MealboxProduct> mealboxProducts = new ArrayList<>();
 
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
-    private List<OrdersMealbox> ordersMealboxes;
+    @Builder.Default
+    private List<OrdersMealbox> ordersMealboxes = new ArrayList<>();
 
     @OneToMany(mappedBy = "mealbox", cascade = CascadeType.REMOVE)
-    private List<CartMealbox> cartMealboxes;
+    @Builder.Default
+    private List<CartMealbox> cartMealboxes = new ArrayList<>();
 
     @OneToOne(mappedBy = "mealbox", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
@@ -51,24 +67,13 @@ public class Mealbox {
     @Builder.Default
     private List<MealboxSetter> mealboxSetters = new ArrayList<>();
 
+    /* ####### 편의 메서드 ####### */
+
     public void addMealboxProduct(MealboxProduct mealboxProduct) {
-        if(mealboxProducts==null){
-            mealboxProducts = new ArrayList<>();
-        }
         mealboxProducts.add(mealboxProduct);
     }
 
-    public void addOrderMealbox(OrdersMealbox ordersMealbox) {
-        if(ordersMealboxes==null){
-            ordersMealboxes = new ArrayList<>();
-        }
-        ordersMealboxes.add(ordersMealbox);
-    }
-
     public void addCartMealbox(CartMealbox cartMealbox) {
-        if(cartMealboxes==null){
-            cartMealboxes = new ArrayList<>();
-        }
         cartMealboxes.add(cartMealbox);
     }
 
@@ -76,11 +81,11 @@ public class Mealbox {
         mealboxSetters.add(mealboxSetter);
     }
 
-    public void patchMealbox(String name, int price, int kcal, int weight){
-        this.name = name;
-        this.price = price;
-        this.kcal = kcal;
-        this.weight = weight;
+    public void patchMealbox(Mealbox mealboxPatcher){
+        this.name = mealboxPatcher.getName();
+        this.price = mealboxPatcher.getPrice();
+        this.kcal = mealboxPatcher.getKcal();
+        this.weight = mealboxPatcher.getWeight();
         this.mealboxProducts.clear();
     }
 
@@ -91,16 +96,5 @@ public class Mealbox {
                 mealboxProduct.getProduct().getPrice()*mealboxProduct.getQuantity()).sum();
         this.kcal = mealboxProducts.stream().mapToInt(mealboxProduct->
                 mealboxProduct.getProduct().getKcal()*mealboxProduct.getQuantity()).sum();
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public enum MealboxInfo{
-        CUSTOM_MEALBOX("Custom Mealbox"),
-        NO_REC_MEALBOX("Not Rec Mealbox"),
-        BREAKFAST_REC_MEALBOX("Breakfast Rec Mealbox"),
-        LUNCH_REC_MEALBOX("Lunch Rec Mealbox"),
-        DINNER_REC_MEALBOX("Dinner Rec Mealbox");
-        private String info;
     }
 }

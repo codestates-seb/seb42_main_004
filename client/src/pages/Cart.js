@@ -1,19 +1,20 @@
 import styled from 'styled-components';
 import CartItemLi from '../components/cartPage/CartItemLi';
 import CartAside from '../components/commons/CartAside';
-import { resEx } from '../components/cartPage/dummyData';
+// import { resEx } from '../components/cartPage/dummyData';
 import { useEffect, useState } from 'react';
-// import getData from '../util/getData';
+import getData from '../util/getData';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCart } from '../reducers/cartReducer';
 import postData from '../util/postData';
 
 function Cart() {
   let dispatch = useDispatch();
-  let isLogin = true;
+  let { isLogin } = useSelector((state) => state.authReducer);
   let { totalPrice, mealboxes } = useSelector(
     (state) => state.cartReducer.cart
   );
+  console.log(totalPrice, mealboxes);
   let [renderPrice, setRenderPrice] = useState(totalPrice);
 
   let calRenderPrice = () => {
@@ -25,7 +26,7 @@ function Cart() {
       Number(el.id)
     );
 
-    let checkedPrice = mealboxes.reduce(
+    let checkedPrice = mealboxes?.reduce(
       (acc, cur) =>
         checkedCartMealBoxId.includes(cur.cartMealboxId)
           ? acc + cur.price * cur.quantity
@@ -59,9 +60,12 @@ function Cart() {
 
   useEffect(() => {
     calRenderPrice();
+    console.log(isLogin);
     if (isLogin) {
-      // getData(`/users/cart/${`cartId`}`);
-      dispatch(setCart(resEx.data));
+      getData('/users/cart').then((data) => {
+        console.log(data);
+        dispatch(setCart(data));
+      });
     }
   }, []);
 

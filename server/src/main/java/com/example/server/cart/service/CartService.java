@@ -3,10 +3,9 @@ package com.example.server.cart.service;
 import com.example.server.cart.entity.Cart;
 import com.example.server.cart.entity.CartMealbox;
 import com.example.server.cart.exception.CartException;
-import com.example.server.cart.repository.CartMealboxRepository;
 import com.example.server.cart.repository.CartRepository;
 import com.example.server.exception.BusinessLogicException;
-import com.example.server.mealbox.dto.MealboxPostDto;
+import com.example.server.mealbox.dto.MealboxDto;
 import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.mealbox.service.MealboxService;
 import org.springframework.stereotype.Service;
@@ -28,11 +27,6 @@ public class CartService {
         this.cartRepository = cartRepository;
         this.cartMealboxService = cartMealboxService;
         this.mealboxService = mealboxService;
-    }
-
-    public Cart findCartById(Long cartId){
-        Optional<Cart> findCart = cartRepository.findById(cartId);
-        return findCart.orElseThrow(() -> new BusinessLogicException(CartException.CART_NOT_FOUND));
     }
 
     public Cart createCartMealboxAndAddMealbox(Cart cart, Long mealboxId){
@@ -68,7 +62,7 @@ public class CartService {
     }
 
     public Cart createMealboxAndAddCart(Cart cart, Mealbox mealbox,
-                                        List<MealboxPostDto.Product> mealboxDtoProducts){
+                                        List<MealboxDto.Product> mealboxDtoProducts){
         mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxDtoProducts, null);
 
         cartMealboxService.createCartMealbox(cart, mealbox);
@@ -81,4 +75,10 @@ public class CartService {
         cart.calculateTotalPrice();
         cartRepository.save(cart);
     }
+
+    /* ####### private 메서드 ####### */
+
+//    private void verifyExistsCartMealboxInsCart(Cart cart) {
+//        cart.getCartMealboxes().contains()
+//    }
 }
