@@ -16,7 +16,7 @@ function SurveyHomeArticle() {
         <div>다이어트용 밀박스를</div>
         <div>추천받으시겠습니까?</div>
         <SurveyLink name="추천받기" url="/survey/question/1" />
-        <SkipLink to="/boxes">건너뛰기</SkipLink>
+        <SkipLink to="/mealboxes">건너뛰기</SkipLink>
       </BottomSection>
     </Article>
   );
