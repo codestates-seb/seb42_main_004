@@ -37,9 +37,12 @@ function AllBoxes() {
           setSearchWord={setSearchWord}
         />
         <MealBoxesUl>
-          <li>
-            <MealBoxCardDiv custom={1} />
-          </li>
+          {!search ||
+            (search.slice(-2) === '=1' && (
+              <li>
+                <MealBoxCardDiv custom={1} />
+              </li>
+            ))}
           {res?.data?.map((mealbox) => (
             <li key={mealbox.mealboxId}>
               <MealBoxCardDiv mealBox={mealbox} />
