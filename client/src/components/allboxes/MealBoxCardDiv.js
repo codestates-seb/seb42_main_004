@@ -49,11 +49,6 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
                 <span>{product.kcal.toLocaleString('ko-KR')}kcal</span>
               </li>
             ))}
-            <li>
-              <span>케일주스</span>
-              <span>100ml</span>
-              <span>100kcal</span>
-            </li>
           </MealBoxDesUl>
         )}
       </MealBoxImgDiv>
@@ -138,7 +133,7 @@ const MealBoxDesUl = styled.ul`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 7.5%;
+  padding: 5%;
   opacity: 0;
   list-style: none;
 
@@ -146,6 +141,16 @@ const MealBoxDesUl = styled.ul`
     width: 100%;
     display: flex;
     justify-content: space-between;
+    word-break: keep-all;
+
+    > span:first-child {
+      flex: 1;
+    }
+
+    > span:not(:first-child) {
+      flex: 0.5;
+      text-align: right;
+    }
   }
 
   :hover {
@@ -159,12 +164,11 @@ const MealBoxH3 = styled.h3`
 `;
 const MealBoxCardButtonDiv = styled.div`
   position: relative;
-  display: ${(props) => (props.custom ? 'flex' : 'grid')};
-  grid-template-columns: repeat(3, auto);
-  column-gap: 0.5rem;
+  display: flex;
   width: 100%;
 
   > button {
+    margin-right: 0.5rem;
     font-size: 1rem !important;
     width: 100%;
     padding: 0.7rem;
@@ -173,8 +177,14 @@ const MealBoxCardButtonDiv = styled.div`
     word-break: keep-all;
   }
 
+  > button:not(:last-child) {
+    flex: 1;
+  }
+
   button:nth-child(3) {
+    flex: 0.7;
     cursor: default;
+    margin-right: 0;
 
     :active {
       box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
