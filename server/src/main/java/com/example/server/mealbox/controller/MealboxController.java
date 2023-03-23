@@ -25,7 +25,7 @@ import java.util.List;
 public class MealboxController {
     private final MealboxService mealboxService;
     private final MealboxMapper mapper;
-    private final int mealboxListSize = 5;
+    private final int mealboxListSize = 6;
 
     public MealboxController(MealboxService mealboxService, MealboxMapper mapper) {
         this.mealboxService = mealboxService;

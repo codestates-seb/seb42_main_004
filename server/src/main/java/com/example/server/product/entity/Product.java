@@ -27,24 +27,26 @@ public class Product {
     @Column(nullable = false)
     private int price;
 
+    /* ####### JPA 매핑 ####### */
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
-    private List<MealboxProduct> mealboxProducts;
+    @Builder.Default
+    private List<MealboxProduct> mealboxProducts = new ArrayList<>();
 
     @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     private ProductImage image;
 
+    /* ####### 편의 메서드 ####### */
+
     public void addMealboxProduct(MealboxProduct mealboxProduct){
-        if(mealboxProducts == null){
-            mealboxProducts = new ArrayList<>();
-        }
         mealboxProducts.add(mealboxProduct);
     }
 
-    public void patchProduct(String name, int weight, int kcal, int price){
-        this.name = name;
-        this.weight = weight;
-        this.kcal = kcal;
-        this.price = price;
+    public void patchProduct(Product productPatcher){
+        this.name = productPatcher.getName();
+        this.weight = productPatcher.getWeight();
+        this.kcal = productPatcher.getKcal();
+        this.price = productPatcher.getPrice();
     }
 }
