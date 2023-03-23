@@ -75,7 +75,10 @@ function CustomAside({ admin, custom, login }) {
         </InAsidePriceDiv>
       </InAsideBoxDiv>
       <AsideSignatureButton
-        onClick={() => (admin ? setOpenModal(true) : addCustomToCart())}
+        onClick={() =>
+          custom.products.length !== 0 &&
+          (admin ? setOpenModal(true) : addCustomToCart())
+        }
       >
         {!admin
           ? '장바구니 담기'
