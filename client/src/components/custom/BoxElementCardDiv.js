@@ -2,16 +2,17 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { TextButton } from '../commons/ModalDiv';
 import { MealBoxCardContainerDiv } from '../allboxes/MealBoxCardDiv';
-import { setProduct } from '../../reducers/customReducer';
-// deleteProduct,
+import { deleteProduct, setProduct } from '../../reducers/customReducer';
+
 function BoxElementCardDiv({ product, quantity, totalQuantity }) {
   quantity = quantity || 0;
   const dispatch = useDispatch();
 
-  // const cardClick = () => {
-  //   if (quantity === 0) dispatch(setProduct(quantity + 1));
-  //   else if (quantity === 1) dispatch(deleteProduct({ id: product.productId }));
-  // };
+  const cardClick = () => {
+    if (quantity === 0)
+      dispatch(setProduct({ ...product, quantity: quantity + 1 }));
+    else if (quantity === 1) dispatch(deleteProduct(product.productId));
+  };
 
   const changeQuantity = (key) => () => {
     if (key === 'minus' && quantity <= 1) return;
@@ -24,38 +25,44 @@ function BoxElementCardDiv({ product, quantity, totalQuantity }) {
   };
 
   return (
-    <BoxElementContainerDiv
-      // onClick={cardClick}
+    <ProductContainerDiv
+      onClick={cardClick}
       className="shadow"
       quantity={quantity}
     >
-      <BoxElementImg alt="" src={product.imagePath} />
-      <BoxElementInfoDiv>
+      <ProductImg alt="" src={product.imagePath} />
+      <ProductInfoDiv>
         <h3>{product.name}</h3>
-        <BoxElementDetailDiv>
+        <ProductDetailDiv>
           <span>{product.weight.toLocaleString('ko-KR')}g(ml)</span>
           <span>{product.kcal.toLocaleString('ko-KR')}kcal</span>
           <span>{product.price.toLocaleString('ko-KR')}원</span>
-        </BoxElementDetailDiv>
-      </BoxElementInfoDiv>
-      <div>
+        </ProductDetailDiv>
+      </ProductInfoDiv>
+      <ProductButtonDiv
+        role="button"
+        tabIndex={0}
+        onKeyUp={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
+      >
         <TextButton onClick={changeQuantity('minus')} className="linkstyle">
-          &#8722;
+          -
         </TextButton>
-        <BoxElementQuantitySpan>{quantity}</BoxElementQuantitySpan>
+        <ProductQuantitySpan>{quantity}</ProductQuantitySpan>
         <TextButton onClick={changeQuantity('plus')} className="linkstyle">
-          &#43;
+          +
         </TextButton>
-      </div>
-    </BoxElementContainerDiv>
+      </ProductButtonDiv>
+    </ProductContainerDiv>
   );
 }
 
 export default BoxElementCardDiv;
 
-const BoxElementContainerDiv = styled(MealBoxCardContainerDiv)`
+const ProductContainerDiv = styled(MealBoxCardContainerDiv)`
   flex-direction: row;
-  padding: 5px 3%;
+  padding: 5px 2rem;
+  padding-right: 1.5rem;
   margin-bottom: 10px;
   background-color: var(
     ${(props) => (props.quantity ? '--bucket_brown' : '--product_cocoa')}
@@ -63,13 +70,13 @@ const BoxElementContainerDiv = styled(MealBoxCardContainerDiv)`
   align-items: center;
   justify-content: space-between;
 `;
-const BoxElementImg = styled.img`
+const ProductImg = styled.img`
   width: 60px;
   height: 60px;
   object-fit: contain;
   align-self: center;
 `;
-const BoxElementInfoDiv = styled.div`
+const ProductInfoDiv = styled.div`
   flex: 1;
   padding: 0 2%;
   display: flex;
@@ -83,7 +90,7 @@ const BoxElementInfoDiv = styled.div`
     flex-direction: column;
   }
 `;
-const BoxElementDetailDiv = styled.div`
+const ProductDetailDiv = styled.div`
   display: flex;
 
   > span {
@@ -91,7 +98,17 @@ const BoxElementDetailDiv = styled.div`
     font-size: 0.8rem;
   }
 `;
-const BoxElementQuantitySpan = styled.span`
+const ProductQuantitySpan = styled.span`
   font-weight: bold;
   margin: 4px;
+`;
+const ProductButtonDiv = styled.div`
+  > button,
+  > span {
+    font-size: 1.3rem;
+  }
+
+  > button {
+    padding: 0.5rem;
+  }
 `;

@@ -29,9 +29,11 @@ function MealBoxCardDiv({ mealBox, custom, admin, login }) {
         `${mealBox.name}을 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
       )
     ) {
-      deleteData(`/admin/mealboxes/${mealBox.mealboxId}`).then(() =>
-        alert(`${mealBox.name}이 삭제되었습니다.}`)
-      );
+      deleteData(`/admin/mealboxes/${mealBox.mealboxId}`)
+        .then(() => alert(`${mealBox.name}이 삭제되었습니다.}`))
+        .then(() => {
+          window.location.reload();
+        });
       console.log('삭제 완료');
     }
   };
