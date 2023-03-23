@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import ModalDiv from '../components/commons/ModalDiv';
+import ModalDiv, { TextButton } from '../components/commons/ModalDiv';
 import CustomAside from '../components/custom/CustomAside';
 import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
@@ -47,7 +47,10 @@ function Custom({ admin }) {
 
   const addCustomToCart = () => {
     const data = { ...custom };
-    data.products = data.products.forEach((product) => delete product.name);
+    data.products = data.products.map((product) => {
+      const { productId, quantity } = product;
+      return { productId, quantity };
+    });
     postData(`/users/cart/custom`, data).then(() => {
       dispatch(initializeCustom());
       if (
@@ -59,7 +62,6 @@ function Custom({ admin }) {
       } else navigate('/');
     });
   };
-
   const totalQuantity = custom.products.reduce((a, c) => a + c.quantity, 0);
   const productsId = custom.products.map((product) => product.productId);
   const productInCustom = (id) => {
@@ -77,7 +79,15 @@ function Custom({ admin }) {
         {admin && openModal && (
           <ModalDiv mealBox={custom} closeModal={() => setOpenModal(false)} />
         )}
-        <h1>커스텀 밀박스</h1>
+        <CustomTitleDiv>
+          <h1>커스텀 밀박스</h1>
+          <TextButton
+            onClick={() => dispatch(initializeCustom())}
+            className="linkstyle"
+          >
+            다시 담기
+          </TextButton>
+        </CustomTitleDiv>
         <CustomSelectDiv>
           <ElementsContainerDiv>
             <FilterSearchDiv
@@ -122,6 +132,7 @@ function Custom({ admin }) {
 export default Custom;
 
 const CustomWrapDiv = styled(MealBoxesWrapDiv)`
+  position: relative;
   @media screen and (max-width: 480px) {
     min-height: calc(100vh - 50px - 5rem);
     padding-bottom: 76px;
@@ -130,6 +141,13 @@ const CustomWrapDiv = styled(MealBoxesWrapDiv)`
 const CustomSelectDiv = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+const CustomTitleDiv = styled(CustomSelectDiv)`
+  align-items: flex-end;
+
+  > button {
+    margin-bottom: 1rem;
+  }
 `;
 const ElementsContainerDiv = styled.div`
   display: flex;

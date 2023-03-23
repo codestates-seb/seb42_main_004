@@ -1,10 +1,10 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
 import blankbucket from '../../assets/blankbucket.png';
-import goToCustom from '../../util/goToCustom';
-import deleteData from '../../util/deleteData';
 import postData from '../../util/postData';
-import { useState } from 'react';
+import deleteData from '../../util/deleteData';
+import goToCustom from '../../util/goToCustom';
 
 function MealBoxCardDiv({ mealBox, custom, admin }) {
   const [notification, setNotification] = useState(false);
