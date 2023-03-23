@@ -51,27 +51,31 @@ public class OrderController {
   }
 
   @GetMapping("/orders/checkout/{order-id}")
-  public ResponseEntity getOrderToPay(@PathVariable("order-id") @PositiveOrZero long orderId) { // 결제 창
+  public ResponseEntity<?> getOrderToPay(@PathVariable("order-id") @PositiveOrZero long orderId,
+      @AuthenticationPrincipal PrincipalDetails principalDetails) { // 결제 창
     Orders order = orderService.findOrder(orderId);
+    orderService.checkOrderHolder(order, principalDetails.getId());
     OrderPageResponseDto response = mapper.ordersToOrderPageResponseDto(order);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
   @PatchMapping("/orders/delivery/{order-id}")
-  public ResponseEntity setDeliveryAddress(@PathVariable("order-id") @PositiveOrZero long orderId,
-      @RequestBody OrderPatchDeliveryDto orderPatchDeliveryDto) {  // 결제시 주문에 배송지 입력
+  public ResponseEntity<?> setDeliveryAddress(@PathVariable("order-id") @PositiveOrZero long orderId,
+      @RequestBody OrderPatchDeliveryDto orderPatchDeliveryDto,
+      @AuthenticationPrincipal PrincipalDetails principalDetails) {  // 결제시 주문에 배송지 입력
+    orderService.checkOrderHolder(orderId, principalDetails.getId());
     orderService.setDeliveryAddress(orderPatchDeliveryDto, orderId);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @GetMapping("/orders/user/{user-id}")
-  public ResponseEntity getOrdersUser(@PathVariable("user-id") @PositiveOrZero long userId) {  //유저별 주문 내역 확인, JWT 정보랑 비교해야할 듯
-    List<Orders> orders = orderService.getOrdersByDateToList(userId);
+  @GetMapping("/orders/user")
+  public ResponseEntity<?> getOrdersUser(@AuthenticationPrincipal PrincipalDetails principalDetails) {  //유저별 주문 내역 확인, JWT 정보랑 비교해야할 듯
+    List<Orders> orders = orderService.getOrdersByDateToList(principalDetails.getId());
     List<OrderResponseDto> response = mapper.OrdersToOrderResponseDtos(orders);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   @GetMapping("/admin/orders")
-  public ResponseEntity getOrdersAdmin(@RequestParam @Positive int page, @RequestParam String date) {
+  public ResponseEntity<?> getOrdersAdmin(@RequestParam @Positive int page, @RequestParam String date) {
     Page<Orders> orders = orderService.getOrdersByDateToPage(date, page-1);
     List<Orders> content = orders.getContent();
     List<OrderResponseDto> orderResponseDtos = mapper.OrdersToOrderResponseDtos(content);
@@ -79,13 +83,15 @@ public class OrderController {
   }
 
   @DeleteMapping("/orders/{order-number}")
-  public ResponseEntity deleteOrder(@PathVariable("order-number") @PositiveOrZero String orderNumber) {
+  public ResponseEntity<?> deleteOrder(@PathVariable("order-number") @PositiveOrZero String orderNumber,
+      @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    orderService.checkOrderHolder(orderNumber, principalDetails.getId());
     orderService.cancelOrder(orderNumber);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @PatchMapping("/admin/orders/status/{order-number}")
-  public ResponseEntity setOrderStatus(@PathVariable("order-number") String orderNumber, @RequestBody
+  public ResponseEntity<?> setOrderStatus(@PathVariable("order-number") String orderNumber, @RequestBody
       OrderPatchStatusDto orderPatchStatusDto) {
     orderService.changeStatus(orderNumber, orderPatchStatusDto);
     return new ResponseEntity<>(HttpStatus.OK);

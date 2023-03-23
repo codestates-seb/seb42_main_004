@@ -163,4 +163,26 @@ public class OrderService {
     order.setPhoneNumber(orderPatchDeliveryDto.getPhoneNumber());
     orderRepository.save(order);
   }
+
+  // 로그인한 유저가 주문자인지 확인
+  public void checkOrderHolder(Orders order, long userId) {
+    long orderHolderId = order.getUser().getId();
+    if(orderHolderId != userId) {
+      throw new BusinessLogicException(OrderException.NOT_ORDER_HOLDER);
+    }
+  }
+
+  public void checkOrderHolder(long orderId, long userId) {
+    long orderHolderId = findVerifiedOrder(orderId).getUser().getId();
+    if(orderHolderId != userId) {
+      throw new BusinessLogicException(OrderException.NOT_ORDER_HOLDER);
+    }
+  }
+
+  public void checkOrderHolder(String orderNumber, long userId) {
+    long orderHolderId = findByOrderNumber(orderNumber).getUser().getId();
+    if(orderHolderId != userId) {
+      throw new BusinessLogicException(OrderException.NOT_ORDER_HOLDER);
+    }
+  }
 }
