@@ -43,11 +43,11 @@ function MealBoxCardDiv({ mealBox, custom, admin }) {
         {mealBox && (
           <MealBoxDesUl>
             {mealBox.products.map((product) => (
-              <li key={product.productId}>
+              <MealBoxDesLi key={product.productId}>
                 <span>{product.name}</span>
                 <span>{product.weight.toLocaleString('ko-KR')}g(ml)</span>
                 <span>{product.kcal.toLocaleString('ko-KR')}kcal</span>
-              </li>
+              </MealBoxDesLi>
             ))}
           </MealBoxDesUl>
         )}
@@ -137,26 +137,26 @@ const MealBoxDesUl = styled.ul`
   opacity: 0;
   list-style: none;
 
-  > li {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    word-break: keep-all;
-
-    > span:first-child {
-      flex: 1;
-    }
-
-    > span:not(:first-child) {
-      flex: 0.5;
-      text-align: right;
-    }
-  }
-
   :hover {
     opacity: 1;
   }
 `;
+const MealBoxDesLi = styled.h3`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  word-break: keep-all;
+
+  > span:first-child {
+    flex: 1;
+  }
+
+  > span:not(:first-child) {
+    flex: 0.5;
+    text-align: right;
+  }
+`;
+
 const MealBoxH3 = styled.h3`
   font-size: 1.3rem;
   margin-bottom: 0.5rem;
