@@ -1,7 +1,6 @@
 package com.example.server.cart.controller;
 
 import com.example.server.auth.details.PrincipalDetails;
-import com.example.server.auth.dto.PrincipalDto;
 import com.example.server.cart.dto.CartPatchDto;
 import com.example.server.cart.dto.CartPostDto;
 
@@ -10,7 +9,7 @@ import com.example.server.cart.entity.Cart;
 import com.example.server.cart.mapper.CartMapper;
 import com.example.server.cart.service.CartService;
 import com.example.server.dto.SingleResponseDto;
-import com.example.server.mealbox.dto.MealboxPostDto;
+import com.example.server.mealbox.dto.MealboxDto;
 import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.mealbox.mapper.MealboxMapper;
 import com.example.server.user.service.UserService;
@@ -18,12 +17,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @RestController
 @Slf4j
@@ -50,11 +46,11 @@ public class CartController {
 //  소비자가 커스텀 밀박스 만들기 + 소비자가 기존의 추천조합 밀박스 수정하기
   @PostMapping("/custom")
   public ResponseEntity createCustomMealbox(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                            @RequestBody MealboxPostDto mealboxPostDto) {
+                                            @RequestBody MealboxDto mealboxDto) {
     log.info("------createCustomMealboxAndAddCart------");
     Cart cart = userService.getUser(principalDetails.getId()).getCart();
-    Mealbox mealbox = mealboxMapper.mealboxPostDtoToMealbox(mealboxPostDto, Mealbox.MealboxInfo.CUSTOM_MEALBOX);
-    cartService.createMealboxAndAddCart(cart, mealbox, mealboxPostDto.getProducts());
+    Mealbox mealbox = mealboxMapper.mealboxDtoToMealbox(mealboxDto, Mealbox.MealboxInfo.CUSTOM_MEALBOX);
+    cartService.createMealboxAndAddCart(cart, mealbox, mealboxDto.getProducts());
     return new ResponseEntity(HttpStatus.CREATED);
   }
 

@@ -15,14 +15,17 @@ public class PageInfo {
         this.page = page;
         this.size = size;
         this.totalElements = totalElements;
-        this.totalPages = calcaulteTotalPages();
+        calcaulteTotalPages();
     }
 
     private int calcaulteTotalPages(){
         int totalpages = 1;
-        if(totalElements > size - 1){
+        if(page==1){
+            totalpages = totalElements / (size+ 1 ) + 1 ;
+        }
+        if(page>1){
             totalpages = totalElements / size + 1 ;
         }
-        return totalpages;
+        return this.totalPages = totalpages;
     }
 }

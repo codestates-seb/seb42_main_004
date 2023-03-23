@@ -30,11 +30,8 @@ public class ProductService {
     }
 
     public Product createProduct(Product product, MultipartFile file) {
-        //이미지 있으면 업로드
-        if(!file.isEmpty()){
-            ProductImage image = imageService.uploadProductImage(file, product);
-            product.setImage(image);
-        }
+
+        uploadImage(product, file);
 
         return productRepository.save(product);
     }
@@ -42,11 +39,8 @@ public class ProductService {
     public Product updateProduct(Long productId, Product productPatcher, MultipartFile file){
         Product product = findProductById(productId);
         product.patchProduct(productPatcher);
-        //이미지 있으면 업로드
-        if(file!=null & !file.isEmpty()){
-            ProductImage image = imageService.uploadProductImage(file, product);
-            product.setImage(image);
-        }
+
+        uploadImage(product, file);
 
         return productRepository.save(product);
     }
@@ -61,28 +55,56 @@ public class ProductService {
         return findProduct.orElseThrow(()->new BusinessLogicException(ProductException.PRODUCT_NOT_FOUND));
     }
 
-    public Page<Product> findProducts(int page, int size, String sort, Sort.Direction direction){
-        PageRequest pageRequest = makePageRequest(page, size, sort, direction);
+    public Page<Product> findProducts(int page, int size, String sort,
+                                      Sort.Direction direction, boolean adminPage){
+        PageRequest pageRequest = adminPage ?
+                makeCustomPageRequest(page, size, sort, direction) : makePageRequest(page, size, sort, direction);
         return productRepository.findAll(pageRequest);
     }
 
-    public Page<Product> searchProducts(String search, int page, int size, String sort, Sort.Direction direction){
+    public Page<Product> searchProducts(String search, int page, int size, String sort,
+                                        Sort.Direction direction, boolean adminPage){
         if(search.trim().equals("")){
-            return new PageImpl<Product>(new ArrayList<>(), PageRequest.ofSize(7),0);
+            if(!adminPage){
+                size --;
+            }
+            return new PageImpl<Product>(new ArrayList<>(), PageRequest.ofSize(size),0);
         }
 
-        PageRequest pageRequest = makePageRequest(page, size, sort, direction);
+        PageRequest pageRequest = adminPage ?
+                makeCustomPageRequest(page, size, sort, direction) : makePageRequest(page, size, sort, direction);
         return productRepository.findAllByNameContains(search, pageRequest);
     }
 
-    private PageRequest makePageRequest(int page, int size, String sort, Sort.Direction direction) {
-        PageRequest pageRequest = null;
+    /* ####### private 메서드 ####### */
+
+    private void uploadImage(Product product, MultipartFile file) {
+        if(!file.isEmpty()){
+            ProductImage image = imageService.uploadProductImage(file, product);
+            product.setImage(image);
+        }
+    }
+
+    private CustomPageRequest makeCustomPageRequest(int page, int size, String sort, Sort.Direction direction) {
+        CustomPageRequest pageRequest = null;
         if(direction.isAscending()){
             pageRequest =
                     CustomPageRequest.of(page-1, size, Sort.by(sort).ascending());
         } else if(direction.isDescending()){
             pageRequest =
                     CustomPageRequest.of(page-1, size, Sort.by(sort).descending());
+        }
+        return pageRequest;
+    }
+
+    private PageRequest makePageRequest(int page, int size, String sort, Sort.Direction direction) {
+        PageRequest pageRequest = null;
+        if(direction.isAscending()){
+            pageRequest =
+                    PageRequest.of(page-1, size, Sort.by(sort).ascending());
+        } else if(direction.isDescending()){
+            pageRequest =
+                    PageRequest.of(page-1, size, Sort.by(sort).descending());
         }
         return pageRequest;
     }

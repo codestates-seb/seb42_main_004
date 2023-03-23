@@ -58,7 +58,7 @@ public class CustomPageRequest extends PageRequest {
     @Override
     public long getOffset() {
         long offset = (long) page * (long) size;
-        if(page>1){
+        if(page>0){
             offset--;
         }
         return offset;
