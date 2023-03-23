@@ -4,36 +4,37 @@ import OrderHistoryPageButton from '../components/orderHistory/OrderHistoryPageB
 import OrderHistoryByDateDiv from '../components/orderHistory/OrderHistoryByDateDiv';
 import PaginationUl from '../components/commons/PaginationUl';
 import getData from '../util/getData';
-import { resEx } from '../components/orderHistory/dummyData';
+// import { resEx } from '../components/orderHistory/dummyData';
+import { useSelector } from 'react-redux';
 
 function OrderHistory() {
-  let isAdmin = true;
+  let { admin } = useSelector((state) => state.authReducer);
+  console.log(admin);
   let [page, setPage] = useState(1);
   let [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   let [data, setData] = useState([]);
 
   let render = () => {
-    getData(
-      isAdmin
-        ? `/admin/orders?page=${page}&date=${date}`
-        : `/orders/users/${`1`}`
-    )
-      .then(() => {
-        let filterByDateObj = resEx.data.reduce((acc, cur) => {
+    getData(admin ? `/admin/orders?page=${page}&date=${date}` : `/orders/users`)
+      .then((res) => {
+        console.log(res.data);
+        let filterByDateObj = res.data.reduce((acc, cur) => {
           let orderDate = cur.createdAt.slice(0, 10);
           acc[orderDate] ? acc[orderDate].push(cur) : (acc[orderDate] = [cur]);
           return acc;
         }, {});
-
+        console.log(filterByDateObj);
         let filterByDateArr = [];
         for (let date in filterByDateObj) {
           filterByDateArr.push({ date, orders: filterByDateObj[date] });
         }
+        console.log(filterByDateArr);
 
-        return [filterByDateArr];
+        return filterByDateArr;
       })
-      .then(([filterByDateArr]) => {
-        setData(filterByDateArr);
+      .then((data) => {
+        console.log(data);
+        setData(data);
       });
   };
 
@@ -43,7 +44,7 @@ function OrderHistory() {
   };
 
   let adminGetOrderHistory = () => {
-    render();
+    page === 1 ? render() : setPage(1);
   };
 
   useEffect(() => {
@@ -52,7 +53,7 @@ function OrderHistory() {
 
   return (
     <OrderHistoryPageWrapper className="margininside">
-      {isAdmin && (
+      {admin && (
         <ManagerMenuDiv>
           <input type="date" onChange={dateHandler} value={date} />
           <OrderHistoryPageButton
@@ -61,10 +62,10 @@ function OrderHistory() {
           />
         </ManagerMenuDiv>
       )}
-      {data.map((el) => (
+      {data?.map((el) => (
         <OrderHistoryByDateDiv key={el.date} ordersPerDate={el} />
       ))}
-      {isAdmin && <PaginationUl page={page} totalpage={22} setPage={setPage} />}
+      {admin && <PaginationUl page={page} totalpage={22} setPage={setPage} />}
     </OrderHistoryPageWrapper>
   );
 }

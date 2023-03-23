@@ -6,8 +6,10 @@ import patchData from '../../util/patchData';
 import deleteData from '../../util/deleteData';
 
 function OrderHistoryByOrderNumber({ orders }) {
-  let isAdmin = true;
+  console.log(orders);
+  let admin = true;
   let { username, deliveryDate, orderStatus, orderNumber, mealboxes } = orders;
+  console.log(username, deliveryDate, orderStatus, orderNumber, mealboxes);
   let [status, setStatus] = useState();
   let [buttonText, setButtonText] = useState('');
   let [isRefundable, setIsRefundable] = useState(false);
@@ -55,8 +57,8 @@ function OrderHistoryByOrderNumber({ orders }) {
   };
 
   useEffect(() => {
-    if (isAdmin) {
-      console.log(isAdmin);
+    if (admin) {
+      console.log(admin);
     } else {
       buttonTextHandler();
       refundHandler();
@@ -67,7 +69,7 @@ function OrderHistoryByOrderNumber({ orders }) {
     <>
       <TopMenuDiv>
         <div>{orderNumber}</div>
-        {isAdmin ? (
+        {admin ? (
           <AdminTopMenuDiv>
             <div>{`${username}님`}</div>
             <select name="#" onChange={statusHandler}>

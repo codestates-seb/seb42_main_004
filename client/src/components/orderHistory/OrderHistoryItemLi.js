@@ -7,7 +7,7 @@ import MealBoxItemsDiv from '../cartPage/MealBoxItemsDiv';
 import styled from 'styled-components';
 
 function OrderHistoryItemLi({ mealBox }) {
-  let { mealboxKcal, mealboxName, mealboxPrice, mealboxQuantity, product } =
+  let { mealboxKcal, mealboxName, mealboxPrice, mealboxQuantity, products } =
     mealBox;
 
   return (
@@ -17,7 +17,7 @@ function OrderHistoryItemLi({ mealBox }) {
         <MealBoxCounter>{`X${mealboxQuantity}`}</MealBoxCounter>
       </CartItemTopDiv>
       <MealBoxItemBottemDiv>
-        <MealBoxItemsDiv product={product} />
+        <MealBoxItemsDiv products={products} />
         <MealBoxInfo>
           <span>{`${mealboxKcal}kcal`}</span>
           <span>{`${mealboxPrice}원`}</span>

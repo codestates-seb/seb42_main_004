@@ -2,11 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   age: '',
-  gender: '남성',
+  gender: 'MALE',
   height: '',
   weight: '',
-  active: '비활동적',
-  dietPlan: 'Easy',
+  active: 'NOT_ACTIVE',
 };
 
 const surveyQuestionSlice = createSlice({
@@ -25,14 +24,10 @@ const surveyQuestionSlice = createSlice({
       state.active = action.payload;
     },
 
-    setDietPlan: (state, action) => {
-      state.dietPlan = action.payload;
-    },
-
     setReset: () => initialState,
   },
 });
 
-export const { setProfile, setGender, setActive, setDietPlan, setReset } =
+export const { setProfile, setGender, setActive, setReset } =
   surveyQuestionSlice.actions;
 export default surveyQuestionSlice.reducer;
