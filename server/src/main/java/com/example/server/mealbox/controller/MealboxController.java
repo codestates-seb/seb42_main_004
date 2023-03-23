@@ -34,24 +34,20 @@ public class MealboxController {
 
     //관리자가 추천조합 밀박스 만들기
     @PostMapping("/admin/mealboxes")
-    public ResponseEntity createAdminMealbox(@RequestPart (value = "mealboxDto") MealboxDto mealboxDto,
-                                             @RequestPart (value = "file", required = false) MultipartFile file) {
+    public ResponseEntity createAdminMealbox(@RequestBody MealboxDto mealboxDto) {
         log.info("------createAdminMealbox------");
         Mealbox mealbox = mapper.mealboxDtoToMealbox(mealboxDto, Mealbox.MealboxInfo.NO_REC_MEALBOX);
-        log.info(mealbox.toString());
-        mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxDto.getProducts(), file);
-        log.info(mealbox.toString());
+        mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxDto.getProducts());
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     //관리자가 추천조합 밀박스 수정하기
     @PatchMapping("/admin/mealboxes/{mealboxId}")
     public ResponseEntity updateAdminMealbox(@Positive @PathVariable("mealboxId") Long mealboxId,
-                                             @RequestPart(value = "mealboxDto") MealboxDto mealboxDto,
-                                             @RequestPart(value = "file", required = false) MultipartFile file) {
+                                             @RequestBody MealboxDto mealboxDto) {
         log.info("------updateAdminMealbox------");
         Mealbox mealboxPatcher = mapper.mealboxDtoToMealboxPatcher(mealboxDto);
-        mealboxService.updateMealbox(mealboxPatcher, mealboxId, mealboxDto.getProducts(), file);
+        mealboxService.updateMealbox(mealboxPatcher, mealboxId, mealboxDto.getProducts());
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -103,5 +99,13 @@ public class MealboxController {
         PageInfo pageInfo = new PageInfo(mealboxPage.getNumber()+1, mealboxPage.getSize(),
                 (int) mealboxPage.getTotalElements());
         return new ResponseEntity(new MultiResponseDto(response, pageInfo), HttpStatus.OK);
+    }
+
+    @PostMapping("/mealboxes/{mealboxId}/image")
+    public ResponseEntity uploadMealboxImage(@PathVariable("mealboxId") Long mealboxId,
+                                             @RequestPart MultipartFile file) {
+        log.info("------uploadMealboxImage------");
+        mealboxService.uploadImage(mealboxId, file);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }
