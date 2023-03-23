@@ -21,5 +21,5 @@ public class MealboxResponseDto {
     private int weight;
     private int kcal;
     private int price;
-    private List<ProductResponseDto> products;
+    private List<ProductResponseDtoForCart> products;
 }

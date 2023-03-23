@@ -2,7 +2,9 @@ package com.example.server.cart.mapper;
 
 import com.example.server.cart.dto.CartResponseDto;
 import com.example.server.cart.dto.MealboxResponseDto;
+import com.example.server.cart.dto.ProductResponseDtoForCart;
 import com.example.server.cart.entity.Cart;
+import com.example.server.image.entity.ImageInfo;
 import com.example.server.mealbox.dto.MealboxProductResponseDto;
 import com.example.server.product.dto.ProductResponseDto;
 import com.example.server.product.entity.Product;
@@ -28,12 +30,14 @@ public class CartMapper {
                         .price(cartMealbox.getMealbox().getPrice())
                         .products(cartMealbox.getMealbox().getMealboxProducts().stream().map(mealboxProduct ->{
                                     Product product = mealboxProduct.getProduct();
-                                    return ProductResponseDto.builder().productId(mealboxProduct.getId())
+                                    ImageInfo imageInfo = product.getImage().getImageInfo();
+                                    return ProductResponseDtoForCart.builder().productId(mealboxProduct.getId())
                                             .name(product.getName())
                                             .weight(product.getWeight())
                                             .kcal(product.getKcal())
                                             .price(product.getPrice())
                                             .quantity(mealboxProduct.getQuantity())
+                                            .imagePath(imageInfo.getBaseUrl()+imageInfo.getFilePath()+imageInfo.getImageName())
                                             .build();
                                 }).collect(Collectors.toList()))
                         .build()
