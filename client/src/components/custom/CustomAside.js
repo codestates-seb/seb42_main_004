@@ -22,7 +22,7 @@ function CustomAside({ admin, custom, login }) {
       });
       await postData(`/users/cart/custom`, data);
     } else {
-      dispatch(addCartItem({ mealBox: data }));
+      dispatch(addCartItem(data));
     }
 
     dispatch(initializeCustom());

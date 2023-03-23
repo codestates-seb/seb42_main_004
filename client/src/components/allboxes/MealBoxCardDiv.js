@@ -16,7 +16,7 @@ function MealBoxCardDiv({ mealBox, custom, admin, login }) {
     if (login) {
       await postData(`/users/cart`, { mealboxId: mealBox.mealboxId });
     } else {
-      dispatch(addCartItem({ mealBox }));
+      dispatch(addCartItem(mealBox));
     }
     setNotification(true);
     setTimeout(() => setNotification(false), 2000);
