@@ -8,6 +8,7 @@ import getData from '../../util/getData';
 import SurveyBox from './SurveyBox';
 import DietInfo from './DietInfo';
 import { setSurveyRcmd } from '../../reducers/surveyRcmdReducer';
+
 function SurveyPage3() {
   let { state } = useLocation();
 
@@ -36,6 +37,8 @@ function SurveyPage3() {
         dispatch(setReset());
         navigate(`/survey/result`);
       });
+
+    dispatch(setReset());
   };
 
   return (
