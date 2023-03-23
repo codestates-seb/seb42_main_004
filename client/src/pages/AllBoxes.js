@@ -17,7 +17,7 @@ function AllBoxes() {
   const [res, isPending, error] = useGET(`${pathname}${search}`);
   const [searchWord, setSearchWord] = useState('');
   const [errorWord, setErrorWord] = useState(searchWord);
-  console.log(res);
+
   const searchMealBox = () => {
     navigate(paginationUrl(1));
   };
@@ -45,13 +45,11 @@ function AllBoxes() {
           </SearchResultH3>
         )}
         <MealBoxesUl>
-          {!search ||
-            search === '?page=1' ||
-            (res.data?.length === 0 && (
-              <li>
-                <MealBoxCardDiv custom={1} />
-              </li>
-            ))}
+          {(search === '?page=1' || res.data?.length === 0) && (
+            <li>
+              <MealBoxCardDiv custom={1} />
+            </li>
+          )}
           {res.data?.length !== 0 ? (
             res.data?.map((mealbox) => (
               <li key={mealbox.mealboxId}>
