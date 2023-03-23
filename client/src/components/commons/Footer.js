@@ -52,13 +52,14 @@ const FooterWrapper = styled.footer`
   height: 280px;
   background-color: var(--signature);
   color: var(--white);
+  z-index: 14;
 
   @media (max-width: 768px) {
     height: 230px;
   }
 
   @media (max-width: 480px) {
-    display: ${(props) => (props.isVisible ? `block` : `none`)};
+    display: ${(props) => (props.isVisible ? `flex` : `none`)};
     height: 180px;
   }
 `;
