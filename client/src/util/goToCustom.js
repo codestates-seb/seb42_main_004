@@ -1,18 +1,19 @@
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { addProduct, setName, setId } from '../reducers/customReducer';
+import { addProductInBox, setIdName } from '../reducers/customReducer';
 
-function goToCustom(mealbox, admin) {
+function goToCustom(mealBox, admin) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const aux = () => {
-    if (mealbox?.products) {
-      mealbox.products.forEach((product) => dispatch(addProduct({ product })));
-    }
-    if (admin) {
-      dispatch(setName(mealbox.name));
-      dispatch(setId(mealbox.mealboxId));
+    if (mealBox?.products) {
+      dispatch(addProductInBox(mealBox.products));
+      if (admin) {
+        dispatch(
+          setIdName({ name: mealBox.name, mealboxId: mealBox.mealboxId })
+        );
+      }
     }
     navigate('/custom');
   };
