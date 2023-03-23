@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -35,22 +36,20 @@ public class ProductController {
 
     //관리자가 개별상품 생성하기
     @PostMapping("/admin/products")
-    public ResponseEntity createAdminProduct(@RequestPart (value = "productDto") ProductDto productDto,
-                                             @RequestPart (value = "file", required = false) MultipartFile file){
+    public ResponseEntity createAdminProduct(@RequestBody ProductDto productDto){
         log.info("--------createProduct-------");
         Product product = mapper.productDtoToProduct(productDto);
-        productService.createProduct(product, file);
+        productService.createProduct(product);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     //관리자가 개별상품 수정하기
     @PatchMapping("/admin/products/{productId}")
     public ResponseEntity updateAdminProduct(@PathVariable("productId") Long productId,
-                                             @RequestPart (value = "productDto") ProductDto productDto,
-                                             @RequestPart (value = "file", required = false) MultipartFile file){
+                                             @RequestBody ProductDto productDto){
         log.info("--------updateProduct-------");
         Product productPatcher = mapper.productDtoToProduct(productDto);
-        productService.updateProduct(productId, productPatcher,file);
+        productService.updateProduct(productId, productPatcher);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -116,6 +115,14 @@ public class ProductController {
         PageInfo pageInfo = new PageInfo(productPage.getNumber()+1, productPage.getSize(),
                 (int) productPage.getTotalElements());
         return new ResponseEntity(new MultiResponseDto(response, pageInfo), HttpStatus.OK);
+    }
+
+    @PostMapping("/products/{productId}/image")
+    public ResponseEntity postProductImage(@PathVariable("productId") Long productId,
+                                           @RequestPart MultipartFile file) {
+        log.info("------uploadProductImage------");
+        productService.uploadImage(productId, file);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
 }
