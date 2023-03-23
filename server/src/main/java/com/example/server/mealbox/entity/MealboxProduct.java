@@ -19,6 +19,8 @@ public class MealboxProduct {
     @Column(nullable = false)
     private int quantity;
 
+    /* ####### JPA 매핑 ####### */
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="PRODUCT_ID")
     private Product product;
@@ -26,6 +28,8 @@ public class MealboxProduct {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="MEALBOX_ID")
     private Mealbox mealbox;
+
+    /* ####### 편의 메서드 ####### */
 
     public static void makeMealboxProduct(int quantity, Product product, Mealbox mealbox) {
         MealboxProduct mealboxProduct =

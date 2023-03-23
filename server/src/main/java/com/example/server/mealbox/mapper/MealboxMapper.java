@@ -1,8 +1,7 @@
 package com.example.server.mealbox.mapper;
 
 import com.example.server.image.entity.ImageInfo;
-import com.example.server.mealbox.dto.MealboxPatchDto;
-import com.example.server.mealbox.dto.MealboxPostDto;
+import com.example.server.mealbox.dto.MealboxDto;
 import com.example.server.mealbox.dto.OnlyMealboxResponseDto;
 import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.product.dto.ProductResponseDto;
@@ -13,21 +12,20 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface MealboxMapper {
-    default Mealbox mealboxPostDtoToMealbox(MealboxPostDto mealboxPostDto, Mealbox.MealboxInfo mealboxInfo){
-        return Mealbox.builder().name(mealboxPostDto.getName())
-                .price(mealboxPostDto.getPrice())
-                .kcal(mealboxPostDto.getKcal())
-                .weight(mealboxPostDto.getWeight())
+    default Mealbox mealboxDtoToMealbox(MealboxDto mealboxDto, Mealbox.MealboxInfo mealboxInfo){
+        return Mealbox.builder().name(mealboxDto.getName())
+                .price(mealboxDto.getPrice())
+                .kcal(mealboxDto.getKcal())
+                .weight(mealboxDto.getWeight())
                 .mealboxInfo(mealboxInfo)
                 .build();
     }
 
-    default Mealbox mealboxPatchDtoToMealbox(MealboxPatchDto mealboxPatchDto){
-        return Mealbox.builder()
-                .name(mealboxPatchDto.getName())
-                .price(mealboxPatchDto.getPrice())
-                .kcal(mealboxPatchDto.getKcal())
-                .weight(mealboxPatchDto.getWeight())
+    default Mealbox mealboxDtoToMealboxPatcher(MealboxDto mealboxDto){
+        return Mealbox.builder().name(mealboxDto.getName())
+                .price(mealboxDto.getPrice())
+                .kcal(mealboxDto.getKcal())
+                .weight(mealboxDto.getWeight())
                 .build();
     }
 

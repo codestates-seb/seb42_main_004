@@ -27,15 +27,12 @@ public class Cart extends BaseEntity {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @OneToMany(mappedBy = "cart", orphanRemoval = true)
+  @OneToMany(mappedBy = "cart", orphanRemoval = true, cascade = CascadeType.ALL)
   @Builder.Default
   private List<CartMealbox> cartMealboxes = new ArrayList<>();
 
   public void addCartMealbox(CartMealbox cartMealbox) {
     cartMealboxes.add(cartMealbox);
-    if(cartMealbox.getCart() != this) {
-      cartMealbox.setCart(this);
-    }
   }
 
   public void calculateTotalPrice() {

@@ -1,6 +1,7 @@
 package com.example.server.init;
 
 import com.example.server.auth.utils.CustomAuthorityUtils;
+import com.example.server.cart.entity.Cart;
 import com.example.server.image.entity.ImageInfo;
 import com.example.server.image.entity.MealboxImage;
 import com.example.server.image.entity.ProductImage;
@@ -59,25 +60,34 @@ class InitUser {
   private final PasswordEncoder passwordEncoder;
 
   public void UserInit() {
-    List<User> user = new ArrayList<>();
+    List<User> userList = new ArrayList<>();
 
-    user.add(User.builder().id(1L).email("admin@gmail.com").password(
+    User admin = User.builder().id(1L).email("admin@gmail.com").password(
             passwordEncoder.encode("admin")).name("관리자").roles(
             authorityUtils.createRoles("admin@gmail.com")).address(new Address())
         .deliveryInformation(new DeliveryInformation()).status(UserStatus.USER_ADMIN)
-        .phoneNumber("010-1234-1234").build());
-    user.add(User.builder().id(2L).email("baram2449@naver.com").password(
+        .phoneNumber("010-1234-1234").build();
+    Cart cart = Cart.builder().user(admin).build();
+    admin.setCart(cart);
+    userList.add(admin);
+    User user1 = User.builder().id(2L).email("baram2449@naver.com").password(
             passwordEncoder.encode("qwe123")).name("위준성").roles(
             authorityUtils.createRoles("qwe@gmail.com")).address(new Address())
         .deliveryInformation(new DeliveryInformation()).mailKey("QWERQWERQW")
-        .phoneNumber("010-1234-1234").build());
-    user.add(User.builder().id(3L).email("asd@gmail.com").password(
+        .phoneNumber("010-1234-1234").build();
+    Cart cart2 = Cart.builder().user(user1).build();
+    user1.setCart(cart2);
+    userList.add(user1);
+    User user2 = User.builder().id(3L).email("asd@gmail.com").password(
             passwordEncoder.encode("asd123")).name("진태양").roles(
             authorityUtils.createRoles("asd@gmail.com")).address(new Address())
         .deliveryInformation(new DeliveryInformation())
-        .phoneNumber("010-1234-1234").build());
+        .phoneNumber("010-1234-1234").build();
+    Cart cart3 = Cart.builder().user(user2).build();
+    user2.setCart(cart3);
+    userList.add(user2);
 
-    userRepository.saveAll(user);
+    userRepository.saveAll(userList);
   }
 }
 

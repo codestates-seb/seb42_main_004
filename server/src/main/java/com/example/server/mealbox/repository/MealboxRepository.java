@@ -12,5 +12,10 @@ public interface MealboxRepository extends JpaRepository<Mealbox, Long> {
 
     Page<Mealbox> findAllByMealboxInfoIsNotAndNameContains(Pageable pageable, Mealbox.MealboxInfo mealboxInfo,
                                                               String search);
+
+    Page<Mealbox> findAllDistinctByMealboxInfoIsNotAndNameContainingOrMealboxProductsProductNameContains(Pageable pageable,
+                                                                                                 Mealbox.MealboxInfo mealboxInfo,
+                                                                                                 String mealboxName, String productName);
+
     boolean existsMealboxByName(String name);
 }
