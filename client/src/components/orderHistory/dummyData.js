@@ -14,28 +14,28 @@ export const resEx = {
           mealboxKcal: 320,
           product: [
             {
-              productName: '방울토마토',
-              productQuantity: 1,
+              name: '방울토마토',
+              quantity: 1,
             },
             {
-              productName: '찐감자',
-              productQuantity: 1,
+              name: '찐감자',
+              quantity: 1,
             },
             {
-              productName: '양상추샐러드',
-              productQuantity: 1,
+              name: '양상추샐러드',
+              quantity: 1,
             },
             {
-              productName: '미트리 닭가슴살 소세지',
-              productQuantity: 1,
+              name: '미트리 닭가슴살 소세지',
+              quantity: 1,
             },
             {
-              productName: '파프리카',
-              productQuantity: 1,
+              name: '파프리카',
+              quantity: 1,
             },
             {
-              productName: '치즈, 체다',
-              productQuantity: 1,
+              name: '치즈, 체다',
+              quantity: 1,
             },
           ],
         },
@@ -46,24 +46,24 @@ export const resEx = {
           mealboxKcal: 333,
           product: [
             {
-              productName: '그릭요거트',
-              productQuantity: 1,
+              name: '그릭요거트',
+              quantity: 1,
             },
             {
-              productName: '사과',
-              productQuantity: 1,
+              name: '사과',
+              quantity: 1,
             },
             {
-              productName: '저지방우유',
-              productQuantity: 1,
+              name: '저지방우유',
+              quantity: 1,
             },
             {
-              productName: '단백질쉐이크',
-              productQuantity: 1,
+              name: '단백질쉐이크',
+              quantity: 1,
             },
             {
-              productName: '닭가슴살샐러드',
-              productQuantity: 1,
+              name: '닭가슴살샐러드',
+              quantity: 1,
             },
           ],
         },
@@ -83,24 +83,24 @@ export const resEx = {
           mealboxKcal: 540,
           product: [
             {
-              productName: '현미밥',
-              productQuantity: 1,
+              name: '현미밥',
+              quantity: 1,
             },
             {
-              productName: '돼지고기, 안심, 삶은것',
-              productQuantity: 1,
+              name: '돼지고기, 안심, 삶은것',
+              quantity: 1,
             },
             {
-              productName: '채소샐러드',
-              productQuantity: 1,
+              name: '채소샐러드',
+              quantity: 1,
             },
             {
-              productName: '상추',
-              productQuantity: 1,
+              name: '상추',
+              quantity: 1,
             },
             {
-              productName: '구운양파',
-              productQuantity: 1,
+              name: '구운양파',
+              quantity: 1,
             },
           ],
         },
@@ -120,20 +120,20 @@ export const resEx = {
           mealboxKcal: 120,
           product: [
             {
-              productName: '통밀빵',
-              productQuantity: 1,
+              name: '통밀빵',
+              quantity: 1,
             },
             {
-              productName: '두부샐러드',
-              productQuantity: 1,
+              name: '두부샐러드',
+              quantity: 1,
             },
             {
-              productName: '삶은달걀',
-              productQuantity: 1,
+              name: '삶은달걀',
+              quantity: 1,
             },
             {
-              productName: '저지방우유',
-              productQuantity: 1,
+              name: '저지방우유',
+              quantity: 1,
             },
           ],
         },
@@ -153,28 +153,28 @@ export const resEx = {
           mealboxKcal: 430,
           product: [
             {
-              productName: '오트밀',
-              productQuantity: 1,
+              name: '오트밀',
+              quantity: 1,
             },
             {
-              productName: '저지방우유',
-              productQuantity: 1,
+              name: '저지방우유',
+              quantity: 1,
             },
             {
-              productName: '블루베리',
-              productQuantity: 1,
+              name: '블루베리',
+              quantity: 1,
             },
             {
-              productName: '케일주스',
-              productQuantity: 1,
+              name: '케일주스',
+              quantity: 1,
             },
             {
-              productName: '사과',
-              productQuantity: 1,
+              name: '사과',
+              quantity: 1,
             },
             {
-              productName: '양상추샐러드',
-              productQuantity: 1,
+              name: '양상추샐러드',
+              quantity: 1,
             },
           ],
         },

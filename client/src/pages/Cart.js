@@ -1,33 +1,70 @@
 import styled from 'styled-components';
 import CartItemLi from '../components/cartPage/CartItemLi';
 import CartAside from '../components/commons/CartAside';
-import { resEx } from '../components/cartPage/dummyData';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setGuestCart } from '../reducers/guestCartReducer';
+// import { resEx } from '../components/cartPage/dummyData';
+import { useEffect, useState } from 'react';
 import getData from '../util/getData';
+import { useSelector, useDispatch } from 'react-redux';
+import { setCart } from '../reducers/cartReducer';
+import postData from '../util/postData';
+
 function Cart() {
   let dispatch = useDispatch();
-  let isLogin = true;
+  let isLogin = false;
+  let { totalPrice, mealboxes } = useSelector(
+    (state) => state.cartReducer.cart
+  );
+  let [renderPrice, setRenderPrice] = useState(totalPrice);
 
-  let render = () => {
-    if (isLogin) {
-      getData(`/users/cart/${`cartId`}`).then(() => {
-        let { data } = resEx.data;
-        dispatch(setGuestCart(data));
-      });
-    }
+  let calRenderPrice = () => {
+    let checkedItem = document.querySelectorAll(
+      'input[type="checkbox"]:checked'
+    );
+
+    let checkedCartMealBoxId = Array.from(checkedItem).map((el) =>
+      Number(el.id)
+    );
+
+    let checkedPrice = mealboxes?.reduce(
+      (acc, cur) =>
+        checkedCartMealBoxId.includes(cur.cartMealboxId)
+          ? acc + cur.price * cur.quantity
+          : acc,
+      0
+    );
+
+    setRenderPrice(checkedPrice);
   };
 
-  let { data } = useSelector((state) => {
-    return state.guestCartReducer;
-  });
+  let purchaseHandler = () => {
+    let checkedItem = document.querySelectorAll(
+      'input[type="checkbox"]:checked'
+    );
 
-  let { totalPrice, mealboxes } = data;
-  console.log(mealboxes);
+    let checkedCartMealBoxId = Array.from(checkedItem).map((el) =>
+      Number(el.id)
+    );
+
+    let postReqData = mealboxes
+      .filter((el) => {
+        return checkedCartMealBoxId.includes(el.cartMealboxId);
+      })
+      .map((el) => {
+        let { cartMealboxId, mealboxId, quantity } = el;
+        return { cartMealboxId, mealboxId, quantity };
+      });
+    console.log(postReqData);
+    postData('/orders', { orderMealboxes: postReqData }, false);
+  };
 
   useEffect(() => {
-    render();
+    calRenderPrice();
+    if (isLogin) {
+      getData('/users/cart').then((data) => {
+        console.log(data);
+        dispatch(setCart(data));
+      });
+    }
   }, []);
 
   return (
@@ -36,10 +73,17 @@ function Cart() {
       <CartPageContent>
         <CartItemListUl>
           {mealboxes?.map((el) => {
-            return <CartItemLi key={el.mealboxId} mealbox={el} />;
+            return (
+              <CartItemLi
+                key={el.cartMealboxId}
+                mealbox={el}
+                value={el.cartMealboxId}
+                calRenderPrice={calRenderPrice}
+              />
+            );
           })}
         </CartItemListUl>
-        <CartAside totalPrice={totalPrice} />
+        <CartAside totalPrice={renderPrice} buttonClick={purchaseHandler} />
       </CartPageContent>
     </CartPageWrapper>
   );

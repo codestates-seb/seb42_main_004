@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from './MainButton';
 import logo from '../../assets/logo_black.png';
@@ -7,12 +8,37 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { TfiMenu } from 'react-icons/tfi';
 import { IoIosArrowForward } from 'react-icons/io';
 import CartCounter from './CartCounter';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCookies } from 'react-cookie';
+import { setAuth } from '../../reducers/authReducer';
 
 function Header() {
   const [isNav, setIsNav] = useState(false);
+  const { isLogin, user } = useSelector((state) => state.authReducer);
+  const [, , removeCookie] = useCookies();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClick = () => {
     setIsNav(!isNav);
+  };
+
+  const handleLogout = () => {
+    if (confirm('정말 로그아웃하시겠습니까?')) {
+      removeCookie('accessToken');
+      removeCookie('tokenExpirationDate');
+      dispatch(
+        setAuth({
+          isLogin: false,
+          accessToken: '',
+          tokenExpirationDate: '',
+          user: {},
+          roles: [],
+        })
+      );
+    } else {
+      return;
+    }
   };
 
   return (
@@ -23,22 +49,34 @@ function Header() {
             <MenuIcon onClick={handleClick}>
               <TfiMenu size={25} />
             </MenuIcon>
-            <LogoImg src={logo} alt="logo" />
+            <LogoImg src={logo} alt="logo" onClick={() => navigate('/')} />
           </MenuDiv>
           <MenuUl>
-            <li>한끼밀 추천받기</li>
-            <li>커스텀 밀박스 만들기</li>
-            <li>전체 상품 보기</li>
-            <li>구성품 알아보기</li>
+            <li>
+              <HeaderLink to="/survey/question/1">한끼밀 추천받기</HeaderLink>
+            </li>
+            <li>
+              <HeaderLink to="/custom">커스텀 밀박스 만들기</HeaderLink>
+            </li>
+            <li>
+              <HeaderLink to="/mealboxes">전체 상품 보기</HeaderLink>
+            </li>
+            <li>
+              <HeaderLink to="/product">구성품 알아보기</HeaderLink>
+            </li>
           </MenuUl>
           <IconsUl>
             <li>
-              <MainButton name="Login" />
-              {/* <MainButton name="Logout" /> */}
+              {isLogin ? (
+                <MainButton handler={handleLogout} name="Logout" />
+              ) : (
+                <MainButton handler={() => navigate('/login')} name="Login" />
+              )}
             </li>
             <li>
-              <MainButton name="Signup" />
-              {/* <BsFillPersonFill size={25} /> */}
+              {isLogin ? null : (
+                <MainButton handler={() => navigate('/signup')} name="Signup" />
+              )}
             </li>
             <li>
               <FaShoppingCart size={25} />
@@ -50,18 +88,42 @@ function Header() {
       {isNav ? (
         <ModalContainerDiv onClick={handleClick}>
           <NavDiv onClick={(e) => e.stopPropagation()}>
-            <NavUl>
-              {/* <li>로그인 해주세요</li> */}
+            <NavUl onClick={handleClick}>
+              {isLogin ? (
+                <li>
+                  <HeaderLink to="/myinfo">
+                    <BsFillPersonFill size={25} />
+                    <IdDiv>{user.name}님</IdDiv>
+                    <IoIosArrowForward size={15} />
+                  </HeaderLink>
+                </li>
+              ) : (
+                <li>
+                  <HeaderLink to="/login">
+                    <BsFillPersonFill size={25} />
+                    로그인 해주세요
+                  </HeaderLink>
+                </li>
+              )}
               <li>
-                <BsFillPersonFill size={25} />
-                <IdDiv>맹쥬님</IdDiv>
-                <IoIosArrowForward size={15} />
+                <HeaderLink to="/survey/question/1">한끼밀 추천받기</HeaderLink>
               </li>
-              <li>한끼밀 추천받기</li>
-              <li>커스텀 밀박스 만들기</li>
-              <li>전체 상품 보기</li>
-              <li>구성품 알아보기</li>
-              <li>로그아웃</li>
+              <li>
+                <HeaderLink to="/custom">커스텀 밀박스 만들기</HeaderLink>
+              </li>
+              <li>
+                <HeaderLink to="/mealboxes">전체 상품 보기</HeaderLink>
+              </li>
+              <li>
+                <HeaderLink to="/product">구성품 알아보기</HeaderLink>
+              </li>
+              {isLogin ? (
+                <li>
+                  <button onClick={handleLogout}>로그아웃</button>
+                </li>
+              ) : (
+                <li></li>
+              )}
             </NavUl>
           </NavDiv>
         </ModalContainerDiv>
@@ -77,7 +139,7 @@ const ContainerHeader = styled.header`
     padding: 0;
     list-style: none;
 
-    > li {
+    > li > * {
       cursor: pointer;
       font-family: 'IBM Plex Sans KR', sans-serif;
     }
@@ -151,7 +213,7 @@ const NavUl = styled.ul`
 
   > li {
     width: 100%;
-    padding: 20px;
+    padding: 2rem;
     display: flex;
     justify-content: center;
 
@@ -165,6 +227,12 @@ const NavUl = styled.ul`
 
     &:last-child {
       margin: 40px 0px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      background-color: transparent;
     }
   }
 `;
@@ -230,4 +298,12 @@ const ModalContainerDiv = styled.div`
   @media (min-width: 768px) {
     display: none;
   }
+`;
+const HeaderLink = styled(Link)`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--black);
+  font-family: 'IBM Plex Sans KR', sans-serif;
 `;

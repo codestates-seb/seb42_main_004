@@ -47,35 +47,43 @@ function ModalDiv({ closeModal, mealBox, product }) {
     return formData;
   };
 
+  const hasIdReq = (id, data, isMealBox) => {
+    let func = postData;
+    let uri = isMealBox ? '/admin/mealboxes' : '/admin/products';
+    if (id !== undefined) {
+      uri += `/${id}`;
+      isMealBox ? delete data.mealBoxId : delete data.productId;
+      func = patchData;
+    }
+
+    let hasImg = false;
+    if (imgInputBuffer && imgInputBuffer !== subject.imagePath) {
+      data = addImg(data);
+      hasImg = true;
+    }
+
+    func(uri, data, hasImg)
+      .then(() => {
+        isMealBox && dispatch(initializeCustom());
+        alert(
+          `${data.name}이 ${id !== undefined ? '수정' : '추가'}되었습니다.`
+        );
+        navigate('/mealboxes');
+      })
+      .catch(() => alert('등록에 실패했습니다\n관리자에게 문의해주세요.'));
+  };
+
   const mealBoxReq = () => {
     if (!subject.name) return;
 
-    let uri = '/admin/mealboxes';
     let data = { ...subjectInfo, imagePath: null };
     const id = data.mealBoxId;
-    data.products = data.products.forEach((product) => delete product.name);
+    data.products = data.products.map((product) => {
+      const { productId, quantity } = product;
+      return { productId, quantity };
+    });
 
-    const haveIdReq = (haveId) => {
-      if (haveId) {
-        uri += `/${id}`;
-        delete data.productId;
-      }
-
-      if (imgInputBuffer !== subject.imagePath) {
-        data = addImg(data);
-      }
-
-      let func = haveId ? patchData : postData;
-      func(uri, data, haveId)
-        .then(() => {
-          dispatch(initializeCustom());
-          alert(`${data.name}이 ${haveId ? '수정' : '추가'}되었습니다.`);
-          navigate('/');
-        })
-        .catch(() => alert('등록에 실패했습니다\n관리자에게 문의해주세요.'));
-    };
-
-    haveIdReq(Boolean(id));
+    hasIdReq(id, data, true);
   };
 
   const productReq = () => {
@@ -87,30 +95,10 @@ function ModalDiv({ closeModal, mealBox, product }) {
     )
       return;
 
-    let uri = '/admin/products';
     let data = { ...subjectInfo, imagePath: null };
     const id = data.productId;
 
-    const haveIdReq = (haveId) => {
-      if (haveId) {
-        uri += `/${id}`;
-        delete data.productId;
-      }
-
-      if (imgInputBuffer !== subject.imagePath) {
-        data = addImg(data);
-      }
-
-      let func = haveId ? patchData : postData;
-      func(uri, data, haveId)
-        .then(() => {
-          alert(`${data.name}이 ${haveId ? '수정' : '추가'}되었습니다.`);
-          navigate('/');
-        })
-        .catch(() => alert('등록에 실패했습니다\n관리자에게 문의해주세요.'));
-    };
-
-    haveIdReq(Boolean(id));
+    hasIdReq(id, data, false);
   };
 
   return (

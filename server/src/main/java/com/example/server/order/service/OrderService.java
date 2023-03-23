@@ -26,7 +26,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -46,10 +45,10 @@ public class OrderService {
   private final UserService userService;
   private final PaymentController paymentController;
 
-  public Orders createOrder(Orders order, OrderPostDto orderPostDto) throws IamportResponseException, IOException {
+  public Orders createOrder(Orders order, OrderPostDto orderPostDto, long userId) throws IamportResponseException, IOException {
     order.makeOrderNumber();
 //    orderRepository.save(order);
-    order.addUser(userService.getUser(orderPostDto.getUserId()));
+    order.addUser(userService.getUser(userId));
     orderRepository.save(order);
     log.info("------------------- CREATE OrderMealboxes -------------------");
     OrderMealboxPostDtoToOrdersMealbox(orderPostDto.getMealboxes(), order);
@@ -62,20 +61,19 @@ public class OrderService {
   }
 
   // MealboxId 와 quantity, user로 OrdersMealbox를 저장
-  private List<OrdersMealbox> OrderMealboxPostDtoToOrdersMealbox(List<OrderMealboxPostDto> orderMealboxPostDtos, Orders order) {
-    List<OrdersMealbox> ordersMealboxList = orderMealboxPostDtos.stream().map(orderMealboxPostDto -> {
+  private void OrderMealboxPostDtoToOrdersMealbox(List<OrderMealboxPostDto> orderMealboxPostDtos, Orders order) {
+    orderMealboxPostDtos.stream().forEach(orderMealboxPostDto -> {
       Mealbox mealbox = mealboxService.findMealboxById(orderMealboxPostDto.getMealboxId());
       int quantity = orderMealboxPostDto.getQuantity();
       OrdersMealbox ordersMealbox = new OrdersMealbox(quantity, mealbox);
       ordersMealbox.addOrders(order);
       ordersMealbox.setPrice(mealbox.getPrice());
       ordersMealbox.setKcal(mealbox.getKcal());
-      return orderMealboxRepository.save(ordersMealbox);
-    }).collect(Collectors.toList());
-    return ordersMealboxList;
+      orderMealboxRepository.save(ordersMealbox);
+    });
   }
 
-  public Orders cancelOrder(String orderNumber) {
+  public void cancelOrder(String orderNumber) {
     Orders order = findByOrderNumber(orderNumber);
     int index = order.getStatus().getIndex();
     if ((order.getDeliveryDate() != null) && LocalDate.now().isAfter(order.getDeliveryDate().plusDays(1))) {
@@ -92,18 +90,7 @@ public class OrderService {
     } else {
       throw new BusinessLogicException(OrderException.NOT_YET_PAID);
     }
-    return orderRepository.save(order);
-  }
-
-  //추후 관리자가 주문 상태 변경시 사용할 예정
-  public Orders completeDelivery(long orderId) {
-    Orders order = findVerifiedOrder(orderId);
-    int index = order.getStatus().getIndex();
-    if(index != 3) {
-      throw new BusinessLogicException(OrderException.DELIVERY_IS_NOT_IN_PROGRESS);
-    }
-    order.completeDelivery();
-    return orderRepository.save(order);
+    orderRepository.save(order);
   }
 
   public void changeStatus(String orderNumber, OrderPatchStatusDto dto) {
@@ -124,14 +111,12 @@ public class OrderService {
   // 주문번호로 주문 찾기
   public Orders findByOrderNumber(String orderNumber) {
     Optional<Orders> order = orderRepository.findByOrderNumber(orderNumber);
-    Orders findOrder = order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
-    return findOrder;
+    return order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
   }
 
   private Orders findVerifiedOrder(long orderId) {
     Optional<Orders> order = orderRepository.findById(orderId);
-    Orders findOrder = order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
-    return findOrder;
+    return order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
   }
 
   public void paidOrder(Orders order) {
@@ -165,5 +150,27 @@ public class OrderService {
     order.setDetailAddress(orderPatchDeliveryDto.getDetailAddress());
     order.setPhoneNumber(orderPatchDeliveryDto.getPhoneNumber());
     orderRepository.save(order);
+  }
+
+  // 로그인한 유저가 주문자인지 확인
+  public void checkOrderHolder(Orders order, long userId) {
+    long orderHolderId = order.getUser().getId();
+    if(orderHolderId != userId) {
+      throw new BusinessLogicException(OrderException.NOT_ORDER_HOLDER);
+    }
+  }
+
+  public void checkOrderHolder(long orderId, long userId) {
+    long orderHolderId = findVerifiedOrder(orderId).getUser().getId();
+    if(orderHolderId != userId) {
+      throw new BusinessLogicException(OrderException.NOT_ORDER_HOLDER);
+    }
+  }
+
+  public void checkOrderHolder(String orderNumber, long userId) {
+    long orderHolderId = findByOrderNumber(orderNumber).getUser().getId();
+    if(orderHolderId != userId) {
+      throw new BusinessLogicException(OrderException.NOT_ORDER_HOLDER);
+    }
   }
 }

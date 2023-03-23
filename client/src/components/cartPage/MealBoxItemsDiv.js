@@ -4,11 +4,11 @@ function MealBoxItemsDiv({ product }) {
   return (
     <ItemsDiv>
       {product.map((el, idx) => {
-        let { productName, productQuantity } = el;
+        let { name, quantity } = el;
         return (
           <div key={idx}>
-            <div>{productName}</div>
-            <div>{`X${productQuantity}`}</div>
+            <div>{name}</div>
+            <div>{`X${quantity}`}</div>
           </div>
         );
       })}

@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import styled, { css } from 'styled-components';
-import LoginButton from './LoginButton';
+import { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import styled from 'styled-components';
 import postData from '../../util/postData';
+import LoginButton from './LoginButton';
 import { FcGoogle } from 'react-icons/fc';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import parseToken from '../../util/parseToken';
 
 function LoginUl() {
   const [showPwd, setShowPwd] = useState(false);
@@ -12,27 +14,31 @@ function LoginUl() {
     email: '',
     password: '',
   });
-  const [valid, setValid] = useState({
-    email: false,
-    password: false,
-  });
   const inputRef = useRef([]);
+  const [cookies, setCookie] = useCookies();
   const { email, password } = inputValue;
-  const navigate = useNavigate();
+
+  const login = (token) => {
+    if (cookies.accessToken !== token) {
+      setCookie('accessToken', token);
+      setCookie('tokenExpirationDate', new Date(parseToken(token).exp));
+    }
+  };
 
   const handleClick = () => {
-    if (valid.email && valid.password) {
-      postData('/login', { email, password }).then((data) => {
-        if (data.status === 401) {
+    if (email && password) {
+      postData('/login', { email, password }).then((res) => {
+        if (res.status === 401) {
           alert('이메일 주소나 비밀번호가 틀립니다.');
-          setValid({ ...valid, password: false });
+          setInputValue({ ...inputValue, password: '' });
+          inputRef.current[1].focus();
         } else {
-          navigate('/');
+          login(res.headers.authorization);
         }
       });
-    } else if (!valid.email) {
+    } else if (!email) {
       inputRef.current[0].focus();
-    } else if (!valid.password) {
+    } else if (!password) {
       inputRef.current[1].focus();
     }
   };
@@ -49,24 +55,6 @@ function LoginUl() {
     setShowPwd(!showPwd);
   };
 
-  useEffect(() => {
-    //eslint-disable-next-line
-    const exp = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
-    if (exp.test(email)) {
-      setValid({ ...valid, email: true });
-    } else {
-      setValid({ ...valid, email: false });
-    }
-  }, [email]);
-
-  useEffect(() => {
-    if (password) {
-      setValid({ ...valid, password: true });
-    } else {
-      setValid({ ...valid, password: false });
-    }
-  }, [password]);
-
   return (
     <ContainerUl>
       <li>
@@ -75,7 +63,7 @@ function LoginUl() {
         </Title>
       </li>
       <li>
-        <LoginDiv valid={valid.email} content={email}>
+        <LoginDiv>
           <label htmlFor="email">이메일</label>
           <input
             id="email"
@@ -89,7 +77,7 @@ function LoginUl() {
         </LoginDiv>
       </li>
       <li>
-        <LoginDiv valid={valid.password} content={password}>
+        <LoginDiv>
           <label htmlFor="password">비밀번호</label>
           <input
             id="password"
@@ -185,20 +173,6 @@ const LoginDiv = styled.div`
   > input {
     height: 48px;
     padding-right: 3rem;
-    ${({ valid, content }) =>
-      !valid &&
-      content &&
-      css`
-        padding: 0.5rem 1.5rem;
-        border: 1px solid var(--red);
-        border-radius: 4px;
-
-        &:focus,
-        :focus-within {
-          border: 2px solid var(--red);
-          outline: none;
-        }
-      `}
   }
 `;
 const IconDiv = styled.div`
