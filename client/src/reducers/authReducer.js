@@ -29,8 +29,8 @@ const authSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
-    setRoles: (state, action) => {
-      state.roles = action.payload;
+    setAdmin: (state, action) => {
+      state.admin = action.payload;
     },
   },
 });
