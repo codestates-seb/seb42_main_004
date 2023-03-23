@@ -1,20 +1,25 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
 import blankbucket from '../../assets/blankbucket.png';
 import postData from '../../util/postData';
 import deleteData from '../../util/deleteData';
 import goToCustom from '../../util/goToCustom';
+import { addCartItem } from '../../reducers/cartReducer';
 
-function MealBoxCardDiv({ mealBox, custom, admin }) {
+function MealBoxCardDiv({ mealBox, custom, admin, login }) {
   const [notification, setNotification] = useState(false);
+  const dispatch = useDispatch();
 
-  const addToCart = () => {
-    postData(`/users/cart`, { mealboxId: mealBox.mealboxId }).then(() => {
-      setNotification(true);
-      setTimeout(() => setNotification(false), 2000);
-    });
-    console.log('추가 완료');
+  const addToCart = async () => {
+    if (login) {
+      await postData(`/users/cart`, { mealboxId: mealBox.mealboxId });
+    } else {
+      dispatch(addCartItem({ mealBox }));
+    }
+    setNotification(true);
+    setTimeout(() => setNotification(false), 2000);
   };
 
   const deleteMealBox = () => {

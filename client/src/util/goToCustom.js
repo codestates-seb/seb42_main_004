@@ -10,7 +10,9 @@ function goToCustom(mealBox, admin) {
     if (mealBox?.products) {
       dispatch(addProductInBox({ mealBox }));
       if (admin) {
-        dispatch(setIdName({ name: mealBox.name, id: mealBox.mealboxId }));
+        dispatch(
+          setIdName({ name: mealBox.name, mealboxId: mealBox.mealboxId })
+        );
       }
     }
     navigate('/custom');

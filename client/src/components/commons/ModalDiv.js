@@ -68,7 +68,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
         alert(
           `${data.name}이 ${id !== undefined ? '수정' : '추가'}되었습니다.`
         );
-        navigate('/');
+        navigate('/mealboxes');
       })
       .catch(() => alert('등록에 실패했습니다\n관리자에게 문의해주세요.'));
   };

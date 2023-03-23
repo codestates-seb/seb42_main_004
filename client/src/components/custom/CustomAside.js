@@ -6,28 +6,33 @@ import ModalDiv, { TextButton } from '../commons/ModalDiv';
 import postData from '../../util/postData';
 import { AsideSignatureButton, AsideWrapper } from '../commons/CartAside';
 import { deleteProduct, initializeCustom } from '../../reducers/customReducer';
+import { addCartItem } from '../../reducers/cartReducer';
 
-function CustomAside({ admin, custom }) {
+function CustomAside({ admin, custom, login }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);
 
-  const addCustomToCart = () => {
+  const addCustomToCart = async () => {
     const data = { ...custom };
-    data.products = data.products.map((product) => {
-      const { productId, quantity } = product;
-      return { productId, quantity };
-    });
-    postData(`/users/cart/custom`, data).then(() => {
-      dispatch(initializeCustom());
-      if (
-        window.confirm(
-          'Custom 밀박스가 장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?'
-        )
-      ) {
-        navigate('/cart');
-      } else navigate('/');
-    });
+    if (login) {
+      data.products = data.products.map((product) => {
+        const { productId, quantity } = product;
+        return { productId, quantity };
+      });
+      await postData(`/users/cart/custom`, data);
+    } else {
+      dispatch(addCartItem({ mealBox: data }));
+    }
+
+    dispatch(initializeCustom());
+    if (
+      window.confirm(
+        'Custom 밀박스가 장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?'
+      )
+    ) {
+      navigate('/cart');
+    } else navigate('/mealboxes');
   };
 
   return (
@@ -76,7 +81,7 @@ function CustomAside({ admin, custom }) {
       >
         {!admin
           ? '장바구니 담기'
-          : custom?.id
+          : custom?.mealboxId
           ? '밀박스 수정 진행하기'
           : '밀박스 생성 진행하기'}
       </AsideSignatureButton>
