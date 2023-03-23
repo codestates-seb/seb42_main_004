@@ -1,5 +1,6 @@
 package com.example.server.auth.handler;
 
+import com.example.server.user.entity.User;
 import com.google.gson.Gson;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -24,16 +25,17 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
     log.info("# Authenticated successfully!");
 
     String authorities = gson.toJson(authentication.getAuthorities());
-    sendUserInfoResponse(response, authorities);
+    String principal = gson.toJson((User) authentication.getPrincipal());
+    sendUserInfoResponse(response, authorities, principal);
 
   }
 
-  private void sendUserInfoResponse(HttpServletResponse response, String authorities) throws IOException {
+  private void sendUserInfoResponse(HttpServletResponse response, String authorities, String principal) throws IOException {
 
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);    // (2-3)
-    response.setStatus(HttpStatus.OK.value());          // (2-4)
+    response.setStatus(HttpStatus.OK.value());
 
-    response.getWriter().write(authorities);   // (2-5)
+    response.getWriter().write(principal);   // (2-5)
   }
 
 
