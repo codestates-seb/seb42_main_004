@@ -1,20 +1,76 @@
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import MyInfoButton from '../components/myInfo/MyInfoButton';
-import PasswordInputDiv from '../components/myInfo/PasswordInputDiv';
+import InputDiv from '../components/signup/InputDiv';
+import postData from '../util/postData';
+import useValid from '../util/useValid';
 
 function FindPassword() {
+  const [inputValue, setInputValue] = useState({
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
+  });
+  const inputRef = useRef([]);
+  const [validText, isValid, setValidText] = useValid(inputValue);
+  const { password, passwordConfirm } = inputValue;
+
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setInputValue({
+      ...inputValue,
+      [name]: value,
+    });
+  };
+
+  const handleClick = () => {
+    let obj = {};
+    for (const el in isValid) {
+      if (!inputValue[el]) {
+        obj = { ...obj, [el]: '필수 항목입니다.' };
+      }
+    }
+    setValidText({ ...validText, ...obj });
+    if (isValid.password && isValid.passwordConfirm) {
+      postData('/users/recovery', {
+        email: 'qwe@naver.com',
+        mailKey: 'QWERQWERQW',
+        afterPassword: password,
+      }).then((res) => console.log(res.data));
+    } else if (!isValid.password) {
+      inputRef.current[0].focus();
+    } else {
+      inputRef.current[1].focus();
+    }
+  };
+
   return (
     <ContainerDiv className="margininside">
       <PasswordDiv>
         <div>
-          <PasswordInputDiv id="newPassword" name="새 비밀번호" content="" />
-          <PasswordInputDiv
-            id="confirmNewPassword"
-            name="새 비밀번호 확인"
-            content=""
+          <InputDiv
+            id="password"
+            name="password"
+            labelName="비밀번호"
+            placeholder="영문, 숫자를 포함하여 8~20글자로 입력해주세요."
+            value={password}
+            inputRef={(el) => (inputRef.current[0] = el)}
+            validText={validText.password}
+            onChange={handleInput}
+          />
+          <InputDiv
+            id="passwordConfirm"
+            name="passwordConfirm"
+            labelName="비밀번호 확인"
+            placeholder="확인을 위해 비밀번호를 한번 더 입력해주세요."
+            value={passwordConfirm}
+            inputRef={(el) => (inputRef.current[1] = el)}
+            validText={validText.passwordConfirm}
+            onChange={handleInput}
           />
           <div>
-            <MyInfoButton text="확인" />
+            <MyInfoButton onClick={handleClick} text="확인" />
           </div>
         </div>
       </PasswordDiv>
@@ -29,7 +85,7 @@ const ContainerDiv = styled.div`
   justify-content: center;
 `;
 const PasswordDiv = styled.div`
-  width: 60%;
+  width: 50%;
   height: 85%;
   display: flex;
   flex-direction: column;
@@ -37,26 +93,33 @@ const PasswordDiv = styled.div`
 
   > div {
     width: 100%;
-    height: 30%;
-    padding: 3rem;
+    padding: 4rem;
     display: flex;
     flex-direction: column;
     border: 3px solid var(--signature);
     background-color: var(--white_020);
 
-    input {
-      width: 70%;
-    }
-
     > div:last-child {
-      flex-grow: 1;
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-top: 2rem;
     }
   }
 
   button {
-    width: 30%;
+    width: 40%;
+
+    @media (max-width: 480px) {
+      width: 50%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: 90%;
+  }
+
+  @media (min-width: 481px) and (max-width: 768px) {
+    width: 80%;
   }
 `;

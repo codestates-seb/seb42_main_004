@@ -6,6 +6,7 @@ import surveyQuestionReducer from '../reducers/surveyQuestionReducer';
 import { persistReducer } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session';
 import thunk from 'redux-thunk';
+import authReducer from '../reducers/authReducer';
 import cartReducer from '../reducers/cartReducer';
 
 const persistConfig = {
@@ -15,6 +16,7 @@ const persistConfig = {
     'customReducer',
     'surveyRcmdReducer',
     'surveyQuestionReducer',
+    'authReducer',
     'cartReducer',
   ],
 };
@@ -24,6 +26,7 @@ export const rootReducer = combineReducers({
   customReducer,
   surveyRcmdReducer,
   surveyQuestionReducer,
+  authReducer,
   cartReducer,
 });
 
