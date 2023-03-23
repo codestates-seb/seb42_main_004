@@ -24,9 +24,10 @@ function SurveyPage2({ name = '맹쥬' }) {
 
   let nextHandler = () => {
     let page2Param = `?age=${age}&gender=${gender}&height=${height}&weight=${weight}&activityAmount=${active}`;
-    let data = getData(`/survey${page2Param}`);
-    console.log(data);
-    navigate(`/survey/question/3`, data);
+    getData(`/survey${page2Param}`).then((res) => {
+      navigate(`/survey/question/3`, { state: res.data });
+      console.log(res.data);
+    });
   };
 
   return (

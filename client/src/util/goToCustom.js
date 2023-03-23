@@ -8,7 +8,7 @@ function goToCustom(mealbox, admin) {
 
   const aux = () => {
     if (mealbox?.products) {
-      mealbox.products.forEach((product) => dispatch(addProduct(product)));
+      mealbox.products.forEach((product) => dispatch(addProduct({ product })));
     }
     if (admin) {
       dispatch(setName(mealbox.name));

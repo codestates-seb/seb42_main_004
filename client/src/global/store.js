@@ -11,7 +11,12 @@ import cartReducer from '../reducers/cartReducer';
 const persistConfig = {
   key: 'root',
   storage: storageSession,
-  whitelist: ['surveyQuestionReducer', 'customReducer', 'surveyRcmdReducer'],
+  whitelist: [
+    'customReducer',
+    'surveyRcmdReducer',
+    'surveyQuestionReducer',
+    'cartReducer',
+  ],
 };
 
 export const rootReducer = combineReducers({

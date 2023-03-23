@@ -2,32 +2,37 @@ import styled from 'styled-components';
 import CartItemLi from '../components/cartPage/CartItemLi';
 import CartAside from '../components/commons/CartAside';
 import { resEx } from '../components/cartPage/dummyData';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+// import getData from '../util/getData';
+import { useSelector, useDispatch } from 'react-redux';
 import { setCart } from '../reducers/cartReducer';
-import getData from '../util/getData';
+
 function Cart() {
   let dispatch = useDispatch();
   let isLogin = true;
+  let { totalPrice, mealboxes } = useSelector(
+    (state) => state.cartReducer.cart
+  );
+  let [renderPrice, setRenderPrice] = useState(totalPrice);
 
-  let render = () => {
-    if (isLogin) {
-      getData(`/users/cart/${`cartId`}`).then(() => {
-        let { data } = resEx.data;
-        dispatch(setCart(data));
-      });
-    }
-  };
+  // let calRenderPrice = (e, isChecked) => {
+  //   let id = e.target.id;
+  //   let idx = mealboxes.findIndex((el) => el.cartMealboxId === id);
+  //   if (isChecked) {
+  //     renderPrice += mealboxes[idx].price * mealboxes[idx].quantity;
+  //   } else {
+  //     renderPrice -= mealboxes[idx].price * mealboxes[idx].quantity;
+  //   }
+  // };
 
-  let { data } = useSelector((state) => {
-    return state.cartReducer;
-  });
-
-  let { totalPrice, mealboxes } = data;
-  console.log(mealboxes);
+  // let checkItem = document.querySelectorAll('input')[0];
+  // console.log(checkItem);
 
   useEffect(() => {
-    render();
+    if (isLogin) {
+      // getData(`/users/cart/${`cartId`}`);
+      dispatch(setCart(resEx.data));
+    }
   }, []);
 
   return (
@@ -36,10 +41,17 @@ function Cart() {
       <CartPageContent>
         <CartItemListUl>
           {mealboxes?.map((el) => {
-            return <CartItemLi key={el.mealboxId} mealbox={el} />;
+            return (
+              <CartItemLi
+                key={el.cartMealboxId}
+                mealbox={el}
+                value={el.cartMealboxId}
+                setRenderPrice={setRenderPrice}
+              />
+            );
           })}
         </CartItemListUl>
-        <CartAside totalPrice={totalPrice} />
+        <CartAside totalPrice={renderPrice ? renderPrice : totalPrice} />
       </CartPageContent>
     </CartPageWrapper>
   );
