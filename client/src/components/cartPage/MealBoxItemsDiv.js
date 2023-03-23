@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
-function MealBoxItemsDiv({ product }) {
+function MealBoxItemsDiv({ products }) {
+  console.log(products);
   return (
     <ItemsDiv>
-      {product.map((el, idx) => {
+      {products.map((el, idx) => {
         let { name, quantity } = el;
         return (
           <div key={idx}>

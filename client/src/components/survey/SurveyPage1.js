@@ -26,8 +26,10 @@ function SurveyPage1() {
   };
 
   let nextHandler = () => {
-    navigate(`/survey/question/2`);
+    isValid() ? navigate(`/survey/question/2`) : alert('');
   };
+
+  let isValid = () => age && height && weight && gender;
 
   let prev = '';
 

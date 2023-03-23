@@ -81,7 +81,10 @@ function App() {
           <Route path="/survey/result" element={<SurveyResult />} />
           <Route path="/custom" element={<Custom />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/myinfo/orderhistory" element={<OrderHistory />} />
+          <Route
+            path="/myinfo/orderhistory"
+            element={accessToken ? <OrderHistory /> : <Login />}
+          />
           <Route path="/product" element={<Product />} />
           <Route
             path="/login"
