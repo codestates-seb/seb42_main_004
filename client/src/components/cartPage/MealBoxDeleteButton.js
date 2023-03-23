@@ -3,7 +3,7 @@ import { deleteCartItem } from '../../reducers/cartReducer';
 import { useDispatch } from 'react-redux';
 import deleteData from '../../util/deleteData';
 function MealBoxDeleteButton({ calRenderPrice }) {
-  let isLogin = true;
+  let isLogin = false;
   let dispatch = useDispatch();
   let deleteHandler = (e) => {
     let cartMealboxId =
