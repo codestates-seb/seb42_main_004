@@ -7,7 +7,7 @@ const authSlice = createSlice({
     accessToken: '',
     tokenExpirationDate: '',
     user: {},
-    roles: [],
+    admin: false,
   },
   reducers: {
     setAuth: (state, action) => {
@@ -15,7 +15,7 @@ const authSlice = createSlice({
       state.accessToken = action.payload.accessToken;
       state.tokenExpirationDate = action.payload.tokenExpirationDate;
       state.user = action.payload.user;
-      state.roles = action.payload.roles;
+      state.admin = action.payload.admin;
     },
     setIsLogin: (state, action) => {
       state.isLogin = action.payload;
