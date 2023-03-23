@@ -13,7 +13,7 @@ public interface UserMapper {
   User userPostDtoToUser(UserPostDto userPostDto);
 
   default User userPatchDtoToUser(UserPatchDto patchDto) {
-    return User.builder().id(patchDto.getId())
+    return User.builder()
         .name(patchDto.getName())
         .phoneNumber(patchDto.getPhoneNumber())
         .address(patchDto.getAddress())

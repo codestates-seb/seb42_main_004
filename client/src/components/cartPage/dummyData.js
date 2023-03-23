@@ -1,10 +1,10 @@
 export const resEx = {
   data: {
-    totalPrice: 25090,
+    totalPrice: 130000,
     mealboxes: [
       {
         mealboxId: 1, // 같으면 구성품 같음
-        cartMealboxId: 3, // 장바구니에 담긴 갯수
+        cartMealboxId: 1, // 장바구니에 담긴 갯수
         name: '맛있는 리코타치즈샐러드&두부구이세트',
         mealboxInfo: 'NO_REC_MEALBOX',
         quantity: 3,
@@ -13,7 +13,7 @@ export const resEx = {
         price: 9000,
         products: [
           {
-            productName: '사과',
+            productName: '양배추',
             productQuantity: 1,
           },
           {
@@ -29,7 +29,7 @@ export const resEx = {
       {
         mealboxId: 2,
         cartMealboxId: 2,
-        name: '!! 맛나다맛나',
+        name: '!! 맛나다맛나 세트',
         mealboxInfo: 'NO_REC_MEALBOX',
         quantity: 1,
         weight: 300,
@@ -37,7 +37,7 @@ export const resEx = {
         price: 13000,
         products: [
           {
-            productName: '딸기',
+            productName: '요거트',
             productQuantity: 1,
           },
           {
@@ -52,8 +52,8 @@ export const resEx = {
       },
       {
         mealboxId: 1, // 같으면 구성품 같음
-        cartMealboxId: 1, // 장바구니에 담긴 갯수
-        name: '케일주스세트',
+        cartMealboxId: 3, // 장바구니에 담긴 갯수
+        name: '유니의 아침 세트',
         mealboxInfo: 'NO_REC_MEALBOX',
         quantity: 7,
         weight: 600,
@@ -76,8 +76,8 @@ export const resEx = {
       },
       {
         mealboxId: 1, // 같으면 구성품 같음
-        cartMealboxId: 1, // 장바구니에 담긴 갯수
-        name: '맛있는 리코타치즈샐러드&두부구이세트',
+        cartMealboxId: 4, // 장바구니에 담긴 갯수
+        name: '밀박스밀박스스스스',
         mealboxInfo: 'NO_REC_MEALBOX',
         quantity: 3,
         weight: 300,
@@ -89,7 +89,7 @@ export const resEx = {
             productQuantity: 1,
           },
           {
-            productName: '사과',
+            productName: '고추장',
             productQuantity: 2,
           },
           {

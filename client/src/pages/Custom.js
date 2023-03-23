@@ -48,7 +48,7 @@ function Custom({ admin }) {
   const addCustomToCart = () => {
     const data = { ...custom };
     data.products = data.products.forEach((product) => delete product.name);
-    postData(`/users/cart/custom/${'cartId'}`, data).then(() => {
+    postData(`/users/cart/custom`, data).then(() => {
       dispatch(initializeCustom());
       if (
         window.confirm(
@@ -61,7 +61,7 @@ function Custom({ admin }) {
   };
 
   const totalQuantity = custom.products.reduce((a, c) => a + c.quantity, 0);
-  const productsId = custom.products.map((product) => product.id);
+  const productsId = custom.products.map((product) => product.productId);
   const productInCustom = (id) => {
     return productsId.indexOf(id);
   };

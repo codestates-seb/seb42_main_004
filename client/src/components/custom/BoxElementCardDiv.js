@@ -2,31 +2,30 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { TextButton } from '../commons/ModalDiv';
 import { MealBoxCardContainerDiv } from '../allboxes/MealBoxCardDiv';
-import { deleteProduct, setProduct } from '../../reducers/customReducer';
-
+import { setProduct } from '../../reducers/customReducer';
+// deleteProduct,
 function BoxElementCardDiv({ product, quantity, totalQuantity }) {
   quantity = quantity || 0;
   const dispatch = useDispatch();
 
-  const cardClick = () => {
-    if (quantity === 0) dispatch(setProduct(quantity + 1));
-    else if (quantity === 1) dispatch(deleteProduct(product.productId));
-  };
+  // const cardClick = () => {
+  //   if (quantity === 0) dispatch(setProduct(quantity + 1));
+  //   else if (quantity === 1) dispatch(deleteProduct({ id: product.productId }));
+  // };
 
-  const minusProduct = () => {
-    if (quantity <= 0) return;
-    dispatch(setProduct(product.productId, quantity - 1));
-  };
-
-  const plusProduct = () => {
-    if (totalQuantity >= 10)
+  const changeQuantity = (key) => () => {
+    if (key === 'minus' && quantity <= 1) return;
+    else if (key === 'plus' && totalQuantity >= 10)
       return alert('구성품은 10개까지 추가할 수 있습니다');
-    dispatch(setProduct(product.productId, quantity + 1));
+
+    const payload = { ...product };
+    payload.quantity = key === 'minus' ? quantity - 1 : quantity + 1;
+    dispatch(setProduct({ product: payload }));
   };
 
   return (
     <BoxElementContainerDiv
-      onClick={cardClick}
+      // onClick={cardClick}
       className="shadow"
       quantity={quantity}
     >
@@ -40,11 +39,11 @@ function BoxElementCardDiv({ product, quantity, totalQuantity }) {
         </BoxElementDetailDiv>
       </BoxElementInfoDiv>
       <div>
-        <TextButton onClick={minusProduct} className="linkstyle">
+        <TextButton onClick={changeQuantity('minus')} className="linkstyle">
           &#8722;
         </TextButton>
         <BoxElementQuantitySpan>{quantity}</BoxElementQuantitySpan>
-        <TextButton onClick={plusProduct} className="linkstyle">
+        <TextButton onClick={changeQuantity('plus')} className="linkstyle">
           &#43;
         </TextButton>
       </div>
