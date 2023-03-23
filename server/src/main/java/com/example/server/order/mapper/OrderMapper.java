@@ -61,8 +61,8 @@ public interface OrderMapper {
         List<MealboxProduct> mealboxProductList = ordersMealbox.getMealbox().getMealboxProducts();
         List<MealboxProductResponseDto> mealboxProductResponseDtoList = mealboxProductList.stream().map(mealboxProduct -> {
           MealboxProductResponseDto mealboxProductResponseDto = new MealboxProductResponseDto();
-          mealboxProductResponseDto.setProductName(mealboxProduct.getProduct().getName());
-          mealboxProductResponseDto.setProductQuantity(mealboxProduct.getQuantity());
+          mealboxProductResponseDto.setName(mealboxProduct.getProduct().getName());
+          mealboxProductResponseDto.setQuantity(mealboxProduct.getQuantity());
           return mealboxProductResponseDto;
         }).collect(Collectors.toList());
         orderMealboxResponseDto.setProducts(mealboxProductResponseDtoList);
