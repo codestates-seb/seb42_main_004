@@ -6,12 +6,12 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 public class ProductDto {
-    @NotBlank
+    @NotBlank(message = "이름은 공백일 수 없습니다.")
     private String name;
-    @NotBlank
+    @NotBlank(message = "무게는 공백일 수 없습니다.")
     private int weight;
-    @NotBlank
+    @NotBlank(message = "칼로리는 공백일 수 없습니다.")
     private int kcal;
-    @NotBlank
+    @NotBlank(message = "가격은 공백일 수 없습니다.")
     private int price;
 }

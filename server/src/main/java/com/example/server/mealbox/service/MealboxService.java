@@ -42,6 +42,8 @@ public class MealboxService {
                                                   MultipartFile file){
         createMealboxProducts(mealbox, mealboxDtoProducts);
 
+        verifyMealboxTotalQuantity(mealbox);
+
         uploadImage(mealbox, file);
 
         return mealboxRepository.save(mealbox);
@@ -64,6 +66,8 @@ public class MealboxService {
         mealbox.patchMealbox(mealboxPatcher);
 
         createMealboxProducts(mealbox, mealboxDtoProducts);
+
+        verifyMealboxTotalQuantity(mealbox);
 
         uploadImage(mealbox, file);
 
@@ -95,6 +99,16 @@ public class MealboxService {
             Product product = productService.findProductById(mealboxDtoProduct.getProductId());
             MealboxProduct.makeMealboxProduct(mealboxDtoProduct.getQuantity(), product, mealbox);
         });
+    }
+
+    private void verifyMealboxTotalQuantity(Mealbox mealbox){
+        int totalQuantity =
+                mealbox.getMealboxProducts().stream().
+                        mapToInt(mealboxProduct -> mealboxProduct.getQuantity())
+                        .sum();
+        if(totalQuantity > 10){
+            throw new BusinessLogicException(MealboxException.TOTAL_QUANTITY_OVER);
+        }
     }
 
     private void uploadImage(Mealbox mealbox, MultipartFile file){

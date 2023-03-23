@@ -20,9 +20,14 @@ public class MealboxSet {
     private Long id;
     @Column(nullable = false)
     private int kcal;
+
+    /* ####### JPA 매핑 ####### */
+
     @OneToMany(mappedBy = "mealboxSet", cascade = CascadeType.ALL)
     @Builder.Default
     private List<MealboxSetter> mealboxSetters = new ArrayList<>();
+
+    /* ####### 편의 메서드 ####### */
 
     public void calculateKcal() {
         this.kcal = this.getMealboxSetters().stream()
