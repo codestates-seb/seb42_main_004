@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 
 function ContentInputDiv({
   id,
+  name,
   labelName,
   placeholder,
   value,
@@ -16,6 +17,7 @@ function ContentInputDiv({
       ) : (
         <input
           id={id}
+          name={name}
           className="inputstyle"
           type="text"
           placeholder={placeholder}
