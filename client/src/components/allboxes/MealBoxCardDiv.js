@@ -9,12 +9,13 @@ import goToCustom from '../../util/goToCustom';
 import { addCartItem } from '../../reducers/cartReducer';
 import { TextButton } from '../commons/ModalDiv';
 
-function MealBoxCardDiv({ mealBox, custom, login }) {
+function MealBoxCardDiv({ mealBox, custom }) {
   const [notification, setNotification] = useState(false);
-  const { admin } = useSelector((state) => state.authReducer);
+  const { isLogin, admin } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
+
   const addToCart = async () => {
-    if (login) {
+    if (isLogin) {
       await postData(`/users/cart`, { mealboxId: mealBox.mealboxId });
     } else {
       dispatch(addCartItem(mealBox));
