@@ -25,8 +25,7 @@ function Header() {
 
   const handleLogout = () => {
     if (confirm('정말 로그아웃하시겠습니까?')) {
-      removeCookie('accessToken', { path: '/' });
-      removeCookie('tokenExpirationDate', { path: '/' });
+      removeCookie('accessToken');
       dispatch(
         setAuth({
           isLogin: false,
@@ -36,6 +35,7 @@ function Header() {
           roles: [],
         })
       );
+      navigate('/');
     } else {
       return;
     }
@@ -62,7 +62,7 @@ function Header() {
               <HeaderLink to="/mealboxes">전체 상품 보기</HeaderLink>
             </li>
             <li>
-              <HeaderLink to="/product">구성품 알아보기</HeaderLink>
+              <HeaderLink to="/products">구성품 알아보기</HeaderLink>
             </li>
           </MenuUl>
           <IconsUl>
@@ -120,7 +120,7 @@ function Header() {
                 <HeaderLink to="/mealboxes">전체 상품 보기</HeaderLink>
               </li>
               <li>
-                <HeaderLink to="/product">구성품 알아보기</HeaderLink>
+                <HeaderLink to="/products">구성품 알아보기</HeaderLink>
               </li>
               {isLogin ? (
                 <li>

@@ -6,7 +6,6 @@ import postData from '../../util/postData';
 import LoginButton from './LoginButton';
 import { FcGoogle } from 'react-icons/fc';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import parseToken from '../../util/parseToken';
 
 function LoginUl() {
   const [showPwd, setShowPwd] = useState(false);
@@ -21,7 +20,6 @@ function LoginUl() {
   const login = (token) => {
     if (cookies.accessToken !== token) {
       setCookie('accessToken', token);
-      setCookie('tokenExpirationDate', new Date(parseToken(token).exp));
     }
   };
 
