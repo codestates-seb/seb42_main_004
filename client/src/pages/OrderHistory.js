@@ -16,31 +16,27 @@ function OrderHistory() {
   let [data, setData] = useState([]);
   console.log(totalPages, page);
   let render = () => {
-    admin &&
-      getData(
-        admin ? `/admin/orders?page=${page}&date=${date}` : `/orders/users`
-      )
-        .then((res) => {
-          setTotalPages(res?.pageInfo?.totalPages);
-          let filterByDateObj = res?.data?.reduce((acc, cur) => {
-            let orderDate = cur.createdAt.slice(0, 10);
-            acc[orderDate]
-              ? acc[orderDate].push(cur)
-              : (acc[orderDate] = [cur]);
-            return acc;
-          }, {});
+    getData(admin ? `/admin/orders?page=${page}&date=${date}` : `/orders/user`)
+      .then((res) => {
+        console.log(res);
+        setTotalPages(res?.pageInfo?.totalPages);
+        let filterByDateObj = res?.reduce((acc, cur) => {
+          let orderDate = cur.createdAt.slice(0, 10);
+          acc[orderDate] ? acc[orderDate].push(cur) : (acc[orderDate] = [cur]);
+          return acc;
+        }, {});
 
-          let filterByDateArr = [];
-          for (let date in filterByDateObj) {
-            filterByDateArr.push({ date, orders: filterByDateObj[date] });
-          }
+        let filterByDateArr = [];
+        for (let date in filterByDateObj) {
+          filterByDateArr.push({ date, orders: filterByDateObj[date] });
+        }
 
-          return filterByDateArr;
-        })
-        .then((data) => {
-          console.log(data);
-          setData(data);
-        });
+        return filterByDateArr;
+      })
+      .then((data) => {
+        console.log(data);
+        setData(data);
+      });
   };
 
   // 관리자
