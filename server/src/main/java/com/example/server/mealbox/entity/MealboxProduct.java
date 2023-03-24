@@ -25,7 +25,7 @@ public class MealboxProduct {
     @JoinColumn(name="PRODUCT_ID")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name="MEALBOX_ID")
     private Mealbox mealbox;
 

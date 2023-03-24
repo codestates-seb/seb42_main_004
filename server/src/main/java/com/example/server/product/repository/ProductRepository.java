@@ -1,7 +1,6 @@
 package com.example.server.product.repository;
 
 import com.example.server.product.entity.Product;
-import com.example.server.utils.CustomPage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

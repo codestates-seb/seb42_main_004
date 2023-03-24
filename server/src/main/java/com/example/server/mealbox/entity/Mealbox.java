@@ -31,7 +31,7 @@ public class Mealbox {
     private int kcal;
     @Column(nullable = false)
     private int weight;
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private MealboxInfo mealboxInfo;
 
     @Getter
@@ -59,7 +59,7 @@ public class Mealbox {
     @Builder.Default
     private List<CartMealbox> cartMealboxes = new ArrayList<>();
 
-    @OneToOne(mappedBy = "mealbox", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "mealbox", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
     @Setter
     private MealboxImage image;
 
