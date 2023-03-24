@@ -14,12 +14,14 @@ import com.example.server.product.service.ProductService;
 import com.example.server.utils.CustomPageRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,13 +78,21 @@ public class MealboxService {
     }
 
     public Page<Mealbox> getSearchedMealboxes(int page, int size, String search) {
-        CustomPageRequest pageRequest = CustomPageRequest.of(page-1, size);
+        if(search.trim().equals("")){
+            return new PageImpl<Mealbox>(new ArrayList<>(), PageRequest.ofSize(size),0);
+        }
+
+        PageRequest pageRequest = PageRequest.of(page-1, size);
         return mealboxRepository.findAllByMealboxInfoIsNotAndNameContains(pageRequest,
                 Mealbox.MealboxInfo.CUSTOM_MEALBOX, search);
     }
 
     public Page<Mealbox> getDetailSearchedMealboxes(int page, int size, String search) {
-        CustomPageRequest pageRequest = CustomPageRequest.of(page-1, size);
+        if(search.trim().equals("")){
+            return new PageImpl<Mealbox>(new ArrayList<>(), PageRequest.ofSize(size),0);
+        }
+
+        PageRequest pageRequest = PageRequest.of(page-1, size);
         return mealboxRepository
                 .findAllDistinctByMealboxInfoIsNotAndNameContainingOrMealboxProductsProductNameContains
                         (pageRequest, Mealbox.MealboxInfo.CUSTOM_MEALBOX, search, search);
@@ -125,5 +135,4 @@ public class MealboxService {
         }
         return pageRequest;
     }
-
 }

@@ -54,16 +54,12 @@ public class ProductService {
     }
 
     public Page<Product> searchProducts(String search, int page, int size, String sort,
-                                        Sort.Direction direction, boolean adminPage){
+                                        Sort.Direction direction){
         if(search.trim().equals("")){
-            if(adminPage){
-                size --;
-            }
             return new PageImpl<Product>(new ArrayList<>(), PageRequest.ofSize(size),0);
         }
 
-        PageRequest pageRequest = adminPage ?
-                makeCustomPageRequest(page, size, sort, direction) : makePageRequest(page, size, sort, direction);
+        PageRequest pageRequest = makePageRequest(page, size, sort, direction);
         return productRepository.findAllByNameContains(search, pageRequest);
     }
 
