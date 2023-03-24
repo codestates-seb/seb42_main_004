@@ -1,7 +1,6 @@
 package com.example.server.payment.service;
 
 import com.example.server.cart.entity.Cart;
-import com.example.server.cart.service.CartMealboxService;
 import com.example.server.cart.service.CartService;
 import com.example.server.exception.BusinessLogicException;
 import com.example.server.order.entity.Orders;
@@ -32,7 +31,6 @@ public class PaymentService {
       "AgLx6Jo4zg8gM6Xc6wPDrFGUR0r7LVzQVCkQljQcf8avGEsqmri0rHW68jX53b0J5faZywwhhQiBFkWy");
   private final OrderService orderService;
   private final PayInfoRepository payInfoRepository;
-  private final CartMealboxService cartMealboxService;
   private final CartService cartService;
 
   // 결제금액 사전등록 (사전 검증)
@@ -62,7 +60,6 @@ public class PaymentService {
       }
     } catch (BusinessLogicException e) {  // 일치하지 않는다면 결제 오류로 주문상태 변경
       log.error("!!!!!!!!! ERROR WHILE PAYING !!!!!!!!!");
-      orderService.errorWhilePaying(order);
       throw e;
     }
     log.info("try catch 문 통과 / paidOrder 진입");
@@ -89,5 +86,10 @@ public class PaymentService {
     PayInfo payInfo = new PayInfo(impUid);
     payInfo.addOrder(order);
     payInfoRepository.save(payInfo);
+  }
+
+  public void errorWhilePaying(String orderNumber) {
+    Orders order = orderService.findByOrderNumber(orderNumber);
+    orderService.errorWhilePaying(order);
   }
 }

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,5 +50,11 @@ public class PaymentController { // IamPort 결제 검증 컨트롤러
     IamportResponse<?> impResponse = paymentService.getPrepare(merchantUid);
     String json = gson.toJson(impResponse);
     return new ResponseEntity<>(json, HttpStatus.OK);
+  }
+
+  @PatchMapping("/validation/error/{order-number}")
+  public ResponseEntity<?> errorPayment(@PathVariable("order-number") String orderNumber) {
+    paymentService.errorWhilePaying(orderNumber);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }
