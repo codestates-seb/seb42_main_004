@@ -414,9 +414,11 @@ public class UserService {
     userRepository.save(user);
   }
 
-  public void checkEmailAuthentication(User user) {
+  public void checkActive(User user) {
     if(user.getStatus() == UserStatus.USER_TMP) {
       throw new BusinessLogicException(UserException.NOT_YET_AUTHENTICATE_EMAIL);
+    } else if(user.getStatus() != UserStatus.USER_ACTiVE) {
+      throw new BusinessLogicException(UserException.NOT_ACTIVE_USER);
     }
   }
 
