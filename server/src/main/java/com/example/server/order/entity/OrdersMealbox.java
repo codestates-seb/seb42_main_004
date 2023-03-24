@@ -26,6 +26,7 @@ public class OrdersMealbox {
     @Setter
     private int kcal;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mealbox_id")
     private Mealbox mealbox;
