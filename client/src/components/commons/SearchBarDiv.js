@@ -2,13 +2,19 @@ import styled from 'styled-components';
 import { BiSearchAlt } from 'react-icons/bi';
 import OrderHistoryPageButton from '../orderHistory/OrderHistoryPageButton';
 
-function SearchBarDiv({ placeholder, searchSubject, setSearchWord }) {
+function SearchBarDiv({
+  placeholder,
+  searchSubject,
+  searchWord,
+  setSearchWord,
+}) {
   return (
     <SearchBarContainerDiv>
       <input
         className="inputstyle"
         maxLength={20}
         placeholder={placeholder && placeholder}
+        value={searchWord}
         onChange={(e) => setSearchWord(e.target.value)}
         onKeyUp={(e) => e.key === 'Enter' && searchSubject()}
       />

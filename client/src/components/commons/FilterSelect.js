@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 
-function FilterSelect({ sortProducts }) {
+function FilterSelect({ sortSubject }) {
   return (
-    <Select type="select" onChange={(e) => sortProducts(e.target.value)}>
+    <Select type="select" onChange={(e) => sortSubject(e.target.value)}>
       <option value="id/DESC">최신순</option>
       <option value="id/ASC">오래된 순</option>
       <option value="name/ASC">가나다순</option>
