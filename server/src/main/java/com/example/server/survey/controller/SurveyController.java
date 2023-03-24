@@ -25,7 +25,7 @@ public class SurveyController {
 //나이, 성별, 신장, 체중  /비활동적, 저활동적, 활동적, 매우 활동적
     @GetMapping("/survey")
     ResponseEntity doSurvey(@RequestParam @Positive @Max(100) int age,
-                            @RequestParam @NotBlank Gender gender,
+                            @RequestParam Gender gender,
                             @RequestParam @Positive @Max(200) int height,
                             @RequestParam @Positive @Max(150) double weight,
                             @RequestParam ActivityAmount activityAmount){
