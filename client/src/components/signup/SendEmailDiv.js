@@ -5,7 +5,7 @@ import postData from '../../util/postData';
 import ContentInputDiv from '../myInfo/ContentInputDiv';
 import MyInfoButton from '../myInfo/MyInfoButton';
 
-function SendEmailDiv() {
+function SendEmailDiv({ pathName }) {
   const [email, setEmail] = useState('');
   const [valid, setValid] = useState({
     text: '',
@@ -19,11 +19,23 @@ function SendEmailDiv() {
     setEmail(e.target.value);
   };
 
-  const handleClick = () => {
+  const handleSignupClick = () => {
     if (valid.isValid) {
-      postData('/users/recovery_email_send', {
+      postData('/users/recovery/signup/send', {
         emailSignUp: signupEmail,
         emailNeedToSend: email,
+      }).then(() => {
+        navigate('/email/confirm', { state: { email } });
+      });
+    } else if (!valid.isValid && !email) {
+      setValid({ text: '이메일을 입력해주세요.', isValid: false });
+    }
+  };
+
+  const handleClick = () => {
+    if (valid.isValid) {
+      postData('/users/recovery/password/send', {
+        email,
       }).then(() => {
         navigate('/email/confirm', { state: { email } });
       });
@@ -62,7 +74,10 @@ function SendEmailDiv() {
         />
         {valid.text ? <ValidDiv>{valid.text}</ValidDiv> : null}
         <div>
-          <MyInfoButton onClick={handleClick} text="이메일 발송" />
+          <MyInfoButton
+            onClick={pathName ? handleSignupClick : handleClick}
+            text="이메일 발송"
+          />
         </div>
       </div>
     </SendDiv>
