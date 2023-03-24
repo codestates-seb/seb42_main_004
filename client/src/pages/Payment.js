@@ -37,7 +37,7 @@ function Payment() {
 
   const handleClick = () => {
     onClickPayment();
-    patchData('/orders/delivery/11', {
+    patchData('/orders/delivery/13', {
       addressee: inputValue.addressee,
       zipCode: inputValue.deliveryZipCode,
       simpleAddress: inputValue.deliverySimpleAddress,

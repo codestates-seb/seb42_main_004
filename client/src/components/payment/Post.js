@@ -1,7 +1,7 @@
 import DaumPostcode from 'react-daum-postcode';
 import styled from 'styled-components';
 
-const Post = ({ inputValue, setInputValue }) => {
+const Post = ({ inputValue, setInputValue, user }) => {
   const complete = (data) => {
     let fullAddress = data.address;
     let extraAddress = '';
@@ -16,13 +16,21 @@ const Post = ({ inputValue, setInputValue }) => {
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-
-    setInputValue({
-      ...inputValue,
-      deliverySimpleAddress: fullAddress,
-      deliveryZipCode: data.zonecode,
-      deliveryDetailAddress: '',
-    });
+    {
+      user
+        ? setInputValue({
+            ...inputValue,
+            simpleAddress: fullAddress,
+            zipCode: data.zonecode,
+            detailAddress: '',
+          })
+        : setInputValue({
+            ...inputValue,
+            deliverySimpleAddress: fullAddress,
+            deliveryZipCode: data.zonecode,
+            deliveryDetailAddress: '',
+          });
+    }
   };
 
   return (

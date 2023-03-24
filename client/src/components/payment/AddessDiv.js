@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Post from './Post';
 
-function AddressDiv({ inputValue, onChange, setInputValue }) {
+function AddressDiv({ inputValue, onChange, setInputValue, user }) {
   const [popup, setPopup] = useState(false);
 
   const handleComplete = () => {
@@ -19,9 +19,10 @@ function AddressDiv({ inputValue, onChange, setInputValue }) {
             placeholder="우편번호"
             type="text"
             required={true}
-            name="deliveryZipCode"
+            name={user ? 'zipCode' : 'deliveryZipCode'}
             onChange={onChange}
-            value={inputValue.deliveryZipCode}
+            value={user ? inputValue.zipCode : inputValue.deliveryZipCode}
+            disabled
           />
           <AddressButton
             className="buttonstyle shadow"
@@ -31,25 +32,34 @@ function AddressDiv({ inputValue, onChange, setInputValue }) {
           </AddressButton>
         </ButtonDiv>
         {popup && (
-          <Post inputValue={inputValue} setInputValue={setInputValue}></Post>
+          <Post
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            user={user}
+          ></Post>
         )}
         <input
           className="inputstyle"
           placeholder="주소"
           type="text"
           required={true}
-          name="deliverySimpleAddress"
+          name={user ? 'simpleAddress' : 'deliverySimpleAddress'}
           onChange={onChange}
-          value={inputValue.deliverySimpleAddress}
+          value={
+            user ? inputValue.simpleAddress : inputValue.deliverySimpleAddress
+          }
+          disabled
         />
         <input
           className="inputstyle"
           placeholder="상세주소"
           type="text"
           required={true}
-          name="deliveryDetailAddress"
+          name={user ? 'detailAddress' : 'deliveryDetailAddress'}
           onChange={onChange}
-          value={inputValue.deliveryDetailAddress}
+          value={
+            user ? inputValue.detailAddress : inputValue.deliveryDetailAddress
+          }
         />
       </InputDiv>
     </ContainerDiv>

@@ -6,7 +6,6 @@ import postData from '../../util/postData';
 import LoginButton from './LoginButton';
 import { FcGoogle } from 'react-icons/fc';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
-import parseToken from '../../util/parseToken';
 
 function LoginUl() {
   const [showPwd, setShowPwd] = useState(false);
@@ -15,13 +14,15 @@ function LoginUl() {
     password: '',
   });
   const inputRef = useRef([]);
-  const [cookies, setCookie] = useCookies();
+  const [cookies, setCookie, removeCookie] = useCookies();
   const { email, password } = inputValue;
 
   const login = (token) => {
-    if (cookies.accessToken !== token) {
+    if (!cookies.accessToken) {
       setCookie('accessToken', token);
-      setCookie('tokenExpirationDate', new Date(parseToken(token).exp));
+    } else if (cookies.accessToken && cookies.accessToken !== token) {
+      removeCookie('accessToken');
+      setCookie('accessToken', token);
     }
   };
 
