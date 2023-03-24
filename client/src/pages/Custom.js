@@ -10,6 +10,7 @@ import { TextButton } from '../components/commons/ModalDiv';
 import { MealBoxesWrapDiv } from './AllBoxes';
 import useGET from '../util/useGET';
 import { initializeCustom } from '../reducers/customReducer';
+import NoResult from '../components/commons/NoResult';
 
 function Custom() {
   const [page, setPage] = useState(1);
@@ -19,6 +20,7 @@ function Custom() {
   const [openCustom, setOpenCustom] = useState(false);
   const [res, isPending, error] = useGET(`/products${path}`);
   const { custom } = useSelector((state) => state.customReducer);
+  const [errorWord, setErrorWord] = useState(searchWord);
   const dispatch = useDispatch();
 
   const searchProduct = () => {
@@ -33,6 +35,7 @@ function Custom() {
   };
 
   const getProducts = () => {
+    setErrorWord(searchWord);
     if (searchWord) setPath(`/search?page=${page}&name=${searchWord}`);
     else setPath(`?page=${page}&sort=${sortBy[0]}&dir=${sortBy[1]}`);
   };
@@ -77,18 +80,26 @@ function Custom() {
               setSearchWord={setSearchWord}
             />
             <BoxElementCardUl>
-              {products?.map((product) => (
-                <li key={product.productId}>
-                  <BoxElementCardDiv
-                    product={product}
-                    quantity={
-                      custom.products[productInCustom(product.productId)]
-                        ?.quantity
-                    }
-                    totalQuantity={totalQuantity}
-                  />
-                </li>
-              ))}
+              {products?.length !== 0 ? (
+                products?.map((product) => (
+                  <li key={product.productId}>
+                    <BoxElementCardDiv
+                      product={product}
+                      quantity={
+                        custom.products[productInCustom(product.productId)]
+                          ?.quantity
+                      }
+                      totalQuantity={totalQuantity}
+                    />
+                  </li>
+                ))
+              ) : (
+                <NoResult
+                  search={(word) => setPath(`/search?page=1&name=${word}`)}
+                  errorWord={errorWord}
+                  replaceWord={'단백질쉐이크'}
+                />
+              )}
             </BoxElementCardUl>
             <PaginationUl
               page={res?.pageInfo?.page}

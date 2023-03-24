@@ -5,17 +5,17 @@ import styled from 'styled-components';
 import { MealBoxesWrapDiv, SearchResultH3 } from './AllBoxes';
 import ProductLi from '../components/product/ProductLi';
 import GetTemplate from '../components/commons/GetTemplate';
-import { TextButton } from '../components/commons/ModalDiv';
 import PaginationUl from '../components/commons/PaginationUl';
 import FilterSearchDiv from '../components/commons/FilterSearchDiv';
 import useGET from '../util/useGET';
+import NoResult from '../components/commons/NoResult';
 
 function Products() {
   const { admin } = useSelector((state) => state.authReducer);
   let { pathname, search } = useLocation();
   if (!search) search = '?page=1&sort=id&dir=ASC';
 
-  const [res, isPending, error] = useGET(
+  const [res, isPending, error, getData] = useGET(
     `${admin ? '/admin' : ''}${pathname}${search}`
   );
   const [searchWord, setSearchWord] = useState('');
@@ -57,32 +57,28 @@ function Products() {
           </SearchResultH3>
         )}
         <ul>
-          {admin && (search.includes('?page=1&') || res.data?.length === 0) && (
-            <ProductLi admin={admin} />
-          )}
+          {admin &&
+            ((search.includes('?page=1&') && !pathname.includes('search')) ||
+              res.data?.length === 0) && (
+              <ProductLi admin={admin} reload={getData} />
+            )}
           {res.data?.length !== 0 ? (
             res.data?.map((product) => (
               <ProductLi
                 key={product.productId}
                 product={product}
                 admin={admin}
+                reload={getData}
               />
             ))
           ) : (
-            <div>
-              찾고 계신 <span>{errorWord}</span>은(는) 목록에 추가될 예정입니다
-              <br />
-              {errorWord} 대신
-              <TextButton
-                className="linkstyle"
-                onClick={() =>
-                  navigate('/products/search?page=1&name=단백질쉐이크')
-                }
-              >
-                단백질쉐이크
-              </TextButton>
-              는 어떠세요?
-            </div>
+            <NoResult
+              search={(word) =>
+                navigate(`/products/search?page=1&name=${word}`)
+              }
+              errorWord={errorWord}
+              replaceWord={'단백질쉐이크'}
+            />
           )}
         </ul>
         <PaginationUl
