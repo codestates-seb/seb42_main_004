@@ -15,8 +15,8 @@ function MealBoxDeleteButton() {
     if (confirm('장바구니에서 삭제하시겠습니까?')) {
       isLogin && deleteData(`/users/cart/${cartMealboxId}`);
       dispatch(deleteCartItem([cartMealboxId]));
-      setIsClick(true);
       alert('장바구니에서 삭제되었습니다.');
+      setIsClick(true);
     }
   };
 

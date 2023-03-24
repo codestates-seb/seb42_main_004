@@ -66,11 +66,16 @@ function Cart() {
   };
 
   useEffect(() => {
+    console.log(isLogin);
     if (isLogin) {
+      console.log(isLogin);
       getData('/users/cart').then((data) => {
         dispatch(setCart(data.data));
       });
     }
+  }, []);
+
+  useEffect(() => {
     calcRenderPrice();
   }, [mealboxes]);
 
