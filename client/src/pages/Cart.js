@@ -61,7 +61,7 @@ function Cart() {
       });
     console.log(postReqData);
     postData('/orders', { mealboxes: postReqData }).then((res) => {
-      navigate(res.data);
+      navigate(res.data, { state: checkedCartMealBoxId });
     });
   };
 
