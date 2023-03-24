@@ -4,8 +4,10 @@ import com.example.server.cart.entity.Cart;
 import com.example.server.cart.entity.CartMealbox;
 import com.example.server.cart.exception.CartMealboxException;
 import com.example.server.cart.repository.CartMealboxRepository;
+import com.example.server.cart.repository.CartRepository;
 import com.example.server.exception.BusinessLogicException;
 import com.example.server.order.entity.Orders;
+import com.example.server.order.repository.OrderRepository;
 import java.util.Optional;
 
 import com.example.server.mealbox.entity.Mealbox;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CartMealboxService {
   private final CartMealboxRepository cartMealboxRepository;
+  private final CartRepository cartRepository;
 
   public CartMealbox findCartMealbox(long cartMealboxId) {
     Optional<CartMealbox> cartMealbox = cartMealboxRepository.findById(cartMealboxId);
@@ -26,11 +29,11 @@ public class CartMealboxService {
   }
 
   public void deleteCartMealboxAfterPayment(Orders order) {
-
     order.getCartMealboxIds().stream().forEach(id -> {
       CartMealbox cartMealbox = findCartMealbox(id);
       cartMealboxRepository.delete(cartMealbox);
     });
+    cartRepository.save(order.getUser().getCart());
   }
 
   public void changeQuantity(Long cartMealboxId, int quantity){
