@@ -28,7 +28,7 @@ function SurveyPage3() {
   // 설문 결과 get 요청 + 화면 전환
 
   let nextHandler = () => {
-    getData(`/mealboxes/rec/survey/${kcalPerDay}`)
+    getData(`/mealboxes/rec/survey?kcal=${kcalPerDay}`)
       .then((res) => {
         console.log(res.data);
         dispatch(setSurveyRcmd(res.data));
