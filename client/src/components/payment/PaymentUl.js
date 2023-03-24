@@ -6,8 +6,8 @@ import AddressDiv from './AddessDiv';
 import useGET from '../../util/useGET';
 import { useEffect } from 'react';
 
-function PaymentUl({ inputValue, setInputValue }) {
-  const [res, isPending, error] = useGET(`/orders/checkout/13`);
+function PaymentUl({ inputValue, setInputValue, num }) {
+  const [res, isPending, error] = useGET(`/orders/checkout/${num}`);
 
   useEffect(() => {
     if (res) {
