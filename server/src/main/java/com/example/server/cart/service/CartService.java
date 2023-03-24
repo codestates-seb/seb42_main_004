@@ -56,9 +56,12 @@ public class CartService {
         //커스텀이면 cartMealbox, mealbox, mealboxProduct까지 다 삭제
         if(mealbox.getMealboxInfo() == Mealbox.MealboxInfo.CUSTOM_MEALBOX){
             mealboxService.deleteMealbox(mealbox.getId());
+            mealbox.getCartMealboxes().forEach(eachCartMealbox ->
+                    cart.getCartMealboxes().remove(eachCartMealbox));
         } //커스텀이 아니면 cartMealbox만 삭제
         else if (mealbox.getMealboxInfo() != Mealbox.MealboxInfo.CUSTOM_MEALBOX) {
             cartMealboxService.deleteCartMealbox(cartMealbox);
+            cart.getCartMealboxes().remove(cartMealbox);
         }
 
         cart.calculateTotalPrice();

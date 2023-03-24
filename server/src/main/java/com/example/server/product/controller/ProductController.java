@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class ProductController {
 
     //관리자가 개별상품 생성하기
     @PostMapping("/admin/products")
-    public ResponseEntity createAdminProduct(@RequestBody ProductDto productDto){
+    public ResponseEntity createAdminProduct(@RequestBody @Valid ProductDto productDto){
         log.info("--------createProduct-------");
         Product product = mapper.productDtoToProduct(productDto);
         productService.createProduct(product);
@@ -45,8 +47,8 @@ public class ProductController {
 
     //관리자가 개별상품 수정하기
     @PatchMapping("/admin/products/{productId}")
-    public ResponseEntity updateAdminProduct(@PathVariable("productId") Long productId,
-                                             @RequestBody ProductDto productDto){
+    public ResponseEntity updateAdminProduct(@PathVariable("productId") @Positive Long productId,
+                                             @RequestBody @Valid ProductDto productDto){
         log.info("--------updateProduct-------");
         Product productPatcher = mapper.productDtoToProduct(productDto);
         productService.updateProduct(productId, productPatcher);
@@ -55,18 +57,18 @@ public class ProductController {
 
     //관리자가 개별상품 삭제하기
     @DeleteMapping("/admin/products/{productId}")
-    public ResponseEntity deleteAdminProduct(@PathVariable("productId") Long productId){
+    public ResponseEntity deleteAdminProduct(@PathVariable("productId") @Positive Long productId){
         log.info("--------deleteProduct-------");
         productService.deleteProduct(productId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("/admin/products")
-    public ResponseEntity getProductList (@Positive @RequestParam int page,
-                                          @RequestParam String sort,
-                                          @RequestParam Sort.Direction dir) {
+    public ResponseEntity adminGetProductList (@RequestParam @Positive int page,
+                                               @RequestParam @NotBlank String sort,
+                                               @RequestParam Sort.Direction dir) {
         log.info("------adminGetProductList-------");
-        Page<Product> productPage = productService.findProducts(page, productListSize, sort, dir, false);
+        Page<Product> productPage = productService.findProducts(page, productListSize, sort, dir, true);
 
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
@@ -75,11 +77,11 @@ public class ProductController {
     }
 
     @GetMapping("/admin/products/search")
-    public ResponseEntity getSearchedProductList(@Positive @RequestParam int page,
-                                                 @RequestParam String name){
+    public ResponseEntity adminGetSearchedProductList(@RequestParam @Positive int page,
+                                                      @RequestParam String name){
         log.info("------adminGetsearchProductList------");
         Page<Product> productPage =
-                productService.searchProducts(name, page, productListSize, "id", Sort.Direction.ASC, false);
+                productService.searchProducts(name, page, productListSize, "id", Sort.Direction.ASC, true);
 
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
@@ -88,11 +90,11 @@ public class ProductController {
     }
     //개별상품리스트 얻기 (추천조합 밀박스 만들때 + 구성품 조회할때)
     @GetMapping("/products")
-    public ResponseEntity adminGetProductList (@Positive @RequestParam int page,
-                                               @RequestParam String sort,
-                                               @RequestParam Sort.Direction dir) {//여기서 이넘타입을 받을수있다!
+    public ResponseEntity getProductList (@RequestParam @Positive int page,
+                                          @RequestParam @NotBlank String sort,
+                                          @RequestParam Sort.Direction dir) {//여기서 이넘타입을 받을수있다!
         log.info("------getProductList-------");
-        Page<Product> productPage = productService.findProducts(page, productListSize, sort, dir, true);
+        Page<Product> productPage = productService.findProducts(page, productListSize, sort, dir, false);
 
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
@@ -103,11 +105,11 @@ public class ProductController {
     }
 
     @GetMapping("/products/search")
-    public ResponseEntity adminGetSearchedProductList(@Positive @RequestParam int page,
-                                                      @RequestParam String name) {
+    public ResponseEntity getSearchedProductList(@RequestParam @Positive int page,
+                                                 @RequestParam String name) {
         log.info("------getsearchProduct------");
         Page<Product> productPage =
-                productService.searchProducts(name, page, productListSize, "id", Sort.Direction.ASC, true);
+                productService.searchProducts(name, page, productListSize, "id", Sort.Direction.ASC, false);
 
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
@@ -118,8 +120,8 @@ public class ProductController {
     }
 
     @PostMapping("/products/{productId}/image")
-    public ResponseEntity postProductImage(@PathVariable("productId") Long productId,
-                                           @RequestPart MultipartFile file) {
+    public ResponseEntity postProductImage(@PathVariable("productId") @Positive Long productId,
+                                           @RequestPart("file") MultipartFile file) {
         log.info("------uploadProductImage------");
         productService.uploadImage(productId, file);
         return new ResponseEntity(HttpStatus.CREATED);

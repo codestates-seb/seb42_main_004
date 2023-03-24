@@ -19,6 +19,8 @@ public class MealboxImage {
     @Embedded
     private ImageInfo imageInfo;
 
+    /* ####### JPA 매핑 ####### */
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEALBOX_ID")
     @Setter
