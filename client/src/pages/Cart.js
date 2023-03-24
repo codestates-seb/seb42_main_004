@@ -26,20 +26,19 @@ function Cart() {
     let checkedCartMealBoxId = Array.from(checkedItem).map((el) =>
       String(el.id)
     );
-    console.log(checkedCartMealBoxId);
-    let checkedPrice = mealboxes?.reduce(
-      (acc, cur) =>
-        checkedCartMealBoxId.includes(cur.cartMealboxId)
-          ? acc + cur.price * cur.quantity
-          : acc,
-      0
-    );
+
+    let checkedPrice = mealboxes?.reduce((acc, cur) => {
+      if (checkedCartMealBoxId.includes(String(cur.cartMealboxId))) {
+        return acc + cur.price * cur.quantity;
+      } else {
+        return acc;
+      }
+    }, 0);
 
     setRenderPrice(checkedPrice);
   };
 
   let purchaseHandler = () => {
-    console.log(isLogin);
     if (!isLogin) {
       return navigate('/login');
       // session의 물품 장바구니에 추가 요청
@@ -54,28 +53,28 @@ function Cart() {
 
     let postReqData = mealboxes
       .filter((el) => {
-        return checkedCartMealBoxId.includes(el.cartMealboxId);
+        return checkedCartMealBoxId.includes(String(el.cartMealboxId));
       })
       .map((el) => {
         let { cartMealboxId, mealboxId, quantity } = el;
         return { cartMealboxId, mealboxId, quantity };
       });
     console.log(postReqData);
-    postData('/orders', { orderMealboxes: postReqData }).then((res) => {
+    postData('/orders', { mealboxes: postReqData }).then((res) => {
+      console.log(res);
       navigate(res.data);
     });
   };
 
   useEffect(() => {
-    calRenderPrice();
     console.log(isLogin);
     if (isLogin) {
       getData('/users/cart').then((data) => {
-        console.log(data);
         dispatch(setCart(data.data));
       });
     }
-  }, []);
+    calRenderPrice();
+  }, [renderPrice]);
 
   return (
     <CartPageWrapper className="margininside">

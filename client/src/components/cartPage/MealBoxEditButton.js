@@ -24,7 +24,7 @@ function MealBoxEditButton() {
 
     // custom reducer에 저장 & custom 페이지로 전환 (서버 요청 없음)
     let idx = mealboxes.findIndex((el) => {
-      return el.cartMealboxId === cartMealboxId;
+      return String(el.cartMealboxId) === String(cartMealboxId);
     });
     let mealBoxData = mealboxes[idx].products;
     dispatch(addProductInBox(mealBoxData));
