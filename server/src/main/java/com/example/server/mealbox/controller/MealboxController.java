@@ -103,9 +103,9 @@ public class MealboxController {
         return new ResponseEntity(new MultiResponseDto(response, pageInfo), HttpStatus.OK);
     }
 
-    @PostMapping("/mealboxes/{mealboxId}/image")
+    @PostMapping("/admin/mealboxes/{mealboxId}/image")
     public ResponseEntity uploadMealboxImage(@PathVariable("mealboxId") @Positive Long mealboxId,
-                                             @RequestPart MultipartFile file) {
+                                             @RequestPart("file") MultipartFile file) {
         log.info("------uploadMealboxImage------");
         mealboxService.uploadImage(mealboxId, file);
         return new ResponseEntity(HttpStatus.CREATED);
