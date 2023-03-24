@@ -72,7 +72,7 @@ public class OrderService {
     orderMealboxPostDtos.stream().forEach(orderMealboxPostDto -> {
       Mealbox mealbox = mealboxService.findMealboxById(orderMealboxPostDto.getMealboxId());
       int quantity = orderMealboxPostDto.getQuantity();
-      OrdersMealbox ordersMealbox = new OrdersMealbox(quantity, mealbox);
+      OrdersMealbox ordersMealbox = new OrdersMealbox(quantity, mealbox, mealbox.getName());
       ordersMealbox.addOrders(order);
       ordersMealbox.setPrice(mealbox.getPrice());
       ordersMealbox.setKcal(mealbox.getKcal());

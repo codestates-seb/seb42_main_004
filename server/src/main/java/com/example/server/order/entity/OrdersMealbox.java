@@ -17,11 +17,11 @@ public class OrdersMealbox {
     private Long id;
 
     @Setter
+    private String name;
+    @Setter
     private int quantity;
-
     @Setter
     private int price;
-
     @Setter
     private int kcal;
 
@@ -42,9 +42,10 @@ public class OrdersMealbox {
     }
 
     @Builder
-    public OrdersMealbox(int quantity, Mealbox mealbox) {
+    public OrdersMealbox(int quantity, Mealbox mealbox, String name) {
         this.quantity = quantity;
         this.mealbox = mealbox;
+        this.name = name;
     }
 
     public void addOrders(Orders orders) {
