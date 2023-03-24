@@ -47,4 +47,9 @@ public class CartMealboxService {
   public void deleteCartMealbox(CartMealbox cartMealbox){
     cartMealboxRepository.delete(cartMealbox);
   }
+
+  public void plusOneQuantity(CartMealbox cartMealbox){
+    cartMealbox.plusOneQuantity();
+    cartMealboxRepository.save(cartMealbox);
+  }
 }

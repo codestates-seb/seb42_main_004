@@ -49,5 +49,9 @@ public class CartMealbox {
   public void changeQuantity(int quantity){
     this.quantity = quantity;
   }
+
+  public void plusOneQuantity(){
+    this.quantity++;
+  }
 }
 

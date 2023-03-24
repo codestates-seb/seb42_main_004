@@ -29,19 +29,13 @@ public class ProductService {
         this.imageService = imageService;
     }
 
-    public Product createProduct(Product product, MultipartFile file) {
-
-        uploadImage(product, file);
-
+    public Product createProduct(Product product) {
         return productRepository.save(product);
     }
 
-    public Product updateProduct(Long productId, Product productPatcher, MultipartFile file){
+    public Product updateProduct(Long productId, Product productPatcher){
         Product product = findProductById(productId);
         product.patchProduct(productPatcher);
-
-        uploadImage(product, file);
-
         return productRepository.save(product);
     }
 
@@ -76,14 +70,14 @@ public class ProductService {
         return productRepository.findAllByNameContains(search, pageRequest);
     }
 
-    /* ####### private 메서드 ####### */
-
-    private void uploadImage(Product product, MultipartFile file) {
-        if(!file.isEmpty()){
-            ProductImage image = imageService.uploadProductImage(file, product);
-            product.setImage(image);
-        }
+    public void uploadImage(Long productId, MultipartFile file) {
+        Product product = findProductById(productId);
+        ProductImage image = imageService.uploadProductImage(file, product);
+        product.setImage(image);
+        productRepository.save(product);
     }
+
+    /* ####### private 메서드 ####### */
 
     private CustomPageRequest makeCustomPageRequest(int page, int size, String sort, Sort.Direction direction) {
         CustomPageRequest pageRequest = null;

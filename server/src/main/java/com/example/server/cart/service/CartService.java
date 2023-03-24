@@ -10,9 +10,12 @@ import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.mealbox.service.MealboxService;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @Service
@@ -29,16 +32,24 @@ public class CartService {
         this.mealboxService = mealboxService;
     }
 
-    public Cart createCartMealboxAndAddMealbox(Cart cart, Long mealboxId){
-        Mealbox mealbox = mealboxService.findMealboxById(mealboxId);
+    public void createCartMealboxAndAddMealbox(Cart cart, Long mealboxId){
+        CartMealbox cartMealbox = findSameMealboxInCart(cart, mealboxId);
+        if(cartMealbox!=null) {
+            cartMealboxService.plusOneQuantity(cartMealbox);
+        }
+        else{
+            Mealbox mealbox = mealboxService.findMealboxById(mealboxId);
 
-        cartMealboxService.createCartMealbox(cart, mealbox);
+            cartMealboxService.createCartMealbox(cart, mealbox);
 
-        cart.calculateTotalPrice();
-        return cartRepository.save(cart);
+            cart.calculateTotalPrice();
+            cartRepository.save(cart);
+        }
     }
 
     public void removeMealboxFromCart(Cart cart, Long cartMealboxId){
+        verifyExistsCartMealboxIsInCart(cart, cartMealboxId);
+
         CartMealbox cartMealbox = cartMealboxService.findCartMealbox(cartMealboxId);
         Mealbox mealbox = cartMealbox.getMealbox();
 
@@ -55,6 +66,8 @@ public class CartService {
     }
 
     public void changeMealboxQuantity(Cart cart, Long cartMealboxId, int quantity) {
+        verifyExistsCartMealboxIsInCart(cart, cartMealboxId);
+
         cartMealboxService.changeQuantity(cartMealboxId, quantity);
 
         cart.calculateTotalPrice();
@@ -63,7 +76,7 @@ public class CartService {
 
     public Cart createMealboxAndAddCart(Cart cart, Mealbox mealbox,
                                         List<MealboxDto.Product> mealboxDtoProducts){
-        mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxDtoProducts, null);
+        mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxDtoProducts);
 
         cartMealboxService.createCartMealbox(cart, mealbox);
 
@@ -78,7 +91,27 @@ public class CartService {
 
     /* ####### private 메서드 ####### */
 
-//    private void verifyExistsCartMealboxInsCart(Cart cart) {
-//        cart.getCartMealboxes().contains()
-//    }
+    private void verifyExistsCartMealboxIsInCart(Cart cart, Long cartMealboxId) {
+        boolean isInCart = cart.getCartMealboxes().stream()
+                .anyMatch(cartMealbox->cartMealbox.getId()==cartMealboxId);
+        if(isInCart == false){
+            throw new BusinessLogicException(CartException.CARTMEALBOX_NOT_IN_CART);
+        }
+    }
+
+    //카트에 이미 있는 밀박스인지 조사하기 -> 리턴 : 해당 카트밀박스
+    private CartMealbox findSameMealboxInCart(Cart cart, Long mealboxId){
+        List<CartMealbox> cartMealboxList = cart.getCartMealboxes().stream().map(cartMealbox -> {
+                    if (cartMealbox.getMealbox().getId() == mealboxId) {
+                        return cartMealbox;
+                    }
+                    return null;
+                }
+        ).filter(Objects::nonNull).collect(Collectors.toList());
+
+        if(cartMealboxList.size()==1){
+            return cartMealboxList.get(0);
+        }
+        return null;
+    }
 }
