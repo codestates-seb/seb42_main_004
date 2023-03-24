@@ -21,7 +21,7 @@ function Cart() {
     let checkedItem = document.querySelectorAll(
       'input[type="checkbox"]:checked'
     );
-
+    console.log(checkedItem);
     let checkedCartMealBoxId = Array.from(checkedItem).map((el) =>
       String(el.id)
     );
@@ -72,7 +72,7 @@ function Cart() {
       });
     }
     calcRenderPrice();
-  }, []);
+  }, [mealboxes]);
 
   return (
     <CartPageWrapper className="margininside">
