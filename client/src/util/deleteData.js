@@ -11,7 +11,7 @@ async function deleteData(url) {
         withCredentials: true,
       }
     );
-    return response.data;
+    return response;
   } catch (error) {
     return error.response;
   }

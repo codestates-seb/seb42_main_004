@@ -54,12 +54,12 @@ function App() {
   const [cookies, ,] = useCookies();
   const { accessToken } = cookies;
 
-  if (cookies.accessToken) {
+  if (accessToken) {
     setAuthorizationToken(accessToken);
   }
 
   useEffect(() => {
-    if (cookies.accessToken) {
+    if (accessToken) {
       const { exp, principal, roles } = parseToken(accessToken);
       dispatch(
         setAuth({
@@ -71,7 +71,7 @@ function App() {
         })
       );
     }
-  }, [cookies.accessToken]);
+  }, [accessToken]);
 
   return (
     <>
@@ -89,41 +89,33 @@ function App() {
           <Route path="/cart" element={<Cart />} />
           <Route
             path="/myinfo/orderhistory"
-            element={cookies.accessToken ? <OrderHistory /> : <Login />}
+            element={accessToken ? <OrderHistory /> : <Login />}
           />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:page" element={<Products />} />
           <Route
             path="/login"
-            element={cookies.accessToken ? <Navigate to="/" /> : <Login />}
+            element={accessToken ? <Navigate to="/" /> : <Login />}
           />
           <Route
             path="/signup"
-            element={cookies.accessToken ? <Navigate to="/" /> : <Signup />}
+            element={accessToken ? <Navigate to="/" /> : <Signup />}
           />
           <Route
             path="/signup/oauth"
-            element={
-              cookies.accessToken ? <Navigate to="/" /> : <SignupOauth />
-            }
+            element={accessToken ? <Navigate to="/" /> : <SignupOauth />}
           />
           <Route
             path="/myinfo"
-            element={
-              cookies.accessToken ? <MyInfo /> : <Navigate to="/login" />
-            }
+            element={accessToken ? <MyInfo /> : <Navigate to="/login" />}
           />
           <Route
             path="/myinfo/edit"
-            element={
-              cookies.accessToken ? <EditMyInfo /> : <Navigate to="/login" />
-            }
+            element={accessToken ? <EditMyInfo /> : <Navigate to="/login" />}
           />
           <Route
             path="/myinfo/edit/password"
-            element={
-              cookies.accessToken ? <EditPassword /> : <Navigate to="/login" />
-            }
+            element={accessToken ? <EditPassword /> : <Navigate to="/login" />}
           />
           <Route path="/email/complete" element={<CompleteEmail />} />
           <Route path="/email/confirm" element={<ConfirmEmail />} />
@@ -131,9 +123,7 @@ function App() {
           <Route path="/email/send/password" element={<FindPassword />} />
           <Route
             path="/cart/payment"
-            element={
-              cookies.accessToken ? <Payment /> : <Navigate to="/login" />
-            }
+            element={accessToken ? <Payment /> : <Navigate to="/login" />}
           />
           <Route path="/*" element={<Error />} />
         </Routes>

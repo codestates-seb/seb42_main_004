@@ -7,7 +7,7 @@ import useGET from '../../util/useGET';
 import { useEffect } from 'react';
 
 function PaymentUl({ inputValue, setInputValue }) {
-  const [res, isPending, error] = useGET(`/orders/checkout/11`);
+  const [res, isPending, error] = useGET(`/orders/checkout/13`);
 
   useEffect(() => {
     if (res) {
@@ -62,7 +62,7 @@ function PaymentUl({ inputValue, setInputValue }) {
             id="addresseePhoneNumber"
             name="addresseePhoneNumber"
             labelName="연락처"
-            placeholder="받는분"
+            placeholder="연락처"
             value={inputValue.addresseePhoneNumber}
             onChange={handleInput}
           />
