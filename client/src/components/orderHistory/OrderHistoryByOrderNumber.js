@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import patchData from '../../util/patchData';
 import deleteData from '../../util/deleteData';
+import { useSelector } from 'react-redux';
 
 function OrderHistoryByOrderNumber({ orders }) {
-  console.log(orders);
-  let admin = true;
+  let { admin } = useSelector((state) => state.authReducer);
   let { username, deliveryDate, orderStatus, orderNumber, mealboxes } = orders;
   console.log(username, deliveryDate, orderStatus, orderNumber, mealboxes);
-  let [status, setStatus] = useState();
+  let [status, setStatus] = useState(orderStatus);
   let [buttonText, setButtonText] = useState('');
   let [isRefundable, setIsRefundable] = useState(false);
 
@@ -25,7 +25,9 @@ function OrderHistoryByOrderNumber({ orders }) {
   };
 
   let adminPatchStatus = () => {
-    patchData(`/admin/orders/status/${orderNumber}`, { status: status });
+    patchData(`/admin/orders/status/${orderNumber}`, { status: status }).then(
+      () => alert('상태가 변경되었습니다.')
+    );
   };
 
   // 사용자
@@ -72,28 +74,13 @@ function OrderHistoryByOrderNumber({ orders }) {
         {admin ? (
           <AdminTopMenuDiv>
             <div>{`${username}님`}</div>
-            <select name="#" onChange={statusHandler}>
-              <option value="주문완료" selected={orderStatus === '주문완료'}>
-                주문 완료
-              </option>
-              <option value="배송중" selected={orderStatus === '배송중'}>
-                배송중
-              </option>
-              <option value="배송완료" selected={orderStatus === '배송완료'}>
-                배송 완료
-              </option>
-              <option value="주문취소" selected={orderStatus === '주문취소'}>
-                주문 취소
-              </option>
-              <option
-                value="환불대기중"
-                selected={orderStatus === '환불대기중'}
-              >
-                환불 대기중
-              </option>
-              <option value="환불완료" selected={orderStatus === '환불완료'}>
-                환불 완료
-              </option>
+            <select name="#" onChange={statusHandler} value={status}>
+              <option value="주문완료">주문 완료</option>
+              <option value="배송중">배송중</option>
+              <option value="배송완료">배송 완료</option>
+              <option value="주문취소">주문 취소</option>
+              <option value="환불대기중">환불 대기중</option>
+              <option value="환불완료">환불 완료</option>
             </select>
             <button onClick={adminPatchStatus}>확인</button>
           </AdminTopMenuDiv>
