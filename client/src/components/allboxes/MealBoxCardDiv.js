@@ -9,15 +9,16 @@ import goToCustom from '../../util/goToCustom';
 import { addCartItem } from '../../reducers/cartReducer';
 import { TextButton } from '../commons/ModalDiv';
 
-function MealBoxCardDiv({ mealBox, custom, login }) {
+function MealBoxCardDiv({ mealBox, custom }) {
   const [notification, setNotification] = useState(false);
-  const { admin } = useSelector((state) => state.authReducer);
+  const { isLogin, admin } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
+
   const addToCart = async () => {
-    if (login) {
+    if (isLogin) {
       await postData(`/users/cart`, { mealboxId: mealBox.mealboxId });
     } else {
-      dispatch(addCartItem(mealBox));
+      dispatch(addCartItem({ ...mealBox, quantity: 1 }));
     }
     setNotification(true);
     setTimeout(() => setNotification(false), 2000);
@@ -30,7 +31,7 @@ function MealBoxCardDiv({ mealBox, custom, login }) {
       )
     ) {
       deleteData(`/admin/mealboxes/${mealBox.mealboxId}`)
-        .then(() => alert(`${mealBox.name}이 삭제되었습니다.}`))
+        .then(() => alert(`${mealBox.name}이 삭제되었습니다.`))
         .then(() => {
           window.location.reload();
         });

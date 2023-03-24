@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import { TextButton } from '../commons/ModalDiv';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setMinus, setPlus } from '../../reducers/cartReducer';
 import patchData from '../../util/patchData';
 function MealBoxCounterDiv({ quantity, calRenderPrice }) {
   console.log(quantity);
-  let isLogin = false;
+
+  let { isLogin } = useSelector((state) => state.authReducer);
   let dispatch = useDispatch();
 
   let getCartMealboxId = (e) =>

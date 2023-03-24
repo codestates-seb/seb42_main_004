@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 // import { useEffect } from 'react';
+import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 import { setAuth } from './reducers/authReducer';
@@ -18,7 +19,7 @@ import Signup from './pages/Signup';
 import SignupOauth from './pages/SignupOauth';
 import MyInfo from './pages/MyInfo';
 import Payment from './pages/Payment';
-import Product from './pages/Product';
+import Products from './pages/Products';
 import EditMyInfo from './pages/EditMyInfo';
 import EditPassword from './pages/EditPassword';
 import CompleteEmail from './pages/CompleteEmail';
@@ -30,6 +31,7 @@ import ToTopButton from './components/commons/ToTopButton';
 import setAuthorizationToken from './util/setAuthorizationToken';
 import parseToken from './util/parseToken';
 import { useEffect } from 'react';
+import checkFooter from './util/checkFooter';
 
 function App() {
   // const [cookies, , removeCookie] = useCookies();
@@ -75,11 +77,12 @@ function App() {
     <>
       <GlobalStyle />
       <Header />
-      <div className="marginbase bodymargin">
+      <BodyMargin className="marginbase" height={checkFooter() && 1}>
         <Routes>
           <Route path="/" element={<SurveyHome />} />
           <Route path="/mealboxes" element={<AllBoxes />} />
           <Route path="/mealboxes/:page" element={<AllBoxes />} />
+          <Route path="/mealboxes/search/:page" element={<AllBoxes />} />
           <Route path="/survey/question/:page" element={<Survey />} />
           <Route path="/survey/result" element={<SurveyResult />} />
           <Route path="/custom" element={<Custom />} />
@@ -88,7 +91,8 @@ function App() {
             path="/myinfo/orderhistory"
             element={accessToken ? <OrderHistory /> : <Login />}
           />
-          <Route path="/product" element={<Product />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/products/:page" element={<Products />} />
           <Route
             path="/login"
             element={accessToken ? <Navigate to="/" /> : <Login />}
@@ -124,10 +128,27 @@ function App() {
           <Route path="/*" element={<Error />} />
         </Routes>
         <ToTopButton />
-      </div>
+      </BodyMargin>
       <Footer />
     </>
   );
 }
 
 export default App;
+
+const BodyMargin = styled.div`
+  padding-top: calc(1rem + 50px);
+  padding-bottom: 4rem;
+  min-height: calc(100vh - 330px - 5rem);
+
+  @media screen and (max-width: 768px) {
+    min-height: calc(100vh - 280px - 5rem);
+  }
+
+  @media screen and (max-width: 480px) {
+    min-height: calc(
+      100vh - ${(props) => (props.height ? '50px' : '230px')} - 5rem
+    );
+    padding-bottom: ${(props) => props.height && '76px'};
+  }
+`;

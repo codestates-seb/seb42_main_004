@@ -21,6 +21,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -35,7 +38,7 @@ public class CartController {
   //장바구니에 바로 추천밀박스추가
   @PostMapping
   public ResponseEntity addRecMealboxToCart(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                            @RequestBody CartPostDto cartPostDto){
+                                            @RequestBody @Valid CartPostDto cartPostDto){
     log.info("------RecMealboxAddCart------");
     Cart cart = userService.getUser(principalDetails.getId()).getCart();
     cartService.createCartMealboxAndAddMealbox(cart, cartPostDto.getMealboxId());
@@ -46,7 +49,7 @@ public class CartController {
 //  소비자가 커스텀 밀박스 만들기 + 소비자가 기존의 추천조합 밀박스 수정하기
   @PostMapping("/custom")
   public ResponseEntity createCustomMealbox(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                            @RequestBody MealboxDto mealboxDto) {
+                                            @RequestBody @Valid MealboxDto mealboxDto) {
     log.info("------createCustomMealboxAndAddCart------");
     Cart cart = userService.getUser(principalDetails.getId()).getCart();
     Mealbox mealbox = mealboxMapper.mealboxDtoToMealbox(mealboxDto, Mealbox.MealboxInfo.CUSTOM_MEALBOX);
@@ -58,7 +61,7 @@ public class CartController {
   //                        추천조합 밀박스면 cartMealbox만 삭제 -> cartMealbox만 삭제
   @DeleteMapping("/{cartMealboxId}")
   public ResponseEntity removeMealbox(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                      @PathVariable("cartMealboxId") Long cartMealboxId){
+                                      @PathVariable("cartMealboxId") @Positive Long cartMealboxId){
     log.info("------DeleteMealboxFromCart------");
     Cart cart = userService.getUser(principalDetails.getId()).getCart();
     cartService.removeMealboxFromCart(cart, cartMealboxId);
@@ -68,7 +71,7 @@ public class CartController {
   //밀박스 수량 변경 -> mealboxProduct의 quantity 바꾸기
   @PatchMapping
   public ResponseEntity changeMealboxCount(@AuthenticationPrincipal PrincipalDetails principalDetails,
-                                           @RequestBody CartPatchDto cartPatchDto){
+                                           @RequestBody @Valid CartPatchDto cartPatchDto){
     log.info("------ChangeMealboxCount------");
     Cart cart = userService.getUser(principalDetails.getId()).getCart();
     cartService.changeMealboxQuantity(cart, cartPatchDto.getCartMealboxId(), cartPatchDto.getQuantity());
@@ -83,4 +86,5 @@ public class CartController {
     CartResponseDto cartResponseDto = cartMapper.cartToCartResponseDto(cart);
     return new ResponseEntity(new SingleResponseDto(cartResponseDto),HttpStatus.OK);
   }
+
 }

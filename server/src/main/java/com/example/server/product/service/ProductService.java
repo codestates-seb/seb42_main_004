@@ -1,14 +1,11 @@
 package com.example.server.product.service;
 
 import com.example.server.exception.BusinessLogicException;
-import com.example.server.exception.ExceptionCode;
-import com.example.server.image.entity.ImageInfo;
 import com.example.server.image.entity.ProductImage;
 import com.example.server.image.service.ImageService;
 import com.example.server.product.entity.Product;
 import com.example.server.product.exception.ProductException;
 import com.example.server.product.repository.ProductRepository;
-import com.example.server.utils.CustomPage;
 import com.example.server.utils.CustomPageRequest;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -29,19 +26,13 @@ public class ProductService {
         this.imageService = imageService;
     }
 
-    public Product createProduct(Product product, MultipartFile file) {
-
-        uploadImage(product, file);
-
+    public Product createProduct(Product product) {
         return productRepository.save(product);
     }
 
-    public Product updateProduct(Long productId, Product productPatcher, MultipartFile file){
+    public Product updateProduct(Long productId, Product productPatcher){
         Product product = findProductById(productId);
         product.patchProduct(productPatcher);
-
-        uploadImage(product, file);
-
         return productRepository.save(product);
     }
 
@@ -65,7 +56,7 @@ public class ProductService {
     public Page<Product> searchProducts(String search, int page, int size, String sort,
                                         Sort.Direction direction, boolean adminPage){
         if(search.trim().equals("")){
-            if(!adminPage){
+            if(adminPage){
                 size --;
             }
             return new PageImpl<Product>(new ArrayList<>(), PageRequest.ofSize(size),0);
@@ -76,14 +67,14 @@ public class ProductService {
         return productRepository.findAllByNameContains(search, pageRequest);
     }
 
-    /* ####### private 메서드 ####### */
-
-    private void uploadImage(Product product, MultipartFile file) {
-        if(!file.isEmpty()){
-            ProductImage image = imageService.uploadProductImage(file, product);
-            product.setImage(image);
-        }
+    public void uploadImage(Long productId, MultipartFile file) {
+        Product product = findProductById(productId);
+        ProductImage image = imageService.uploadProductImage(file, product);
+        product.setImage(image);
+        productRepository.save(product);
     }
+
+    /* ####### private 메서드 ####### */
 
     private CustomPageRequest makeCustomPageRequest(int page, int size, String sort, Sort.Direction direction) {
         CustomPageRequest pageRequest = null;

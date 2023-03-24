@@ -17,6 +17,11 @@ public class CartMealbox {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
 
+  @Column(nullable = false)
+  private int quantity;
+
+  /* ####### JPA 매핑 ####### */
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cart_id")
   private Cart cart;
@@ -25,8 +30,7 @@ public class CartMealbox {
   @JoinColumn(name = "mealbox_id")
   private Mealbox mealbox;
 
-  @Column(nullable = false)
-  private int quantity;
+  /* ####### 편의 메서드 ####### */
 
   public static CartMealbox makeCartMealbox(Cart cart, Mealbox mealbox) {
     CartMealbox cartMealbox = CartMealbox.builder()
@@ -44,6 +48,10 @@ public class CartMealbox {
 
   public void changeQuantity(int quantity){
     this.quantity = quantity;
+  }
+
+  public void plusOneQuantity(){
+    this.quantity++;
   }
 }
 

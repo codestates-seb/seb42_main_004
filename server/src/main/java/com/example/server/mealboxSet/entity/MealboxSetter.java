@@ -16,12 +16,17 @@ public class MealboxSetter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEALBOX_SETTER_ID")
     private Long id;
-    @ManyToOne
+
+    /* ####### JPA 매핑 ####### */
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEALBOX_ID")
     private Mealbox mealbox;
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "MEALBOX_SETS_ID")
     private MealboxSet mealboxSet;
+
+    /* ####### 편의 메서드 ####### */
 
     public static void makeMealboxSetter(Mealbox mealbox, MealboxSet mealboxSet){
         MealboxSetter mealboxSetter = MealboxSetter.builder().mealbox(mealbox).mealboxSet(mealboxSet).build();

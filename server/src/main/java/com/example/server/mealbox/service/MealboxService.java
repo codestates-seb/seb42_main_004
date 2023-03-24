@@ -38,11 +38,11 @@ public class MealboxService {
         this.imageService = imageService;
     }
 
-    public Mealbox createMealboxAndMealboxProduct(Mealbox mealbox, List<MealboxDto.Product> mealboxDtoProducts,
-                                                  MultipartFile file){
+    public Mealbox createMealboxAndMealboxProduct(Mealbox mealbox, List<MealboxDto.Product> mealboxDtoProducts){
         createMealboxProducts(mealbox, mealboxDtoProducts);
 
-        uploadImage(mealbox, file);
+        verifyMealboxTotalQuantity(mealbox);
+        mealbox.calculateDetails();
 
         return mealboxRepository.save(mealbox);
     }
@@ -58,14 +58,14 @@ public class MealboxService {
     }
 
     public Mealbox updateMealbox(Mealbox mealboxPatcher, Long mealboxId,
-                                 List<MealboxDto.Product> mealboxDtoProducts,
-                                 MultipartFile file){
+                                 List<MealboxDto.Product> mealboxDtoProducts){
         Mealbox mealbox = findMealboxById(mealboxId);
         mealbox.patchMealbox(mealboxPatcher);
 
         createMealboxProducts(mealbox, mealboxDtoProducts);
 
-        uploadImage(mealbox, file);
+        verifyMealboxTotalQuantity(mealbox);
+        mealbox.calculateDetails();
 
         return mealboxRepository.save(mealbox);
     }
@@ -88,6 +88,13 @@ public class MealboxService {
                         (pageRequest, Mealbox.MealboxInfo.CUSTOM_MEALBOX, search, search);
     }
 
+    public void uploadImage(Long mealboxId, MultipartFile file){
+        Mealbox mealbox = findMealboxById(mealboxId);
+        MealboxImage mealboxImage = imageService.uploadMealboxImage(file,mealbox);
+        mealbox.setImage(mealboxImage);
+        mealboxRepository.save(mealbox);
+    }
+
     /* ####### private 메서드 ####### */
 
     private void createMealboxProducts(Mealbox mealbox, List<MealboxDto.Product> mealboxDtoProducts){
@@ -97,10 +104,13 @@ public class MealboxService {
         });
     }
 
-    private void uploadImage(Mealbox mealbox, MultipartFile file){
-        if(file!=null && !file.isEmpty()){
-            MealboxImage mealboxImage = imageService.uploadMealboxImage(file,mealbox);
-            mealbox.setImage(mealboxImage);
+    private void verifyMealboxTotalQuantity(Mealbox mealbox){
+        int totalQuantity =
+                mealbox.getMealboxProducts().stream().
+                        mapToInt(mealboxProduct -> mealboxProduct.getQuantity())
+                        .sum();
+        if(totalQuantity > 10){
+            throw new BusinessLogicException(MealboxException.TOTAL_QUANTITY_OVER);
         }
     }
 

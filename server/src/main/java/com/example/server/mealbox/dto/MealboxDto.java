@@ -2,26 +2,27 @@ package com.example.server.mealbox.dto;
 
 import lombok.Getter;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Getter
 public class MealboxDto {
-    @NotBlank
+    @NotBlank(message = "이름은 공백일 수 없습니다.")
+    @Size(min = 1, max = 15)
     private String name;
-    @NotBlank
+    @Positive @Max(100000)
     private int price;
-    @NotBlank
+    @Positive @Max(10000)
     private int kcal;
-    @NotBlank
+    @Positive @Max(10000)
     private int weight;
-    @NotBlank
+    @NotEmpty
     private List<Product> products;
     @Getter
     public static class Product{
-        @NotBlank
+        @Positive
         private Long productId;
-        @NotBlank
+        @Positive @Max(10)
         private int quantity;
     }
 }

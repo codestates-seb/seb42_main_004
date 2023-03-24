@@ -28,11 +28,6 @@ const GlobalStyle = createGlobalStyle`
     cursor: pointer;
   }
 
-  .bodymargin {
-    padding-top: calc(1rem + 50px);
-    padding-bottom: 4rem;
-  }
-
   .marginbase {
     display: flex;
     justify-content: center;
