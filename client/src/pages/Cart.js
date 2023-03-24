@@ -7,8 +7,9 @@ import getData from '../util/getData';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCart } from '../reducers/cartReducer';
 import postData from '../util/postData';
-
+import { useNavigate } from 'react-router-dom';
 function Cart() {
+  let navigate = useNavigate();
   let dispatch = useDispatch();
   let { isLogin } = useSelector((state) => state.authReducer);
   let { totalPrice, mealboxes } = useSelector(
@@ -23,9 +24,9 @@ function Cart() {
     );
 
     let checkedCartMealBoxId = Array.from(checkedItem).map((el) =>
-      Number(el.id)
+      String(el.id)
     );
-
+    console.log(checkedCartMealBoxId);
     let checkedPrice = mealboxes?.reduce(
       (acc, cur) =>
         checkedCartMealBoxId.includes(cur.cartMealboxId)
@@ -38,12 +39,17 @@ function Cart() {
   };
 
   let purchaseHandler = () => {
+    console.log(isLogin);
+    if (!isLogin) {
+      return navigate('/login');
+      // session의 물품 장바구니에 추가 요청
+    }
     let checkedItem = document.querySelectorAll(
       'input[type="checkbox"]:checked'
     );
 
     let checkedCartMealBoxId = Array.from(checkedItem).map((el) =>
-      Number(el.id)
+      String(el.id)
     );
 
     let postReqData = mealboxes
@@ -55,7 +61,9 @@ function Cart() {
         return { cartMealboxId, mealboxId, quantity };
       });
     console.log(postReqData);
-    postData('/orders', { orderMealboxes: postReqData }, false);
+    postData('/orders', { orderMealboxes: postReqData }, false).then((res) => {
+      navigate(res.data);
+    });
   };
 
   useEffect(() => {
@@ -64,7 +72,7 @@ function Cart() {
     if (isLogin) {
       getData('/users/cart').then((data) => {
         console.log(data);
-        dispatch(setCart(data));
+        dispatch(setCart(data.data));
       });
     }
   }, []);
@@ -94,6 +102,7 @@ function Cart() {
 export default Cart;
 
 const CartPageWrapper = styled.div`
+  min-height: calc(100vh - 5rem - 50px);
   flex-direction: column;
 `;
 
