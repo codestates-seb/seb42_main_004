@@ -24,9 +24,9 @@ function Cart() {
     );
 
     let checkedCartMealBoxId = Array.from(checkedItem).map((el) =>
-      Number(el.id)
+      String(el.id)
     );
-
+    console.log(checkedCartMealBoxId);
     let checkedPrice = mealboxes?.reduce(
       (acc, cur) =>
         checkedCartMealBoxId.includes(cur.cartMealboxId)
@@ -39,12 +39,17 @@ function Cart() {
   };
 
   let purchaseHandler = () => {
+    console.log(isLogin);
+    if (!isLogin) {
+      return navigate('/login');
+      // session의 물품 장바구니에 추가 요청
+    }
     let checkedItem = document.querySelectorAll(
       'input[type="checkbox"]:checked'
     );
 
     let checkedCartMealBoxId = Array.from(checkedItem).map((el) =>
-      Number(el.id)
+      String(el.id)
     );
 
     let postReqData = mealboxes
