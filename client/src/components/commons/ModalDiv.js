@@ -40,38 +40,48 @@ function ModalDiv({ closeModal, mealBox, product }) {
     }
   }, [imgInput]);
 
-  const addImg = (data) => {
+  const addImg = () => {
     const formData = new FormData();
-    // if (hasImg) formData.append('file', imgInput);
-    formData.append('file', null);
-    formData.append('mealboxDto', JSON.stringify(data));
+    formData.append('file', imgInput);
 
     return formData;
   };
 
-  const hasIdReq = async (id, data, isMealBox) => {
+  const postPatchReq = async (data, isMealBox) => {
     let func = postData;
     let uri = isMealBox ? '/admin/mealboxes' : '/admin/products';
-    if (id !== undefined) {
+    let id = isMealBox ? data.mealboxId : data.productId;
+
+    if (id) {
       uri += `/${id}`;
       isMealBox ? delete data.mealBoxId : delete data.productId;
       func = patchData;
     }
 
-    let hasImg = false;
     if (imgInputBuffer && imgInputBuffer !== subject.imagePath) {
-      hasImg = true;
-      func = postData;
+      const formImage = addImg();
+      await postData(`${uri}/image`, formImage, true).then((err) => {
+        if (err?.status)
+          alert(
+            `이미지 ${
+              id ? '수정' : '등록'
+            }에 실패했습니다\n관리자에게 문의해주세요.`
+          );
+      });
     }
 
-    data = addImg(data, hasImg);
-
-    func(uri, data, true).then(() => {
-      isMealBox && dispatch(initializeCustom());
-      alert(
-        `${data.name}이(가) ${id !== undefined ? '수정' : '추가'}되었습니다.`
-      );
-      // navigate(isMealBox ? '/mealboxes' : '/product');
+    await func(uri, data).then((err) => {
+      if (err?.status) alert('등록에 실패했습니다\n관리자에게 문의해주세요.');
+      else {
+        isMealBox && dispatch(initializeCustom());
+        alert(`${data.name}이(가) ${id ? '수정' : '추가'}되었습니다.`).catch(
+          () =>
+            alert(
+              `${id ? '수정' : '등록'}에 실패했습니다\n관리자에게 문의해주세요.`
+            )
+        );
+        // navigate(isMealBox ? '/mealboxes' : '/product');
+      }
     });
   };
 
@@ -79,12 +89,12 @@ function ModalDiv({ closeModal, mealBox, product }) {
     if (!subjectInfo.name) return;
 
     let data = { ...subjectInfo, imagePath: null };
-    const id = data.mealboxId;
     data.products = data.products.map((product) => {
       const { productId, quantity } = product;
       return { productId, quantity };
     });
-    hasIdReq(id, data, true);
+
+    postPatchReq(data, true);
   };
 
   const productReq = () => {
@@ -97,9 +107,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
       return;
 
     let data = { ...subjectInfo, imagePath: null };
-    const id = data.productId;
-
-    hasIdReq(id, data, false);
+    postPatchReq(data, false);
   };
 
   return (
