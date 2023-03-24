@@ -10,7 +10,8 @@ import postData from '../../util/postData';
 
 function ModalDiv({ closeModal, mealBox, product }) {
   const [imgInput, setImgInput] = useState();
-  const subject = mealBox ? mealBox : product;
+  let subject = mealBox ? mealBox : product;
+  if (!subject?.name) subject = { name: '', weight: '', kcal: '', price: '' };
   const [imgInputBuffer, setImgInputBuffer] = useState(subject?.imagePath);
   const [subjectInfo, setSubjectInfo] = useState({ ...subject });
   const dispatch = useDispatch();
@@ -137,14 +138,14 @@ function ModalDiv({ closeModal, mealBox, product }) {
             id="name"
             value={subjectInfo.name}
             onChange={subjectInputHandler('name')}
-            placeholder="밀박스A"
+            placeholder={mealBox ? '밀박스A' : '소바'}
             maxLength={20}
           />
           <InputLabelDiv
             label="열량"
             id="kcal"
             value={subjectInfo.kcal?.toLocaleString('ko-KR')}
-            onChange={product && subjectInputHandler('kcal')}
+            onChange={!mealBox && subjectInputHandler('kcal')}
             unit="kcal/10g"
             maxLength={5}
             disabled={mealBox && 1}
@@ -153,7 +154,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
             label="용량"
             id="weight"
             value={subjectInfo.weight?.toLocaleString('ko-KR')}
-            onChange={product && subjectInputHandler('weight')}
+            onChange={!mealBox && subjectInputHandler('weight')}
             unit="g"
             maxLength={5}
             disabled={mealBox && 1}
@@ -162,14 +163,14 @@ function ModalDiv({ closeModal, mealBox, product }) {
             label="금액"
             id="price"
             value={subjectInfo.price?.toLocaleString('ko-KR')}
-            onChange={product && subjectInputHandler('price')}
+            onChange={!mealBox && subjectInputHandler('price')}
             unit="원"
             maxLength={6}
             disabled={mealBox && 1}
           />
           <MainButton
             name={`${mealBox ? '밀박스' : '구성품'} ${
-              subject?.id ? '수정' : '추가'
+              subject?.mealboxId || subject?.productId ? '수정' : '추가'
             }하기`}
             handler={mealBox ? mealBoxReq : productReq}
           />
