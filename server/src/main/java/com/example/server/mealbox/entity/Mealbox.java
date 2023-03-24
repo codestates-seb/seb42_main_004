@@ -2,11 +2,9 @@ package com.example.server.mealbox.entity;
 
 import com.example.server.cart.entity.CartMealbox;
 import com.example.server.image.entity.MealboxImage;
-import com.example.server.mealboxSet.entity.MealboxSet;
 import com.example.server.mealboxSet.entity.MealboxSetter;
 import com.example.server.order.entity.OrdersMealbox;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -51,7 +49,7 @@ public class Mealbox {
     @Builder.Default
     private List<MealboxProduct> mealboxProducts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "mealbox", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<OrdersMealbox> ordersMealboxes = new ArrayList<>();
 
