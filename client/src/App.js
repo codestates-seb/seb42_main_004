@@ -117,9 +117,13 @@ function App() {
           <Route path="/email/complete" element={<CompleteEmail />} />
           <Route path="/email/confirm" element={<ConfirmEmail />} />
           <Route path="/email/send" element={<SendEmail />} />
+          <Route
+            path="/email/send/signup"
+            element={<SendEmail pathName="signup" />}
+          />
           <Route path="/email/send/password" element={<FindPassword />} />
           <Route
-            path="/cart/payment/:num"
+            path="/cart/payment/:num/:amount"
             element={accessToken ? <Payment /> : <Navigate to="/login" />}
           />
           <Route path="/*" element={<Error />} />

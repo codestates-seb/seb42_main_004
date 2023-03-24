@@ -112,7 +112,9 @@ function LoginUl() {
       </li>
       <li>
         <Div>
-          <LoginLink className="linkstyle">비밀번호 찾기</LoginLink>
+          <LoginLink to="/email/send" className="linkstyle">
+            비밀번호 찾기
+          </LoginLink>
           <LoginLink to="/signup" className="linkstyle">
             회원가입
           </LoginLink>
