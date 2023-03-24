@@ -16,6 +16,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class MealboxController {
 
     //관리자가 추천조합 밀박스 만들기
     @PostMapping("/admin/mealboxes")
-    public ResponseEntity createAdminMealbox(@RequestBody MealboxDto mealboxDto) {
+    public ResponseEntity createAdminMealbox(@RequestBody @Valid MealboxDto mealboxDto) {
         log.info("------createAdminMealbox------");
         Mealbox mealbox = mapper.mealboxDtoToMealbox(mealboxDto, Mealbox.MealboxInfo.NO_REC_MEALBOX);
         mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxDto.getProducts());
@@ -43,8 +45,8 @@ public class MealboxController {
 
     //관리자가 추천조합 밀박스 수정하기
     @PatchMapping("/admin/mealboxes/{mealboxId}")
-    public ResponseEntity updateAdminMealbox(@Positive @PathVariable("mealboxId") Long mealboxId,
-                                             @RequestBody MealboxDto mealboxDto) {
+    public ResponseEntity updateAdminMealbox(@PathVariable("mealboxId") @Positive Long mealboxId,
+                                             @RequestBody @Valid MealboxDto mealboxDto) {
         log.info("------updateAdminMealbox------");
         Mealbox mealboxPatcher = mapper.mealboxDtoToMealboxPatcher(mealboxDto);
         mealboxService.updateMealbox(mealboxPatcher, mealboxId, mealboxDto.getProducts());
@@ -53,7 +55,7 @@ public class MealboxController {
 
     //관리자가 추천조합 밀박스 삭제하기 -> productMealbox까지 전이
     @DeleteMapping("/admin/mealboxes/{mealboxId}")
-    public ResponseEntity deleteAdminMealbox(@PathVariable("mealboxId") Long mealboxId) {
+    public ResponseEntity deleteAdminMealbox(@PathVariable("mealboxId") @Positive Long mealboxId) {
         log.info("------deleteAdminMealbox------");
         mealboxService.deleteMealbox(mealboxId);
         return new ResponseEntity(HttpStatus.OK);
@@ -61,8 +63,8 @@ public class MealboxController {
 
     //추천조합 밀박스 리스트 보기
     @GetMapping("/mealboxes")
-    public ResponseEntity getMealboxList(@Positive @RequestParam int page,
-                                         @RequestParam String sort,
+    public ResponseEntity getMealboxList(@RequestParam @Positive int page,
+                                         @RequestParam @NotBlank String sort,
                                          @RequestParam Sort.Direction dir) {
         log.info("------getMealboxList------");
         Page<Mealbox> mealboxPage = mealboxService.findAdminMadeMealboxes(page,mealboxListSize, sort, dir);
@@ -76,7 +78,7 @@ public class MealboxController {
 
     //추천조합 밀박스 검색하기
     @GetMapping("/mealboxes/search")
-    public ResponseEntity getSearchedMealboxes(@Positive @RequestParam int page,
+    public ResponseEntity getSearchedMealboxes(@RequestParam @Positive int page,
                                                @RequestParam String name) {
         log.info("------getSearchedMealboxList------");
         Page<Mealbox> mealboxPage = mealboxService.getSearchedMealboxes(page,mealboxListSize, name);
@@ -89,7 +91,7 @@ public class MealboxController {
     }
 
     @GetMapping("/mealboxes/search/detail")
-    public ResponseEntity getDetailSearchedMealboxes(@Positive @RequestParam int page,
+    public ResponseEntity getDetailSearchedMealboxes(@RequestParam @Positive int page,
                                                      @RequestParam String name) {
         log.info("------getDetailSearchedMealboxList------");
         Page<Mealbox> mealboxPage = mealboxService.getDetailSearchedMealboxes(page, mealboxListSize, name);
@@ -101,9 +103,9 @@ public class MealboxController {
         return new ResponseEntity(new MultiResponseDto(response, pageInfo), HttpStatus.OK);
     }
 
-    @PostMapping("/mealboxes/{mealboxId}/image")
-    public ResponseEntity uploadMealboxImage(@PathVariable("mealboxId") Long mealboxId,
-                                             @RequestPart MultipartFile file) {
+    @PostMapping("/admin/mealboxes/{mealboxId}/image")
+    public ResponseEntity uploadMealboxImage(@PathVariable("mealboxId") @Positive Long mealboxId,
+                                             @RequestPart("file") MultipartFile file) {
         log.info("------uploadMealboxImage------");
         mealboxService.uploadImage(mealboxId, file);
         return new ResponseEntity(HttpStatus.CREATED);

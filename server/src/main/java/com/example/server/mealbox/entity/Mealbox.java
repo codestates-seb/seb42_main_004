@@ -31,7 +31,7 @@ public class Mealbox {
     private int kcal;
     @Column(nullable = false)
     private int weight;
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private MealboxInfo mealboxInfo;
 
     @Getter

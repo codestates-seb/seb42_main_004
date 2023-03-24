@@ -4,9 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 @Getter
 public class CartPostDto {
-  @NotBlank(message = "카트에 담기는 고유한 밀박스ID는 공백일 수 없습니다.")
+  @Positive
   private long mealboxId;
 }

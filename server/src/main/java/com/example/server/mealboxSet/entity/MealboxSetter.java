@@ -19,10 +19,10 @@ public class MealboxSetter {
 
     /* ####### JPA 매핑 ####### */
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEALBOX_ID")
     private Mealbox mealbox;
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "MEALBOX_SETS_ID")
     private MealboxSet mealboxSet;
 
