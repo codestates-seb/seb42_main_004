@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import CartAside from '../components/commons/CartAside';
 import PaymentUl from '../components/payment/PaymentUl';
@@ -6,6 +7,7 @@ import patchData from '../util/patchData';
 import postData from '../util/postData';
 
 function Payment() {
+  const { num } = useParams();
   const [inputValue, setInputValue] = useState({
     addressee: '',
     addresseePhoneNumber: '',
@@ -37,7 +39,7 @@ function Payment() {
 
   const handleClick = () => {
     onClickPayment();
-    patchData('/orders/delivery/13', {
+    patchData(`/orders/delivery/${num}`, {
       addressee: inputValue.addressee,
       zipCode: inputValue.deliveryZipCode,
       simpleAddress: inputValue.deliverySimpleAddress,
@@ -82,7 +84,11 @@ function Payment() {
 
   return (
     <ContainerDiv className="margininside">
-      <PaymentUl inputValue={inputValue} setInputValue={setInputValue} />
+      <PaymentUl
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+        num={num}
+      />
       <CartAside totalPrice={inputValue.totalPrice} buttonClick={handleClick} />
     </ContainerDiv>
   );
