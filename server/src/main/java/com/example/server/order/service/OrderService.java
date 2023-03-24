@@ -59,7 +59,7 @@ public class OrderService {
     order.makeOrderNumber();
 //    orderRepository.save(order);
     User user = userService.getUser(userId);
-    userService.checkEmailAuthentication(user);
+    userService.checkActive(user);
     order.addUser(user);
     orderRepository.save(order);
     log.info("------------------- CREATE OrderMealboxes -------------------");
