@@ -1,14 +1,13 @@
 import styled from 'styled-components';
 import logo from '../../assets/logo_black.png';
 import ContentInputDiv from '../myInfo/ContentInputDiv';
-// import AddressDiv from '../payment/AddessDiv';
 import MyInfoButton from './MyInfoButton';
-// import getData from '../../util/getData';
 import { useEffect, useState } from 'react';
 import AddressDiv from '../payment/AddessDiv';
 import useGET from '../../util/useGET';
 import patchData from '../../util/patchData';
 import GetTemplate from '../commons/GetTemplate';
+import { useNavigate } from 'react-router-dom';
 
 function EditMyInfoUl() {
   const [inputValue, setInputValue] = useState({
@@ -27,6 +26,7 @@ function EditMyInfoUl() {
   });
   const [res, isPending, error] = useGET('/users');
   const [same, setSame] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (res) {
@@ -90,6 +90,11 @@ function EditMyInfoUl() {
             detailAddress: inputValue.detailAddress,
           },
         },
+      }).then((data) => {
+        if (data.status === 200) {
+          alert('수정이 완료되었습니다');
+          navigate('/myinfo');
+        }
       });
     } else {
       patchData('/users', {
@@ -109,6 +114,11 @@ function EditMyInfoUl() {
             detailAddress: inputValue.deliveryDetailAddress,
           },
         },
+      }).then((data) => {
+        if (data.status === 200) {
+          alert('수정이 완료되었습니다');
+          navigate('/myinfo');
+        }
       });
     }
   };
@@ -253,9 +263,13 @@ const ImgDiv = styled.div`
 const TopDiv = styled.div`
   display: flex;
   justify-content: space-between;
-
+  align-items: center;
   div > * {
     cursor: pointer;
+  }
+
+  input {
+    margin-right: 0.5rem;
   }
 `;
 const DeliveryDiv = styled.div`

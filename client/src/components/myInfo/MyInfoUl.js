@@ -6,6 +6,7 @@ import PasswordInputDiv from './PasswordInputDiv';
 import MyInfoButton from './MyInfoButton';
 import useGET from '../../util/useGET';
 import GetTemplate from '../commons/GetTemplate';
+import patchData from '../../util/patchData';
 
 function MyInfoUl({ pathName }) {
   const [imgInput, setImgInput] = useState();
@@ -24,12 +25,41 @@ function MyInfoUl({ pathName }) {
     username: '',
     imagePath: '',
   });
+  const [passwordInputValue, setPasswordInputValue] = useState({
+    password: '',
+    newPassword: '',
+    confirmNewPassword: '',
+  });
   const [res, isPending, error] = useGET('/users');
   const navigate = useNavigate();
 
-  console.log(res);
-  console.log(isPending);
-  console.log(error);
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setPasswordInputValue({
+      ...passwordInputValue,
+      [name]: value,
+    });
+    console.log(passwordInputValue);
+  };
+
+  const handleClick = () => {
+    patchData('/users/password', {
+      password: passwordInputValue.password,
+      afterPassword: passwordInputValue.newPassword,
+    }).then((data) => {
+      if (data.status === 200) {
+        alert('변경이 완료되었습니다.');
+        navigate('/myinfo');
+      } else {
+        alert('비밀번호를 다시 입력해주세요');
+        setPasswordInputValue({
+          password: '',
+          newPassword: '',
+          confirmNewPassword: '',
+        });
+      }
+    });
+  };
 
   useEffect(() => {
     if (res) {
@@ -117,23 +147,26 @@ function MyInfoUl({ pathName }) {
                 id="password"
                 name="password"
                 labelName="비밀번호"
-                value=""
+                value={passwordInputValue.password}
+                onChange={handleInput}
               />
               <PasswordInputDiv
                 id="newPassword"
                 name="newPassword"
                 labelName="새 비밀번호"
-                value=""
+                value={passwordInputValue.newPassword}
+                onChange={handleInput}
               />
               <PasswordInputDiv
                 id="confirmNewPassword"
                 name="confirmNewPassword"
                 labelName="새 비밀번호 확인"
-                value=""
+                value={passwordInputValue.confirmNewPassword}
+                onChange={handleInput}
               />
-              <ButtonDiv>
-                <MyInfoButton text="변경" />
-              </ButtonDiv>
+              <PasswordButtonDiv>
+                <MyInfoButton onClick={handleClick} text="변경완료" />
+              </PasswordButtonDiv>
             </PasswordDiv>
           </li>
         ) : null}
@@ -229,6 +262,12 @@ const ButtonDiv = styled.div`
       color: var(--input_blue);
     }
   }
+`;
+const PasswordButtonDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 2rem;
 `;
 const Img = styled.img`
   background-color: var(${(props) => (props.img ? '--white' : '--gray')});
