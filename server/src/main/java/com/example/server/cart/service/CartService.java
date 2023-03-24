@@ -87,11 +87,6 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    public void refreshTotalPrice(Cart cart) {
-        cart.calculateTotalPrice();
-        cartRepository.save(cart);
-    }
-
     /* ####### private 메서드 ####### */
 
     private void verifyExistsCartMealboxIsInCart(Cart cart, Long cartMealboxId) {

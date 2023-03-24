@@ -47,7 +47,7 @@ public class OrderController {
       throws IamportResponseException, IOException { // 결제 전 주문 생성
     Orders order = mapper.orderPostDtoToOrders(orderPostDto);
     Orders createdOrder = orderService.createOrder(order, orderPostDto, principalDetails.getId());
-    URI location = UriCreator.createUri("/orders/checkout",createdOrder.getOrderId());
+    URI location = UriCreator.createUri("/cart/payment",createdOrder.getOrderId());
     return new ResponseEntity<>(location, HttpStatus.MOVED_PERMANENTLY);
   }
 

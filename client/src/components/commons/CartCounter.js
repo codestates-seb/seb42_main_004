@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+
 function CartCounter() {
   let { mealboxes } = useSelector((state) => state.cartReducer.cart);
   let count = mealboxes?.length || 0;
