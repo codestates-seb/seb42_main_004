@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 function CartAside({ totalPrice = 0, buttonClick }) {
+  console.log(totalPrice);
+
   return (
     <AsideWrapper>
       <InnerDiv>
