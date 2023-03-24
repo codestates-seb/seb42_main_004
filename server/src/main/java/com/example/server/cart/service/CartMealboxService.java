@@ -6,7 +6,6 @@ import com.example.server.cart.exception.CartMealboxException;
 import com.example.server.cart.repository.CartMealboxRepository;
 import com.example.server.cart.repository.CartRepository;
 import com.example.server.exception.BusinessLogicException;
-import com.example.server.order.entity.Orders;
 import java.util.Optional;
 
 import com.example.server.mealbox.entity.Mealbox;
@@ -27,15 +26,6 @@ public class CartMealboxService {
     Optional<CartMealbox> cartMealbox = cartMealboxRepository.findById(cartMealboxId);
     return cartMealbox.orElseThrow(() -> new BusinessLogicException(
         CartMealboxException.CART_MEALBOX_NOT_FOUND));
-  }
-
-  public void deleteCartMealboxAfterPayment(Orders order) {
-    for (Long id : order.getCartMealboxIds()) {
-      log.info("cartMealboxId : {}", id);
-      CartMealbox cartMealbox = findCartMealbox(id);
-      cartMealboxRepository.delete(cartMealbox);
-    }
-    cartRepository.save(order.getUser().getCart());
   }
 
   public void changeQuantity(Long cartMealboxId, int quantity){
