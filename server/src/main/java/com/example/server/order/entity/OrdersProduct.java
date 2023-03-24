@@ -35,9 +35,9 @@ public class OrdersProduct {
 
   public void addOrdersMealbox(OrdersMealbox ordersMealbox) {
     this.ordersMealbox = ordersMealbox;
-    if(!ordersMealbox.getOrdersProducts().contains(this)){
-      ordersMealbox.addOrdersProduct(this);
-    }
+//    if(!ordersMealbox.getOrdersProducts().contains(this)){
+//      ordersMealbox.addOrdersProduct(this);
+//    }
 
   }
 }
