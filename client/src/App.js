@@ -123,7 +123,7 @@ function App() {
           />
           <Route path="/email/send/password" element={<FindPassword />} />
           <Route
-            path="/cart/payment/:num/:amount"
+            path="/cart/payment/:num"
             element={accessToken ? <Payment /> : <Navigate to="/login" />}
           />
           <Route path="/*" element={<Error />} />

@@ -7,7 +7,7 @@ import patchData from '../util/patchData';
 import postData from '../util/postData';
 
 function Payment() {
-  const { num, amount } = useParams();
+  const { num } = useParams();
   const [inputValue, setInputValue] = useState({
     addressee: '',
     addresseePhoneNumber: '',
@@ -56,7 +56,7 @@ function Payment() {
       pay_method: 'card',
       merchant_uid: inputValue.orderNumber,
       name: '밀박스',
-      amount: amount ? amount : inputValue.totalPrice,
+      amount: inputValue.totalPrice,
       buyer_name: inputValue.username,
       buyer_tel: inputValue.userPhoneNumber,
       buyer_email: inputValue.email,
@@ -75,7 +75,7 @@ function Payment() {
           alert('결제가 완료되었습니다.');
         } else if (data.status === 409) {
           alert('관리자에게 문의하세요.');
-          patchData(`/validation/error/${inputValue.orderNumber}`, '');
+          patchData(`/payments/error/${inputValue.orderNumber}`, '');
         } else {
           alert('관리자에게 문의하세요.');
         }
