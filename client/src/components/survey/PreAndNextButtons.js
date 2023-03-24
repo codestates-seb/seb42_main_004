@@ -8,7 +8,7 @@ function PreAndNextButtons({ nextHandler }) {
   page = Number(page);
 
   let preHandler = () => {
-    navigate(page === 1 ? `/surveyHome` : `/survey/question/${page - 1}`);
+    navigate(page === 1 ? `/` : `/survey/question/${page - 1}`);
   };
 
   return (

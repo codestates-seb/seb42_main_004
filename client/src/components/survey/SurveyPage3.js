@@ -13,6 +13,7 @@ import { useState } from 'react';
 function SurveyPage3() {
   let { state } = useLocation();
   let { easy, normal, hard } = state;
+  console.log(easy);
   let [kcalPerDay, setKcalPerDay] = useState(easy.kcal);
 
   let dispatch = useDispatch();

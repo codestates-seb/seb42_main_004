@@ -21,8 +21,6 @@ const cartSlice = createSlice({
     deleteCartItem: (state, action) => {
       const { cart } = state;
       const idx = cart.mealboxes.findIndex((el) => {
-        console.log(el.cartMealboxId);
-        console.log(action.payload);
         return String(el.cartMealboxId) === String(action.payload);
       });
 
@@ -44,12 +42,9 @@ const cartSlice = createSlice({
     setPlus: (state, action) => {
       const { cart } = state;
       const idx = cart.mealboxes.findIndex((el) => {
-        console.log(typeof el.cartMealboxId);
-        console.log(typeof action.payload);
         return String(el.cartMealboxId) === String(action.payload);
       });
 
-      console.log(idx);
       cart.mealboxes[idx].quantity++;
       cart.totalPrice += cart.mealboxes[idx].price;
     },
