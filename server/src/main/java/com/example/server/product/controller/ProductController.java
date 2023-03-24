@@ -119,7 +119,7 @@ public class ProductController {
         return new ResponseEntity(new MultiResponseDto(response, pageInfo), HttpStatus.OK);
     }
 
-    @PostMapping("/products/{productId}/image")
+    @PostMapping("/admin/products/{productId}/image")
     public ResponseEntity postProductImage(@PathVariable("productId") @Positive Long productId,
                                            @RequestPart("file") MultipartFile file) {
         log.info("------uploadProductImage------");
