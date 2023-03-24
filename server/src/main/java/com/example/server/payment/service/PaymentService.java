@@ -1,5 +1,6 @@
 package com.example.server.payment.service;
 
+import com.example.server.cart.entity.Cart;
 import com.example.server.cart.service.CartMealboxService;
 import com.example.server.cart.service.CartService;
 import com.example.server.exception.BusinessLogicException;
@@ -15,6 +16,7 @@ import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Prepare;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -71,10 +73,16 @@ public class PaymentService {
     mappingOrderAndPayInfo(order, impUid);
     log.info("Order, PayInfo 매핑 통과 / deleteCartMealbox 진입");
     // 장바구니에 담겨있던 물건 삭제
-    cartMealboxService.deleteCartMealboxAfterPayment(order);
-    log.info("deleteCartMealbox 통과 / refreshPrice 진입");
-    cartService.refreshTotalPrice(order.getUser().getCart());
-    log.info("refreshPrice 통과");
+    List<Long> cartMealboxIds = order.getCartMealboxIds();
+    Cart cart = order.getUser().getCart();
+    for (Long id : cartMealboxIds) {
+      log.info("id : {}", id);
+      cartService.removeMealboxFromCart(cart, id);
+    }
+//    cartMealboxService.deleteCartMealboxAfterPayment(order);
+//    log.info("deleteCartMealbox 통과 / refreshPrice 진입");
+//    cartService.refreshTotalPrice(order.getUser().getCart());
+//    log.info("refreshPrice 통과");
   }
 
   private void mappingOrderAndPayInfo(Orders order, String impUid) {
