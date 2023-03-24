@@ -25,7 +25,7 @@ function Header() {
 
   const handleLogout = () => {
     if (confirm('정말 로그아웃하시겠습니까?')) {
-      removeCookie('accessToken');
+      removeCookie('accessToken', { path: '/' });
       dispatch(
         setAuth({
           isLogin: false,
@@ -35,7 +35,7 @@ function Header() {
           roles: [],
         })
       );
-      navigate('/');
+      window.location.reload();
     } else {
       return;
     }
