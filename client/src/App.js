@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 // import { useEffect } from 'react';
+import styled from 'styled-components';
 import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 import { setAuth } from './reducers/authReducer';
@@ -30,6 +31,7 @@ import ToTopButton from './components/commons/ToTopButton';
 import setAuthorizationToken from './util/setAuthorizationToken';
 import parseToken from './util/parseToken';
 import { useEffect } from 'react';
+import checkFooter from './util/checkFooter';
 
 function App() {
   // const [cookies, , removeCookie] = useCookies();
@@ -52,12 +54,12 @@ function App() {
   const [cookies, ,] = useCookies();
   const { accessToken } = cookies;
 
-  if (cookies.accessToken) {
+  if (accessToken) {
     setAuthorizationToken(accessToken);
   }
 
   useEffect(() => {
-    if (cookies.accessToken) {
+    if (accessToken) {
       const { exp, principal, roles } = parseToken(accessToken);
       dispatch(
         setAuth({
@@ -69,58 +71,51 @@ function App() {
         })
       );
     }
-  }, [cookies.accessToken]);
+  }, [accessToken]);
 
   return (
     <>
       <GlobalStyle />
       <Header />
-      <div className="marginbase bodymargin">
+      <BodyMargin className="marginbase" height={checkFooter() && 1}>
         <Routes>
           <Route path="/" element={<SurveyHome />} />
           <Route path="/mealboxes" element={<AllBoxes />} />
           <Route path="/mealboxes/:page" element={<AllBoxes />} />
+          <Route path="/mealboxes/search/:page" element={<AllBoxes />} />
           <Route path="/survey/question/:page" element={<Survey />} />
           <Route path="/survey/result" element={<SurveyResult />} />
           <Route path="/custom" element={<Custom />} />
           <Route path="/cart" element={<Cart />} />
           <Route
             path="/myinfo/orderhistory"
-            element={cookies.accessToken ? <OrderHistory /> : <Login />}
+            element={accessToken ? <OrderHistory /> : <Login />}
           />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:page" element={<Products />} />
           <Route
             path="/login"
-            element={cookies.accessToken ? <Navigate to="/" /> : <Login />}
+            element={accessToken ? <Navigate to="/" /> : <Login />}
           />
           <Route
             path="/signup"
-            element={cookies.accessToken ? <Navigate to="/" /> : <Signup />}
+            element={accessToken ? <Navigate to="/" /> : <Signup />}
           />
           <Route
             path="/signup/oauth"
-            element={
-              cookies.accessToken ? <Navigate to="/" /> : <SignupOauth />
-            }
+            element={accessToken ? <Navigate to="/" /> : <SignupOauth />}
           />
           <Route
             path="/myinfo"
-            element={
-              cookies.accessToken ? <MyInfo /> : <Navigate to="/login" />
-            }
+            element={accessToken ? <MyInfo /> : <Navigate to="/login" />}
           />
           <Route
             path="/myinfo/edit"
-            element={
-              cookies.accessToken ? <EditMyInfo /> : <Navigate to="/login" />
-            }
+            element={accessToken ? <EditMyInfo /> : <Navigate to="/login" />}
           />
           <Route
             path="/myinfo/edit/password"
-            element={
-              cookies.accessToken ? <EditPassword /> : <Navigate to="/login" />
-            }
+            element={accessToken ? <EditPassword /> : <Navigate to="/login" />}
           />
           <Route path="/email/complete" element={<CompleteEmail />} />
           <Route path="/email/confirm" element={<ConfirmEmail />} />
@@ -128,17 +123,32 @@ function App() {
           <Route path="/email/send/password" element={<FindPassword />} />
           <Route
             path="/cart/payment"
-            element={
-              cookies.accessToken ? <Payment /> : <Navigate to="/login" />
-            }
+            element={accessToken ? <Payment /> : <Navigate to="/login" />}
           />
           <Route path="/*" element={<Error />} />
         </Routes>
         <ToTopButton />
-      </div>
+      </BodyMargin>
       <Footer />
     </>
   );
 }
 
 export default App;
+
+const BodyMargin = styled.div`
+  padding-top: calc(1rem + 50px);
+  padding-bottom: 4rem;
+  min-height: calc(100vh - 330px - 5rem);
+
+  @media screen and (max-width: 768px) {
+    min-height: calc(100vh - 280px - 5rem);
+  }
+
+  @media screen and (max-width: 480px) {
+    min-height: calc(
+      100vh - ${(props) => (props.height ? '50px' : '230px')} - 5rem
+    );
+    padding-bottom: ${(props) => props.height && '76px'};
+  }
+`;

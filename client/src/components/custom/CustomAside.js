@@ -23,7 +23,7 @@ function CustomAside({ custom }) {
       });
       await postData(`/users/cart/custom`, data);
     } else {
-      dispatch(addCartItem(data));
+      dispatch(addCartItem({ ...data, quantity: 1 }));
     }
 
     dispatch(initializeCustom());
