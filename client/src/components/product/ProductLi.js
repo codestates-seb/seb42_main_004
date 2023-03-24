@@ -1,22 +1,51 @@
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import styled from 'styled-components';
-import { TextButton } from '../commons/ModalDiv';
-// import blankbucket from '../../assets/blankbucket.png';
-function ProductLi({ product }) {
-  const { admin } = useSelector((state) => state.authReducer);
+import ModalDiv, { TextButton } from '../commons/ModalDiv';
+import blankbucket from '../../assets/blankbucket.png';
+import deleteData from '../../util/deleteData';
+
+function ProductLi({ product, admin }) {
+  const [openModal, setOpenModal] = useState(false);
+
+  const deleteProduct = () => {
+    if (
+      window.confirm(
+        `${product.name}을 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
+      )
+    ) {
+      deleteData(`/admin/mealboxes/${product.productId}`)
+        .then(() => alert(`${product.name}이 삭제되었습니다.`))
+        .then(() => {
+          window.location.reload();
+        });
+      console.log('삭제 완료');
+    }
+  };
 
   return (
-    <ContainerLi>
+    <ContainerLi onClick={!product ? () => setOpenModal(true) : null}>
+      {openModal && (
+        <ModalDiv product={product} closeModal={() => setOpenModal(false)} />
+      )}
       <CardDiv className="shadow">
-        <img src={product.imagePath} alt="blankbucket" />
-        <div>{product.name}</div>
-        <div>{product.weight.toLocaleString('ko-KR')}g(ml)</div>
-        <div>{product.kcal.toLocaleString('ko-KR')}kcal</div>
-        <div>{product.price.toLocaleString('ko-KR')}원</div>
-        {admin && (
+        <img
+          src={product ? product.imagePath : blankbucket}
+          alt="blankbucket"
+        />
+        <ProductInfoDiv>
+          {product && (
+            <>
+              <div>{product.name}</div>
+              <div>{product.weight.toLocaleString('ko-KR')}g(ml)</div>
+              <div>{product.kcal.toLocaleString('ko-KR')}kcal</div>
+              <div>{product.price.toLocaleString('ko-KR')}원</div>
+            </>
+          )}
+        </ProductInfoDiv>
+        {admin && product && (
           <ButtonDiv>
-            <TextButton>수정</TextButton>
-            <TextButton>삭제</TextButton>
+            <TextButton onClick={() => setOpenModal(true)}>수정</TextButton>
+            <TextButton onClick={deleteProduct}>삭제</TextButton>
           </ButtonDiv>
         )}
       </CardDiv>
@@ -50,12 +79,17 @@ const CardDiv = styled.div`
   > img {
     width: 200px;
     height: 200px;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
+`;
+const ProductInfoDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   > div {
     font-weight: bold;
-    height: 25px;
+    width: fit-content;
   }
 `;
 const ButtonDiv = styled.div`

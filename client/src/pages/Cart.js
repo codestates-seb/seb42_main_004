@@ -67,7 +67,7 @@ function Cart() {
     if (isLogin) {
       getData('/users/cart').then((data) => {
         console.log(data);
-        dispatch(setCart(data));
+        dispatch(setCart(data.data));
       });
     }
   }, []);

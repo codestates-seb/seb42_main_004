@@ -13,15 +13,21 @@ const cartSlice = createSlice({
     addCartItem: (state, action) => {
       const { cart } = state;
       const mealBox = action.payload;
-      cart.mealboxes.push({ ...mealBox, cartMealboxId: new Date() });
+      let a = new Date().toString().split(' ').join('');
+      console.log(a);
+      cart.mealboxes.push({ ...mealBox, cartMealboxId: a });
       cart.totalPrice += mealBox.price;
     },
 
     deleteCartItem: (state, action) => {
       const { cart } = state;
-      const idx = cart.mealboxes.findIndex(
-        (el) => el.cartMealboxId === action.payload
-      );
+
+      const idx = cart.mealboxes.findIndex((el) => {
+        console.log(el.cartMealboxId);
+        console.log(action.payload);
+        return String(el.cartMealboxId) === String(action.payload);
+      });
+
       cart.totalPrice -=
         cart.mealboxes[idx].price * cart.mealboxes[idx].quantity;
       cart.mealboxes.splice(idx, 1);
@@ -30,7 +36,7 @@ const cartSlice = createSlice({
     setMinus: (state, action) => {
       const { cart } = state;
       const idx = cart.mealboxes.findIndex(
-        (el) => el.cartMealboxId === action.payload
+        (el) => String(el.cartMealboxId) === String(action.payload)
       );
 
       cart.mealboxes[idx].quantity--;
@@ -39,10 +45,13 @@ const cartSlice = createSlice({
 
     setPlus: (state, action) => {
       const { cart } = state;
-      const idx = cart.mealboxes.findIndex(
-        (el) => el.cartMealboxId === action.payload
-      );
+      const idx = cart.mealboxes.findIndex((el) => {
+        console.log(typeof el.cartMealboxId);
+        console.log(typeof action.payload);
+        return String(el.cartMealboxId) === String(action.payload);
+      });
 
+      console.log(idx);
       cart.mealboxes[idx].quantity++;
       cart.totalPrice += cart.mealboxes[idx].price;
     },

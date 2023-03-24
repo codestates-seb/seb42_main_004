@@ -6,8 +6,7 @@ function MealBoxDeleteButton({ calRenderPrice }) {
   let { isLogin } = useSelector((state) => state.authReducer);
   let dispatch = useDispatch();
   let deleteHandler = (e) => {
-    let cartMealboxId =
-      e.target.parentElement.parentElement.parentElement.value;
+    let cartMealboxId = e.target.parentElement.parentElement.parentElement.id;
 
     if (confirm('장바구니에서 삭제하시겠습니까?')) {
       isLogin && deleteData(`/users/cart/${cartMealboxId}`);

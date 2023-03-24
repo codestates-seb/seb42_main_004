@@ -92,6 +92,7 @@ public class MealboxService {
         Mealbox mealbox = findMealboxById(mealboxId);
         MealboxImage mealboxImage = imageService.uploadMealboxImage(file,mealbox);
         mealbox.setImage(mealboxImage);
+        mealboxRepository.save(mealbox);
     }
 
     /* ####### private 메서드 ####### */

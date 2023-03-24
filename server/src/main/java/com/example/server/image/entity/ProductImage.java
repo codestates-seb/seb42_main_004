@@ -19,6 +19,8 @@ public class ProductImage {
     @Embedded
     private ImageInfo imageInfo;
 
+    /* ####### JPA 매핑 ####### */
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_ID")
     @Setter
