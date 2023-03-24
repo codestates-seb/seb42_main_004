@@ -13,21 +13,19 @@ import com.example.server.order.entity.OrdersMealbox;
 import com.example.server.order.exception.OrderException;
 import com.example.server.order.repository.OrderMealboxRepository;
 import com.example.server.order.repository.OrderRepository;
-import com.example.server.payment.controller.PaymentController;
-import com.example.server.payment.dto.PreparePostDto;
+import com.example.server.payment.service.PaymentService;
 import com.example.server.user.entity.User;
 import com.example.server.user.service.UserService;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -36,29 +34,36 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 @Slf4j
 public class OrderService {
   private final OrderRepository orderRepository;
   private final OrderMealboxRepository orderMealboxRepository;
   private final MealboxService mealboxService;
   private final UserService userService;
-  private final PaymentController paymentController;
+  private final PaymentService paymentService;
+
+  public OrderService(OrderRepository orderRepository,
+      OrderMealboxRepository orderMealboxRepository,
+      MealboxService mealboxService, UserService userService, @Lazy PaymentService paymentService) {
+    this.orderRepository = orderRepository;
+    this.orderMealboxRepository = orderMealboxRepository;
+    this.mealboxService = mealboxService;
+    this.userService = userService;
+    this.paymentService = paymentService;
+  }
 
   public Orders createOrder(Orders order, OrderPostDto orderPostDto, long userId) throws IamportResponseException, IOException {
     order.makeOrderNumber();
 //    orderRepository.save(order);
     User user = userService.getUser(userId);
-    userService.checkEmailAuthentication(user);
+    userService.checkActive(user);
     order.addUser(user);
     orderRepository.save(order);
     log.info("------------------- CREATE OrderMealboxes -------------------");
     OrderMealboxPostDtoToOrdersMealbox(orderPostDto.getMealboxes(), order);
     order.setTotalPrice(order.getOrdersMealboxes().stream().
         mapToInt(ordersMealbox -> ordersMealbox.getPrice() * ordersMealbox.getQuantity()).sum());
-    //결제 사전 정보
-    PreparePostDto preparePostDto = new PreparePostDto(order.getOrderNumber(), new BigDecimal(order.getTotalPrice()));
-    paymentController.postPrepare(preparePostDto);
+    paymentService.postPrepare(order.getOrderNumber(), order.getTotalPrice());
     return orderRepository.save(order);
   }
 
@@ -119,6 +124,11 @@ public class OrderService {
 
   public void paidOrder(Orders order) {
     order.paid();
+    orderRepository.save(order);
+  }
+
+  public void errorWhilePaying(Orders order) {
+    order.errorWhilePaying();
     orderRepository.save(order);
   }
 
