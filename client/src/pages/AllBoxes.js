@@ -108,7 +108,7 @@ export const MealBoxesWrapDiv = styled.div`
     min-height: calc(100vh - 230px - 5rem);
   }
 `;
-const SearchResultH3 = styled.h3`
+export const SearchResultH3 = styled.h3`
   margin-bottom: 0.5rem;
 `;
 export const MealBoxesUl = styled.ul`
