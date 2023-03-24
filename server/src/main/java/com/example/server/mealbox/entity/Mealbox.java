@@ -59,7 +59,7 @@ public class Mealbox {
     @Builder.Default
     private List<CartMealbox> cartMealboxes = new ArrayList<>();
 
-    @OneToOne(mappedBy = "mealbox", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToOne(mappedBy = "mealbox", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     private MealboxImage image;
 
