@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { deleteCartItem } from '../../reducers/cartReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import deleteData from '../../util/deleteData';
-function MealBoxDeleteButton({ calRenderPrice }) {
+function MealBoxDeleteButton() {
   let { isLogin } = useSelector((state) => state.authReducer);
   let dispatch = useDispatch();
   let deleteHandler = (e) => {
@@ -11,9 +11,7 @@ function MealBoxDeleteButton({ calRenderPrice }) {
     if (confirm('장바구니에서 삭제하시겠습니까?')) {
       isLogin && deleteData(`/users/cart/${cartMealboxId}`);
       dispatch(deleteCartItem([cartMealboxId]));
-
       alert('장바구니에서 삭제되었습니다.');
-      calRenderPrice();
     }
   };
   return <DeleteButton onClick={deleteHandler}>삭제</DeleteButton>;
