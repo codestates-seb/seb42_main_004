@@ -110,6 +110,10 @@ public class Orders extends BaseEntity {
     this.status = OrderStatus.REFUNDED;
   }
 
+  public void errorWhilePaying() {
+    this.status = OrderStatus.PAYMENT_AMOUNT_WRONG;
+  }
+
   public void makeOrderNumber() {
     String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     this.orderNumber = date + RandomStringUtils.randomNumeric(6);

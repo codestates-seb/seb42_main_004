@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import NoResult from '../components/commons/NoResult';
 import CustomAside from '../components/custom/CustomAside';
 import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
@@ -9,40 +10,19 @@ import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
 import { TextButton } from '../components/commons/ModalDiv';
 import { MealBoxesWrapDiv } from './AllBoxes';
 import useGET from '../util/useGET';
+import useFilterSearch from '../util/useFilterSearch';
 import { initializeCustom } from '../reducers/customReducer';
-import NoResult from '../components/commons/NoResult';
 
 function Custom() {
-  const [page, setPage] = useState(1);
-  const [sortBy, setSortBy] = useState(['id', 'ASC']);
-  const [searchWord, setSearchWord] = useState('');
-  const [path, setPath] = useState('?page=1&sort=id&dir=ASC');
+  const [path, setPath] = useState('?page=1&sort=id&dir=DESC');
   const [openCustom, setOpenCustom] = useState(false);
-  const [res, isPending, error] = useGET(`/products${path}`);
+  const [res, isPending, error] = useGET(path);
   const { custom } = useSelector((state) => state.customReducer);
-  const [errorWord, setErrorWord] = useState(searchWord);
+  const [toFilterSearchDiv, errorWord, , setPage] = useFilterSearch(
+    false,
+    setPath
+  );
   const dispatch = useDispatch();
-
-  const searchProduct = () => {
-    setPage(1);
-    getProducts();
-  };
-
-  const sortProducts = (select) => {
-    setSearchWord('');
-    setPage(1);
-    setSortBy(select.split('/'));
-  };
-
-  const getProducts = () => {
-    setErrorWord(searchWord);
-    if (searchWord) setPath(`/search?page=${page}&name=${searchWord}`);
-    else setPath(`?page=${page}&sort=${sortBy[0]}&dir=${sortBy[1]}`);
-  };
-
-  useEffect(() => {
-    getProducts();
-  }, [page, sortBy]);
 
   const totalQuantity = custom.products.reduce((a, c) => a + c.quantity, 0);
   const productsId = custom.products.map((product) => product.productId);
@@ -73,12 +53,7 @@ function Custom() {
         </CustomTitleDiv>
         <CustomSelectDiv>
           <ElementsContainerDiv>
-            <FilterSearchDiv
-              sortProducts={sortProducts}
-              placeholder="고구마"
-              searchSubject={searchProduct}
-              setSearchWord={setSearchWord}
-            />
+            <FilterSearchDiv placeholder="고구마" {...toFilterSearchDiv} />
             <BoxElementCardUl>
               {products?.length !== 0 ? (
                 products?.map((product) => (
@@ -95,7 +70,9 @@ function Custom() {
                 ))
               ) : (
                 <NoResult
-                  search={(word) => setPath(`/search?page=1&name=${word}`)}
+                  search={(word) =>
+                    setPath(`/products/search?page=1&name=${word}`)
+                  }
                   errorWord={errorWord}
                   replaceWord={'단백질쉐이크'}
                 />
@@ -128,9 +105,6 @@ const CustomTitleDiv = styled(CustomSelectDiv)`
 `;
 const AsideButtonDiv = styled(CustomSelectDiv)`
   min-width: 30%;
-  /* > button {
-    margin-bottom: 1rem;
-  } */
 `;
 const ElementsContainerDiv = styled.div`
   display: flex;

@@ -20,13 +20,14 @@ const cartSlice = createSlice({
 
     deleteCartItem: (state, action) => {
       const { cart } = state;
-      const idx = cart.mealboxes.findIndex((el) => {
-        return String(el.cartMealboxId) === String(action.payload);
+      action.payload.forEach((d) => {
+        const idx = cart.mealboxes.findIndex((el) => {
+          return String(el.cartMealboxId) === String(d);
+        });
+        cart.totalPrice -=
+          cart.mealboxes[idx].price * cart.mealboxes[idx].quantity;
+        cart.mealboxes.splice(idx, 1);
       });
-
-      cart.totalPrice -=
-        cart.mealboxes[idx].price * cart.mealboxes[idx].quantity;
-      cart.mealboxes.splice(idx, 1);
     },
 
     setMinus: (state, action) => {

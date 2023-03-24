@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import SendEmailDiv from '../components/signup/SendEmailDiv';
 
-function SendEmail() {
+function SendEmail({ pathName }) {
   return (
     <ContainerDiv className="margininside">
-      <SendEmailDiv />
+      <SendEmailDiv pathName={pathName} />
     </ContainerDiv>
   );
 }
