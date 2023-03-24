@@ -22,9 +22,11 @@ function SurveyHome() {
 export default SurveyHome;
 
 const Main = styled.main`
-  height: calc(100vh - 115px);
+  height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  @media (max-width: 480px) {
+  }
 `;

@@ -26,7 +26,7 @@ function AllBoxes() {
   const paginationUrl = (page) => {
     setErrorWord(searchWord);
     return searchWord
-      ? `/mealboxes/search?page=${page}&name=${searchWord}`
+      ? `/mealboxes/search/detail?page=${page}&name=${searchWord}`
       : `/mealboxes?page=${page}&sort=${sortBy[0]}&dir=${sortBy[1]}`;
   };
 
@@ -98,15 +98,6 @@ export default AllBoxes;
 
 export const MealBoxesWrapDiv = styled.div`
   flex-direction: column;
-  min-height: calc(100vh - 330px - 5rem);
-
-  @media screen and (max-width: 768px) {
-    min-height: calc(100vh - 280px - 5rem);
-  }
-
-  @media screen and (max-width: 480px) {
-    min-height: calc(100vh - 230px - 5rem);
-  }
 `;
 export const SearchResultH3 = styled.h3`
   margin-bottom: 0.5rem;

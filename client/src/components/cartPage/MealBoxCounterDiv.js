@@ -10,7 +10,7 @@ function MealBoxCounterDiv({ quantity, calRenderPrice }) {
   let dispatch = useDispatch();
 
   let getCartMealboxId = (e) =>
-    e.target.parentElement.parentElement.parentElement.parentElement.value;
+    e.target.parentElement.parentElement.parentElement.parentElement.id;
 
   let patchReq = (cartMealboxId) => {
     patchData('/users/cart', { cartMealboxId, quantity }, false);
@@ -26,6 +26,7 @@ function MealBoxCounterDiv({ quantity, calRenderPrice }) {
 
   let handlePlus = (e) => {
     let cartMealboxId = getCartMealboxId(e);
+    console.log(cartMealboxId);
     dispatch(setPlus(cartMealboxId));
     isLogin && patchReq(cartMealboxId);
     calRenderPrice();

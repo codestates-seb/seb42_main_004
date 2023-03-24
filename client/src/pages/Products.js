@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { SearchResultH3 } from './AllBoxes';
+import { MealBoxesWrapDiv, SearchResultH3 } from './AllBoxes';
 import ProductLi from '../components/product/ProductLi';
 import GetTemplate from '../components/commons/GetTemplate';
 import { TextButton } from '../components/commons/ModalDiv';
@@ -97,10 +97,7 @@ function Products() {
 
 export default Products;
 
-const ContainerDiv = styled.div`
-  min-height: 100vh;
-  flex-direction: column;
-
+const ContainerDiv = styled(MealBoxesWrapDiv)`
   > ul {
     display: flex;
     justify-content: flex-start;

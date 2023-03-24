@@ -17,7 +17,7 @@ function CartItemLi({ mealbox, value, calRenderPrice }) {
   };
 
   return (
-    <CartItemWrapperLi value={value}>
+    <CartItemWrapperLi id={value}>
       <CartItemTopDiv>
         <CheckBoxInput
           id={value}

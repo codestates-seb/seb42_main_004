@@ -7,17 +7,19 @@ import { TextButton } from '../commons/ModalDiv';
 import { deleteCartItem } from '../../reducers/cartReducer';
 
 function MealBoxEditButton() {
+  let { isLogin } = useSelector((state) => state.authReducer);
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let { mealboxes } = useSelector((state) => state.cartReducer.cart);
   let customPageLink = (e) => {
-    let cartMealboxId =
-      e.target.parentElement.parentElement.parentElement.value;
-    let quantity = e.target.parentElement.parentElement.parentElement;
-    console.log(quantity);
+    let cartMealboxId = e.target.parentElement.parentElement.parentElement.id;
+    console.log(e.target.parentElement.parentElement.parentElement.id);
+    // let quantity = e.target.parentElement.parentElement.parentElement;
+    // console.log(cartMealboxId);
+    // console.log(quantity);
 
     // 삭제
-    deleteData(`/users/cart/${cartMealboxId}`);
+    isLogin && deleteData(`/users/cart/${cartMealboxId}`);
     dispatch(deleteCartItem(cartMealboxId));
 
     // custom reducer에 저장 & custom 페이지로 전환 (서버 요청 없음)
