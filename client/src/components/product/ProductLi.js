@@ -4,28 +4,34 @@ import ModalDiv, { TextButton } from '../commons/ModalDiv';
 import blankbucket from '../../assets/blankbucket.png';
 import deleteData from '../../util/deleteData';
 
-function ProductLi({ product, admin }) {
+function ProductLi({ product, admin, reload }) {
   const [openModal, setOpenModal] = useState(false);
 
   const deleteProduct = () => {
     if (
       window.confirm(
-        `${product.name}을 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
+        `${product.name}을(를) 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
       )
     ) {
-      deleteData(`/admin/mealboxes/${product.productId}`)
-        .then(() => alert(`${product.name}이 삭제되었습니다.`))
-        .then(() => {
-          window.location.reload();
-        });
-      console.log('삭제 완료');
+      deleteData(`/admin/mealboxes/${product.productId}`).then((res) => {
+        if (res.status === 200) {
+          alert(`${product.name}이(가) 삭제되었습니다.`);
+          reload();
+        } else {
+          alert('삭제 실패.\n관리자에게 문의해주세요.');
+        }
+      });
     }
   };
 
   return (
     <ContainerLi onClick={!product ? () => setOpenModal(true) : null}>
       {openModal && (
-        <ModalDiv product={product} closeModal={() => setOpenModal(false)} />
+        <ModalDiv
+          reload={reload}
+          product={product}
+          closeModal={() => setOpenModal(false)}
+        />
       )}
       <CardDiv className="shadow">
         <img

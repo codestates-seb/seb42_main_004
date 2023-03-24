@@ -1,20 +1,21 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MealBoxCardDiv from '../components/allboxes/MealBoxCardDiv';
 import BannerLink from '../components/commons/BannerLink';
 import FilterSearchDiv from '../components/commons/FilterSearchDiv';
 import GetTemplate from '../components/commons/GetTemplate';
-import { TextButton } from '../components/commons/ModalDiv';
+import NoResult from '../components/commons/NoResult';
 import PaginationUl from '../components/commons/PaginationUl';
 import useGET from '../util/useGET';
 
 function AllBoxes() {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.authReducer);
   let { pathname, search } = useLocation();
   if (!search) search = '?page=1&sort=id&dir=ASC';
-
-  const [res, isPending, error] = useGET(`${pathname}${search}`);
+  const [res, isPending, error, getData] = useGET(`${pathname}${search}`);
   const [searchWord, setSearchWord] = useState('');
   const [errorWord, setErrorWord] = useState(searchWord);
   const [sortBy, setSortBy] = useState(['id', 'ASC']);
@@ -41,7 +42,9 @@ function AllBoxes() {
     <GetTemplate isPending={isPending} error={error} res={res?.data}>
       <MealBoxesWrapDiv className="margininside">
         <BannerLink />
-        <h1>{'맹쥬'}님 오늘도 건강한 하루되세요(｡•̀ᴗ-)✧</h1>
+        <h1>
+          {user?.name && `${user.name}님 `}오늘도 건강한 하루되세요(｡•̀ᴗ-)✧
+        </h1>
         <FilterSearchDiv
           placeholder="healthy day 밀박스"
           sortProducts={sortProducts}
@@ -54,34 +57,26 @@ function AllBoxes() {
           </SearchResultH3>
         )}
         <MealBoxesUl>
-          {(search.includes('?page=1&') || res.data?.length === 0) && (
+          {((search.includes('?page=1&') && !pathname.includes('search')) ||
+            res.data?.length === 0) && (
             <li>
-              <MealBoxCardDiv custom={1} />
+              <MealBoxCardDiv />
             </li>
           )}
           {res.data?.length !== 0 ? (
             res.data?.map((mealbox) => (
               <li key={mealbox.mealboxId}>
-                <MealBoxCardDiv mealBox={mealbox} />
+                <MealBoxCardDiv mealBox={mealbox} reload={getData} />
               </li>
             ))
           ) : (
-            <div>
-              찾고 계신 <span>{errorWord}</span>은(는) 목록에 추가될 예정입니다
-              <br />
-              {errorWord} 대신
-              <TextButton
-                className="linkstyle"
-                onClick={() =>
-                  navigate(
-                    '/mealboxes/search?page=1&name=고단백질%20아침%20세트'
-                  )
-                }
-              >
-                고단백질 아침 세트
-              </TextButton>
-              는 어떠세요?
-            </div>
+            <NoResult
+              search={(word) =>
+                navigate(`/mealboxes/search?page=1&name=${word}`)
+              }
+              errorWord={errorWord}
+              replaceWord={'고단백질 아침 세트'}
+            />
           )}
         </MealBoxesUl>
         <PaginationUl

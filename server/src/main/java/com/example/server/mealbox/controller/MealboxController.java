@@ -39,8 +39,8 @@ public class MealboxController {
     public ResponseEntity createAdminMealbox(@RequestBody @Valid MealboxDto mealboxDto) {
         log.info("------createAdminMealbox------");
         Mealbox mealbox = mapper.mealboxDtoToMealbox(mealboxDto, Mealbox.MealboxInfo.NO_REC_MEALBOX);
-        mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxDto.getProducts());
-        return new ResponseEntity(HttpStatus.CREATED);
+        Mealbox savedMealbox = mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxDto.getProducts());
+        return new ResponseEntity(savedMealbox.getId(), HttpStatus.CREATED);
     }
 
     //관리자가 추천조합 밀박스 수정하기
@@ -85,9 +85,7 @@ public class MealboxController {
         List<Mealbox> mealboxes = mealboxPage.getContent();
         List<OnlyMealboxResponseDto> response = mapper.mealboxListToMealboxResponseDtoList(mealboxes);
 
-        PageInfo pageInfo = new PageInfo(mealboxPage.getNumber()+1, mealboxPage.getSize(),
-                (int) mealboxPage.getTotalElements());
-        return new ResponseEntity(new MultiResponseDto(response, pageInfo), HttpStatus.OK);
+        return new ResponseEntity(new MultiResponseDto(response, mealboxPage), HttpStatus.OK);
     }
 
     @GetMapping("/mealboxes/search/detail")
@@ -98,9 +96,7 @@ public class MealboxController {
         List<Mealbox> mealboxes = mealboxPage.getContent();
         List<OnlyMealboxResponseDto> response = mapper.mealboxListToMealboxResponseDtoList(mealboxes);
 
-        PageInfo pageInfo = new PageInfo(mealboxPage.getNumber()+1, mealboxPage.getSize(),
-                (int) mealboxPage.getTotalElements());
-        return new ResponseEntity(new MultiResponseDto(response, pageInfo), HttpStatus.OK);
+        return new ResponseEntity(new MultiResponseDto(response, mealboxPage), HttpStatus.OK);
     }
 
     @PostMapping("/admin/mealboxes/{mealboxId}/image")

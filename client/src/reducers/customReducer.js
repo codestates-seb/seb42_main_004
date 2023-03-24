@@ -67,9 +67,10 @@ const customSlice = createSlice({
         );
       }
     },
-    setIdName: (state, action) => {
+    setIdNameImage: (state, action) => {
       state.custom.name = action.payload.name;
       state.custom.mealboxId = action.payload.mealboxId;
+      state.custom.imagePath = action.payload.imagePath;
     },
     initializeCustom: (state) => {
       state.custom = {
@@ -87,7 +88,7 @@ export const {
   addProductInBox,
   deleteProduct,
   setProduct,
-  setIdName,
+  setIdNameImage,
   initializeCustom,
 } = customSlice.actions;
 export default customSlice.reducer;

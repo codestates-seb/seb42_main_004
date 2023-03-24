@@ -41,8 +41,8 @@ public class ProductController {
     public ResponseEntity createAdminProduct(@RequestBody @Valid ProductDto productDto){
         log.info("--------createProduct-------");
         Product product = mapper.productDtoToProduct(productDto);
-        productService.createProduct(product);
-        return new ResponseEntity(HttpStatus.CREATED);
+        Product savedProduct = productService.createProduct(product);
+        return new ResponseEntity(savedProduct.getId(), HttpStatus.CREATED);
     }
 
     //관리자가 개별상품 수정하기
@@ -81,7 +81,7 @@ public class ProductController {
                                                       @RequestParam String name){
         log.info("------adminGetsearchProductList------");
         Page<Product> productPage =
-                productService.searchProducts(name, page, productListSize, "id", Sort.Direction.ASC, true);
+                productService.searchProducts(name, page, productListSize, "id", Sort.Direction.ASC);
 
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
@@ -109,14 +109,12 @@ public class ProductController {
                                                  @RequestParam String name) {
         log.info("------getsearchProduct------");
         Page<Product> productPage =
-                productService.searchProducts(name, page, productListSize, "id", Sort.Direction.ASC, false);
+                productService.searchProducts(name, page, productListSize, "id", Sort.Direction.ASC);
 
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
 
-        PageInfo pageInfo = new PageInfo(productPage.getNumber()+1, productPage.getSize(),
-                (int) productPage.getTotalElements());
-        return new ResponseEntity(new MultiResponseDto(response, pageInfo), HttpStatus.OK);
+        return new ResponseEntity(new MultiResponseDto(response, productPage), HttpStatus.OK);
     }
 
     @PostMapping("/admin/products/{productId}/image")

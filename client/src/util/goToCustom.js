@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { addProductInBox, setIdName } from '../reducers/customReducer';
+import { addProductInBox, setIdNameImage } from '../reducers/customReducer';
 
 function goToCustom(mealBox, admin) {
   const navigate = useNavigate();
@@ -10,9 +10,8 @@ function goToCustom(mealBox, admin) {
     if (mealBox?.products) {
       dispatch(addProductInBox(mealBox.products));
       if (admin) {
-        dispatch(
-          setIdName({ name: mealBox.name, mealboxId: mealBox.mealboxId })
-        );
+        const { name, mealboxId, imagePath } = mealBox;
+        dispatch(setIdNameImage({ name, mealboxId, imagePath }));
       }
     }
     navigate('/custom');
