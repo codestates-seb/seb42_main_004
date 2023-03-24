@@ -2,12 +2,14 @@ package com.example.server.order.mapper;
 
 import com.example.server.mealbox.dto.MealboxProductResponseDto;
 import com.example.server.mealbox.entity.MealboxProduct;
+import com.example.server.order.dto.OrderMealboxPostDto;
 import com.example.server.order.dto.OrderMealboxResponseDto;
 import com.example.server.order.dto.OrderPageResponseDto;
 import com.example.server.order.dto.OrderPostDto;
 import com.example.server.order.dto.OrderResponseDto;
 import com.example.server.order.entity.Orders;
 import com.example.server.order.entity.OrdersMealbox;
+import com.example.server.order.entity.OrdersProduct;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
@@ -17,7 +19,8 @@ public interface OrderMapper {
 
   default Orders orderPostDtoToOrders(OrderPostDto orderPostDto) {
     Orders order = new Orders();
-    List<Long> cartMealboxIds = orderPostDto.getMealboxes().stream().map(mb -> mb.getCartMealboxId()).collect(
+    List<Long> cartMealboxIds = orderPostDto.getMealboxes().stream().map(
+        OrderMealboxPostDto::getCartMealboxId).collect(
         Collectors.toList());
     for(Long cartMealboxId: cartMealboxIds) {
       order.addCartMealboxId(cartMealboxId);
@@ -59,11 +62,19 @@ public interface OrderMapper {
         orderMealboxResponseDto.setMealboxPrice(ordersMealbox.getPrice());
         orderMealboxResponseDto.setMealboxQuantity(ordersMealbox.getQuantity());
         orderMealboxResponseDto.setMealboxKcal(ordersMealbox.getKcal());
-        List<MealboxProduct> mealboxProductList = ordersMealbox.getMealbox().getMealboxProducts();
-        List<MealboxProductResponseDto> mealboxProductResponseDtoList = mealboxProductList.stream().map(mealboxProduct -> {
+//        List<MealboxProduct> mealboxProductList = ordersMealbox.getMealbox().getMealboxProducts();
+//        List<MealboxProductResponseDto> mealboxProductResponseDtoList = mealboxProductList.stream().map(mealboxProduct -> {
+//          MealboxProductResponseDto mealboxProductResponseDto = new MealboxProductResponseDto();
+//          mealboxProductResponseDto.setName(mealboxProduct.getProduct().getName());
+//          mealboxProductResponseDto.setQuantity(mealboxProduct.getQuantity());
+//          return mealboxProductResponseDto;
+//        }).collect(Collectors.toList());
+//        orderMealboxResponseDto.setProducts(mealboxProductResponseDtoList);
+        List<OrdersProduct> ordersProductList = ordersMealbox.getOrdersProducts();
+        List<MealboxProductResponseDto> mealboxProductResponseDtoList = ordersProductList.stream().map(ordersProduct -> {
           MealboxProductResponseDto mealboxProductResponseDto = new MealboxProductResponseDto();
-          mealboxProductResponseDto.setName(mealboxProduct.getProduct().getName());
-          mealboxProductResponseDto.setQuantity(mealboxProduct.getQuantity());
+          mealboxProductResponseDto.setName(ordersProduct.getName());
+          mealboxProductResponseDto.setQuantity(ordersProduct.getQuantity());
           return mealboxProductResponseDto;
         }).collect(Collectors.toList());
         orderMealboxResponseDto.setProducts(mealboxProductResponseDtoList);

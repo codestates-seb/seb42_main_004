@@ -1,6 +1,7 @@
 package com.example.server.order.entity;
 
 import com.example.server.mealbox.entity.Mealbox;
+import java.util.List;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,6 +34,9 @@ public class OrdersMealbox {
     @JoinColumn(name = "orders_id")
     private Orders orders;
 
+    @OneToMany(mappedBy = "ordersMealbox")
+    private List<OrdersProduct> ordersProducts;
+
 
     @Builder
     public OrdersMealbox(int quantity, Mealbox mealbox, Orders orders) {
@@ -52,6 +56,13 @@ public class OrdersMealbox {
         this.orders = orders;
         if(!orders.getOrdersMealboxes().contains(this)) {
             orders.addOrdersMealbox(this);
+        }
+    }
+
+    public void addOrdersProduct(OrdersProduct ordersProduct) {
+        this.ordersProducts.add(ordersProduct);
+        if (ordersProduct.getOrdersMealbox() != this) {
+            ordersProduct.addOrdersMealbox(this);
         }
     }
 }

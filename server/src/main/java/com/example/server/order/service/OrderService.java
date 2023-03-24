@@ -2,6 +2,7 @@ package com.example.server.order.service;
 
 import com.example.server.exception.BusinessLogicException;
 import com.example.server.mealbox.entity.Mealbox;
+import com.example.server.mealbox.entity.MealboxProduct;
 import com.example.server.mealbox.service.MealboxService;
 import com.example.server.order.data.OrderStatus;
 import com.example.server.order.dto.OrderMealboxPostDto;
@@ -10,8 +11,10 @@ import com.example.server.order.dto.OrderPatchStatusDto;
 import com.example.server.order.dto.OrderPostDto;
 import com.example.server.order.entity.Orders;
 import com.example.server.order.entity.OrdersMealbox;
+import com.example.server.order.entity.OrdersProduct;
 import com.example.server.order.exception.OrderException;
 import com.example.server.order.repository.OrderMealboxRepository;
+import com.example.server.order.repository.OrderProductRepository;
 import com.example.server.order.repository.OrderRepository;
 import com.example.server.payment.service.PaymentService;
 import com.example.server.user.entity.User;
@@ -41,15 +44,17 @@ public class OrderService {
   private final MealboxService mealboxService;
   private final UserService userService;
   private final PaymentService paymentService;
+  private final OrderProductRepository orderProductRepository;
 
   public OrderService(OrderRepository orderRepository,
-      OrderMealboxRepository orderMealboxRepository,
+      OrderMealboxRepository orderMealboxRepository, OrderProductRepository orderProductRepository,
       MealboxService mealboxService, UserService userService, @Lazy PaymentService paymentService) {
     this.orderRepository = orderRepository;
     this.orderMealboxRepository = orderMealboxRepository;
     this.mealboxService = mealboxService;
     this.userService = userService;
     this.paymentService = paymentService;
+    this.orderProductRepository = orderProductRepository;
   }
 
   public Orders createOrder(Orders order, OrderPostDto orderPostDto, long userId) throws IamportResponseException, IOException {
@@ -76,8 +81,20 @@ public class OrderService {
       ordersMealbox.addOrders(order);
       ordersMealbox.setPrice(mealbox.getPrice());
       ordersMealbox.setKcal(mealbox.getKcal());
+      OrdersMealbox savedOrdersMealbox = orderMealboxRepository.save(ordersMealbox);
+      setOrdersProductFromMealbox(savedOrdersMealbox);
       orderMealboxRepository.save(ordersMealbox);
     });
+  }
+
+  private void setOrdersProductFromMealbox(OrdersMealbox ordersMealbox) {
+    Mealbox mealbox = ordersMealbox.getMealbox();
+    List<MealboxProduct> mealboxProductList = mealbox.getMealboxProducts();
+    for (MealboxProduct mealboxProduct : mealboxProductList) {
+      OrdersProduct ordersProduct = new OrdersProduct(mealboxProduct.getProduct().getName(), mealboxProduct.getQuantity());
+      ordersProduct.addOrdersMealbox(ordersMealbox);
+      orderProductRepository.save(ordersProduct);
+    }
   }
 
   public void cancelOrder(String orderNumber) {
