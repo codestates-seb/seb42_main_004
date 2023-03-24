@@ -1,12 +1,67 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ContentDiv from './ContentDiv';
 import PasswordInputDiv from './PasswordInputDiv';
 import MyInfoButton from './MyInfoButton';
-import { useEffect, useState } from 'react';
+import useGET from '../../util/useGET';
+import GetTemplate from '../commons/GetTemplate';
 
 function MyInfoUl({ pathName }) {
   const [imgInput, setImgInput] = useState();
   const [imgInputBuffer, setImgInputBuffer] = useState();
+  const [inputValue, setInputValue] = useState({
+    addressee: '',
+    addresseePhoneNumber: '',
+    deliveryDetailAddress: '',
+    deliverySimpleAddress: '',
+    deliveryZipCode: '',
+    email: '',
+    userDetailAddress: '',
+    userPhoneNumber: '',
+    userSimpleAddress: '',
+    userZipCode: '',
+    username: '',
+    imagePath: '',
+  });
+  const [res, isPending, error] = useGET('/users');
+  const navigate = useNavigate();
+
+  console.log(res);
+  console.log(isPending);
+  console.log(error);
+
+  useEffect(() => {
+    if (res) {
+      setInputValue({
+        username: res.name,
+        email: res.email,
+        userPhoneNumber: res.phoneNumber,
+        addressee: res.deliveryInformation && res.deliveryInformation.name,
+        addresseePhoneNumber:
+          res.deliveryInformation && res.deliveryInformation.phoneNumber,
+        deliveryDetailAddress:
+          (res.deliveryInformation &&
+            res.deliveryInformation.address &&
+            res.deliveryInformation.address.detailAddress) ||
+          '',
+        deliverySimpleAddress:
+          (res.deliveryInformation &&
+            res.deliveryInformation.address &&
+            res.deliveryInformation.address.simpleAddress) ||
+          '',
+        deliveryZipCode:
+          (res.deliveryInformation &&
+            res.deliveryInformation.address &&
+            res.deliveryInformation.address.zipCode) ||
+          '',
+        userDetailAddress: (res.address && res.address.detailAddress) || '',
+        userSimpleAddress: (res.address && res.address.simpleAddress) || '',
+        userZipCode: (res.address && res.address.zipCode) || '',
+        imagePath: res.imagePath,
+      });
+    }
+  }, [res]);
 
   useEffect(() => {
     let reader = new FileReader();
@@ -20,60 +75,83 @@ function MyInfoUl({ pathName }) {
   }, [imgInput]);
 
   return (
-    <ContainerUl>
-      <li>
-        <h2>내 정보</h2>
-        <OrderDiv>
-          <ImgDiv>
-            <Img img={imgInputBuffer}></Img>
-          </ImgDiv>
-          <InfoDiv>
+    <GetTemplate isPending={isPending} error={error} res={res}>
+      <ContainerUl>
+        <li>
+          <h2>내 정보</h2>
+          <OrderDiv>
+            <ImgDiv>
+              <Img img={imgInputBuffer}></Img>
+            </ImgDiv>
+            <InfoDiv>
+              <ContentDiv
+                name="프로필 사진"
+                content="맹쥬"
+                onInput={(e) => setImgInput(e.target.files[0])}
+              />
+              <ContentDiv name="닉네임" value={inputValue.username} />
+              <ContentDiv name="이메일" value={inputValue.email} />
+              <ContentDiv name="연락처" value={inputValue.userPhoneNumber} />
+              <ContentDiv
+                name="주소"
+                value={`${inputValue.userSimpleAddress} ${inputValue.userDetailAddress}`}
+              />
+            </InfoDiv>
+          </OrderDiv>
+        </li>
+        <li>
+          <h2>배송지 정보</h2>
+          <DeliveryDiv>
+            <ContentDiv name="받는분" value={inputValue.addressee} />
+            <ContentDiv name="연락처" value={inputValue.addresseePhoneNumber} />
             <ContentDiv
-              name="프로필 사진"
-              content="맹쥬"
-              onInput={(e) => setImgInput(e.target.files[0])}
+              name="주소"
+              value={`${inputValue.deliverySimpleAddress} ${inputValue.deliveryDetailAddress}`}
             />
-            <ContentDiv name="닉네임" content="맹쥬" />
-            <ContentDiv name="이메일" content="myungju030@gmail.com" />
-            <ContentDiv name="연락처" content="01012345678" />
-            <ContentDiv name="주소" content="주소" />
-          </InfoDiv>
-        </OrderDiv>
-      </li>
-      <li>
-        <h2>배송지 정보</h2>
-        <DeliveryDiv>
-          <ContentDiv name="받는분" content="강명주" />
-          <ContentDiv name="연락처" content="01012345678" />
-          <ContentDiv name="주소" content="주소" />
-        </DeliveryDiv>
-      </li>
-      {pathName ? (
-        <li>
-          <PasswordDiv>
-            <PasswordInputDiv id="password" name="비밀번호" content="" />
-            <PasswordInputDiv id="newPassword" name="새 비밀번호" content="" />
-            <PasswordInputDiv
-              id="confirmNewPassword"
-              name="새 비밀번호 확인"
-              content=""
-            />
+          </DeliveryDiv>
+        </li>
+        {pathName ? (
+          <li>
+            <PasswordDiv>
+              <PasswordInputDiv
+                id="password"
+                name="password"
+                labelName="비밀번호"
+                value=""
+              />
+              <PasswordInputDiv
+                id="newPassword"
+                name="newPassword"
+                labelName="새 비밀번호"
+                value=""
+              />
+              <PasswordInputDiv
+                id="confirmNewPassword"
+                name="confirmNewPassword"
+                labelName="새 비밀번호 확인"
+                value=""
+              />
+              <ButtonDiv>
+                <MyInfoButton text="변경" />
+              </ButtonDiv>
+            </PasswordDiv>
+          </li>
+        ) : null}
+        {pathName ? null : (
+          <li>
             <ButtonDiv>
-              <MyInfoButton text="변경" />
+              <button onClick={() => navigate('/myinfo/edit')}>
+                내 정보 수정
+              </button>
+              <button onClick={() => navigate('/myinfo/edit/password')}>
+                비밀번호 수정
+              </button>
+              <button>회원 탈퇴</button>
             </ButtonDiv>
-          </PasswordDiv>
-        </li>
-      ) : null}
-      {pathName ? null : (
-        <li>
-          <ButtonDiv>
-            <div>내 정보 수정</div>
-            <div>비밀번호 수정</div>
-            <div>회원 탈퇴</div>
-          </ButtonDiv>
-        </li>
-      )}
-    </ContainerUl>
+          </li>
+        )}
+      </ContainerUl>
+    </GetTemplate>
   );
 }
 
@@ -137,21 +215,19 @@ const ButtonDiv = styled.div`
   flex-direction: column;
   align-items: flex-end;
 
-  > div {
+  > button {
     width: 100px;
     height: 25px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    background-color: transparent;
+    border: none;
 
     &:hover {
       cursor: pointer;
       color: var(--input_blue);
     }
-  }
-
-  > button {
-    margin-top: 2rem;
   }
 `;
 const Img = styled.img`

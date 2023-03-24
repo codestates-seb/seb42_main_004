@@ -1,14 +1,15 @@
 import styled from 'styled-components';
 
-function PasswordInputDiv({ id, name, content }) {
+function PasswordInputDiv({ id, name, labelName, value }) {
   return (
     <ContainerDiv>
-      <label htmlFor={id}>{name}</label>
+      <label htmlFor={id}>{labelName}</label>
       <input
         id={id}
+        name={name}
         className="inputstyle"
         type="password"
-        value={content}
+        value={value}
       ></input>
     </ContainerDiv>
   );

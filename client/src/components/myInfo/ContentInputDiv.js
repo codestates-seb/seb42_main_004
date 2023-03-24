@@ -8,23 +8,21 @@ function ContentInputDiv({
   value,
   onChange,
   validText,
+  noEdit,
 }) {
   return (
     <ContainerDiv validText={validText}>
       <label htmlFor={id}>{labelName}</label>
-      {labelName && labelName === '프로필 사진' ? (
-        <button className="buttonstyle shadow">{value}</button>
-      ) : (
-        <input
-          id={id}
-          name={name}
-          className="inputstyle"
-          type="text"
-          placeholder={placeholder}
-          value={value}
-          onChange={onChange}
-        ></input>
-      )}
+      <input
+        id={id}
+        name={name}
+        className="inputstyle"
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        disabled={noEdit}
+      ></input>
     </ContainerDiv>
   );
 }
