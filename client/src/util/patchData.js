@@ -1,16 +1,11 @@
 import axios from 'axios';
 
-async function patchData(url, data, multipart) {
+async function patchData(url, data) {
   try {
     const response = await axios.patch(
       `${process.env.REACT_APP_API_URL}${url}`,
-      JSON.stringify(data),
+      data,
       {
-        headers: {
-          'Content-Type': `${
-            multipart ? 'multipart/form-data' : 'application/json'
-          }`,
-        },
         withCredentials: true,
       }
     );
