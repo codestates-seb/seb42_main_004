@@ -3,7 +3,7 @@ import MealBoxDeleteButton from './MealBoxDeleteButton';
 import MealBoxCounterDiv from './MealBoxCounterDiv';
 import MealBoxItemsDiv from './MealBoxItemsDiv';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 function CartItemLi({ mealbox, value, calcRenderPrice }) {
   console.log(mealbox);
@@ -12,12 +12,13 @@ function CartItemLi({ mealbox, value, calcRenderPrice }) {
 
   let IsCheckedHandler = () => {
     setIsChecked(!isChecked);
+    calcRenderPrice();
     // unchecked => 화면에서만 총액 변경, 구매하기 클릭 시 해당 밀박스 제외
   };
 
-  useEffect(() => {
-    calcRenderPrice();
-  }, [quantity, isChecked]);
+  // useEffect(() => {
+  //   calcRenderPrice();
+  // }, [isChecked]);
 
   return (
     <CartItemWrapperLi id={value}>
