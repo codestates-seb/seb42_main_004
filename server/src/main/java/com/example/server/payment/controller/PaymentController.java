@@ -52,7 +52,7 @@ public class PaymentController { // IamPort 결제 검증 컨트롤러
     return new ResponseEntity<>(json, HttpStatus.OK);
   }
 
-  @PatchMapping("/validation/error/{order-number}")
+  @PatchMapping("/error/{order-number}")
   public ResponseEntity<?> errorPayment(@PathVariable("order-number") String orderNumber) {
     paymentService.errorWhilePaying(orderNumber);
     return new ResponseEntity<>(HttpStatus.OK);
