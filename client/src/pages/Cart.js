@@ -61,7 +61,7 @@ function Cart() {
         return { cartMealboxId, mealboxId, quantity };
       });
     console.log(postReqData);
-    postData('/orders', { orderMealboxes: postReqData }, false).then((res) => {
+    postData('/orders', { orderMealboxes: postReqData }).then((res) => {
       navigate(res.data);
     });
   };
