@@ -41,11 +41,20 @@ function ModalDiv({ closeModal, mealBox, product }) {
     }
   }, [imgInput]);
 
-  const addImg = () => {
+  const postImage = async (uri) => {
     const formData = new FormData();
     formData.append('file', imgInput);
 
-    return formData;
+    return await postData(`${uri}/image`, formData).then((res) => {
+      if (res?.status !== 201) {
+        alert(
+          `이미지 ${
+            uri.includes('s/') ? '수정' : '등록'
+          }에 실패했습니다\n관리자에게 문의해주세요.`
+        );
+      }
+      return res;
+    });
   };
 
   const postPatchReq = async (data, isMealBox) => {
@@ -59,29 +68,24 @@ function ModalDiv({ closeModal, mealBox, product }) {
       func = patchData;
     }
 
-    if (imgInputBuffer && imgInputBuffer !== subject.imagePath) {
-      const formImage = addImg();
-      await postData(`${uri}/image`, formImage, true).then((err) => {
-        if (err?.status)
-          alert(
-            `이미지 ${
-              id ? '수정' : '등록'
-            }에 실패했습니다\n관리자에게 문의해주세요.`
-          );
-      });
-    }
-
-    await func(uri, data).then((err) => {
-      if (err?.status) alert('등록에 실패했습니다\n관리자에게 문의해주세요.');
-      else {
+    const completeRegister = (res) => {
+      if (res?.status === 201 || res?.status === 200) {
         isMealBox && dispatch(initializeCustom());
-        alert(`${data.name}이(가) ${id ? '수정' : '추가'}되었습니다.`).catch(
-          () =>
-            alert(
-              `${id ? '수정' : '등록'}에 실패했습니다\n관리자에게 문의해주세요.`
-            )
-        );
-        // navigate(isMealBox ? '/mealboxes' : '/product');
+        setSubjectInfo({ ...subject });
+        alert(`${data.name}이(가) ${id ? '수정' : '추가'}되었습니다.`);
+        // navigate(isMealBox ? '/mealboxes' : '/products');
+      }
+    };
+
+    await func(uri, data).then((res) => {
+      if (res?.status !== 201 && res?.status !== 200) {
+        alert('등록에 실패했습니다\n관리자에게 문의해주세요.');
+      } else if (imgInputBuffer && imgInputBuffer !== subject.imagePath) {
+        const newId = isMealBox ? res.mealboxId : res.productId;
+        uri += id ? '' : `/${newId}`;
+        return postImage(uri).then((res) => completeRegister(res));
+      } else {
+        completeRegister(res);
       }
     });
   };

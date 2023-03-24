@@ -107,10 +107,6 @@ export default Custom;
 
 const CustomWrapDiv = styled(MealBoxesWrapDiv)`
   position: relative;
-  @media screen and (max-width: 480px) {
-    min-height: calc(100vh - 50px - 5rem);
-    padding-bottom: 76px;
-  }
 `;
 const CustomSelectDiv = styled.div`
   display: flex;
