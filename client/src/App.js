@@ -89,6 +89,7 @@ function App() {
             element={cookies.accessToken ? <OrderHistory /> : <Login />}
           />
           <Route path="/products" element={<Products />} />
+          <Route path="/products/:page" element={<Products />} />
           <Route
             path="/login"
             element={cookies.accessToken ? <Navigate to="/" /> : <Login />}
