@@ -61,7 +61,6 @@ function Cart() {
       });
     console.log(postReqData);
     postData('/orders', { mealboxes: postReqData }).then((res) => {
-      console.log(res);
       navigate(res.data);
     });
   };
