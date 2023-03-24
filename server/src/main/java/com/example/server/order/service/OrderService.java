@@ -13,20 +13,17 @@ import com.example.server.order.entity.OrdersMealbox;
 import com.example.server.order.exception.OrderException;
 import com.example.server.order.repository.OrderMealboxRepository;
 import com.example.server.order.repository.OrderRepository;
-import com.example.server.payment.controller.PaymentController;
-import com.example.server.payment.dto.PreparePostDto;
+import com.example.server.payment.service.PaymentService;
 import com.example.server.user.entity.User;
 import com.example.server.user.service.UserService;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -127,6 +124,11 @@ public class OrderService {
 
   public void paidOrder(Orders order) {
     order.paid();
+    orderRepository.save(order);
+  }
+
+  public void errorWhilePaying(Orders order) {
+    order.errorWhilePaying();
     orderRepository.save(order);
   }
 
