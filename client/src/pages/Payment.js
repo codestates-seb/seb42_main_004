@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import GetTemplate from '../components/commons/GetTemplate';
 import CartAside from '../components/commons/CartAside';
 import PaymentUl from '../components/payment/PaymentUl';
+import { deleteCartItem } from '../reducers/cartReducer';
 import patchData from '../util/patchData';
 import postData from '../util/postData';
-import { deleteCartItem } from '../reducers/cartReducer';
+import useGET from '../util/useGET';
 
 function Payment() {
   const { orderId } = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     addressee: '',
     addresseePhoneNumber: '',
@@ -29,7 +32,14 @@ function Payment() {
   });
   const checkedCartMealBoxId = location.state
     ? location.state.checkedCartMealBoxId
-    : '';
+    : [];
+  const [res, isPending, error] = useGET(`/orders/checkout/${orderId}`);
+
+  useEffect(() => {
+    if (res) {
+      setInputValue(res);
+    }
+  }, [res]);
 
   useEffect(() => {
     const jquery = document.createElement('script');
@@ -79,8 +89,8 @@ function Payment() {
         merchantUid: response.merchant_uid,
       }).then((data) => {
         if (data.status === 200) {
-          alert('결제가 완료되었습니다.');
           dispatch(deleteCartItem(checkedCartMealBoxId));
+          navigate('/myinfo/orderhistory');
         } else if (data.status === 409) {
           alert('관리자에게 문의하세요.');
           patchData(`/payments/error/${inputValue.orderNumber}`, '');
@@ -94,14 +104,15 @@ function Payment() {
   };
 
   return (
-    <ContainerDiv className="margininside">
-      <PaymentUl
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-        orderId={orderId}
-      />
-      <CartAside totalPrice={inputValue.totalPrice} buttonClick={handleClick} />
-    </ContainerDiv>
+    <GetTemplate isPending={isPending} error={error} res={res}>
+      <ContainerDiv className="margininside">
+        <PaymentUl inputValue={inputValue} setInputValue={setInputValue} />
+        <CartAside
+          totalPrice={inputValue.totalPrice}
+          buttonClick={handleClick}
+        />
+      </ContainerDiv>
+    </GetTemplate>
   );
 }
 
