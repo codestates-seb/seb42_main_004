@@ -33,7 +33,7 @@ public class Product {
     @Builder.Default
     private List<MealboxProduct> mealboxProducts = new ArrayList<>();
 
-    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     private ProductImage image;
 

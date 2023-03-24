@@ -31,6 +31,8 @@ public class UserImage {
     @Embedded
     private ImageInfo imageInfo;
 
+    /* ####### JPA 매핑 ####### */
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @Setter
