@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-function PasswordInputDiv({ id, name, labelName, value }) {
+function PasswordInputDiv({ id, name, labelName, value, onChange }) {
   return (
     <ContainerDiv>
       <label htmlFor={id}>{labelName}</label>
@@ -10,6 +10,7 @@ function PasswordInputDiv({ id, name, labelName, value }) {
         className="inputstyle"
         type="password"
         value={value}
+        onChange={onChange}
       ></input>
     </ContainerDiv>
   );
