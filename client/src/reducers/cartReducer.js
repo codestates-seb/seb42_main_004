@@ -13,15 +13,13 @@ const cartSlice = createSlice({
     addCartItem: (state, action) => {
       const { cart } = state;
       const mealBox = action.payload;
-      let a = new Date().toString().split(' ').join('');
-      console.log(a);
-      cart.mealboxes.push({ ...mealBox, cartMealboxId: a });
+      let cartMealboxId = new Date().toString().split(' ').join('');
+      cart.mealboxes.push({ ...mealBox, cartMealboxId });
       cart.totalPrice += mealBox.price;
     },
 
     deleteCartItem: (state, action) => {
       const { cart } = state;
-
       const idx = cart.mealboxes.findIndex((el) => {
         console.log(el.cartMealboxId);
         console.log(action.payload);
