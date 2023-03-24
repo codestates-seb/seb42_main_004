@@ -47,6 +47,16 @@ public class CartService {
         }
     }
 
+    public Cart createMealboxAndAddCart(Cart cart, Mealbox mealbox,
+                                        List<MealboxDto.Product> mealboxDtoProducts){
+        mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxDtoProducts);
+
+        cartMealboxService.createCartMealbox(cart, mealbox);
+
+        cart.calculateTotalPrice();
+        return cartRepository.save(cart);
+    }
+
     public void removeMealboxFromCart(Cart cart, Long cartMealboxId){
         verifyExistsCartMealboxIsInCart(cart, cartMealboxId);
 
@@ -60,7 +70,7 @@ public class CartService {
                     cart.getCartMealboxes().remove(eachCartMealbox));
         } //커스텀이 아니면 cartMealbox만 삭제
         else if (mealbox.getMealboxInfo() != Mealbox.MealboxInfo.CUSTOM_MEALBOX) {
-            cartMealboxService.deleteCartMealbox(cartMealbox);
+//            cartMealboxService.deleteCartMealbox(cartMealbox);
             cart.getCartMealboxes().remove(cartMealbox);
         }
 
@@ -75,16 +85,6 @@ public class CartService {
 
         cart.calculateTotalPrice();
         cartRepository.save(cart);
-    }
-
-    public Cart createMealboxAndAddCart(Cart cart, Mealbox mealbox,
-                                        List<MealboxDto.Product> mealboxDtoProducts){
-        mealboxService.createMealboxAndMealboxProduct(mealbox, mealboxDtoProducts);
-
-        cartMealboxService.createCartMealbox(cart, mealbox);
-
-        cart.calculateTotalPrice();
-        return cartRepository.save(cart);
     }
 
     public void refreshTotalPrice(Cart cart) {

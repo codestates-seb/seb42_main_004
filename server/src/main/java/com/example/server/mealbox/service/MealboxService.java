@@ -56,7 +56,8 @@ public class MealboxService {
 
     public void deleteMealbox(Long mealboxId){
         Mealbox mealbox = findMealboxById(mealboxId);
-        mealboxRepository.delete(mealbox);
+        mealbox.deleteMealbox();
+        mealboxRepository.save(mealbox);
     }
 
     public Mealbox updateMealbox(Mealbox mealboxPatcher, Long mealboxId,
@@ -74,7 +75,7 @@ public class MealboxService {
 
     public Page<Mealbox> findAdminMadeMealboxes(int page, int size, String sort, Sort.Direction dir){
         CustomPageRequest pageRequest = makeCustomPageRequest(page, size, sort, dir);
-        return mealboxRepository.findAllByMealboxInfoIsNot(pageRequest, Mealbox.MealboxInfo.CUSTOM_MEALBOX);
+        return mealboxRepository.findAllByForSaleIsTrueAndMealboxInfoIsNot(pageRequest, Mealbox.MealboxInfo.CUSTOM_MEALBOX);
     }
 
     public Page<Mealbox> getSearchedMealboxes(int page, int size, String search) {
@@ -83,7 +84,7 @@ public class MealboxService {
         }
 
         PageRequest pageRequest = PageRequest.of(page-1, size);
-        return mealboxRepository.findAllByMealboxInfoIsNotAndNameContains(pageRequest,
+        return mealboxRepository.findAllByForSaleIsTrueAndMealboxInfoIsNotAndNameContains(pageRequest,
                 Mealbox.MealboxInfo.CUSTOM_MEALBOX, search);
     }
 
@@ -94,7 +95,7 @@ public class MealboxService {
 
         PageRequest pageRequest = PageRequest.of(page-1, size);
         return mealboxRepository
-                .findAllDistinctByMealboxInfoIsNotAndNameContainingOrMealboxProductsProductNameContains
+                .findAllDistinctByForSaleIsTrueAndMealboxInfoIsNotAndNameContainingOrMealboxProductsProductNameContains
                         (pageRequest, Mealbox.MealboxInfo.CUSTOM_MEALBOX, search, search);
     }
 
@@ -105,11 +106,18 @@ public class MealboxService {
         mealboxRepository.save(mealbox);
     }
 
+    public void verifyDeletedMealbox(Mealbox mealbox){
+        if(mealbox.isForSale() == false){
+            throw new BusinessLogicException(MealboxException.MEALBOX_IS_NOT_FOR_SALE);
+        }
+    }
+
     /* ####### private 메서드 ####### */
 
     private void createMealboxProducts(Mealbox mealbox, List<MealboxDto.Product> mealboxDtoProducts){
         mealboxDtoProducts.forEach(mealboxDtoProduct -> {
             Product product = productService.findProductById(mealboxDtoProduct.getProductId());
+            productService.verifyDeletedProduct(product);
             MealboxProduct.makeMealboxProduct(mealboxDtoProduct.getQuantity(), product, mealbox);
         });
     }

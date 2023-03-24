@@ -26,6 +26,8 @@ public class Product {
     private int kcal;
     @Column(nullable = false)
     private int price;
+    @Column(nullable = false)
+    private boolean forSale = true;
 
     /* ####### JPA 매핑 ####### */
 
@@ -48,5 +50,9 @@ public class Product {
         this.weight = productPatcher.getWeight();
         this.kcal = productPatcher.getKcal();
         this.price = productPatcher.getPrice();
+    }
+
+    public void deleteProduct(){
+        this.forSale = false;
     }
 }

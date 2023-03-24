@@ -31,8 +31,12 @@ public class Mealbox {
     private int kcal;
     @Column(nullable = false)
     private int weight;
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private MealboxInfo mealboxInfo;
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean forSale = true;
 
     @Getter
     @AllArgsConstructor
@@ -96,5 +100,9 @@ public class Mealbox {
                 mealboxProduct.getProduct().getPrice()*mealboxProduct.getQuantity()).sum();
         this.kcal = mealboxProducts.stream().mapToInt(mealboxProduct->
                 mealboxProduct.getProduct().getKcal()*mealboxProduct.getQuantity()).sum();
+    }
+
+    public void deleteMealbox() {
+        this.forSale = false;
     }
 }
