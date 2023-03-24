@@ -11,6 +11,7 @@ import CartCounter from './CartCounter';
 import { useDispatch, useSelector } from 'react-redux';
 import { useCookies } from 'react-cookie';
 import { setAuth } from '../../reducers/authReducer';
+import { initializeCart } from '../../reducers/cartReducer';
 
 function Header() {
   const [isNav, setIsNav] = useState(false);
@@ -35,6 +36,7 @@ function Header() {
           roles: [],
         })
       );
+      dispatch(initializeCart());
       window.location.reload();
     } else {
       return;

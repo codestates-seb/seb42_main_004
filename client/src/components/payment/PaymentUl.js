@@ -5,19 +5,16 @@ import ContentInputDiv from '../myInfo/ContentInputDiv';
 import AddressDiv from './AddessDiv';
 import useGET from '../../util/useGET';
 import { useEffect } from 'react';
+import GetTemplate from '../commons/GetTemplate';
 
-function PaymentUl({ inputValue, setInputValue, num }) {
-  const [res, isPending, error] = useGET(`/orders/checkout/${num}`);
+function PaymentUl({ inputValue, setInputValue, orderId }) {
+  const [res, isPending, error] = useGET(`/orders/checkout/${orderId}`);
 
   useEffect(() => {
     if (res) {
       setInputValue(res);
     }
   }, [res]);
-
-  console.log(res);
-  console.log(isPending);
-  console.log(error);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -29,55 +26,57 @@ function PaymentUl({ inputValue, setInputValue, num }) {
   };
 
   return (
-    <ContainerUl>
-      <li>
-        <h2>주문자 정보</h2>
-        <OrderDiv>
-          <ContentDiv name="이름" value={inputValue.username} />
-          <ContentDiv name="연락처" value={inputValue.userPhoneNumber} />
-          <ContentDiv
-            name="주소"
-            value={`${inputValue.userSimpleAddress} ${inputValue.userDetailAddress}`}
-          />
-        </OrderDiv>
-      </li>
-      <li>
-        <TopDiv>
-          <h2>배송지 정보</h2>
-          <div>
-            <input type="checkbox" id="same"></input>
-            <label htmlFor="same">주문자와동일</label>
-          </div>
-        </TopDiv>
-        <DeliveryDiv>
-          <ContentInputDiv
-            id="addressee"
-            name="addressee"
-            labelName="받는분"
-            placeholder="받는분"
-            value={inputValue.addressee}
-            onChange={handleInput}
-          />
-          <ContentInputDiv
-            id="addresseePhoneNumber"
-            name="addresseePhoneNumber"
-            labelName="연락처"
-            placeholder="연락처"
-            value={inputValue.addresseePhoneNumber}
-            onChange={handleInput}
-          />
-          <AddressDiv
-            inputValue={inputValue}
-            onChange={handleInput}
-            setInputValue={setInputValue}
-          />
-          <div>
-            <input type="checkbox" id="save"></input>
-            <label htmlFor="save">기본 배송지로 저장</label>
-          </div>
-        </DeliveryDiv>
-      </li>
-    </ContainerUl>
+    <GetTemplate isPending={isPending} error={error} res={res}>
+      <ContainerUl>
+        <li>
+          <h2>주문자 정보</h2>
+          <OrderDiv>
+            <ContentDiv name="이름" value={inputValue.username} />
+            <ContentDiv name="연락처" value={inputValue.userPhoneNumber} />
+            <ContentDiv
+              name="주소"
+              value={`${inputValue.userSimpleAddress} ${inputValue.userDetailAddress}`}
+            />
+          </OrderDiv>
+        </li>
+        <li>
+          <TopDiv>
+            <h2>배송지 정보</h2>
+            <div>
+              <input type="checkbox" id="same"></input>
+              <label htmlFor="same">주문자와동일</label>
+            </div>
+          </TopDiv>
+          <DeliveryDiv>
+            <ContentInputDiv
+              id="addressee"
+              name="addressee"
+              labelName="받는분"
+              placeholder="받는분"
+              value={inputValue.addressee}
+              onChange={handleInput}
+            />
+            <ContentInputDiv
+              id="addresseePhoneNumber"
+              name="addresseePhoneNumber"
+              labelName="연락처"
+              placeholder="연락처"
+              value={inputValue.addresseePhoneNumber}
+              onChange={handleInput}
+            />
+            <AddressDiv
+              inputValue={inputValue}
+              onChange={handleInput}
+              setInputValue={setInputValue}
+            />
+            <div>
+              <input type="checkbox" id="save"></input>
+              <label htmlFor="save">기본 배송지로 저장</label>
+            </div>
+          </DeliveryDiv>
+        </li>
+      </ContainerUl>
+    </GetTemplate>
   );
 }
 
