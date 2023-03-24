@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MainButton from './MainButton';
 import InputLabelDiv from './InputLabelDiv';
@@ -8,14 +8,14 @@ import { initializeCustom } from '../../reducers/customReducer';
 import patchData from '../../util/patchData';
 import postData from '../../util/postData';
 
-function ModalDiv({ closeModal, mealBox, product }) {
+function ModalDiv({ closeModal, mealBox, product, reload }) {
   const [imgInput, setImgInput] = useState();
   let subject = mealBox ? mealBox : product;
   if (!subject?.name) subject = { name: '', weight: '', kcal: '', price: '' };
   const [imgInputBuffer, setImgInputBuffer] = useState(subject?.imagePath);
   const [subjectInfo, setSubjectInfo] = useState({ ...subject });
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const subjectInputHandler = (key) => (e) => {
     let value = e.target.value;
@@ -41,7 +41,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
     }
   }, [imgInput]);
 
-  const postImage = async (uri) => {
+  const postImage = async (uri, id) => {
     const formData = new FormData();
     formData.append('file', imgInput);
 
@@ -49,7 +49,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
       if (res?.status !== 201) {
         alert(
           `이미지 ${
-            uri.includes('s/') ? '수정' : '등록'
+            id ? '수정' : '등록'
           }에 실패했습니다\n관리자에게 문의해주세요.`
         );
       }
@@ -73,7 +73,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
         isMealBox && dispatch(initializeCustom());
         setSubjectInfo({ ...subject });
         alert(`${data.name}이(가) ${id ? '수정' : '추가'}되었습니다.`);
-        // navigate(isMealBox ? '/mealboxes' : '/products');
+        isMealBox ? navigate('/mealboxes') : closeModal(), reload();
       }
     };
 
@@ -81,9 +81,8 @@ function ModalDiv({ closeModal, mealBox, product }) {
       if (res?.status !== 201 && res?.status !== 200) {
         alert('등록에 실패했습니다\n관리자에게 문의해주세요.');
       } else if (imgInputBuffer && imgInputBuffer !== subject.imagePath) {
-        const newId = isMealBox ? res.mealboxId : res.productId;
-        uri += id ? '' : `/${newId}`;
-        return postImage(uri).then((res) => completeRegister(res));
+        uri += id ? '' : `/${res.data}`;
+        return postImage(uri, id).then((res) => completeRegister(res));
       } else {
         completeRegister(res);
       }
@@ -149,7 +148,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
             label="열량"
             id="kcal"
             value={subjectInfo.kcal?.toLocaleString('ko-KR')}
-            onChange={!mealBox && subjectInputHandler('kcal')}
+            onChange={!mealBox ? subjectInputHandler('kcal') : null}
             unit="kcal/10g"
             maxLength={5}
             disabled={mealBox && 1}
@@ -158,7 +157,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
             label="용량"
             id="weight"
             value={subjectInfo.weight?.toLocaleString('ko-KR')}
-            onChange={!mealBox && subjectInputHandler('weight')}
+            onChange={!mealBox ? subjectInputHandler('weight') : null}
             unit="g"
             maxLength={5}
             disabled={mealBox && 1}
@@ -167,7 +166,7 @@ function ModalDiv({ closeModal, mealBox, product }) {
             label="금액"
             id="price"
             value={subjectInfo.price?.toLocaleString('ko-KR')}
-            onChange={!mealBox && subjectInputHandler('price')}
+            onChange={!mealBox ? subjectInputHandler('price') : null}
             unit="원"
             maxLength={6}
             disabled={mealBox && 1}

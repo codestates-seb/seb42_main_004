@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
+import { TextButton } from '../commons/ModalDiv';
 import blankbucket from '../../assets/blankbucket.png';
 import postData from '../../util/postData';
 import deleteData from '../../util/deleteData';
 import goToCustom from '../../util/goToCustom';
 import { addCartItem } from '../../reducers/cartReducer';
-import { TextButton } from '../commons/ModalDiv';
 
-function MealBoxCardDiv({ mealBox, custom }) {
+function MealBoxCardDiv({ mealBox, reload }) {
   const [notification, setNotification] = useState(false);
   const { isLogin, admin } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
@@ -32,9 +32,7 @@ function MealBoxCardDiv({ mealBox, custom }) {
     ) {
       deleteData(`/admin/mealboxes/${mealBox.mealboxId}`)
         .then(() => alert(`${mealBox.name}이 삭제되었습니다.`))
-        .then(() => {
-          window.location.reload();
-        });
+        .then(() => reload());
       console.log('삭제 완료');
     }
   };
@@ -48,7 +46,7 @@ function MealBoxCardDiv({ mealBox, custom }) {
             <span>{mealBox.kcal.toLocaleString('ko-KR')}kcal</span>
           </p>
         )}
-        <MealBoxImg alt="" src={custom ? blankbucket : mealBox.imagePath} />
+        <MealBoxImg alt="" src={!mealBox ? blankbucket : mealBox.imagePath} />
         {mealBox && (
           <MealBoxDesUl>
             {mealBox.products.map((product) => (
@@ -61,15 +59,17 @@ function MealBoxCardDiv({ mealBox, custom }) {
           </MealBoxDesUl>
         )}
       </MealBoxImgDiv>
-      <MealBoxH3 custom={custom && 1}>
-        {custom ? `${admin ? '새로운' : '나만의'} 밀박스 만들기` : mealBox.name}
+      <MealBoxH3 custom={!mealBox && 1}>
+        {mealBox
+          ? mealBox.name
+          : `${admin ? '새로운' : '나만의'} 밀박스 만들기`}
       </MealBoxH3>
-      <MealBoxCardButtonDiv custom={custom && 1}>
+      <MealBoxCardButtonDiv custom={!mealBox && 1}>
         <MainButton
           handler={goToCustom(mealBox, admin)}
-          name={!admin || custom ? '커스텀 하기' : '밀박스 수정'}
+          name={!admin || mealBox ? '밀박스 수정' : '커스텀 하기'}
         />
-        {!custom && (
+        {mealBox && (
           <>
             <MainButton
               handler={admin ? deleteMealBox : addToCart}

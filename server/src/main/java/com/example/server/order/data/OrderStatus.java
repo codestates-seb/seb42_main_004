@@ -10,7 +10,8 @@ public enum OrderStatus {
   DELIVERY_IN_PROGRESS(3, "배송중"),
   DELIVERY_COMPLETED(4, "배송완료"),
   REFUND_APPLIED(5, "환불대기중"),
-  REFUNDED(6, "환불완료");
+  REFUNDED(6, "환불완료"),
+  PAYMENT_AMOUNT_WRONG(7, "결제오류");
 
   @Getter
   private int index;
