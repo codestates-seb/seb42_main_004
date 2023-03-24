@@ -54,7 +54,9 @@ const UploadDiv = styled.span`
 
   > label {
     padding: 0 0.5rem;
-    background-color: var(--gray);
+    color: var(--white);
+    border: none;
+    background-color: var(--signature);
 
     :hover {
       cursor: pointer;
