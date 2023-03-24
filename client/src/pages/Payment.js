@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import CartAside from '../components/commons/CartAside';
 import PaymentUl from '../components/payment/PaymentUl';
 import patchData from '../util/patchData';
 import postData from '../util/postData';
+import { deleteCartItem } from '../reducers/cartReducer';
 
 function Payment() {
-  const { num } = useParams();
+  const { orderId } = useParams();
+  const location = useLocation();
+  const dispatch = useDispatch();
   const [inputValue, setInputValue] = useState({
     addressee: '',
     addresseePhoneNumber: '',
@@ -23,6 +27,9 @@ function Payment() {
     userZipCode: '',
     username: '',
   });
+  const checkedCartMealBoxId = location.state
+    ? location.state.checkedCartMealBoxId
+    : '';
 
   useEffect(() => {
     const jquery = document.createElement('script');
@@ -39,7 +46,7 @@ function Payment() {
 
   const handleClick = () => {
     onClickPayment();
-    patchData(`/orders/delivery/${num}`, {
+    patchData(`/orders/delivery/${orderId}`, {
       addressee: inputValue.addressee,
       zipCode: inputValue.deliveryZipCode,
       simpleAddress: inputValue.deliverySimpleAddress,
@@ -73,6 +80,7 @@ function Payment() {
       }).then((data) => {
         if (data.status === 200) {
           alert('결제가 완료되었습니다.');
+          dispatch(deleteCartItem(checkedCartMealBoxId));
         } else if (data.status === 409) {
           alert('관리자에게 문의하세요.');
           patchData(`/payments/error/${inputValue.orderNumber}`, '');
@@ -90,7 +98,7 @@ function Payment() {
       <PaymentUl
         inputValue={inputValue}
         setInputValue={setInputValue}
-        num={num}
+        orderId={orderId}
       />
       <CartAside totalPrice={inputValue.totalPrice} buttonClick={handleClick} />
     </ContainerDiv>

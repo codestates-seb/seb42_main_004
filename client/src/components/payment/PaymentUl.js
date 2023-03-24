@@ -7,8 +7,8 @@ import useGET from '../../util/useGET';
 import { useEffect } from 'react';
 import GetTemplate from '../commons/GetTemplate';
 
-function PaymentUl({ inputValue, setInputValue, num }) {
-  const [res, isPending, error] = useGET(`/orders/checkout/${num}`);
+function PaymentUl({ inputValue, setInputValue, orderId }) {
+  const [res, isPending, error] = useGET(`/orders/checkout/${orderId}`);
 
   useEffect(() => {
     if (res) {
