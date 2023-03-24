@@ -4,7 +4,7 @@ import checkFooter from '../util/checkFooter';
 
 function Error() {
   return (
-    <ErrorBaseDiv className="margininside" fullh={checkFooter ? 1 : null}>
+    <ErrorBaseDiv className="margininside" fullh={checkFooter() ? 1 : null}>
       <ErrorWrapDiv>
         <h1 className="errorstyle">
           404
@@ -21,7 +21,7 @@ function Error() {
 
 export default Error;
 
-const ErrorBaseDiv = styled.div`
+export const ErrorBaseDiv = styled.div`
   margin: -1rem 0 -4rem;
   height: calc(100vh - 330px);
 
@@ -33,6 +33,7 @@ const ErrorBaseDiv = styled.div`
     height: calc(
       ${(props) => (props.fullh ? '100vh - 50px' : '100vh - 230px')}
     );
+    margin-bottom: ${(props) => props.fullh && '-76px'};
   }
 `;
 const ErrorWrapDiv = styled.div`
