@@ -10,20 +10,7 @@ import patchData from '../../util/patchData';
 import profile from '../../assets/profile.png';
 
 function EditMyInfoUl() {
-  const [inputValue, setInputValue] = useState({
-    addressee: '',
-    addresseePhoneNumber: '',
-    deliveryDetailAddress: '',
-    deliverySimpleAddress: '',
-    deliveryZipCode: '',
-    email: '',
-    detailAddress: '',
-    phoneNumber: '',
-    simpleAddress: '',
-    zipCode: '',
-    name: '',
-    imagePath: '',
-  });
+  const [inputValue, setInputValue] = useState({});
   const [res, isPending, error] = useGET('/users');
   const [same, setSame] = useState(false);
   const navigate = useNavigate();
