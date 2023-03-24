@@ -25,7 +25,7 @@ const useGET = (url) => {
     }
   }, [url]);
 
-  return [res, isPending, error];
+  return [res, isPending, error, getData];
 };
 
 export default useGET;

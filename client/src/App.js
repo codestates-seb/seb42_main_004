@@ -80,7 +80,7 @@ function App() {
       <BodyMargin className="marginbase" height={checkFooter() ? 1 : null}>
         <Routes>
           <Route path="/" element={<SurveyHome />} />
-          <Route path="/mealboxes*" element={<AllBoxes />} />
+          <Route path="/mealboxes/*" element={<AllBoxes />} />
           <Route path="/survey/question/:page" element={<Survey />} />
           <Route path="/survey/result" element={<SurveyResult />} />
           <Route path="/custom" element={<Custom />} />
@@ -89,7 +89,7 @@ function App() {
             path="/myinfo/orderhistory"
             element={accessToken ? <OrderHistory /> : <Login />}
           />
-          <Route path="/products*" element={<Products />} />
+          <Route path="/products/*" element={<Products />} />
           <Route
             path="/login"
             element={accessToken ? <Navigate to="/" /> : <Login />}
