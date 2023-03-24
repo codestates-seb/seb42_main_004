@@ -34,6 +34,7 @@ export const AsideWrapper = styled.aside`
     width: 100%;
     margin: 0 -16px;
     min-width: 360px;
+    min-height: 80px;
   }
 `;
 export const AsideSignatureButton = styled.button`

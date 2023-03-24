@@ -21,7 +21,7 @@ function Cart() {
     let checkedItem = document.querySelectorAll(
       'input[type="checkbox"]:checked'
     );
-
+    console.log(checkedItem);
     let checkedCartMealBoxId = Array.from(checkedItem).map((el) =>
       String(el.id)
     );
@@ -66,13 +66,18 @@ function Cart() {
   };
 
   useEffect(() => {
+    console.log(isLogin);
     if (isLogin) {
+      console.log(isLogin);
       getData('/users/cart').then((data) => {
         dispatch(setCart(data.data));
       });
     }
-    calcRenderPrice();
   }, []);
+
+  useEffect(() => {
+    calcRenderPrice();
+  }, [mealboxes]);
 
   return (
     <CartPageWrapper className="margininside">
