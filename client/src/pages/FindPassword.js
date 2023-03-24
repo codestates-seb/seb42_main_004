@@ -1,11 +1,15 @@
 import { useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import MyInfoButton from '../components/myInfo/MyInfoButton';
 import InputDiv from '../components/signup/InputDiv';
-import postData from '../util/postData';
+import patchData from '../util/postData';
 import useValid from '../util/useValid';
 
 function FindPassword() {
+  const location = useLocation();
+  const email = new URLSearchParams(location.search).get('email');
+  const mailKey = new URLSearchParams(location.search).get('mailKey');
   const [inputValue, setInputValue] = useState({
     name: '',
     email: '',
@@ -13,6 +17,7 @@ function FindPassword() {
     passwordConfirm: '',
   });
   const inputRef = useRef([]);
+  const navigate = useNavigate();
   const [validText, isValid, setValidText] = useValid(inputValue);
   const { password, passwordConfirm } = inputValue;
 
@@ -33,11 +38,14 @@ function FindPassword() {
     }
     setValidText({ ...validText, ...obj });
     if (isValid.password && isValid.passwordConfirm) {
-      postData('/users/recovery', {
-        email: 'qwe@naver.com',
-        mailKey: 'QWERQWERQW',
+      patchData('/users/recovery', {
+        email,
+        mailKey,
         afterPassword: password,
-      }).then((res) => console.log(res.data));
+      }).then((res) => {
+        console.log(res.data);
+        navigate('/login');
+      });
     } else if (!isValid.password) {
       inputRef.current[0].focus();
     } else {
