@@ -13,6 +13,7 @@ const cartSlice = createSlice({
     addCartItem: (state, action) => {
       const { cart } = state;
       const mealBox = action.payload;
+      console.log(mealBox);
       cart.mealboxes.push({ ...mealBox });
       cart.totalPrice += mealBox.price;
     },

@@ -11,29 +11,36 @@ function OrderHistory() {
   let { admin } = useSelector((state) => state.authReducer);
   console.log(admin);
   let [page, setPage] = useState(1);
+  let [totalPages, setTotalPages] = useState(1);
   let [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   let [data, setData] = useState([]);
-
+  console.log(totalPages, page);
   let render = () => {
-    getData(admin ? `/admin/orders?page=${page}&date=${date}` : `/orders/users`)
-      .then((res) => {
-        let filterByDateObj = res.data.reduce((acc, cur) => {
-          let orderDate = cur.createdAt.slice(0, 10);
-          acc[orderDate] ? acc[orderDate].push(cur) : (acc[orderDate] = [cur]);
-          return acc;
-        }, {});
+    admin &&
+      getData(
+        admin ? `/admin/orders?page=${page}&date=${date}` : `/orders/users`
+      )
+        .then((res) => {
+          setTotalPages(res?.pageInfo?.totalPages);
+          let filterByDateObj = res?.data?.reduce((acc, cur) => {
+            let orderDate = cur.createdAt.slice(0, 10);
+            acc[orderDate]
+              ? acc[orderDate].push(cur)
+              : (acc[orderDate] = [cur]);
+            return acc;
+          }, {});
 
-        let filterByDateArr = [];
-        for (let date in filterByDateObj) {
-          filterByDateArr.push({ date, orders: filterByDateObj[date] });
-        }
+          let filterByDateArr = [];
+          for (let date in filterByDateObj) {
+            filterByDateArr.push({ date, orders: filterByDateObj[date] });
+          }
 
-        return filterByDateArr;
-      })
-      .then((data) => {
-        console.log(data);
-        setData(data);
-      });
+          return filterByDateArr;
+        })
+        .then((data) => {
+          console.log(data);
+          setData(data);
+        });
   };
 
   // 관리자
@@ -47,7 +54,7 @@ function OrderHistory() {
 
   useEffect(() => {
     render();
-  }, [page]);
+  }, [page, admin, totalPages]);
 
   return (
     <OrderHistoryPageWrapper className="margininside">
@@ -63,7 +70,9 @@ function OrderHistory() {
       {data?.map((el) => (
         <OrderHistoryByDateDiv key={el.date} ordersPerDate={el} />
       ))}
-      {admin && <PaginationUl page={page} totalpage={22} setPage={setPage} />}
+      {admin && (
+        <PaginationUl page={page} totalpage={totalPages} setPage={setPage} />
+      )}
     </OrderHistoryPageWrapper>
   );
 }

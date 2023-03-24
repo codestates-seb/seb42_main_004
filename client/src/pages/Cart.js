@@ -7,8 +7,9 @@ import getData from '../util/getData';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCart } from '../reducers/cartReducer';
 import postData from '../util/postData';
-
+import { useNavigate } from 'react-router-dom';
 function Cart() {
+  let navigate = useNavigate();
   let dispatch = useDispatch();
   let { isLogin } = useSelector((state) => state.authReducer);
   let { totalPrice, mealboxes } = useSelector(
@@ -55,7 +56,9 @@ function Cart() {
         return { cartMealboxId, mealboxId, quantity };
       });
     console.log(postReqData);
-    postData('/orders', { orderMealboxes: postReqData }, false);
+    postData('/orders', { orderMealboxes: postReqData }, false).then((res) => {
+      navigate(res.data);
+    });
   };
 
   useEffect(() => {
