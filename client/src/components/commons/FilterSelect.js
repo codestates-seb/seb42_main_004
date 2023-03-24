@@ -3,8 +3,8 @@ import styled from 'styled-components';
 function FilterSelect({ sortProducts }) {
   return (
     <Select type="select" onChange={(e) => sortProducts(e.target.value)}>
-      <option value="id/ASC">최신순</option>
-      <option value="id/DESC">오래된 순</option>
+      <option value="id/DESC">최신순</option>
+      <option value="id/ASC">오래된 순</option>
       <option value="name/ASC">가나다순</option>
       <option value="name/DESC">가나다 역순</option>
       <option value="kcal/ASC">칼로리 낮은 순</option>
