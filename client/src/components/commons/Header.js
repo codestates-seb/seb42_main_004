@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
 import CartCounter from './CartCounter';
 import MainButton from './MainButton';
@@ -15,7 +14,6 @@ import logo from '../../assets/logo_black.png';
 function Header() {
   const [isNav, setIsNav] = useState(false);
   const { isLogin, user } = useSelector((state) => state.authReducer);
-  const [, , removeCookie] = useCookies();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -25,7 +23,7 @@ function Header() {
 
   const handleLogout = () => {
     if (confirm('정말 로그아웃하시겠습니까?')) {
-      removeCookie('accessToken', { path: '/' });
+      localStorage.removeItem('accessToken');
       dispatch(
         setAuth({
           isLogin: false,
