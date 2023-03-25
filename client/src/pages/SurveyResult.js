@@ -6,6 +6,7 @@ import MealBoxCardLi from '../components/allboxes/MealBoxCardLi';
 import { TextButton } from '../components/commons/ModalDiv';
 import { MealBoxesWrapDiv, MealBoxesUl } from './AllBoxes';
 import { deleteSurveyRcmd } from '../reducers/surveyRcmdReducer';
+import HelmetTitle from '../components/commons/HelmetTitle';
 
 function SurveyResult() {
   const { surveyRcmd } = useSelector((state) => state.surveyRcmdReducer);
@@ -27,6 +28,7 @@ function SurveyResult() {
     <>
       {surveyRcmd.breakfast ? (
         <MealBoxesWrapDiv className="margininside">
+          <HelmetTitle title="추천 결과 페이지" />
           <h1>추천 결과 페이지(｡•̀ᴗ-)✧</h1>
           <MealBoxesUl>
             <MealBoxCardLi title="아침" mealBox={surveyRcmd.breakfast} />
