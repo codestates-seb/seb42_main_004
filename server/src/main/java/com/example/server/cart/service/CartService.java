@@ -56,6 +56,7 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
+    //주문자가 카트에서 밀박스를 직접 삭제
     public void removeMealboxFromCart(Cart cart, Long cartMealboxId){
         verifyExistsCartMealboxIsInCart(cart, cartMealboxId);
 

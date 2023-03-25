@@ -46,7 +46,8 @@ public class CartMealboxService {
     CartMealbox cartMealbox = CartMealbox.makeCartMealbox(cart, mealbox);
   }
 
-  public void deleteCartMealbox(CartMealbox cartMealbox){
+  public void deleteCartMealbox(Long cartMealboxId){
+    CartMealbox cartMealbox = findCartMealbox(cartMealboxId);
     cartMealboxRepository.delete(cartMealbox);
   }
 
