@@ -42,8 +42,7 @@ function FindPassword() {
         email,
         mailKey,
         afterPassword: password,
-      }).then((res) => {
-        console.log(res.data);
+      }).then(() => {
         navigate('/login');
       });
     } else if (!isValid.password) {

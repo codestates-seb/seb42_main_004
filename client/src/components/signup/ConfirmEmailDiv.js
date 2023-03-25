@@ -1,8 +1,14 @@
 import styled from 'styled-components';
 import { HiOutlineMailOpen } from 'react-icons/hi';
 import { MdOutlineMarkEmailRead } from 'react-icons/md';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
-function ConfirmEmailDiv({ pathName, email }) {
+function ConfirmEmailDiv({ pathName }) {
+  const { email } = useSelector((state) => state.authReducer);
+  const location = useLocation();
+  const sendEmail = location.state?.sendEmail || '';
+
   return (
     <ContentDiv>
       <div>
@@ -14,7 +20,7 @@ function ConfirmEmailDiv({ pathName, email }) {
         ) : (
           <>
             <HiOutlineMailOpen size={50} color={'var(--signature)'} />
-            <div>{email}로 이메일을 발송했습니다.</div>{' '}
+            <div>{sendEmail ? sendEmail : email}로 이메일을 발송했습니다.</div>
             <div>{`이메일을 확인해주세요:)`}</div>
           </>
         )}
