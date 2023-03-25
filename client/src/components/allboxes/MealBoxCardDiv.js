@@ -5,8 +5,8 @@ import MainButton from '../commons/MainButton';
 import { TextButton } from '../commons/ModalDiv';
 import blankbucket from '../../assets/blankbucket.png';
 import postData from '../../util/postData';
-import deleteData from '../../util/deleteData';
 import goToCustom from '../../util/goToCustom';
+import deleteSubject from '../../util/deleteSubject';
 import { addCartItem } from '../../reducers/cartReducer';
 
 function MealBoxCardDiv({ mealBox, reload }) {
@@ -22,19 +22,6 @@ function MealBoxCardDiv({ mealBox, reload }) {
     }
     setNotification(true);
     setTimeout(() => setNotification(false), 2000);
-  };
-
-  const deleteMealBox = () => {
-    if (
-      window.confirm(
-        `${mealBox.name}을 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
-      )
-    ) {
-      deleteData(`/admin/mealboxes/${mealBox.mealboxId}`)
-        .then(() => alert(`${mealBox.name}이 삭제되었습니다.`))
-        .then(() => reload());
-      console.log('삭제 완료');
-    }
   };
 
   return (
@@ -72,7 +59,17 @@ function MealBoxCardDiv({ mealBox, reload }) {
         {mealBox && (
           <>
             <MainButton
-              handler={admin ? deleteMealBox : addToCart}
+              handler={
+                admin
+                  ? () =>
+                      deleteSubject(
+                        'mealboxes',
+                        mealBox.name,
+                        mealBox.id,
+                        reload
+                      )
+                  : addToCart
+              }
               name={admin ? '밀박스 삭제' : '장바구니 추가'}
             />
             <MainButton name={mealBox.price.toLocaleString('ko-KR') + '원'} />

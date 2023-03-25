@@ -2,27 +2,10 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import ModalDiv, { TextButton } from '../commons/ModalDiv';
 import blankbucket from '../../assets/blankbucket.png';
-import deleteData from '../../util/deleteData';
+import deleteSubject from '../../util/deleteSubject';
 
 function ProductLi({ product, admin, reload }) {
   const [openModal, setOpenModal] = useState(false);
-
-  const deleteProduct = () => {
-    if (
-      window.confirm(
-        `${product.name}을(를) 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
-      )
-    ) {
-      deleteData(`/admin/products/${product.productId}`).then((res) => {
-        if (res.status === 200) {
-          alert(`${product.name}이(가) 삭제되었습니다.`);
-          reload();
-        } else {
-          alert('삭제 실패.\n관리자에게 문의해주세요.');
-        }
-      });
-    }
-  };
 
   return (
     <ContainerLi onClick={!product ? () => setOpenModal(true) : null}>
@@ -51,7 +34,13 @@ function ProductLi({ product, admin, reload }) {
         {admin && product && (
           <ButtonDiv>
             <TextButton onClick={() => setOpenModal(true)}>수정</TextButton>
-            <TextButton onClick={deleteProduct}>삭제</TextButton>
+            <TextButton
+              onClick={() =>
+                deleteSubject('products', product.name, product.id, reload)
+              }
+            >
+              삭제
+            </TextButton>
           </ButtonDiv>
         )}
       </CardDiv>
