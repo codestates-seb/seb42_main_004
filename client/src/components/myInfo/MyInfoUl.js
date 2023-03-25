@@ -5,19 +5,29 @@ import ContentDiv from './ContentDiv';
 import PasswordInputDiv from './PasswordInputDiv';
 import MyInfoButton from './MyInfoButton';
 import GetTemplate from '../commons/GetTemplate';
-import profile from '../../assets/profile.png';
 import useGET from '../../util/useGET';
 import patchData from '../../util/patchData';
 import postData from '../../util/postData';
 import EmainDiv from './EmailDiv';
+import DeliveryDiv from './DeliveryDiv';
+import deleteData from '../../util/deleteData';
+import { useDispatch } from 'react-redux';
+import { setAuth } from '../../reducers/authReducer';
+import { initializeCart } from '../../reducers/cartReducer';
+import ProfileImg from './ProfileImg';
 
 function MyInfoUl({ pathName }) {
   const [inputValue, setInputValue] = useState({});
-  const [passwordInputValue, setPasswordInputValue] = useState({});
+  const [passwordInputValue, setPasswordInputValue] = useState({
+    password: '',
+    newPassword: '',
+    confirmNewPassword: '',
+  });
   const [imgInput, setImgInput] = useState();
   const [imgInputBuffer, setImgInputBuffer] = useState(inputValue?.imagePath);
   const [res, isPending, error] = useGET('/users');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -77,7 +87,6 @@ function MyInfoUl({ pathName }) {
         status: res.status,
       });
       setImgInputBuffer(res.imagePath);
-      console.log(res);
     }
   }, [res]);
 
@@ -85,29 +94,38 @@ function MyInfoUl({ pathName }) {
     let reader = new FileReader();
     if (imgInput) {
       reader.readAsDataURL(imgInput);
-      reader.onloadend = () => {
-        setImgInputBuffer(reader.result);
-      };
-      const formData = new FormData();
-      formData.append('file', imgInput);
-      postData('/users/image', formData).then((data) => {
-        if (data.status === 201) {
-          alert('사진이 변경되었습니다.');
-        } else {
-          alert('관리자에게 문의하세요.');
-        }
-      });
+      if (confirm('사진을 변경하시겠습니까?')) {
+        reader.onloadend = () => {
+          setImgInputBuffer(reader.result);
+        };
+        const formData = new FormData();
+        formData.append('file', imgInput);
+        postData('/users/image', formData).then((data) => {
+          if (data.status === 201) {
+            alert('사진이 변경되었습니다.');
+          } else {
+            alert('관리자에게 문의하세요.');
+          }
+        });
+      } else {
+        return;
+      }
     }
   }, [imgInput]);
 
   return (
-    <GetTemplate isPending={isPending} error={error} res={res}>
+    <GetTemplate
+      isPending={isPending}
+      error={error}
+      res={res}
+      title={pathName ? '비밀번호 변경하기' : '프로필 보기'}
+    >
       <ContainerUl>
         <li>
           <h2>내 정보</h2>
           <OrderDiv>
             <ImgDiv>
-              <Img img={imgInputBuffer}></Img>
+              <ProfileImg img={imgInputBuffer} />
             </ImgDiv>
             <InfoDiv>
               <ContentDiv
@@ -130,15 +148,7 @@ function MyInfoUl({ pathName }) {
           </OrderDiv>
         </li>
         <li>
-          <h2>배송지 정보</h2>
-          <DeliveryDiv>
-            <ContentDiv name="받는분" value={inputValue.addressee} />
-            <ContentDiv name="연락처" value={inputValue.addresseePhoneNumber} />
-            <ContentDiv
-              name="주소"
-              value={`${inputValue.deliverySimpleAddress} ${inputValue.deliveryDetailAddress}`}
-            />
-          </DeliveryDiv>
+          <DeliveryDiv inputValue={inputValue} />
         </li>
         {pathName ? (
           <li>
@@ -179,7 +189,31 @@ function MyInfoUl({ pathName }) {
               <button onClick={() => navigate('/myinfo/edit/password')}>
                 비밀번호 수정
               </button>
-              <button>회원 탈퇴</button>
+              <button
+                onClick={() => {
+                  if (confirm('정말 탈퇴하시겠습니까?')) {
+                    deleteData('/users').then(() => {
+                      alert('탈퇴되었습니다.');
+                      localStorage.removeItem('accessToken');
+                      dispatch(
+                        setAuth({
+                          isLogin: false,
+                          accessToken: '',
+                          tokenExpirationDate: '',
+                          user: {},
+                          roles: [],
+                        })
+                      );
+                      dispatch(initializeCart());
+                      window.location.reload();
+                    });
+                  } else {
+                    return;
+                  }
+                }}
+              >
+                회원 탈퇴
+              </button>
             </ButtonDiv>
           </li>
         )}
@@ -227,17 +261,6 @@ const ImgDiv = styled.div`
     height: 300px;
   }
 `;
-const DeliveryDiv = styled.div`
-  height: 150px;
-  margin-top: 2rem;
-  padding-bottom: 50px;
-  margin-bottom: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  word-break: break-all;
-  border-bottom: 1px solid var(--black);
-`;
 const PasswordDiv = styled.div`
   padding-bottom: 50px;
   margin-bottom: 2rem;
@@ -268,16 +291,4 @@ const PasswordButtonDiv = styled.div`
   flex-direction: column;
   align-items: flex-end;
   margin-top: 2rem;
-`;
-const Img = styled.img`
-  background-color: var(--white);
-  background-image: url(${(props) => (props.img ? props.img : profile)});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-
-  @media (max-width: 480px) {
-    width: 35vw;
-    height: 35vw;
-  }
 `;

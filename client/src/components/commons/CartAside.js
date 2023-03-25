@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-function CartAside({ totalPrice = 0, buttonClick }) {
+function CartAside({ totalPrice = 0, buttonClick, pathName }) {
   return (
     <AsideWrapper>
       <InnerDiv>
@@ -10,7 +10,7 @@ function CartAside({ totalPrice = 0, buttonClick }) {
         </InnerPriceDiv>
       </InnerDiv>
       <AsideSignatureButton onClick={buttonClick}>
-        구매하기
+        {pathName ? '결제하기' : '구매하기'}
       </AsideSignatureButton>
     </AsideWrapper>
   );

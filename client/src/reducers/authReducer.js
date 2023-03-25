@@ -5,15 +5,14 @@ const authSlice = createSlice({
   initialState: {
     isLogin: false,
     accessToken: '',
-    tokenExpirationDate: '',
     user: {},
     admin: false,
+    email: '',
   },
   reducers: {
     setAuth: (state, action) => {
       state.isLogin = action.payload.isLogin;
       state.accessToken = action.payload.accessToken;
-      state.tokenExpirationDate = action.payload.tokenExpirationDate;
       state.user = action.payload.user;
       state.admin = action.payload.admin;
     },
@@ -23,14 +22,14 @@ const authSlice = createSlice({
     setAccessToken: (state, action) => {
       state.accessToken = action.payload;
     },
-    setTokenExpirationDate: (state, action) => {
-      state.tokenExpirationDate = action.payload;
-    },
     setUser: (state, action) => {
       state.user = action.payload;
     },
     setAdmin: (state, action) => {
       state.admin = action.payload;
+    },
+    setEmail: (state, action) => {
+      state.email = action.payload;
     },
   },
 });
@@ -39,8 +38,8 @@ export const {
   setAuth,
   setIsLogin,
   setAccessToken,
-  setTokenExpirationDate,
   setUser,
   setAdmin,
+  setEmail,
 } = authSlice.actions;
 export default authSlice.reducer;

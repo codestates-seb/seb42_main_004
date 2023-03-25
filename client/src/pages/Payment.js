@@ -105,12 +105,13 @@ function Payment() {
   };
 
   return (
-    <GetTemplate isPending={isPending} error={error} res={res}>
+    <GetTemplate isPending={isPending} error={error} res={res} title="결제하기">
       <ContainerDiv className="margininside">
         <PaymentUl inputValue={inputValue} setInputValue={setInputValue} />
         <CartAside
           totalPrice={inputValue.totalPrice}
           buttonClick={handleClick}
+          pathName="payment"
         />
       </ContainerDiv>
     </GetTemplate>
