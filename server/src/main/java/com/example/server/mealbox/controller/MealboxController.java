@@ -57,7 +57,7 @@ public class MealboxController {
     @DeleteMapping("/admin/mealboxes/{mealboxId}")
     public ResponseEntity deleteAdminMealbox(@PathVariable("mealboxId") @Positive Long mealboxId) {
         log.info("------deleteAdminMealbox------");
-        mealboxService.deleteMealbox(mealboxId);
+        mealboxService.stopSellingMealbox(mealboxId);
         return new ResponseEntity(HttpStatus.OK);
     }
 

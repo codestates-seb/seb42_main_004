@@ -41,10 +41,10 @@ public class CartService {
             Mealbox mealbox = mealboxService.findMealboxById(mealboxId);
 
             cartMealboxService.createCartMealbox(cart, mealbox);
-
-            cart.calculateTotalPrice();
-            cartRepository.save(cart);
         }
+
+        cart.calculateTotalPrice();
+        cartRepository.save(cart);
     }
 
     public Cart createMealboxAndAddCart(Cart cart, Mealbox mealbox,
@@ -65,12 +65,10 @@ public class CartService {
 
         //커스텀이면 cartMealbox, mealbox, mealboxProduct까지 다 삭제
         if(mealbox.getMealboxInfo() == Mealbox.MealboxInfo.CUSTOM_MEALBOX){
-            mealboxService.deleteMealbox(mealbox.getId());
-            mealbox.getCartMealboxes().forEach(eachCartMealbox ->
-                    cart.getCartMealboxes().remove(eachCartMealbox));
+            mealboxService.deleteMealbox(mealbox);
+            cart.getCartMealboxes().remove(cartMealbox);
         } //커스텀이 아니면 cartMealbox만 삭제
         else if (mealbox.getMealboxInfo() != Mealbox.MealboxInfo.CUSTOM_MEALBOX) {
-//            cartMealboxService.deleteCartMealbox(cartMealbox);
             cart.getCartMealboxes().remove(cartMealbox);
         }
 

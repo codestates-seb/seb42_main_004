@@ -55,7 +55,7 @@ public class Mealbox {
     @Builder.Default
     private List<MealboxProduct> mealboxProducts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "mealbox", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<OrdersMealbox> ordersMealboxes = new ArrayList<>();
 

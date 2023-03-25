@@ -41,7 +41,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public void deleteProduct(Long productId){
+    public void stopSellingProduct(Long productId){
         Product product = findProductById(productId);
         product.deleteProduct();
         productRepository.save(product);

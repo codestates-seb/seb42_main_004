@@ -44,7 +44,6 @@ public class CartMealboxService {
   public void createCartMealbox(Cart cart, Mealbox mealbox){
     mealboxService.verifyDeletedMealbox(mealbox);
     CartMealbox cartMealbox = CartMealbox.makeCartMealbox(cart, mealbox);
-    cartMealboxRepository.save(cartMealbox);
   }
 
   public void deleteCartMealbox(CartMealbox cartMealbox){

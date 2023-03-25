@@ -54,7 +54,7 @@ public class MealboxService {
         return findMealbox.orElseThrow(()->new BusinessLogicException(MealboxException.MEALBOX_NOT_FOUND));
     }
 
-    public void deleteMealbox(Long mealboxId){
+    public void stopSellingMealbox(Long mealboxId){
         Mealbox mealbox = findMealboxById(mealboxId);
         mealbox.deleteMealbox();
         mealboxRepository.save(mealbox);
@@ -110,6 +110,10 @@ public class MealboxService {
         if(mealbox.isForSale() == false){
             throw new BusinessLogicException(MealboxException.MEALBOX_IS_NOT_FOR_SALE);
         }
+    }
+
+    public void deleteMealbox(Mealbox mealbox) {
+        mealboxRepository.delete(mealbox);
     }
 
     /* ####### private 메서드 ####### */
