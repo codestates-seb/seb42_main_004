@@ -30,6 +30,13 @@ function SignupUl() {
     });
   };
 
+  const handleKeyUp = (e) => {
+    console.log('여기');
+    if (e.key === 'Enter') {
+      handleClick();
+    }
+  };
+
   const handleClick = () => {
     let obj = {};
     for (const el in isValid) {
@@ -81,6 +88,7 @@ function SignupUl() {
             inputRef={(el) => (inputRef.current[0] = el)}
             validText={validText.name}
             onChange={handleInput}
+            onKeyUp={handleKeyUp}
           />
         </li>
         <li>
@@ -93,6 +101,7 @@ function SignupUl() {
             inputRef={(el) => (inputRef.current[1] = el)}
             validText={validText.email}
             onChange={handleInput}
+            onKeyUp={handleKeyUp}
           />
         </li>
         <li>
@@ -105,6 +114,7 @@ function SignupUl() {
             inputRef={(el) => (inputRef.current[2] = el)}
             validText={validText.password}
             onChange={handleInput}
+            onKeyUp={handleKeyUp}
           />
         </li>
         <li>
@@ -117,6 +127,7 @@ function SignupUl() {
             inputRef={(el) => (inputRef.current[3] = el)}
             validText={validText.passwordConfirm}
             onChange={handleInput}
+            onKeyUp={handleKeyUp}
           />
         </li>
         <li>

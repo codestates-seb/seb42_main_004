@@ -81,6 +81,12 @@ function LoginUl() {
     setShowPwd(!showPwd);
   };
 
+  const handleKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      handleClick();
+    }
+  };
+
   return (
     <GetTemplate res="true" title="한끼밀 로그인">
       <ContainerUl>
@@ -100,6 +106,7 @@ function LoginUl() {
               ref={(el) => (inputRef.current[0] = el)}
               value={email}
               onChange={handleInput}
+              onKeyUp={handleKeyUp}
             />
           </LoginDiv>
         </li>
@@ -115,6 +122,7 @@ function LoginUl() {
               ref={(el) => (inputRef.current[1] = el)}
               value={password}
               onChange={handleInput}
+              onKeyUp={handleKeyUp}
             />
             {showPwd ? (
               <IconDiv onClick={handlePasswordClick}>
