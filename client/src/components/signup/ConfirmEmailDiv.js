@@ -13,11 +13,15 @@ function ConfirmEmailDiv({ pathName }) {
   return (
     <GetTemplate
       res="true"
-      title={pathName ? '이메일 인증 완료' : '이메일 발송 확인'}
+      title={
+        pathName && pathName === 'complete'
+          ? '이메일 인증 완료'
+          : '이메일 발송 확인'
+      }
     >
       <ContentDiv>
         <div>
-          {pathName === 'complete' ? (
+          {pathName && pathName === 'complete' ? (
             <>
               <MdOutlineMarkEmailRead size={50} color={'var(--signature)'} />
               <div>이메일 인증이 완료되었습니다.</div>

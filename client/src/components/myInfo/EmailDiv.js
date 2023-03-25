@@ -3,12 +3,12 @@ import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import getData from '../../util/getData';
 
-function EmainDiv({ name, value, status }) {
+function EmailDiv({ name, value, status }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
     getData('/users/resend').then(() => {
-      navigate('/email/confirm', { state: { email: value } });
+      navigate('/email/confirm', { state: { sendEmail: value } });
     });
   };
 
@@ -37,7 +37,7 @@ function EmainDiv({ name, value, status }) {
   );
 }
 
-export default EmainDiv;
+export default EmailDiv;
 
 const ContainerDiv = styled.div`
   height: 50px;

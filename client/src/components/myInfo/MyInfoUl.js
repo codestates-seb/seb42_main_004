@@ -118,7 +118,7 @@ function MyInfoUl({ pathName }) {
       isPending={isPending}
       error={error}
       res={res}
-      title="프로필 보기"
+      title={pathName ? '비밀번호 변경하기' : '프로필 보기'}
     >
       <ContainerUl>
         <li>
