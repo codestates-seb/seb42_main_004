@@ -31,7 +31,6 @@ function SignupUl() {
   };
 
   const handleKeyUp = (e) => {
-    console.log('여기');
     if (e.key === 'Enter') {
       handleClick();
     }
@@ -71,7 +70,7 @@ function SignupUl() {
   };
 
   return (
-    <GetTemplate res="true" title="한끼밀 회원가입">
+    <GetTemplate res="true" title="회원가입">
       <ContainerUl>
         <li>
           <Title>
@@ -131,7 +130,7 @@ function SignupUl() {
           />
         </li>
         <li>
-          <LoginButton onClick={handleClick} name="회원가입하기" />
+          <LoginButton onClick={handleClick} name="회원가입" />
         </li>
         <li>
           <LoginDiv onClick={() => navigate('/login')}>
