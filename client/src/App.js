@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 // import { useEffect } from 'react';
 import styled from 'styled-components';
-import { useCookies } from 'react-cookie';
 import { useDispatch } from 'react-redux';
 import { setAuth } from './reducers/authReducer';
 import Header from './components/commons/Header';
@@ -51,8 +50,7 @@ function App() {
   //   }
   // }, [accessToken, tokenExpirationDate]);
   const dispatch = useDispatch();
-  const [cookies, ,] = useCookies();
-  const { accessToken } = cookies;
+  const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken) {
     setAuthorizationToken(accessToken);

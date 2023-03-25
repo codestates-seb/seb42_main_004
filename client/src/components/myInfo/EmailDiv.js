@@ -1,24 +1,31 @@
 import styled from 'styled-components';
+import { AiOutlineCheckCircle } from 'react-icons/ai';
 
-function ContentDiv({ name, value, onInput }) {
+function EmainDiv({ name, value, status }) {
   return (
     <ContainerDiv>
       <TitleDiv>{name}</TitleDiv>
-      {name && name === '프로필 사진' ? (
-        <UploadDiv>
-          <label htmlFor="file" className="buttonstyle shadow">
-            변경 하기
-          </label>
-          <input id="file" type="file" accept="image/*" onInput={onInput} />
-        </UploadDiv>
+      {status === 'USER_TMP' ? (
+        <>
+          <div>{value}</div>
+          <ConfirmDiv>
+            <button className="buttonstyle shadow">인증하기</button>
+          </ConfirmDiv>
+        </>
       ) : (
-        <div>{value}</div>
+        <>
+          <div>{value}</div>
+          <ConfirmDiv>
+            <AiOutlineCheckCircle size={25} color="green" />
+            <div>인증완료</div>
+          </ConfirmDiv>
+        </>
       )}
     </ContainerDiv>
   );
 }
 
-export default ContentDiv;
+export default EmainDiv;
 
 const ContainerDiv = styled.div`
   height: 50px;
@@ -49,21 +56,6 @@ const TitleDiv = styled.div`
     margin-right: 0;
   }
 `;
-const UploadDiv = styled.span`
-  display: flex;
-
-  > label {
-    padding: 0 0.5rem;
-    color: var(--white);
-    border: none;
-    background-color: var(--signature);
-
-    :hover {
-      cursor: pointer;
-    }
-  }
-
-  > input {
-    display: none;
-  }
+const ConfirmDiv = styled.div`
+  margin-left: 1rem;
 `;

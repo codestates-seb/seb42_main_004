@@ -4,32 +4,18 @@ import styled from 'styled-components';
 import ContentDiv from './ContentDiv';
 import PasswordInputDiv from './PasswordInputDiv';
 import MyInfoButton from './MyInfoButton';
-import useGET from '../../util/useGET';
 import GetTemplate from '../commons/GetTemplate';
+import profile from '../../assets/profile.png';
+import useGET from '../../util/useGET';
 import patchData from '../../util/patchData';
+import postData from '../../util/postData';
+import EmainDiv from './EmailDiv';
 
 function MyInfoUl({ pathName }) {
+  const [inputValue, setInputValue] = useState({});
+  const [passwordInputValue, setPasswordInputValue] = useState({});
   const [imgInput, setImgInput] = useState();
-  const [imgInputBuffer, setImgInputBuffer] = useState();
-  const [inputValue, setInputValue] = useState({
-    addressee: '',
-    addresseePhoneNumber: '',
-    deliveryDetailAddress: '',
-    deliverySimpleAddress: '',
-    deliveryZipCode: '',
-    email: '',
-    userDetailAddress: '',
-    userPhoneNumber: '',
-    userSimpleAddress: '',
-    userZipCode: '',
-    username: '',
-    imagePath: '',
-  });
-  const [passwordInputValue, setPasswordInputValue] = useState({
-    password: '',
-    newPassword: '',
-    confirmNewPassword: '',
-  });
+  const [imgInputBuffer, setImgInputBuffer] = useState(inputValue?.imagePath);
   const [res, isPending, error] = useGET('/users');
   const navigate = useNavigate();
 
@@ -39,7 +25,6 @@ function MyInfoUl({ pathName }) {
       ...passwordInputValue,
       [name]: value,
     });
-    console.log(passwordInputValue);
   };
 
   const handleClick = () => {
@@ -89,7 +74,10 @@ function MyInfoUl({ pathName }) {
         userSimpleAddress: (res.address && res.address.simpleAddress) || '',
         userZipCode: (res.address && res.address.zipCode) || '',
         imagePath: res.imagePath,
+        status: res.status,
       });
+      setImgInputBuffer(res.imagePath);
+      console.log(res);
     }
   }, [res]);
 
@@ -100,8 +88,16 @@ function MyInfoUl({ pathName }) {
       reader.onloadend = () => {
         setImgInputBuffer(reader.result);
       };
+      const formData = new FormData();
+      formData.append('file', imgInput);
+      postData('/users/image', formData).then((data) => {
+        if (data.status === 201) {
+          alert('사진이 변경되었습니다.');
+        } else {
+          alert('관리자에게 문의하세요.');
+        }
+      });
     }
-    console.log(imgInput);
   }, [imgInput]);
 
   return (
@@ -120,7 +116,11 @@ function MyInfoUl({ pathName }) {
                 onInput={(e) => setImgInput(e.target.files[0])}
               />
               <ContentDiv name="닉네임" value={inputValue.username} />
-              <ContentDiv name="이메일" value={inputValue.email} />
+              <EmainDiv
+                name="이메일"
+                value={inputValue.email}
+                status={inputValue.status}
+              />
               <ContentDiv name="연락처" value={inputValue.userPhoneNumber} />
               <ContentDiv
                 name="주소"
@@ -270,8 +270,8 @@ const PasswordButtonDiv = styled.div`
   margin-top: 2rem;
 `;
 const Img = styled.img`
-  background-color: var(${(props) => (props.img ? '--white' : '--gray')});
-  background-image: url(${(props) => props.img && props.img});
+  background-color: var(--white);
+  background-image: url(${(props) => (props.img ? props.img : profile)});
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;

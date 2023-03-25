@@ -8,13 +8,12 @@ import com.example.server.exception.BusinessLogicException;
 import com.example.server.mealbox.dto.MealboxDto;
 import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.mealbox.service.MealboxService;
+import com.example.server.order.entity.OrdersMealbox;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -67,6 +66,15 @@ public class CartService {
         if(mealbox.getMealboxInfo() == Mealbox.MealboxInfo.CUSTOM_MEALBOX){
             mealboxService.deleteMealbox(mealbox);
             cart.getCartMealboxes().remove(cartMealbox);
+
+//            List<OrdersMealbox> ordersMealboxes = mealbox.getOrdersMealboxes();
+//            for(OrdersMealbox ordersMealbox : ordersMealboxes) {
+//                ordersMealbox.setMealbox(null);
+//            }
+//            mealboxService.deleteMealbox(mealbox.getId());
+//            mealbox.getCartMealboxes().forEach(eachCartMealbox ->
+//                    cart.getCartMealboxes().remove(eachCartMealbox));
+
         } //커스텀이 아니면 cartMealbox만 삭제
         else if (mealbox.getMealboxInfo() != Mealbox.MealboxInfo.CUSTOM_MEALBOX) {
             cart.getCartMealboxes().remove(cartMealbox);

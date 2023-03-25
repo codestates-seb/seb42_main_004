@@ -14,9 +14,6 @@ function MealBoxEditButton() {
   let customPageLink = (e) => {
     let cartMealboxId = e.target.parentElement.parentElement.parentElement.id;
     console.log(e.target.parentElement.parentElement.parentElement.id);
-    // let quantity = e.target.parentElement.parentElement.parentElement;
-    // console.log(cartMealboxId);
-    // console.log(quantity);
 
     // 삭제
     isLogin && deleteData(`/users/cart/${cartMealboxId}`);

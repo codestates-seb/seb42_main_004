@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
 function CartAside({ totalPrice = 0, buttonClick }) {
-  console.log(totalPrice);
-
   return (
     <AsideWrapper>
       <InnerDiv>
@@ -36,6 +34,7 @@ export const AsideWrapper = styled.aside`
     width: 100%;
     margin: 0 -16px;
     min-width: 360px;
+    min-height: 80px;
   }
 `;
 export const AsideSignatureButton = styled.button`

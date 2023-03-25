@@ -2,12 +2,12 @@ import styled from 'styled-components';
 import CartItemLi from '../components/cartPage/CartItemLi';
 import CartAside from '../components/commons/CartAside';
 // import { resEx } from '../components/cartPage/dummyData';
-import { useEffect, useState } from 'react';
 import getData from '../util/getData';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCart } from '../reducers/cartReducer';
 import postData from '../util/postData';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 function Cart() {
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -15,14 +15,13 @@ function Cart() {
   let { totalPrice, mealboxes } = useSelector(
     (state) => state.cartReducer.cart
   );
-  console.log(totalPrice, mealboxes);
   let [renderPrice, setRenderPrice] = useState(totalPrice);
 
-  let calRenderPrice = () => {
+  let calcRenderPrice = () => {
     let checkedItem = document.querySelectorAll(
       'input[type="checkbox"]:checked'
     );
-
+    console.log(checkedItem);
     let checkedCartMealBoxId = Array.from(checkedItem).map((el) =>
       String(el.id)
     );
@@ -43,6 +42,7 @@ function Cart() {
       return navigate('/login');
       // session의 물품 장바구니에 추가 요청
     }
+
     let checkedItem = document.querySelectorAll(
       'input[type="checkbox"]:checked'
     );
@@ -59,7 +59,7 @@ function Cart() {
         let { cartMealboxId, mealboxId, quantity } = el;
         return { cartMealboxId, mealboxId, quantity };
       });
-    console.log(postReqData);
+
     postData('/orders', { mealboxes: postReqData }).then((res) => {
       navigate(res.data, { state: checkedCartMealBoxId });
     });
@@ -68,12 +68,16 @@ function Cart() {
   useEffect(() => {
     console.log(isLogin);
     if (isLogin) {
+      console.log(isLogin);
       getData('/users/cart').then((data) => {
         dispatch(setCart(data.data));
       });
     }
-    calRenderPrice();
-  }, [renderPrice]);
+  }, []);
+
+  useEffect(() => {
+    calcRenderPrice();
+  }, [mealboxes]);
 
   return (
     <CartPageWrapper className="margininside">
@@ -86,7 +90,7 @@ function Cart() {
                 key={el.cartMealboxId}
                 mealbox={el}
                 value={el.cartMealboxId}
-                calRenderPrice={calRenderPrice}
+                calcRenderPrice={calcRenderPrice}
               />
             );
           })}

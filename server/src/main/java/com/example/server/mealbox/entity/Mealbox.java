@@ -2,11 +2,9 @@ package com.example.server.mealbox.entity;
 
 import com.example.server.cart.entity.CartMealbox;
 import com.example.server.image.entity.MealboxImage;
-import com.example.server.mealboxSet.entity.MealboxSet;
 import com.example.server.mealboxSet.entity.MealboxSetter;
 import com.example.server.order.entity.OrdersMealbox;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.util.ArrayList;
