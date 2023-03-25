@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-// import { useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { setAuth } from './reducers/authReducer';
@@ -27,28 +27,12 @@ import SendEmail from './pages/SendEmail';
 import FindPassword from './pages/FindPassword';
 import SurveyHome from './pages/SurveyHome';
 import ToTopButton from './components/commons/ToTopButton';
+import { initializeCart } from './reducers/cartReducer';
 import setAuthorizationToken from './util/setAuthorizationToken';
 import parseToken from './util/parseToken';
-import { useEffect } from 'react';
 import checkFooter from './util/checkFooter';
 
 function App() {
-  // const [cookies, , removeCookie] = useCookies();
-  // const { accessToken, tokenExpirationDate } = cookies;
-  // let logoutTimer;
-
-  // useEffect(() => {
-  //   if (accessToken && tokenExpirationDate) {
-  //     const remainingTime =
-  //       tokenExpirationDate.getTime() - new Date().getTime();
-  //     logoutTimer = setTimeout(() => {
-  //       removeCookie(accessToken);
-  //       removeCookie(tokenExpirationDate);
-  //     }, remainingTime);
-  //   } else {
-  //     clearTimeout(logoutTimer);
-  //   }
-  // }, [accessToken, tokenExpirationDate]);
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem('accessToken');
 
@@ -57,17 +41,36 @@ function App() {
   }
 
   useEffect(() => {
+    let logoutTimer;
     if (accessToken) {
       const { exp, principal, roles } = parseToken(accessToken);
       dispatch(
         setAuth({
           isLogin: true,
           accessToken: accessToken,
-          tokenExpirationDate: new Date(exp),
           user: principal,
           admin: roles.includes('ADMIN'),
         })
       );
+      const remainingTime = Math.floor(
+        (new Date(exp * 1000).getTime() - new Date().getTime()) / (60 * 1000)
+      );
+      logoutTimer = setTimeout(() => {
+        localStorage.removeItem('accessToken');
+        dispatch(
+          setAuth({
+            isLogin: false,
+            accessToken: '',
+            user: {},
+            roles: [],
+          })
+        );
+        dispatch(initializeCart());
+        alert('자동 로그아웃되었습니다.');
+        window.location.reload();
+      }, remainingTime * 60 * 1000);
+    } else {
+      clearTimeout(logoutTimer);
     }
   }, [accessToken]);
 

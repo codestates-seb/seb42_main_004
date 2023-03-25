@@ -28,7 +28,6 @@ function Header() {
         setAuth({
           isLogin: false,
           accessToken: '',
-          tokenExpirationDate: '',
           user: {},
           roles: [],
         })
