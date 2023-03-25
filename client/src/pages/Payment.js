@@ -110,6 +110,7 @@ function Payment() {
         <CartAside
           totalPrice={inputValue.totalPrice}
           buttonClick={handleClick}
+          pathName="payment"
         />
       </ContainerDiv>
     </GetTemplate>
