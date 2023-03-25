@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import postData from '../../util/postData';
+import GetTemplate from '../commons/GetTemplate';
 import ContentInputDiv from '../myInfo/ContentInputDiv';
 import MyInfoButton from '../myInfo/MyInfoButton';
 
@@ -57,37 +58,39 @@ function SendEmailDiv({ pathName }) {
   }, [sendEmail]);
 
   return (
-    <SendDiv>
-      <div>
-        {pathName ? (
-          <div>
-            계정 비밀번호를 잊으셨나요?
-            <br /> 이메일 주소를 입력하면 복구 링크를 보내드립니다.
-          </div>
-        ) : (
-          <div>
-            {`이미 존재하는 계정입니다 :(`}
-            <br /> 이메일 주소를 입력하면 복구 링크를 보내드립니다.
-          </div>
-        )}
-        <ContentInputDiv
-          id="email"
-          name="email"
-          labelName="이메일"
-          placeholder="example@email.com"
-          value={sendEmail}
-          onChange={handleChange}
-          validText={valid.text}
-        />
-        {valid.text ? <ValidDiv>{valid.text}</ValidDiv> : null}
+    <GetTemplate res="true" title="계정 복구 이메일 보내기">
+      <SendDiv>
         <div>
-          <MyInfoButton
-            onClick={pathName ? handleSignupClick : handleClick}
-            text="이메일 발송"
+          {pathName ? (
+            <div>
+              계정 비밀번호를 잊으셨나요?
+              <br /> 이메일 주소를 입력하면 복구 링크를 보내드립니다.
+            </div>
+          ) : (
+            <div>
+              {`이미 가입된 계정입니다 :(`}
+              <br /> 이메일 주소를 입력하면 복구 링크를 보내드립니다.
+            </div>
+          )}
+          <ContentInputDiv
+            id="email"
+            name="email"
+            labelName="이메일"
+            placeholder="example@email.com"
+            value={sendEmail}
+            onChange={handleChange}
+            validText={valid.text}
           />
+          {valid.text ? <ValidDiv>{valid.text}</ValidDiv> : null}
+          <div>
+            <MyInfoButton
+              onClick={pathName ? handleSignupClick : handleClick}
+              text="이메일 발송"
+            />
+          </div>
         </div>
-      </div>
-    </SendDiv>
+      </SendDiv>
+    </GetTemplate>
   );
 }
 

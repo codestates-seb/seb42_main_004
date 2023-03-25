@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { setEmail } from '../../reducers/authReducer';
 import postData from '../../util/postData';
 import useValid from '../../util/useValid';
+import GetTemplate from '../commons/GetTemplate';
 import LoginButton from '../login/LoginButton';
 import InputDiv from './InputDiv';
 
@@ -63,69 +64,71 @@ function SignupUl() {
   };
 
   return (
-    <ContainerUl>
-      <li>
-        <Title>
-          <h1>회원가입</h1>
-        </Title>
-      </li>
-      <li>
-        <InputDiv
-          id="name"
-          name="name"
-          labelName="닉네임"
-          placeholder="2글자 이상 10글자 이하로 입력해주세요."
-          value={name}
-          inputRef={(el) => (inputRef.current[0] = el)}
-          validText={validText.name}
-          onChange={handleInput}
-        />
-      </li>
-      <li>
-        <InputDiv
-          id="email"
-          name="email"
-          labelName="이메일"
-          placeholder="이메일 형식으로 입력해주세요."
-          value={email}
-          inputRef={(el) => (inputRef.current[1] = el)}
-          validText={validText.email}
-          onChange={handleInput}
-        />
-      </li>
-      <li>
-        <InputDiv
-          id="password"
-          name="password"
-          labelName="비밀번호"
-          placeholder="영문, 숫자를 포함하여 8~20글자로 입력해주세요."
-          value={password}
-          inputRef={(el) => (inputRef.current[2] = el)}
-          validText={validText.password}
-          onChange={handleInput}
-        />
-      </li>
-      <li>
-        <InputDiv
-          id="passwordConfirm"
-          name="passwordConfirm"
-          labelName="비밀번호 확인"
-          placeholder="확인을 위해 비밀번호를 한번 더 입력해주세요."
-          value={passwordConfirm}
-          inputRef={(el) => (inputRef.current[3] = el)}
-          validText={validText.passwordConfirm}
-          onChange={handleInput}
-        />
-      </li>
-      <li>
-        <LoginButton onClick={handleClick} name="회원가입하기" />
-      </li>
-      <li>
-        <LoginDiv onClick={() => navigate('/login')}>
-          이미 아이디가 있으신가요? 로그인
-        </LoginDiv>
-      </li>
-    </ContainerUl>
+    <GetTemplate res="true" title="한끼밀 회원가입">
+      <ContainerUl>
+        <li>
+          <Title>
+            <h1>회원가입</h1>
+          </Title>
+        </li>
+        <li>
+          <InputDiv
+            id="name"
+            name="name"
+            labelName="닉네임"
+            placeholder="2글자 이상 10글자 이하로 입력해주세요."
+            value={name}
+            inputRef={(el) => (inputRef.current[0] = el)}
+            validText={validText.name}
+            onChange={handleInput}
+          />
+        </li>
+        <li>
+          <InputDiv
+            id="email"
+            name="email"
+            labelName="이메일"
+            placeholder="이메일 형식으로 입력해주세요."
+            value={email}
+            inputRef={(el) => (inputRef.current[1] = el)}
+            validText={validText.email}
+            onChange={handleInput}
+          />
+        </li>
+        <li>
+          <InputDiv
+            id="password"
+            name="password"
+            labelName="비밀번호"
+            placeholder="영문, 숫자를 포함하여 8~20글자로 입력해주세요."
+            value={password}
+            inputRef={(el) => (inputRef.current[2] = el)}
+            validText={validText.password}
+            onChange={handleInput}
+          />
+        </li>
+        <li>
+          <InputDiv
+            id="passwordConfirm"
+            name="passwordConfirm"
+            labelName="비밀번호 확인"
+            placeholder="확인을 위해 비밀번호를 한번 더 입력해주세요."
+            value={passwordConfirm}
+            inputRef={(el) => (inputRef.current[3] = el)}
+            validText={validText.passwordConfirm}
+            onChange={handleInput}
+          />
+        </li>
+        <li>
+          <LoginButton onClick={handleClick} name="회원가입하기" />
+        </li>
+        <li>
+          <LoginDiv onClick={() => navigate('/login')}>
+            이미 아이디가 있으신가요? 로그인
+          </LoginDiv>
+        </li>
+      </ContainerUl>
+    </GetTemplate>
   );
 }
 

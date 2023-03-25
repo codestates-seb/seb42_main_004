@@ -3,6 +3,7 @@ import { HiOutlineMailOpen } from 'react-icons/hi';
 import { MdOutlineMarkEmailRead } from 'react-icons/md';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
+import GetTemplate from '../commons/GetTemplate';
 
 function ConfirmEmailDiv({ pathName }) {
   const { email } = useSelector((state) => state.authReducer);
@@ -10,22 +11,29 @@ function ConfirmEmailDiv({ pathName }) {
   const sendEmail = location.state?.sendEmail || '';
 
   return (
-    <ContentDiv>
-      <div>
-        {pathName === 'complete' ? (
-          <>
-            <MdOutlineMarkEmailRead size={50} color={'var(--signature)'} />
-            <div>이메일 인증이 완료되었습니다.</div>
-          </>
-        ) : (
-          <>
-            <HiOutlineMailOpen size={50} color={'var(--signature)'} />
-            <div>{sendEmail ? sendEmail : email}로 이메일을 발송했습니다.</div>
-            <div>{`이메일을 확인해주세요:)`}</div>
-          </>
-        )}
-      </div>
-    </ContentDiv>
+    <GetTemplate
+      res="true"
+      title={pathName ? '이메일 인증 완료' : '이메일 발송 확인'}
+    >
+      <ContentDiv>
+        <div>
+          {pathName === 'complete' ? (
+            <>
+              <MdOutlineMarkEmailRead size={50} color={'var(--signature)'} />
+              <div>이메일 인증이 완료되었습니다.</div>
+            </>
+          ) : (
+            <>
+              <HiOutlineMailOpen size={50} color={'var(--signature)'} />
+              <div>
+                {sendEmail ? sendEmail : email}로 이메일을 발송했습니다.
+              </div>
+              <div>{`이메일을 확인해주세요:)`}</div>
+            </>
+          )}
+        </div>
+      </ContentDiv>
+    </GetTemplate>
   );
 }
 

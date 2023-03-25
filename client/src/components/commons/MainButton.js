@@ -24,7 +24,7 @@ export const Button = styled.button`
   border: none;
   cursor: pointer;
   background-color: ${({ name }) =>
-    name.includes('Log') || name.includes('추천 받기')
+    name.includes('로그') || name.includes('추천 받기')
       ? `var(--product_cocoa)`
       : `var(--bucket_brown)`};
 

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { AiOutlineUser } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import GetTemplate from '../commons/GetTemplate';
 
 function SignupCompleteDiv() {
   const navigate = useNavigate();
@@ -13,22 +14,24 @@ function SignupCompleteDiv() {
   };
 
   return (
-    <ContentDiv>
-      <div>
-        <AiOutlineUser size={50} color={'var(--signature)'} />
-        <CompleteDiv>회원가입이 완료되었습니다.</CompleteDiv>
-        <div>결제하려면 이메일 인증이 필요합니다.</div>
-        <div>지금 하시겠습니까?</div>
+    <GetTemplate res="true" title="회원가입 완료">
+      <ContentDiv>
         <div>
-          <button onClick={handleNoClick} className="linkstyle">
-            나중에 하기
-          </button>
-          <Button onClick={handleOkClick} className="buttonstyle shadow">
-            지금하기
-          </Button>
+          <AiOutlineUser size={50} color={'var(--signature)'} />
+          <CompleteDiv>회원가입이 완료되었습니다.</CompleteDiv>
+          <div>결제하려면 이메일 인증이 필요합니다.</div>
+          <div>지금 하시겠습니까?</div>
+          <div>
+            <button onClick={handleNoClick} className="linkstyle">
+              나중에 하기
+            </button>
+            <Button onClick={handleOkClick} className="buttonstyle shadow">
+              지금하기
+            </Button>
+          </div>
         </div>
-      </div>
-    </ContentDiv>
+      </ContentDiv>
+    </GetTemplate>
   );
 }
 

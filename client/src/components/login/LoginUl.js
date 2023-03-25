@@ -8,6 +8,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import parseToken from '../../util/parseToken';
 import { useDispatch } from 'react-redux';
 import { setAuth } from '../../reducers/authReducer';
+import GetTemplate from '../commons/GetTemplate';
 
 function LoginUl() {
   const [showPwd, setShowPwd] = useState(false);
@@ -81,76 +82,78 @@ function LoginUl() {
   };
 
   return (
-    <ContainerUl>
-      <li>
-        <Title>
-          <h1>로그인</h1>
-        </Title>
-      </li>
-      <li>
-        <LoginDiv>
-          <label htmlFor="email">이메일</label>
-          <input
-            id="email"
-            name="email"
-            className="inputstyle"
-            placeholder="이메일"
-            ref={(el) => (inputRef.current[0] = el)}
-            value={email}
-            onChange={handleInput}
-          />
-        </LoginDiv>
-      </li>
-      <li>
-        <LoginDiv>
-          <label htmlFor="password">비밀번호</label>
-          <input
-            id="password"
-            name="password"
-            className="inputstyle"
-            type={showPwd ? 'text' : 'password'}
-            placeholder="비밀번호"
-            ref={(el) => (inputRef.current[1] = el)}
-            value={password}
-            onChange={handleInput}
-          />
-          {showPwd ? (
-            <IconDiv onClick={handlePasswordClick}>
-              <AiOutlineEye size={20} />
-            </IconDiv>
-          ) : (
-            <IconDiv onClick={handlePasswordClick}>
-              <AiOutlineEyeInvisible size={20} />
-            </IconDiv>
-          )}
-        </LoginDiv>
-      </li>
-      <li>
-        <CheckboxDiv>
-          <input type="checkbox" id="auto"></input>
-          <label htmlFor="auto">자동로그인</label>
-        </CheckboxDiv>
-      </li>
-      <li>
-        <LoginButton onClick={handleClick} name="로그인"></LoginButton>
-      </li>
-      <li>
-        <Div>
-          <LoginLink to="/email/send" className="linkstyle">
-            비밀번호 찾기
-          </LoginLink>
-          <LoginLink to="/signup" className="linkstyle">
-            회원가입
-          </LoginLink>
-        </Div>
-      </li>
-      <li>
-        <GoogleButton className="buttonstyle">
-          <FcGoogle size={25} />
-          <div>Sign in with Google</div>
-        </GoogleButton>
-      </li>
-    </ContainerUl>
+    <GetTemplate res="true" title="한끼밀 로그인">
+      <ContainerUl>
+        <li>
+          <Title>
+            <h1>로그인</h1>
+          </Title>
+        </li>
+        <li>
+          <LoginDiv>
+            <label htmlFor="email">이메일</label>
+            <input
+              id="email"
+              name="email"
+              className="inputstyle"
+              placeholder="이메일"
+              ref={(el) => (inputRef.current[0] = el)}
+              value={email}
+              onChange={handleInput}
+            />
+          </LoginDiv>
+        </li>
+        <li>
+          <LoginDiv>
+            <label htmlFor="password">비밀번호</label>
+            <input
+              id="password"
+              name="password"
+              className="inputstyle"
+              type={showPwd ? 'text' : 'password'}
+              placeholder="비밀번호"
+              ref={(el) => (inputRef.current[1] = el)}
+              value={password}
+              onChange={handleInput}
+            />
+            {showPwd ? (
+              <IconDiv onClick={handlePasswordClick}>
+                <AiOutlineEye size={20} />
+              </IconDiv>
+            ) : (
+              <IconDiv onClick={handlePasswordClick}>
+                <AiOutlineEyeInvisible size={20} />
+              </IconDiv>
+            )}
+          </LoginDiv>
+        </li>
+        <li>
+          <CheckboxDiv>
+            <input type="checkbox" id="auto"></input>
+            <label htmlFor="auto">자동로그인</label>
+          </CheckboxDiv>
+        </li>
+        <li>
+          <LoginButton onClick={handleClick} name="로그인"></LoginButton>
+        </li>
+        <li>
+          <Div>
+            <LoginLink to="/email/send" className="linkstyle">
+              비밀번호 찾기
+            </LoginLink>
+            <LoginLink to="/signup" className="linkstyle">
+              회원가입
+            </LoginLink>
+          </Div>
+        </li>
+        <li>
+          <GoogleButton className="buttonstyle">
+            <FcGoogle size={25} />
+            <div>Sign in with Google</div>
+          </GoogleButton>
+        </li>
+      </ContainerUl>
+    </GetTemplate>
   );
 }
 

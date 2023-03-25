@@ -123,7 +123,12 @@ function EditMyInfoUl() {
   };
 
   return (
-    <GetTemplate isPending={isPending} error={error} res={res}>
+    <GetTemplate
+      isPending={isPending}
+      error={error}
+      res={res}
+      title="프로필 수정하기"
+    >
       <ContainerUl>
         <li>
           <h2>내 정보</h2>
