@@ -1,6 +1,6 @@
 import { TextButton } from './ModalDiv';
 
-function NoResult({ search, errorWord, replaceWord }) {
+function NoResultDiv({ search, errorWord, replaceWord }) {
   return (
     <div>
       찾고 계신 <span>{errorWord}</span>은(는) 목록에 추가될 예정입니다
@@ -14,4 +14,4 @@ function NoResult({ search, errorWord, replaceWord }) {
   );
 }
 
-export default NoResult;
+export default NoResultDiv;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import NoResult from '../components/commons/NoResult';
+import NoResultDiv from '../components/commons/NoResultDiv';
 import CustomAside from '../components/custom/CustomAside';
 import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
@@ -75,7 +75,7 @@ function Custom() {
                   </li>
                 ))
               ) : (
-                <NoResult
+                <NoResultDiv
                   search={(word) =>
                     setPath(`/products/search?page=1&name=${word}`)
                   }

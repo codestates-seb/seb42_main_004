@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import NoResult from '../components/commons/NoResult';
+import NoResultDiv from '../components/commons/NoResultDiv';
 import BannerLink from '../components/commons/BannerLink';
 import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
@@ -50,7 +50,7 @@ function AllBoxes() {
               />
             ))
           ) : (
-            <NoResult
+            <NoResultDiv
               search={(word) =>
                 navigate(`/mealboxes/search?page=1&name=${word}`)
               }
