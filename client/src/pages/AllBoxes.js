@@ -22,7 +22,7 @@ function AllBoxes() {
       isPending={isPending}
       error={error}
       res={res?.data}
-      title="전체 밀박스 목록 보기"
+      title="밀박스 목록 보기"
     >
       <MealBoxesWrapDiv className="margininside">
         <BannerLink />
