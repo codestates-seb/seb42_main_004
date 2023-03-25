@@ -1,29 +1,16 @@
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import logo from '../../assets/logo_black.png';
 import ContentInputDiv from '../myInfo/ContentInputDiv';
 import MyInfoButton from './MyInfoButton';
-import { useEffect, useState } from 'react';
 import AddressDiv from '../payment/AddessDiv';
+import GetTemplate from '../commons/GetTemplate';
 import useGET from '../../util/useGET';
 import patchData from '../../util/patchData';
-import GetTemplate from '../commons/GetTemplate';
-import { useNavigate } from 'react-router-dom';
+import profile from '../../assets/profile.png';
 
 function EditMyInfoUl() {
-  const [inputValue, setInputValue] = useState({
-    addressee: '',
-    addresseePhoneNumber: '',
-    deliveryDetailAddress: '',
-    deliverySimpleAddress: '',
-    deliveryZipCode: '',
-    email: '',
-    detailAddress: '',
-    phoneNumber: '',
-    simpleAddress: '',
-    zipCode: '',
-    name: '',
-    imagePath: '',
-  });
+  const [inputValue, setInputValue] = useState({});
   const [res, isPending, error] = useGET('/users');
   const [same, setSame] = useState(false);
   const navigate = useNavigate();
@@ -68,7 +55,6 @@ function EditMyInfoUl() {
       ...inputValue,
       [name]: value,
     });
-    console.log(inputValue);
   };
 
   const handleClick = () => {
@@ -130,7 +116,7 @@ function EditMyInfoUl() {
           <h2>내 정보</h2>
           <OrderDiv>
             <ImgDiv>
-              <img src={logo} alt="logo" />
+              <img src={inputValue.imagePath || profile} alt="logo" />
             </ImgDiv>
             <InfoDiv>
               <ContentInputDiv

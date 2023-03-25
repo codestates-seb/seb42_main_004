@@ -1,11 +1,13 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
 import styled from 'styled-components';
 import postData from '../../util/postData';
 import LoginButton from './LoginButton';
 import { FcGoogle } from 'react-icons/fc';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import parseToken from '../../util/parseToken';
+import { useDispatch } from 'react-redux';
+import { setAuth } from '../../reducers/authReducer';
 
 function LoginUl() {
   const [showPwd, setShowPwd] = useState(false);
@@ -14,16 +16,38 @@ function LoginUl() {
     password: '',
   });
   const inputRef = useRef([]);
-  const [cookies, setCookie, removeCookie] = useCookies();
   const { email, password } = inputValue;
+  const dispatch = useDispatch();
 
   const login = (token) => {
-    if (!cookies.accessToken) {
-      setCookie('accessToken', token);
-    } else if (cookies.accessToken && cookies.accessToken !== token) {
-      removeCookie('accessToken');
-      setCookie('accessToken', token);
+    if (!localStorage.getItem('accessToken')) {
+      localStorage.setItem('accessToken', token);
+      Auth();
+      window.location.reload();
+    } else if (
+      localStorage.getItem('accessToken') &&
+      localStorage.getItem('accessToken') !== token
+    ) {
+      localStorage.removeItem('accessToken');
+      localStorage.setItem('accessToken', token);
+      Auth();
+      window.location.reload();
     }
+  };
+
+  const Auth = () => {
+    const { exp, principal, roles } = parseToken(
+      localStorage.getItem('accessToken')
+    );
+    dispatch(
+      setAuth({
+        isLogin: true,
+        accessToken: localStorage.getItem('accessToken'),
+        tokenExpirationDate: new Date(exp),
+        user: principal,
+        admin: roles.includes('ADMIN'),
+      })
+    );
   };
 
   const handleClick = () => {
