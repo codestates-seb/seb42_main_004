@@ -2,10 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Error from './Error';
-import MealBoxCardDiv from '../components/allboxes/MealBoxCardDiv';
+import MealBoxCardLi from '../components/allboxes/MealBoxCardLi';
 import { TextButton } from '../components/commons/ModalDiv';
 import { MealBoxesWrapDiv, MealBoxesUl } from './AllBoxes';
 import { deleteSurveyRcmd } from '../reducers/surveyRcmdReducer';
+import HelmetTitle from '../components/commons/HelmetTitle';
 
 function SurveyResult() {
   const { surveyRcmd } = useSelector((state) => state.surveyRcmdReducer);
@@ -27,20 +28,12 @@ function SurveyResult() {
     <>
       {surveyRcmd.breakfast ? (
         <MealBoxesWrapDiv className="margininside">
+          <HelmetTitle title="추천 결과 페이지" />
           <h1>추천 결과 페이지(｡•̀ᴗ-)✧</h1>
           <MealBoxesUl>
-            <li>
-              <h2>아침</h2>
-              <MealBoxCardDiv mealBox={surveyRcmd.breakfast} />
-            </li>
-            <li>
-              <h2>점심</h2>
-              <MealBoxCardDiv mealBox={surveyRcmd.lunch} />
-            </li>
-            <li>
-              <h2>저녁</h2>
-              <MealBoxCardDiv mealBox={surveyRcmd.dinner} />
-            </li>
+            <MealBoxCardLi title="아침" mealBox={surveyRcmd.breakfast} />
+            <MealBoxCardLi title="점심" mealBox={surveyRcmd.lunch} />
+            <MealBoxCardLi title="저녁" mealBox={surveyRcmd.dinner} />
           </MealBoxesUl>
           <SurveyRetryDiv>
             <TextButton onClick={surveyRetry} className="linkstyle">

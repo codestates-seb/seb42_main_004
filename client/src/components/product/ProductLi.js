@@ -2,30 +2,18 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import ModalDiv, { TextButton } from '../commons/ModalDiv';
 import blankbucket from '../../assets/blankbucket.png';
-import deleteData from '../../util/deleteData';
+import deleteSubject from '../../util/deleteSubject';
+import { MealBoxImg, MealBoxImgDiv } from '../allboxes/MealBoxCardLi';
 
 function ProductLi({ product, admin, reload }) {
   const [openModal, setOpenModal] = useState(false);
 
-  const deleteProduct = () => {
-    if (
-      window.confirm(
-        `${product.name}을(를) 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
-      )
-    ) {
-      deleteData(`/admin/products/${product.productId}`).then((res) => {
-        if (res.status === 200) {
-          alert(`${product.name}이(가) 삭제되었습니다.`);
-          reload();
-        } else {
-          alert('삭제 실패.\n관리자에게 문의해주세요.');
-        }
-      });
-    }
-  };
-
   return (
-    <ContainerLi onClick={!product ? () => setOpenModal(true) : null}>
+    <ContainerLi
+      margin={!admin && 1}
+      className="shadow"
+      onClick={!product ? () => setOpenModal(true) : null}
+    >
       {openModal && (
         <ModalDiv
           reload={reload}
@@ -33,28 +21,34 @@ function ProductLi({ product, admin, reload }) {
           closeModal={() => setOpenModal(false)}
         />
       )}
-      <CardDiv className="shadow">
-        <img
+      <MealBoxImgDiv>
+        <ProductImg
           src={product ? product.imagePath : blankbucket}
           alt="blankbucket"
         />
-        <ProductInfoDiv>
-          {product && (
-            <>
-              <div>{product.name}</div>
-              <div>{product.weight.toLocaleString('ko-KR')}g(ml)</div>
-              <div>{product.kcal.toLocaleString('ko-KR')}kcal</div>
-              <div>{product.price.toLocaleString('ko-KR')}원</div>
-            </>
-          )}
-        </ProductInfoDiv>
-        {admin && product && (
-          <ButtonDiv>
-            <TextButton onClick={() => setOpenModal(true)}>수정</TextButton>
-            <TextButton onClick={deleteProduct}>삭제</TextButton>
-          </ButtonDiv>
+      </MealBoxImgDiv>
+      <ProductInfoDiv margin={!admin && 1}>
+        <h3>{product ? product.name : '구성품 추가하기'}</h3>
+        {product && (
+          <>
+            <span>{product.weight.toLocaleString('ko-KR')}g(ml)</span>
+            <span>{product.kcal.toLocaleString('ko-KR')}kcal</span>
+            <span>{product.price.toLocaleString('ko-KR')}원</span>
+          </>
         )}
-      </CardDiv>
+      </ProductInfoDiv>
+      {admin && product && (
+        <ButtonDiv>
+          <TextButton onClick={() => setOpenModal(true)}>수정</TextButton>
+          <TextButton
+            onClick={() =>
+              deleteSubject('products', product.name, product.id, reload)
+            }
+          >
+            삭제
+          </TextButton>
+        </ButtonDiv>
+      )}
     </ContainerLi>
   );
 }
@@ -62,40 +56,26 @@ function ProductLi({ product, admin, reload }) {
 export default ProductLi;
 
 const ContainerLi = styled.li`
-  width: 25%;
-
-  @media (max-width: 480px) {
-    width: 100%;
-  }
-
-  @media (min-width: 481px) and (max-width: 768px) {
-    width: 50%;
-  }
-`;
-const CardDiv = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   border-radius: 4px;
+  padding: 5%;
   background-color: var(--white);
-  margin: 0.5rem;
-  padding: 0.5rem;
-
-  > img {
-    width: 200px;
-    height: 200px;
-    margin-bottom: 0.5rem;
-  }
+  padding-bottom: ${(props) => props.margin && '2rem'};
+`;
+const ProductImg = styled(MealBoxImg)`
+  padding: 10%;
 `;
 const ProductInfoDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  > div {
-    font-weight: bold;
-    width: fit-content;
+  > h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
   }
 `;
 const ButtonDiv = styled.div`
