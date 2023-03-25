@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import CartItemLi from '../components/cartPage/CartItemLi';
 import CartAside from '../components/commons/CartAside';
-// import { resEx } from '../components/cartPage/dummyData';
 import getData from '../util/getData';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCart } from '../reducers/cartReducer';
@@ -68,7 +67,6 @@ function Cart() {
   useEffect(() => {
     if (isLogin) {
       getData('/users/cart').then((data) => {
-        console.log(data.data);
         dispatch(setCart(data.data));
       });
     }

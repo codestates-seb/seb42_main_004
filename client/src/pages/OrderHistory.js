@@ -4,7 +4,6 @@ import OrderHistoryPageButton from '../components/orderHistory/OrderHistoryPageB
 import OrderHistoryByDateDiv from '../components/orderHistory/OrderHistoryByDateDiv';
 import PaginationUl from '../components/commons/PaginationUl';
 import getData from '../util/getData';
-// import { resEx } from '../components/orderHistory/dummyData';
 import { useSelector } from 'react-redux';
 
 function OrderHistory() {
