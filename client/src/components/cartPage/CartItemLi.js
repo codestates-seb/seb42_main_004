@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 function CartItemLi({ mealbox, value, calcRenderPrice }) {
-  console.log(mealbox);
   let { name, kcal, price, quantity, products } = mealbox;
   let [isChecked, setIsChecked] = useState(true);
 

@@ -9,16 +9,15 @@ import { useSelector } from 'react-redux';
 
 function OrderHistory() {
   let { admin } = useSelector((state) => state.authReducer);
-  console.log(admin);
+
   let [page, setPage] = useState(1);
   let [totalPages, setTotalPages] = useState(1);
   let [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   let [data, setData] = useState([]);
-  console.log(totalPages, page);
+
   let render = () => {
     getData(admin ? `/admin/orders?page=${page}&date=${date}` : `/orders/user`)
       .then((res) => {
-        console.log(res);
         setTotalPages(res?.pageInfo?.totalPages);
         let filterByDateObj = res?.reduce((acc, cur) => {
           let orderDate = cur.createdAt.slice(0, 10);
@@ -34,7 +33,6 @@ function OrderHistory() {
         return filterByDateArr;
       })
       .then((data) => {
-        console.log(data);
         setData(data);
       });
   };

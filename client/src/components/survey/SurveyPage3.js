@@ -13,7 +13,6 @@ import { useState } from 'react';
 function SurveyPage3() {
   let { state } = useLocation();
   let { easy, normal, hard } = state;
-  console.log(easy);
   let [kcalPerDay, setKcalPerDay] = useState(easy.kcal);
 
   let dispatch = useDispatch();
@@ -22,7 +21,6 @@ function SurveyPage3() {
   // 다이어트 플랜 상태 변경
   let dispatchPlan = (e) => {
     let { id } = e.target;
-    console.log(id);
     setKcalPerDay(Number(id));
   };
 
@@ -31,7 +29,6 @@ function SurveyPage3() {
   let nextHandler = () => {
     getData(`/mealboxes/rec/survey?kcal=${kcalPerDay}`)
       .then((res) => {
-        console.log(res.data);
         dispatch(setSurveyRcmd(res.data));
       })
       .then(() => {

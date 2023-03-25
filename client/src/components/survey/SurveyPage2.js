@@ -26,7 +26,6 @@ function SurveyPage2({ name = '맹쥬' }) {
     let page2Param = `?age=${age}&gender=${gender}&height=${height}&weight=${weight}&activityAmount=${active}`;
     getData(`/survey${page2Param}`).then((res) => {
       navigate(`/survey/question/3`, { state: res.data });
-      console.log(res.data);
     });
   };
 
