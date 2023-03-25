@@ -61,14 +61,10 @@ const TitleDiv = styled.div`
 
   @media (max-width: 480px) {
     width: 80%;
-    justify-content: flex-start;
-    margin-right: 0;
   }
 
   @media (min-width: 481px) and (max-width: 768px) {
     width: 60%;
-    justify-content: flex-start;
-    margin-right: 0;
   }
 `;
 const ConfirmSpan = styled.span`

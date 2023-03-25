@@ -7,10 +7,23 @@ import AddressDiv from '../payment/AddessDiv';
 import GetTemplate from '../commons/GetTemplate';
 import useGET from '../../util/useGET';
 import patchData from '../../util/patchData';
-import profile from '../../assets/profile.png';
+import ProfileImg from './ProfileImg';
 
 function EditMyInfoUl() {
-  const [inputValue, setInputValue] = useState({});
+  const [inputValue, setInputValue] = useState({
+    name: '',
+    email: '',
+    phoneNumber: '',
+    addressee: '',
+    addresseePhoneNumber: '',
+    deliveryDetailAddress: '',
+    deliverySimpleAddress: '',
+    deliveryZipCode: '',
+    detailAddress: '',
+    simpleAddress: '',
+    zipCode: '',
+    imagePath: '',
+  });
   const [res, isPending, error] = useGET('/users');
   const [same, setSame] = useState(false);
   const navigate = useNavigate();
@@ -116,7 +129,7 @@ function EditMyInfoUl() {
           <h2>내 정보</h2>
           <OrderDiv>
             <ImgDiv>
-              <img src={inputValue.imagePath || profile} alt="logo" />
+              <ProfileImg img={inputValue.imagePath} />
             </ImgDiv>
             <InfoDiv>
               <ContentInputDiv
@@ -240,16 +253,12 @@ const ImgDiv = styled.div`
   padding-bottom: 50px;
   display: flex;
   justify-content: center;
-
-  > img {
-    width: 300px;
-    height: 300px;
-  }
 `;
 const TopDiv = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   div > * {
     cursor: pointer;
   }
