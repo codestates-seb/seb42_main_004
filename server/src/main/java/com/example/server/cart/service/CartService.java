@@ -61,25 +61,8 @@ public class CartService {
         verifyExistsCartMealboxIsInCart(cart, cartMealboxId);
 
         CartMealbox cartMealbox = cartMealboxService.findCartMealbox(cartMealboxId);
-        Mealbox mealbox = cartMealbox.getMealbox();
 
-        //커스텀이면 cartMealbox, mealbox, mealboxProduct까지 다 삭제
-        if(mealbox.getMealboxInfo() == Mealbox.MealboxInfo.CUSTOM_MEALBOX){
-            mealboxService.deleteMealbox(mealbox);
-            cart.getCartMealboxes().remove(cartMealbox);
-
-//            List<OrdersMealbox> ordersMealboxes = mealbox.getOrdersMealboxes();
-//            for(OrdersMealbox ordersMealbox : ordersMealboxes) {
-//                ordersMealbox.setMealbox(null);
-//            }
-//            mealboxService.deleteMealbox(mealbox.getId());
-//            mealbox.getCartMealboxes().forEach(eachCartMealbox ->
-//                    cart.getCartMealboxes().remove(eachCartMealbox));
-
-        } //커스텀이 아니면 cartMealbox만 삭제
-        else if (mealbox.getMealboxInfo() != Mealbox.MealboxInfo.CUSTOM_MEALBOX) {
-            cart.getCartMealboxes().remove(cartMealbox);
-        }
+        cart.getCartMealboxes().remove(cartMealbox);
 
         cart.calculateTotalPrice();
         cartRepository.save(cart);
