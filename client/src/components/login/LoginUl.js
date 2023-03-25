@@ -104,7 +104,7 @@ function LoginUl() {
   };
 
   return (
-    <GetTemplate res="true" title="한끼밀 로그인">
+    <GetTemplate res="true" title="로그인">
       <ContainerUl>
         <li>
           <Title>

@@ -17,7 +17,6 @@ function SignupOauthUl() {
   const inputRef = useRef([]);
   const { name, email } = inputValue;
   const location = useLocation();
-  console.log(isValid);
 
   useEffect(() => {
     if (location.state) {
@@ -60,7 +59,7 @@ function SignupOauthUl() {
   };
 
   return (
-    <GetTemplate res="true" title="한끼밀 회원가입">
+    <GetTemplate res="true" title="회원가입">
       <ContainerUl>
         <li>
           <Title>

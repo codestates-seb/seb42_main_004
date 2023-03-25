@@ -70,7 +70,7 @@ function SignupUl() {
   };
 
   return (
-    <GetTemplate res="true" title="한끼밀 회원가입">
+    <GetTemplate res="true" title="회원가입">
       <ContainerUl>
         <li>
           <Title>
