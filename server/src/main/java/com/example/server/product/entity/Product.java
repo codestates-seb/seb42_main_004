@@ -27,6 +27,7 @@ public class Product {
     @Column(nullable = false)
     private int price;
     @Column(nullable = false)
+    @Builder.Default
     private boolean forSale = true;
 
     /* ####### JPA 매핑 ####### */
