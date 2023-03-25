@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { setEmail } from '../../reducers/authReducer';
 import postData from '../../util/postData';
 import useValid from '../../util/useValid';
 import LoginButton from '../login/LoginButton';
@@ -16,6 +18,7 @@ function SignupUl() {
   const [validText, isValid, setValidText] = useValid(inputValue);
   const inputRef = useRef([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { name, email, password, passwordConfirm } = inputValue;
 
   const handleInput = (e) => {
@@ -41,10 +44,11 @@ function SignupUl() {
       isValid.passwordConfirm
     ) {
       postData('/users', { name, email, password }).then((res) => {
+        dispatch(setEmail(email));
         if (res.status === 409) {
-          navigate('/email/send/signup', { state: { email } });
+          navigate('/email/send/signup');
         } else {
-          navigate('/email/confirm', { state: { email } });
+          navigate('/signup/complete');
         }
       });
     } else if (!isValid.name) {

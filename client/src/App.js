@@ -26,6 +26,7 @@ import ConfirmEmail from './pages/ConfirmEmail';
 import SendEmail from './pages/SendEmail';
 import FindPassword from './pages/FindPassword';
 import SurveyHome from './pages/SurveyHome';
+import SignupComplete from './pages/SignupComplete';
 import ToTopButton from './components/commons/ToTopButton';
 import { initializeCart } from './reducers/cartReducer';
 import setAuthorizationToken from './util/setAuthorizationToken';
@@ -102,6 +103,10 @@ function App() {
           <Route
             path="/signup/oauth"
             element={accessToken ? <Navigate to="/" /> : <SignupOauth />}
+          />
+          <Route
+            path="/signup/complete"
+            element={accessToken ? <Navigate to="/" /> : <SignupComplete />}
           />
           <Route
             path="/myinfo"
