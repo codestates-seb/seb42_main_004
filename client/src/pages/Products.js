@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import NoResult from '../components/commons/NoResult';
 import ProductLi from '../components/product/ProductLi';
@@ -12,18 +12,20 @@ import useFilterSearch from '../util/useFilterSearch';
 
 function Products() {
   const { admin } = useSelector((state) => state.authReducer);
-  let { pathname, search } = useLocation();
-  if (!search) search = '?page=1&sort=id&dir=DESC';
-
+  const [toFilterSearchDiv, errorWord, paginationUrl, uri] =
+    useFilterSearch(false);
   const [res, isPending, error, getData] = useGET(
-    `${admin ? '/admin' : ''}${pathname}${search}`
+    `${admin ? '/admin' : ''}${uri}`
   );
-  const [toFilterSearchDiv, errorWord, paginationUrl] = useFilterSearch(false);
-
   const navigate = useNavigate();
 
   return (
-    <GetTemplate isPending={isPending} error={error} res={res?.data}>
+    <GetTemplate
+      isPending={isPending}
+      error={error}
+      res={res?.data}
+      title="전체 구성품 목록 보기"
+    >
       <ContainerDiv className="margininside">
         <h1>구성품 설명</h1>
         <FilterSearchDiv placeholder="고구마" {...toFilterSearchDiv} />
@@ -34,7 +36,7 @@ function Products() {
         )}
         <ul>
           {admin &&
-            ((search.includes('?page=1&') && !pathname.includes('search')) ||
+            ((uri.includes('?page=1&') && !uri.includes('search')) ||
               res.data?.length === 0) && (
               <ProductLi admin={admin} reload={getData} />
             )}

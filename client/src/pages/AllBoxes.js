@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import NoResult from '../components/commons/NoResult';
 import BannerLink from '../components/commons/BannerLink';
@@ -11,15 +11,19 @@ import useGET from '../util/useGET';
 import useFilterSearch from '../util/useFilterSearch';
 
 function AllBoxes() {
-  const navigate = useNavigate();
   const { user } = useSelector((state) => state.authReducer);
-  let { pathname, search } = useLocation();
-  if (!search) search = '?page=1&sort=id&dir=DESC';
-  const [res, isPending, error, getData] = useGET(`${pathname}${search}`);
-  const [toFilterSearchDiv, errorWord, paginationUrl] = useFilterSearch(true);
+  const [toFilterSearchDiv, errorWord, paginationUrl, uri] =
+    useFilterSearch(true);
+  const [res, isPending, error, getData] = useGET(`${uri}`);
+  const navigate = useNavigate();
 
   return (
-    <GetTemplate isPending={isPending} error={error} res={res?.data}>
+    <GetTemplate
+      isPending={isPending}
+      error={error}
+      res={res?.data}
+      title="전체 밀박스 목록 보기"
+    >
       <MealBoxesWrapDiv className="margininside">
         <BannerLink />
         <h1>
@@ -35,7 +39,7 @@ function AllBoxes() {
           </SearchResultH3>
         )}
         <MealBoxesUl>
-          {((search.includes('?page=1&') && !pathname.includes('search')) ||
+          {((uri.includes('?page=1&') && !uri.includes('search')) ||
             res.data?.length === 0) && (
             <li>
               <MealBoxCardDiv />

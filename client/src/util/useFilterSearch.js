@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const useFilterSearch = (isMealBox, setPath) => {
   const navigate = useNavigate();
@@ -7,6 +7,9 @@ const useFilterSearch = (isMealBox, setPath) => {
   const [searchWord, setSearchWord] = useState('');
   const [sortBy, setSortBy] = useState(['id', 'DESC']);
   const [errorWord, setErrorWord] = useState(searchWord);
+
+  let { pathname, search } = useLocation();
+  if (!search) search = '?page=1&sort=id&dir=DESC';
 
   const [page, setPage] = useState(1);
 
@@ -43,8 +46,9 @@ const useFilterSearch = (isMealBox, setPath) => {
 
   const toSearchBarDiv = { searchSubject, searchWord, setSearchWord };
   const toFilterSearchDiv = { sortSubject, toSearchBarDiv };
+  const setUri = !setPath ? `${pathname}${search}` : setPage;
 
-  return [toFilterSearchDiv, errorWord, paginationUrl, setPage];
+  return [toFilterSearchDiv, errorWord, paginationUrl, setUri];
 };
 
 export default useFilterSearch;

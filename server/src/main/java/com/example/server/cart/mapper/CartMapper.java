@@ -31,7 +31,7 @@ public class CartMapper {
                         .products(cartMealbox.getMealbox().getMealboxProducts().stream().map(mealboxProduct ->{
                                     Product product = mealboxProduct.getProduct();
                                     ImageInfo imageInfo = product.getImage().getImageInfo();
-                                    return ProductResponseDtoForCart.builder().productId(mealboxProduct.getId())
+                                    return ProductResponseDtoForCart.builder().productId(mealboxProduct.getProduct().getId())
                                             .name(product.getName())
                                             .weight(product.getWeight())
                                             .kcal(product.getKcal())
