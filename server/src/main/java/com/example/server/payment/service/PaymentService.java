@@ -1,6 +1,7 @@
 package com.example.server.payment.service;
 
 import com.example.server.cart.entity.Cart;
+import com.example.server.cart.service.CartMealboxService;
 import com.example.server.cart.service.CartService;
 import com.example.server.exception.BusinessLogicException;
 import com.example.server.order.entity.Orders;
@@ -32,6 +33,7 @@ public class PaymentService {
   private final OrderService orderService;
   private final PayInfoRepository payInfoRepository;
   private final CartService cartService;
+  private final CartMealboxService cartMealboxService;
 
   // 결제금액 사전등록 (사전 검증)
   public void postPrepare(String orderNumber, int amount)
@@ -74,7 +76,8 @@ public class PaymentService {
     Cart cart = order.getUser().getCart();
     for (Long id : cartMealboxIds) {
 //      log.info("id : {}", id);
-      cartService.removeMealboxFromCart(cart, id);
+      // 수정한것 : 카트에서 밀박스를 지우는것이지만 사실상 카트밀박스를 지우는것이다 -> cartMelaboxService 이용
+      cartMealboxService.deleteCartMealbox(id);
     }
 //    cartMealboxService.deleteCartMealboxAfterPayment(order);
 //    log.info("deleteCartMealbox 통과 / refreshPrice 진입");

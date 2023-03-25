@@ -53,11 +53,11 @@ public class MealboxController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    //관리자가 추천조합 밀박스 삭제하기 -> productMealbox까지 전이
+    //관리자가 추천조합 밀박스 삭제하기
     @DeleteMapping("/admin/mealboxes/{mealboxId}")
     public ResponseEntity deleteAdminMealbox(@PathVariable("mealboxId") @Positive Long mealboxId) {
         log.info("------deleteAdminMealbox------");
-        mealboxService.deleteMealbox(mealboxId);
+        mealboxService.stopSellingMealbox(mealboxId);
         return new ResponseEntity(HttpStatus.OK);
     }
 

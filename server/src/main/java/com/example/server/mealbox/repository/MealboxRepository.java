@@ -8,12 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface MealboxRepository extends JpaRepository<Mealbox, Long> {
-    Page<Mealbox> findAllByMealboxInfoIsNot(Pageable pageable, Mealbox.MealboxInfo mealboxInfo);
+    Page<Mealbox> findAllByForSaleIsTrueAndMealboxInfoIsNot(Pageable pageable, Mealbox.MealboxInfo mealboxInfo);
 
-    Page<Mealbox> findAllByMealboxInfoIsNotAndNameContains(Pageable pageable, Mealbox.MealboxInfo mealboxInfo,
+    Page<Mealbox> findAllByForSaleIsTrueAndMealboxInfoIsNotAndNameContains(Pageable pageable, Mealbox.MealboxInfo mealboxInfo,
                                                               String search);
 
-    Page<Mealbox> findAllDistinctByMealboxInfoIsNotAndNameContainingOrMealboxProductsProductNameContains(Pageable pageable,
+    Page<Mealbox> findAllDistinctByForSaleIsTrueAndMealboxInfoIsNotAndNameContainingOrMealboxProductsProductNameContains(Pageable pageable,
                                                                                                  Mealbox.MealboxInfo mealboxInfo,
                                                                                                  String mealboxName, String productName);
 

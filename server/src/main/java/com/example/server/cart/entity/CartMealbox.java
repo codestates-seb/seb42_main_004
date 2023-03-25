@@ -36,6 +36,7 @@ public class CartMealbox {
     CartMealbox cartMealbox = CartMealbox.builder()
             .cart(cart).mealbox(mealbox).quantity(1).build();
     mealbox.addCartMealbox(cartMealbox);
+    cart.addCartMealbox(cartMealbox);
     return cartMealbox;
   }
 
