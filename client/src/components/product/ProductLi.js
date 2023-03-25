@@ -13,7 +13,7 @@ function ProductLi({ product, admin, reload }) {
         `${product.name}을(를) 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
       )
     ) {
-      deleteData(`/admin/mealboxes/${product.productId}`).then((res) => {
+      deleteData(`/admin/products/${product.productId}`).then((res) => {
         if (res.status === 200) {
           alert(`${product.name}이(가) 삭제되었습니다.`);
           reload();
