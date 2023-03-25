@@ -57,10 +57,10 @@ function LoginUl() {
   // const addCart = () => {
   //   console.log(mealboxes);
   //   mealboxes.forEach((el) => {
-  //     if (mealboxes.name === 'custom') {
-  //       return postData('/users/cart/custom', el);
+  //     if (el.name === 'custom') {
+  //       postData('/users/cart/custom', el);
   //     } else {
-  //       return postData('/users/cart', { mealboxId: el.mealboxId });
+  //       postData('/users/cart', { mealboxId: el.mealboxId });
   //     }
   //   });
   // };
