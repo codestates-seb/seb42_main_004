@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { TextButton } from '../commons/ModalDiv';
-import { MealBoxCardContainerDiv } from '../allboxes/MealBoxCardDiv';
+import { MealBoxCardContainerDiv } from '../allboxes/MealBoxCardLi';
 import { deleteProduct, setProduct } from '../../reducers/customReducer';
 
 function BoxElementCardDiv({ product, quantity, totalQuantity }) {

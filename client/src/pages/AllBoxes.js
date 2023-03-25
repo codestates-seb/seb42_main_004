@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import NoResult from '../components/commons/NoResult';
+import NoResultDiv from '../components/commons/NoResultDiv';
 import BannerLink from '../components/commons/BannerLink';
 import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
-import MealBoxCardDiv from '../components/allboxes/MealBoxCardDiv';
+import MealBoxCardLi from '../components/allboxes/MealBoxCardLi';
 import FilterSearchDiv from '../components/commons/FilterSearchDiv';
 import useGET from '../util/useGET';
 import useFilterSearch from '../util/useFilterSearch';
@@ -22,7 +22,7 @@ function AllBoxes() {
       isPending={isPending}
       error={error}
       res={res?.data}
-      title="전체 밀박스 목록 보기"
+      title="밀박스 목록 보기"
     >
       <MealBoxesWrapDiv className="margininside">
         <BannerLink />
@@ -38,28 +38,24 @@ function AllBoxes() {
             검색결과 {res?.pageInfo?.totalElements?.toLocaleString('ko-KR')}개
           </SearchResultH3>
         )}
+        {res.data?.length === 0 && (
+          <NoResultDiv
+            search={(word) => navigate(`/mealboxes/search?page=1&name=${word}`)}
+            errorWord={errorWord}
+            replaceWord={'고단백질 아침 세트'}
+          />
+        )}
         <MealBoxesUl>
           {((uri.includes('?page=1&') && !uri.includes('search')) ||
-            res.data?.length === 0) && (
-            <li>
-              <MealBoxCardDiv />
-            </li>
-          )}
-          {res.data?.length !== 0 ? (
+            res.data?.length === 0) && <MealBoxCardLi />}
+          {res.data?.length !== 0 &&
             res.data?.map((mealbox) => (
-              <li key={mealbox.mealboxId}>
-                <MealBoxCardDiv mealBox={mealbox} reload={getData} />
-              </li>
-            ))
-          ) : (
-            <NoResult
-              search={(word) =>
-                navigate(`/mealboxes/search?page=1&name=${word}`)
-              }
-              errorWord={errorWord}
-              replaceWord={'고단백질 아침 세트'}
-            />
-          )}
+              <MealBoxCardLi
+                key={mealbox.mealboxId}
+                mealBox={mealbox}
+                reload={getData}
+              />
+            ))}
         </MealBoxesUl>
         <PaginationUl
           page={res?.pageInfo?.page}
