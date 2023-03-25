@@ -77,7 +77,6 @@ function MyInfoUl({ pathName }) {
         status: res.status,
       });
       setImgInputBuffer(res.imagePath);
-      console.log(res);
     }
   }, [res]);
 
@@ -85,18 +84,22 @@ function MyInfoUl({ pathName }) {
     let reader = new FileReader();
     if (imgInput) {
       reader.readAsDataURL(imgInput);
-      reader.onloadend = () => {
-        setImgInputBuffer(reader.result);
-      };
-      const formData = new FormData();
-      formData.append('file', imgInput);
-      postData('/users/image', formData).then((data) => {
-        if (data.status === 201) {
-          alert('사진이 변경되었습니다.');
-        } else {
-          alert('관리자에게 문의하세요.');
-        }
-      });
+      if (confirm('사진을 변경하시겠습니까?')) {
+        reader.onloadend = () => {
+          setImgInputBuffer(reader.result);
+        };
+        const formData = new FormData();
+        formData.append('file', imgInput);
+        postData('/users/image', formData).then((data) => {
+          if (data.status === 201) {
+            alert('사진이 변경되었습니다.');
+          } else {
+            alert('관리자에게 문의하세요.');
+          }
+        });
+      } else {
+        return;
+      }
     }
   }, [imgInput]);
 
