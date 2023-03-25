@@ -13,7 +13,7 @@ import logo from '../../assets/logo_black.png';
 
 function Header() {
   const [isNav, setIsNav] = useState(false);
-  const { isLogin, user } = useSelector((state) => state.authReducer);
+  const { isLogin, user, admin } = useSelector((state) => state.authReducer); // admin 삭제 예정
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -38,6 +38,9 @@ function Header() {
       return;
     }
   };
+
+  console.log(`로그인: ${isLogin}`); // 삭제 예정
+  console.log(`관리자: ${admin}`); // 삭제 예정
 
   return (
     <ContainerHeader>

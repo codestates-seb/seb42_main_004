@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import CartItemLi from '../components/cartPage/CartItemLi';
 import CartAside from '../components/commons/CartAside';
-// import { resEx } from '../components/cartPage/dummyData';
 import getData from '../util/getData';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCart } from '../reducers/cartReducer';
@@ -21,7 +20,7 @@ function Cart() {
     let checkedItem = document.querySelectorAll(
       'input[type="checkbox"]:checked'
     );
-    console.log(checkedItem);
+
     let checkedCartMealBoxId = Array.from(checkedItem).map((el) =>
       String(el.id)
     );
@@ -66,9 +65,7 @@ function Cart() {
   };
 
   useEffect(() => {
-    console.log(isLogin);
     if (isLogin) {
-      console.log(isLogin);
       getData('/users/cart').then((data) => {
         dispatch(setCart(data.data));
       });

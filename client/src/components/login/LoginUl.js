@@ -6,11 +6,13 @@ import LoginButton from './LoginButton';
 import { FcGoogle } from 'react-icons/fc';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import parseToken from '../../util/parseToken';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import setAuthorizationToken from '../../util/setAuthorizationToken';
 import { setAuth } from '../../reducers/authReducer';
 import GetTemplate from '../commons/GetTemplate';
 
 function LoginUl() {
+  const { mealboxes } = useSelector((state) => state.cartReducer.cart);
   const [showPwd, setShowPwd] = useState(false);
   const [inputValue, setInputValue] = useState({
     email: '',
@@ -20,10 +22,12 @@ function LoginUl() {
   const { email, password } = inputValue;
   const dispatch = useDispatch();
 
-  const login = (token) => {
+  const login = async (token) => {
     if (!localStorage.getItem('accessToken')) {
       localStorage.setItem('accessToken', token);
+      setAuthorizationToken(token);
       Auth();
+      addCart();
       window.location.reload();
     } else if (
       localStorage.getItem('accessToken') &&
@@ -31,7 +35,9 @@ function LoginUl() {
     ) {
       localStorage.removeItem('accessToken');
       localStorage.setItem('accessToken', token);
+      setAuthorizationToken(token);
       Auth();
+      addCart();
       window.location.reload();
     }
   };
@@ -49,6 +55,16 @@ function LoginUl() {
         admin: roles.includes('ADMIN'),
       })
     );
+  };
+
+  const addCart = () => {
+    mealboxes.forEach((el) => {
+      if (el.name === 'custom') {
+        postData('/users/cart/custom', el);
+      } else {
+        postData('/users/cart', { mealboxId: el.mealboxId });
+      }
+    });
   };
 
   const handleClick = () => {

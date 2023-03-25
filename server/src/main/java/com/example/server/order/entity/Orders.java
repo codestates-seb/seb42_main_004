@@ -6,6 +6,7 @@ import com.example.server.payment.Entity.PayInfo;
 import com.example.server.user.entity.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +116,7 @@ public class Orders extends BaseEntity {
   }
 
   public void makeOrderNumber() {
-    String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+    String date = LocalDateTime.now().atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     this.orderNumber = date + RandomStringUtils.randomNumeric(6);
   }
 }

@@ -33,6 +33,7 @@ function Payment() {
   const checkedCartMealBoxId = location.state
     ? location.state.checkedCartMealBoxId
     : [];
+
   const [res, isPending, error] = useGET(`/orders/checkout/${orderId}`);
 
   useEffect(() => {
