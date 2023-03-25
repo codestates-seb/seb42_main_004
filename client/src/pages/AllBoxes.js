@@ -1,42 +1,22 @@
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import MealBoxCardDiv from '../components/allboxes/MealBoxCardDiv';
-import BannerLink from '../components/commons/BannerLink';
-import FilterSearchDiv from '../components/commons/FilterSearchDiv';
-import GetTemplate from '../components/commons/GetTemplate';
 import NoResult from '../components/commons/NoResult';
+import BannerLink from '../components/commons/BannerLink';
+import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
+import MealBoxCardDiv from '../components/allboxes/MealBoxCardDiv';
+import FilterSearchDiv from '../components/commons/FilterSearchDiv';
 import useGET from '../util/useGET';
+import useFilterSearch from '../util/useFilterSearch';
 
 function AllBoxes() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.authReducer);
   let { pathname, search } = useLocation();
-  if (!search) search = '?page=1&sort=id&dir=ASC';
+  if (!search) search = '?page=1&sort=id&dir=DESC';
   const [res, isPending, error, getData] = useGET(`${pathname}${search}`);
-  const [searchWord, setSearchWord] = useState('');
-  const [errorWord, setErrorWord] = useState(searchWord);
-  const [sortBy, setSortBy] = useState(['id', 'ASC']);
-
-  const searchMealBox = () => {
-    navigate(paginationUrl(1));
-  };
-
-  const paginationUrl = (page) => {
-    setErrorWord(searchWord);
-    return searchWord
-      ? `/mealboxes/search/detail?page=${page}&name=${searchWord}`
-      : `/mealboxes?page=${page}&sort=${sortBy[0]}&dir=${sortBy[1]}`;
-  };
-
-  const sortProducts = (select) => {
-    setSearchWord('');
-    const sortBy = select.split('/');
-    setSortBy(sortBy);
-    navigate(`/mealboxes?page=1&sort=${sortBy[0]}&dir=${sortBy[1]}`);
-  };
+  const [toFilterSearchDiv, errorWord, paginationUrl] = useFilterSearch(true);
 
   return (
     <GetTemplate isPending={isPending} error={error} res={res?.data}>
@@ -47,9 +27,7 @@ function AllBoxes() {
         </h1>
         <FilterSearchDiv
           placeholder="healthy day 밀박스"
-          sortProducts={sortProducts}
-          searchSubject={searchMealBox}
-          setSearchWord={setSearchWord}
+          {...toFilterSearchDiv}
         />
         {errorWord && (
           <SearchResultH3>

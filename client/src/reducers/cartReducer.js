@@ -20,7 +20,7 @@ const cartSlice = createSlice({
 
     deleteCartItem: (state, action) => {
       const { cart } = state;
-      action.payload.forEach((d) => {
+      action.payload?.forEach((d) => {
         const idx = cart.mealboxes.findIndex((el) => {
           return String(el.cartMealboxId) === String(d);
         });

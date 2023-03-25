@@ -62,18 +62,18 @@ public class PaymentService {
       log.error("!!!!!!!!! ERROR WHILE PAYING !!!!!!!!!");
       throw e;
     }
-    log.info("try catch 문 통과 / paidOrder 진입");
+//    log.info("try catch 문 통과 / paidOrder 진입");
     // 일치하면 주문완료로 상태 변경
     orderService.paidOrder(order);
-    log.info("paidOrder 통과 / Order, PayInfo 매핑 진입");
+//    log.info("paidOrder 통과 / Order, PayInfo 매핑 진입");
     // 결제정보 저장
     mappingOrderAndPayInfo(order, impUid);
-    log.info("Order, PayInfo 매핑 통과 / deleteCartMealbox 진입");
+//    log.info("Order, PayInfo 매핑 통과 / deleteCartMealbox 진입");
     // 장바구니에 담겨있던 물건 삭제
     List<Long> cartMealboxIds = order.getCartMealboxIds();
     Cart cart = order.getUser().getCart();
     for (Long id : cartMealboxIds) {
-      log.info("id : {}", id);
+//      log.info("id : {}", id);
       cartService.removeMealboxFromCart(cart, id);
     }
 //    cartMealboxService.deleteCartMealboxAfterPayment(order);
