@@ -9,27 +9,11 @@ import profile from '../../assets/profile.png';
 import useGET from '../../util/useGET';
 import patchData from '../../util/patchData';
 import postData from '../../util/postData';
+import EmainDiv from './EmailDiv';
 
 function MyInfoUl({ pathName }) {
-  const [inputValue, setInputValue] = useState({
-    addressee: '',
-    addresseePhoneNumber: '',
-    deliveryDetailAddress: '',
-    deliverySimpleAddress: '',
-    deliveryZipCode: '',
-    email: '',
-    userDetailAddress: '',
-    userPhoneNumber: '',
-    userSimpleAddress: '',
-    userZipCode: '',
-    username: '',
-    imagePath: '',
-  });
-  const [passwordInputValue, setPasswordInputValue] = useState({
-    password: '',
-    newPassword: '',
-    confirmNewPassword: '',
-  });
+  const [inputValue, setInputValue] = useState({});
+  const [passwordInputValue, setPasswordInputValue] = useState({});
   const [imgInput, setImgInput] = useState();
   const [imgInputBuffer, setImgInputBuffer] = useState(inputValue?.imagePath);
   const [res, isPending, error] = useGET('/users');
@@ -90,8 +74,10 @@ function MyInfoUl({ pathName }) {
         userSimpleAddress: (res.address && res.address.simpleAddress) || '',
         userZipCode: (res.address && res.address.zipCode) || '',
         imagePath: res.imagePath,
+        status: res.status,
       });
       setImgInputBuffer(res.imagePath);
+      console.log(res);
     }
   }, [res]);
 
@@ -130,7 +116,11 @@ function MyInfoUl({ pathName }) {
                 onInput={(e) => setImgInput(e.target.files[0])}
               />
               <ContentDiv name="닉네임" value={inputValue.username} />
-              <ContentDiv name="이메일" value={inputValue.email} />
+              <EmainDiv
+                name="이메일"
+                value={inputValue.email}
+                status={inputValue.status}
+              />
               <ContentDiv name="연락처" value={inputValue.userPhoneNumber} />
               <ContentDiv
                 name="주소"
