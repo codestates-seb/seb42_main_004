@@ -7,11 +7,11 @@ import { FcGoogle } from 'react-icons/fc';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import parseToken from '../../util/parseToken';
 import { useDispatch, useSelector } from 'react-redux';
+import setAuthorizationToken from '../../util/setAuthorizationToken';
 import { setAuth } from '../../reducers/authReducer';
 
 function LoginUl() {
   const { mealboxes } = useSelector((state) => state.cartReducer.cart);
-  console.log(mealboxes);
   const [showPwd, setShowPwd] = useState(false);
   const [inputValue, setInputValue] = useState({
     email: '',
@@ -21,11 +21,12 @@ function LoginUl() {
   const { email, password } = inputValue;
   const dispatch = useDispatch();
 
-  const login = (token) => {
+  const login = async (token) => {
     if (!localStorage.getItem('accessToken')) {
       localStorage.setItem('accessToken', token);
+      setAuthorizationToken(token);
       Auth();
-      // addCart();
+      addCart();
       window.location.reload();
     } else if (
       localStorage.getItem('accessToken') &&
@@ -33,8 +34,9 @@ function LoginUl() {
     ) {
       localStorage.removeItem('accessToken');
       localStorage.setItem('accessToken', token);
+      setAuthorizationToken(token);
       Auth();
-      // addCart();
+      addCart();
       window.location.reload();
     }
   };
@@ -54,16 +56,15 @@ function LoginUl() {
     );
   };
 
-  // const addCart = () => {
-  //   console.log(mealboxes);
-  //   mealboxes.forEach((el) => {
-  //     if (el.name === 'custom') {
-  //       postData('/users/cart/custom', el);
-  //     } else {
-  //       postData('/users/cart', { mealboxId: el.mealboxId });
-  //     }
-  //   });
-  // };
+  const addCart = () => {
+    mealboxes.forEach((el) => {
+      if (el.name === 'custom') {
+        postData('/users/cart/custom', el);
+      } else {
+        postData('/users/cart', { mealboxId: el.mealboxId });
+      }
+    });
+  };
 
   const handleClick = () => {
     if (email && password) {
