@@ -30,10 +30,10 @@ function MealBoxCardLi({ mealBox, reload, title }) {
       <MealBoxCardContainerDiv className="shadow">
         <MealBoxImgDiv className="shadow">
           {mealBox && (
-            <p>
+            <MealBoxDesP>
               <span>{mealBox.weight.toLocaleString('ko-KR')}g(ml)</span>
               <span>{mealBox.kcal.toLocaleString('ko-KR')}kcal</span>
-            </p>
+            </MealBoxDesP>
           )}
           <MealBoxImg alt="" src={!mealBox ? blankbucket : mealBox.imagePath} />
           {mealBox && (
@@ -48,12 +48,12 @@ function MealBoxCardLi({ mealBox, reload, title }) {
             </MealBoxDesUl>
           )}
         </MealBoxImgDiv>
-        <MealBoxH3 custom={!mealBox && 1}>
+        <MealBoxH3 center={!mealBox && 1}>
           {mealBox
             ? mealBox.name
             : `${admin ? '새로운' : '나만의'} 밀박스 만들기`}
         </MealBoxH3>
-        <MealBoxCardButtonDiv custom={!mealBox && 1}>
+        <MealBoxCardButtonDiv>
           <MainButton
             handler={goToCustom(mealBox, admin)}
             name={!admin || !mealBox ? '커스텀 하기' : '밀박스 수정'}
@@ -91,44 +91,41 @@ export default MealBoxCardLi;
 
 export const MealBoxCardContainerDiv = styled.div`
   width: 100%;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   border-radius: 4px;
   padding: 5%;
   background-color: var(--head_brown);
 `;
-const MealBoxImgDiv = styled.div`
+export const MealBoxImgDiv = styled.div`
   display: flex;
   align-items: center;
   position: relative;
   width: 100%;
   border-radius: 4px;
-  margin-bottom: 1rem;
   background-color: var(--white);
   padding-bottom: 100%;
+`;
+const MealBoxDesP = styled.p`
+  z-index: 10;
+  display: flex;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
 
-  > p {
-    z-index: 10;
-    display: flex;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    justify-content: flex-end;
-    margin-top: 0.5rem;
-
-    > span {
-      font-size: 0.8rem;
-      margin-right: 0.5rem;
-    }
+  > span {
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
   }
 `;
-const MealBoxImg = styled.img`
+export const MealBoxImg = styled.img`
   max-width: 100%;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   height: auto;
-  padding: 2rem;
 `;
 const MealBoxDesUl = styled.ul`
   z-index: 9;
@@ -168,8 +165,9 @@ const MealBoxDesLi = styled.h3`
 `;
 const MealBoxH3 = styled.h3`
   font-size: 1.3rem;
+  margin-top: 1rem;
   margin-bottom: 0.5rem;
-  text-align: ${(props) => props.custom && 'center'};
+  text-align: ${(props) => props.center && 'center'};
 `;
 const MealBoxCardButtonDiv = styled.div`
   position: relative;

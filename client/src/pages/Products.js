@@ -6,7 +6,7 @@ import ProductLi from '../components/product/ProductLi';
 import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
 import FilterSearchDiv from '../components/commons/FilterSearchDiv';
-import { MealBoxesWrapDiv, SearchResultH3 } from './AllBoxes';
+import { MealBoxesUl, MealBoxesWrapDiv, SearchResultH3 } from './AllBoxes';
 import useGET from '../util/useGET';
 import useFilterSearch from '../util/useFilterSearch';
 
@@ -24,9 +24,9 @@ function Products() {
       isPending={isPending}
       error={error}
       res={res?.data}
-      title="전체 구성품 목록 보기"
+      title="구성품 목록 보기"
     >
-      <ContainerDiv className="margininside">
+      <MealBoxesWrapDiv className="margininside">
         <h1>구성품 설명</h1>
         <FilterSearchDiv placeholder="고구마" {...toFilterSearchDiv} />
         {errorWord && (
@@ -41,7 +41,7 @@ function Products() {
             replaceWord={'단백질쉐이크'}
           />
         )}
-        <ul>
+        <ProductsUl>
           {admin &&
             ((uri.includes('?page=1&') && !uri.includes('search')) ||
               res.data?.length === 0) && (
@@ -56,25 +56,28 @@ function Products() {
                 reload={getData}
               />
             ))}
-        </ul>
+        </ProductsUl>
         <PaginationUl
           page={res?.pageInfo?.page}
           totalpage={res?.pageInfo?.totalPages}
           url={paginationUrl}
         />
-      </ContainerDiv>
+      </MealBoxesWrapDiv>
     </GetTemplate>
   );
 }
 
 export default Products;
 
-const ContainerDiv = styled(MealBoxesWrapDiv)`
-  > ul {
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    padding: 0;
-    list-style: none;
+const ProductsUl = styled(MealBoxesUl)`
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 2vw;
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media screen and (max-width: 480px) {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 `;
