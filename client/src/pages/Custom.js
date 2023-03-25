@@ -14,10 +14,11 @@ import useFilterSearch from '../util/useFilterSearch';
 import { initializeCustom } from '../reducers/customReducer';
 
 function Custom() {
-  const [path, setPath] = useState('?page=1&sort=id&dir=DESC');
-  const [openCustom, setOpenCustom] = useState(false);
-  const [res, isPending, error] = useGET(path);
   const { custom } = useSelector((state) => state.customReducer);
+  const { admin } = useSelector((state) => state.authReducer);
+  const [path, setPath] = useState('/products?page=1&sort=id&dir=DESC');
+  const [res, isPending, error] = useGET(path);
+  const [openCustom, setOpenCustom] = useState(false);
   const [toFilterSearchDiv, errorWord, , setPage] = useFilterSearch(
     false,
     setPath
@@ -32,7 +33,12 @@ function Custom() {
   const products = openCustom ? custom.products : res?.data;
 
   return (
-    <GetTemplate isPending={isPending} error={error} res={res.data}>
+    <GetTemplate
+      isPending={isPending}
+      error={error}
+      res={res.data}
+      title={`${admin ? '새로운' : '나만의'} 밀박스 만들기`}
+    >
       <CustomWrapDiv className="margininside">
         <CustomTitleDiv>
           <h1>커스텀 밀박스</h1>
