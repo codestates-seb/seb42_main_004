@@ -82,7 +82,7 @@ public class ProductService {
     }
 
     public void verifyDeletedProduct(Product product) {
-        if(product.isForSale()){
+        if(product.isForSale() == false){
             throw new BusinessLogicException(ProductException.PRODUCT_NOT_FOR_SALE);
         }
     }
