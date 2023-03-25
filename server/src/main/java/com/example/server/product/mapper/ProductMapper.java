@@ -11,7 +11,13 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-    Product productDtoToProduct(ProductDto productDto);
+    default Product productDtoToProduct(ProductDto productDto) {
+        return Product.builder().name(productDto.getName())
+                .weight(productDto.getWeight())
+                .kcal(productDto.getKcal())
+                .price(productDto.getPrice())
+                .build();
+    }
 
     default List<ProductOnlyResponseDto> productsToProductOnlyResponseDtos(List<Product> products){
         return products.stream().map(product ->{
