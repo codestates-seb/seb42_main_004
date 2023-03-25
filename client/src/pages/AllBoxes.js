@@ -5,7 +5,7 @@ import NoResult from '../components/commons/NoResult';
 import BannerLink from '../components/commons/BannerLink';
 import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
-import MealBoxCardDiv from '../components/allboxes/MealBoxCardDiv';
+import MealBoxCardLi from '../components/allboxes/MealBoxCardLi';
 import FilterSearchDiv from '../components/commons/FilterSearchDiv';
 import useGET from '../util/useGET';
 import useFilterSearch from '../util/useFilterSearch';
@@ -40,16 +40,14 @@ function AllBoxes() {
         )}
         <MealBoxesUl>
           {((uri.includes('?page=1&') && !uri.includes('search')) ||
-            res.data?.length === 0) && (
-            <li>
-              <MealBoxCardDiv />
-            </li>
-          )}
+            res.data?.length === 0) && <MealBoxCardLi />}
           {res.data?.length !== 0 ? (
             res.data?.map((mealbox) => (
-              <li key={mealbox.mealboxId}>
-                <MealBoxCardDiv mealBox={mealbox} reload={getData} />
-              </li>
+              <MealBoxCardLi
+                key={mealbox.mealboxId}
+                mealBox={mealbox}
+                reload={getData}
+              />
             ))
           ) : (
             <NoResult
