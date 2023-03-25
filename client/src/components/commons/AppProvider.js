@@ -13,7 +13,9 @@ function AppProvider({ children }) {
     <HelmetProvider>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <GoogleOAuthProvider clientId="966150253216-oq3kbhq8j5johfj2thhh936pkq9velkc.apps.googleusercontent.com">
+          <GoogleOAuthProvider
+            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+          >
             <BrowserRouter>{children}</BrowserRouter>
           </GoogleOAuthProvider>
         </PersistGate>
