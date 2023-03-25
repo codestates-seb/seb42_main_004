@@ -1,24 +1,36 @@
 import styled from 'styled-components';
 import { AiOutlineCheckCircle } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+import getData from '../../util/getData';
 
 function EmainDiv({ name, value, status }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    getData('/users/resend').then(() => {
+      navigate('/email/confirm', { state: { email: value } });
+    });
+  };
+
   return (
     <ContainerDiv>
       <TitleDiv>{name}</TitleDiv>
       {status === 'USER_TMP' ? (
         <>
           <div>{value}</div>
-          <ConfirmDiv>
-            <button className="buttonstyle shadow">인증하기</button>
-          </ConfirmDiv>
+          <ConfirmSpan>
+            <button onClick={handleClick} className="buttonstyle shadow">
+              인증하기
+            </button>
+          </ConfirmSpan>
         </>
       ) : (
         <>
           <div>{value}</div>
-          <ConfirmDiv>
-            <AiOutlineCheckCircle size={25} color="green" />
-            <div>인증완료</div>
-          </ConfirmDiv>
+          <ConfirmSpan>
+            <OkIcon size={25} />
+            <span>인증완료</span>
+          </ConfirmSpan>
         </>
       )}
     </ContainerDiv>
@@ -33,8 +45,11 @@ const ContainerDiv = styled.div`
   flex-direction: row;
   align-items: center;
 
-  > div:last-child {
-    flex-grow: 1;
+  button {
+    padding: 0 0.5rem;
+    border: 1px solid var(--green);
+    color: var(--green);
+    background-color: var(--white);
   }
 `;
 const TitleDiv = styled.div`
@@ -56,6 +71,18 @@ const TitleDiv = styled.div`
     margin-right: 0;
   }
 `;
-const ConfirmDiv = styled.div`
+const ConfirmSpan = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-left: 1rem;
+
+  > span {
+    padding-left: 0.2rem;
+    color: var(--green);
+    font-family: 'IBM Plex Sans KR', sans-serif;
+  }
+`;
+const OkIcon = styled(AiOutlineCheckCircle)`
+  color: var(--green);
 `;

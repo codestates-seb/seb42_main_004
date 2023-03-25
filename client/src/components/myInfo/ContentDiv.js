@@ -7,7 +7,7 @@ function ContentDiv({ name, value, onInput }) {
       {name && name === '프로필 사진' ? (
         <UploadDiv>
           <label htmlFor="file" className="buttonstyle shadow">
-            변경 하기
+            변경하기
           </label>
           <input id="file" type="file" accept="image/*" onInput={onInput} />
         </UploadDiv>
