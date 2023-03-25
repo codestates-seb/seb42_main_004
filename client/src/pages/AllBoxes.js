@@ -38,26 +38,24 @@ function AllBoxes() {
             검색결과 {res?.pageInfo?.totalElements?.toLocaleString('ko-KR')}개
           </SearchResultH3>
         )}
+        {res.data?.length === 0 && (
+          <NoResultDiv
+            search={(word) => navigate(`/mealboxes/search?page=1&name=${word}`)}
+            errorWord={errorWord}
+            replaceWord={'고단백질 아침 세트'}
+          />
+        )}
         <MealBoxesUl>
           {((uri.includes('?page=1&') && !uri.includes('search')) ||
             res.data?.length === 0) && <MealBoxCardLi />}
-          {res.data?.length !== 0 ? (
+          {res.data?.length !== 0 &&
             res.data?.map((mealbox) => (
               <MealBoxCardLi
                 key={mealbox.mealboxId}
                 mealBox={mealbox}
                 reload={getData}
               />
-            ))
-          ) : (
-            <NoResultDiv
-              search={(word) =>
-                navigate(`/mealboxes/search?page=1&name=${word}`)
-              }
-              errorWord={errorWord}
-              replaceWord={'고단백질 아침 세트'}
-            />
-          )}
+            ))}
         </MealBoxesUl>
         <PaginationUl
           page={res?.pageInfo?.page}

@@ -34,13 +34,20 @@ function Products() {
             검색결과 {res?.pageInfo?.totalElements?.toLocaleString('ko-KR')}개
           </SearchResultH3>
         )}
+        {res.data?.length === 0 && (
+          <NoResultDiv
+            search={(word) => navigate(`/products/search?page=1&name=${word}`)}
+            errorWord={errorWord}
+            replaceWord={'단백질쉐이크'}
+          />
+        )}
         <ul>
           {admin &&
             ((uri.includes('?page=1&') && !uri.includes('search')) ||
               res.data?.length === 0) && (
               <ProductLi admin={admin} reload={getData} />
             )}
-          {res.data?.length !== 0 ? (
+          {res.data?.length !== 0 &&
             res.data?.map((product) => (
               <ProductLi
                 key={product.productId}
@@ -48,16 +55,7 @@ function Products() {
                 admin={admin}
                 reload={getData}
               />
-            ))
-          ) : (
-            <NoResultDiv
-              search={(word) =>
-                navigate(`/products/search?page=1&name=${word}`)
-              }
-              errorWord={errorWord}
-              replaceWord={'단백질쉐이크'}
-            />
-          )}
+            ))}
         </ul>
         <PaginationUl
           page={res?.pageInfo?.page}
