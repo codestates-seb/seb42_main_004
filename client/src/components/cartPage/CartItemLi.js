@@ -6,19 +6,13 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 function CartItemLi({ mealbox, value, calcRenderPrice }) {
-  console.log(mealbox);
   let { name, kcal, price, quantity, products } = mealbox;
   let [isChecked, setIsChecked] = useState(true);
 
   let IsCheckedHandler = () => {
     setIsChecked(!isChecked);
     calcRenderPrice();
-    // unchecked => 화면에서만 총액 변경, 구매하기 클릭 시 해당 밀박스 제외
   };
-
-  // useEffect(() => {
-  //   calcRenderPrice();
-  // }, [isChecked]);
 
   return (
     <CartItemWrapperLi id={value}>

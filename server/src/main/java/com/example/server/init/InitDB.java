@@ -40,7 +40,7 @@ public class InitDB {
   private final InitMealbox initMealbox;
   private final InitMealboxSet initMealboxSet;
 
-  @PostConstruct
+  // @PostConstruct
   public void init() {
     initUser.UserInit();
     initProduct.ProductInit();
@@ -63,24 +63,27 @@ class InitUser {
     List<User> userList = new ArrayList<>();
 
     User admin = User.builder().id(1L).email("admin@gmail.com").password(
-            passwordEncoder.encode("admin")).name("관리자").roles(
-            authorityUtils.createRoles("admin@gmail.com")).address(new Address())
+        passwordEncoder.encode("admin")).name("관리자").roles(
+            authorityUtils.createRoles("admin@gmail.com"))
+        .address(new Address())
         .deliveryInformation(new DeliveryInformation()).status(UserStatus.USER_ADMIN)
         .phoneNumber("010-1234-1234").build();
     Cart cart = Cart.builder().user(admin).build();
     admin.setCart(cart);
     userList.add(admin);
     User user1 = User.builder().id(2L).email("baram2449@naver.com").password(
-            passwordEncoder.encode("qwe123")).name("위준성").roles(
-            authorityUtils.createRoles("qwe@gmail.com")).address(new Address())
+        passwordEncoder.encode("qwe123")).name("위준성").roles(
+            authorityUtils.createRoles("qwe@gmail.com"))
+        .address(new Address())
         .deliveryInformation(new DeliveryInformation()).mailKey("QWERQWERQW")
         .phoneNumber("010-1234-1234").build();
     Cart cart2 = Cart.builder().user(user1).build();
     user1.setCart(cart2);
     userList.add(user1);
     User user2 = User.builder().id(3L).email("asd@gmail.com").password(
-            passwordEncoder.encode("asd123")).name("진태양").roles(
-            authorityUtils.createRoles("asd@gmail.com")).address(new Address())
+        passwordEncoder.encode("asd123")).name("진태양").roles(
+            authorityUtils.createRoles("asd@gmail.com"))
+        .address(new Address())
         .deliveryInformation(new DeliveryInformation())
         .phoneNumber("010-1234-1234").build();
     Cart cart3 = Cart.builder().user(user2).build();
@@ -161,38 +164,38 @@ class InitMealbox {
 
   public void MealboxInit() {
     List<Mealbox> mealboxes = new ArrayList<>();
-    long[][] productIdList = {{30, 15, 2, 32, 16}, {37, 21, 12, 51, 41, 54}, {4, 10, 27, 6, 29},
-        {39, 48, 24, 27}, {27, 52}, {4, 32, 53, 22, 21}, {11, 12, 42, 32, 21}, {36, 50, 5},
-        {4, 9, 12},
-        {30, 31, 15, 1}, {42, 3, 12, 32}, {47, 27, 21, 28}, {1, 2, 15, 25, 43, 12},
-        {50, 37, 48, 21}, {4, 9, 6, 38}, {30, 43, 2, 32}, {37, 21, 12, 51, 41}, {4, 10, 50, 6, 29},
-        {42, 50, 24, 2}, {30, 48, 19}, {5, 26, 12, 25}, {1, 15, 32}, {50, 5, 48, 28},
-        {4, 26, 6, 38}, {19, 2, 27, 24}, {37, 16, 11, 49, 42}, {32, 35, 21, 53},
-        {42, 44, 45, 21}, {5, 3, 27, 13, 33}, {4, 10, 27, 46}, {42, 44, 45, 17}, {37, 26, 13, 32},
-        {4, 3, 27, 25}, {25, 34, 31}, {36, 12, 37}, {39, 40, 24}, {23, 3, 41, 21, 11},
-        {4, 9, 6, 28}, {25, 34, 42, 43}, {26, 27, 37, 41}, {4, 22, 6, 38},
-        {17, 19, 25}, {27, 21, 28, 24}, {30, 1}, {14, 31, 19}, {24, 21, 32, 11}, {4, 12, 26},
-        {1, 2, 19}, {3, 4, 6, 7, 23}, {8, 11, 12, 13, 41}, {2, 19, 15}, {20, 21}, {4, 22, 12, 23},
-        {14, 15, 24}, {20, 25, 33}, {4, 22, 12},
-        {2, 19}, {24, 12, 23}, {11, 9, 28}, {14, 15, 33}, {16, 17}, {18}, {1, 2}, {26, 4, 6, 7},
-        {8, 11, 12, 13}, {14, 15}, {3, 17, 26}};
+    long[][] productIdList = { { 30, 15, 2, 32, 16 }, { 37, 21, 12, 51, 41, 54 }, { 4, 10, 27, 6, 29 },
+        { 39, 48, 24, 27 }, { 27, 52 }, { 4, 32, 53, 22, 21 }, { 11, 12, 42, 32, 21 }, { 36, 50, 5 },
+        { 4, 9, 12 },
+        { 30, 31, 15, 1 }, { 42, 3, 12, 32 }, { 47, 27, 21, 28 }, { 1, 2, 15, 25, 43, 12 },
+        { 50, 37, 48, 21 }, { 4, 9, 6, 38 }, { 30, 43, 2, 32 }, { 37, 21, 12, 51, 41 }, { 4, 10, 50, 6, 29 },
+        { 42, 50, 24, 2 }, { 30, 48, 19 }, { 5, 26, 12, 25 }, { 1, 15, 32 }, { 50, 5, 48, 28 },
+        { 4, 26, 6, 38 }, { 19, 2, 27, 24 }, { 37, 16, 11, 49, 42 }, { 32, 35, 21, 53 },
+        { 42, 44, 45, 21 }, { 5, 3, 27, 13, 33 }, { 4, 10, 27, 46 }, { 42, 44, 45, 17 }, { 37, 26, 13, 32 },
+        { 4, 3, 27, 25 }, { 25, 34, 31 }, { 36, 12, 37 }, { 39, 40, 24 }, { 23, 3, 41, 21, 11 },
+        { 4, 9, 6, 28 }, { 25, 34, 42, 43 }, { 26, 27, 37, 41 }, { 4, 22, 6, 38 },
+        { 17, 19, 25 }, { 27, 21, 28, 24 }, { 30, 1 }, { 14, 31, 19 }, { 24, 21, 32, 11 }, { 4, 12, 26 },
+        { 1, 2, 19 }, { 3, 4, 6, 7, 23 }, { 8, 11, 12, 13, 41 }, { 2, 19, 15 }, { 20, 21 }, { 4, 22, 12, 23 },
+        { 14, 15, 24 }, { 20, 25, 33 }, { 4, 22, 12 },
+        { 2, 19 }, { 24, 12, 23 }, { 11, 9, 28 }, { 14, 15, 33 }, { 16, 17 }, { 18 }, { 1, 2 }, { 26, 4, 6, 7 },
+        { 8, 11, 12, 13 }, { 14, 15 }, { 3, 17, 26 } };
 
-    int[][] quantityList = {{1, 1, 1, 2, 1}, {2, 1, 2, 1, 1, 1}, {2, 1, 1, 1, 1}, {1, 1, 2, 2},
-        {1, 1}, {1, 2, 1, 1, 1}, {1, 1, 2, 2, 1}, {1, 1, 2}, {2, 1, 2},
-        {1, 2, 1, 1}, {2, 1, 2, 2}, {1, 2, 1, 1}, {1, 1, 1, 1, 1, 1}, {1, 2, 1, 1}, {1, 1, 1, 1},
-        {1, 1, 1, 2}, {2, 1, 2, 1, 1}, {1, 1, 1, 1, 1},
-        {1, 1, 2, 1}, {1, 1, 1}, {1, 1, 2, 1}, {2, 1, 1}, {1, 1, 1, 1}, {1, 2, 1, 1}, {1, 1, 2, 1},
-        {1, 1, 1, 1, 1}, {2, 1, 1, 1},
-        {1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1},
-        {1, 1, 1}, {1, 1, 1}, {1, 1, 2}, {1, 1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {2, 1, 1, 1},
-        {1, 1, 1, 1},
-        {1, 1, 1}, {2, 1, 1, 2}, {1, 1}, {1, 1, 1}, {2, 1, 2, 1}, {1, 1, 1}, {1, 1, 1},
-        {1, 1, 1, 1, 1}, {1, 1, 1, 1, 1}, {1, 1, 1}, {1, 1}, {1, 1, 1, 1}, {1, 1, 1}, {1, 1, 1},
-        {1, 1, 1},
-        {1, 1}, {2, 1, 1}, {1, 1, 1}, {1, 1, 1}, {1, 1}, {1}, {1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1},
-        {1, 1}, {1, 1, 1}};
+    int[][] quantityList = { { 1, 1, 1, 2, 1 }, { 2, 1, 2, 1, 1, 1 }, { 2, 1, 1, 1, 1 }, { 1, 1, 2, 2 },
+        { 1, 1 }, { 1, 2, 1, 1, 1 }, { 1, 1, 2, 2, 1 }, { 1, 1, 2 }, { 2, 1, 2 },
+        { 1, 2, 1, 1 }, { 2, 1, 2, 2 }, { 1, 2, 1, 1 }, { 1, 1, 1, 1, 1, 1 }, { 1, 2, 1, 1 }, { 1, 1, 1, 1 },
+        { 1, 1, 1, 2 }, { 2, 1, 2, 1, 1 }, { 1, 1, 1, 1, 1 },
+        { 1, 1, 2, 1 }, { 1, 1, 1 }, { 1, 1, 2, 1 }, { 2, 1, 1 }, { 1, 1, 1, 1 }, { 1, 2, 1, 1 }, { 1, 1, 2, 1 },
+        { 1, 1, 1, 1, 1 }, { 2, 1, 1, 1 },
+        { 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1 }, { 1, 1, 1, 1 }, { 1, 1, 1, 1 }, { 1, 1, 1, 1 },
+        { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 2 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1 }, { 1, 1, 1, 1 }, { 2, 1, 1, 1 },
+        { 1, 1, 1, 1 },
+        { 1, 1, 1 }, { 2, 1, 1, 2 }, { 1, 1 }, { 1, 1, 1 }, { 2, 1, 2, 1 }, { 1, 1, 1 }, { 1, 1, 1 },
+        { 1, 1, 1, 1, 1 }, { 1, 1, 1, 1, 1 }, { 1, 1, 1 }, { 1, 1 }, { 1, 1, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 },
+        { 1, 1, 1 },
+        { 1, 1 }, { 2, 1, 1 }, { 1, 1, 1 }, { 1, 1, 1 }, { 1, 1 }, { 1 }, { 1, 1 }, { 1, 1, 1, 1 }, { 1, 1, 1, 1 },
+        { 1, 1 }, { 1, 1, 1 } };
 
-    String[] nameList = {"닭가슴살 샐러드 세트", "닭가슴살 소세지 세트A", "삶은 돼지고기(안심) 세트", "고단백질 아침 세트",
+    String[] nameList = { "닭가슴살 샐러드 세트", "닭가슴살 소세지 세트A", "삶은 돼지고기(안심) 세트", "고단백질 아침 세트",
         "닭가슴살샌드위치&샐러드 세트", "리코타치즈샐러드&두부구이세트", "연두부 세트", "닭가슴살 만두 세트", "구운 돼지고기(목살) 세트A",
         "시리얼&오트밀 간단 아침 세트", "닭가슴살&단백질쉐이크 세트", "쇠고기주먹밥 세트", "과일&샐러드 아침 세트", "두부샐러드 세트A",
         "구운 돼지고기(목살) 세트B", "드링킹 간단 아침 세트", "닭가슴살 소세지 세트B", "삶은 돼지고기(안심) 세트B",
@@ -205,7 +208,7 @@ class InitMealbox {
         "바나나&우유 세트", "참치샌드위치세트", "단호박찜&두부구이 세트", "요거트&삶은 달걀 세트", "참치 샌드위치&케일주스 세트", "두부구이&샐러드 세트",
         "바나나 우유 세트", "단호박찜&샐러드", "구운 돼지고기(목살) 세트D",
         "장 튼튼 세트", "닭가슴살 두유 세트", "계란야채볶음밥", "오트밀우유 세트", "참치 현미밥 세트B", "구운 돼지 뒷다리살&연두부 세트",
-        "블루베리 요거트 세트", "육해공 단백질 세트"};
+        "블루베리 요거트 세트", "육해공 단백질 세트" };
 
     for (int i = 0; i < productIdList.length; i++) {
       int id = i + 1;
@@ -263,19 +266,23 @@ class InitMealbox {
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-class InitMealboxSet{
+class InitMealboxSet {
   private final MealboxSetRepository mealboxSetRepository;
   private final MealboxService mealboxService;
+
   public void MealboxSetInit() {
     List<MealboxSet> mealboxSetList = new ArrayList<>();
 
-    for(int i=1;i<=23;i++){
+    for (int i = 1; i <= 23; i++) {
       MealboxSet mealboxSet = MealboxSet.builder().id((long) i).build();
-      for(int j=0;j<3;j++){
-        long id = i*3 - 2 + j;
-        if(id == 36) id=24;
-        if(id >= 36) id--;
-        if(id == 68) id=62;
+      for (int j = 0; j < 3; j++) {
+        long id = i * 3 - 2 + j;
+        if (id == 36)
+          id = 24;
+        if (id >= 36)
+          id--;
+        if (id == 68)
+          id = 62;
 
         Mealbox mealbox = mealboxService.findMealboxById(id);
         log.info(mealbox.toString());

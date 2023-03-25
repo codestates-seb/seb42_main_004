@@ -18,6 +18,7 @@ function MealBoxCardLi({ mealBox, reload, title }) {
     if (isLogin) {
       await postData(`/users/cart`, { mealboxId: mealBox.mealboxId });
     } else {
+      console.log({ ...mealBox, quantity: 1 });
       dispatch(addCartItem({ ...mealBox, quantity: 1 }));
     }
     setNotification(true);

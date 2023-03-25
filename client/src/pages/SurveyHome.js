@@ -9,7 +9,6 @@ function SurveyHome() {
 
   useEffect(() => {
     if (isLogin || admin) navigate('/mealboxes');
-    console.log(isLogin, admin);
   }, []);
 
   return (

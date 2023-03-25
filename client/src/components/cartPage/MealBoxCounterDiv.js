@@ -10,22 +10,18 @@ function MealBoxCounterDiv({ quantity }) {
   let getCartMealboxId = (e) =>
     e.target.parentElement.parentElement.parentElement.parentElement.id;
 
-  let patchReq = (cartMealboxId) => {
-    patchData('/users/cart', { cartMealboxId, quantity });
-  };
-
   let handleMinus = (e) => {
     let cartMealboxId = getCartMealboxId(e);
     quantity && dispatch(setMinus(cartMealboxId));
-    isLogin && patchReq(cartMealboxId); // 안되면 윗 줄로 올리고 quantity--
-    // calRenderPrice();
+    isLogin &&
+      patchData('/users/cart', { cartMealboxId, quantity: quantity - 1 });
   };
 
   let handlePlus = (e) => {
     let cartMealboxId = getCartMealboxId(e);
     dispatch(setPlus(cartMealboxId));
-    isLogin && patchReq(cartMealboxId);
-    // calRenderPrice();
+    isLogin &&
+      patchData('/users/cart', { cartMealboxId, quantity: quantity + 1 });
   };
 
   return (

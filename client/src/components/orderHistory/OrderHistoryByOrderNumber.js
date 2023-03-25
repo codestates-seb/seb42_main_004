@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 function OrderHistoryByOrderNumber({ orders }) {
   let { admin } = useSelector((state) => state.authReducer);
   let { username, deliveryDate, orderStatus, orderNumber, mealboxes } = orders;
-  console.log(username, deliveryDate, orderStatus, orderNumber, mealboxes);
   let [status, setStatus] = useState(orderStatus);
   let [buttonText, setButtonText] = useState('');
   let [isRefundable, setIsRefundable] = useState(false);
@@ -59,9 +58,7 @@ function OrderHistoryByOrderNumber({ orders }) {
   };
 
   useEffect(() => {
-    if (admin) {
-      console.log(admin);
-    } else {
+    if (!admin) {
       buttonTextHandler();
       refundHandler();
     }
