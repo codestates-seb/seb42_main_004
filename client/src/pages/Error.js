@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import HelmetTitle from '../components/commons/HelmetTitle';
 import checkFooter from '../util/checkFooter';
 
 function Error() {
   return (
     <ErrorBaseDiv className="margininside" fullh={checkFooter() ? 1 : null}>
+      <HelmetTitle title="에러" />
       <ErrorWrapDiv>
         <h1 className="errorstyle">
           404

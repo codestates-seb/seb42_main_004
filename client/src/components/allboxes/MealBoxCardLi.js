@@ -5,11 +5,11 @@ import MainButton from '../commons/MainButton';
 import { TextButton } from '../commons/ModalDiv';
 import blankbucket from '../../assets/blankbucket.png';
 import postData from '../../util/postData';
-import deleteData from '../../util/deleteData';
 import goToCustom from '../../util/goToCustom';
+import deleteSubject from '../../util/deleteSubject';
 import { addCartItem } from '../../reducers/cartReducer';
 
-function MealBoxCardDiv({ mealBox, reload }) {
+function MealBoxCardLi({ mealBox, reload, title }) {
   const [notification, setNotification] = useState(false);
   const { isLogin, admin } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
@@ -18,117 +18,115 @@ function MealBoxCardDiv({ mealBox, reload }) {
     if (isLogin) {
       await postData(`/users/cart`, { mealboxId: mealBox.mealboxId });
     } else {
+      console.log({ ...mealBox, quantity: 1 });
       dispatch(addCartItem({ ...mealBox, quantity: 1 }));
     }
     setNotification(true);
     setTimeout(() => setNotification(false), 2000);
   };
 
-  const deleteMealBox = () => {
-    if (
-      window.confirm(
-        `${mealBox.name}을 삭제하시겠습니까?\n삭제되면 복구할 수 없습니다.`
-      )
-    ) {
-      deleteData(`/admin/mealboxes/${mealBox.mealboxId}`)
-        .then(() => alert(`${mealBox.name}이 삭제되었습니다.`))
-        .then(() => reload());
-      console.log('삭제 완료');
-    }
-  };
-
   return (
-    <MealBoxCardContainerDiv className="shadow">
-      <MealBoxImgDiv className="shadow">
-        {mealBox && (
-          <p>
-            <span>{mealBox.weight.toLocaleString('ko-KR')}g(ml)</span>
-            <span>{mealBox.kcal.toLocaleString('ko-KR')}kcal</span>
-          </p>
-        )}
-        <MealBoxImg alt="" src={!mealBox ? blankbucket : mealBox.imagePath} />
-        {mealBox && (
-          <MealBoxDesUl>
-            {mealBox.products.map((product) => (
-              <MealBoxDesLi key={product.productId}>
-                <span>{product.name}</span>
-                <span>{product.weight.toLocaleString('ko-KR')}g(ml)</span>
-                <span>{product.kcal.toLocaleString('ko-KR')}kcal</span>
-              </MealBoxDesLi>
-            ))}
-          </MealBoxDesUl>
-        )}
-      </MealBoxImgDiv>
-      <MealBoxH3 custom={!mealBox && 1}>
-        {mealBox
-          ? mealBox.name
-          : `${admin ? '새로운' : '나만의'} 밀박스 만들기`}
-      </MealBoxH3>
-      <MealBoxCardButtonDiv custom={!mealBox && 1}>
-        <MainButton
-          handler={goToCustom(mealBox, admin)}
-          name={!admin || !mealBox ? '커스텀 하기' : '밀박스 수정'}
-        />
-        {mealBox && (
-          <>
-            <MainButton
-              handler={admin ? deleteMealBox : addToCart}
-              name={admin ? '밀박스 삭제' : '장바구니 추가'}
-            />
-            <MainButton name={mealBox.price.toLocaleString('ko-KR') + '원'} />
-          </>
-        )}
-        <NotificationDiv add={notification && 1}>
-          {mealBox?.name}이(가) 장바구니에 추가되었습니다.
-          <TextButton className="linkstyle">장바구니로 이동하기</TextButton>
-        </NotificationDiv>
-      </MealBoxCardButtonDiv>
-    </MealBoxCardContainerDiv>
+    <li>
+      {title && <h2>{title}</h2>}
+      <MealBoxCardContainerDiv className="shadow">
+        <MealBoxImgDiv className="shadow">
+          {mealBox && (
+            <MealBoxDesP>
+              <span>{mealBox.weight.toLocaleString('ko-KR')}g(ml)</span>
+              <span>{mealBox.kcal.toLocaleString('ko-KR')}kcal</span>
+            </MealBoxDesP>
+          )}
+          <MealBoxImg alt="" src={!mealBox ? blankbucket : mealBox.imagePath} />
+          {mealBox && (
+            <MealBoxDesUl>
+              {mealBox.products.map((product) => (
+                <MealBoxDesLi key={product.productId}>
+                  <span>{product.name}</span>
+                  <span>{product.weight.toLocaleString('ko-KR')}g(ml)</span>
+                  <span>{product.kcal.toLocaleString('ko-KR')}kcal</span>
+                </MealBoxDesLi>
+              ))}
+            </MealBoxDesUl>
+          )}
+        </MealBoxImgDiv>
+        <MealBoxH3 center={!mealBox && 1}>
+          {mealBox
+            ? mealBox.name
+            : `${admin ? '새로운' : '나만의'} 밀박스 만들기`}
+        </MealBoxH3>
+        <MealBoxCardButtonDiv>
+          <MainButton
+            handler={goToCustom(mealBox, admin)}
+            name={!admin || !mealBox ? '커스텀 하기' : '밀박스 수정'}
+          />
+          {mealBox && (
+            <>
+              <MainButton
+                handler={
+                  admin
+                    ? () =>
+                        deleteSubject(
+                          'mealboxes',
+                          mealBox.name,
+                          mealBox.id,
+                          reload
+                        )
+                    : addToCart
+                }
+                name={admin ? '밀박스 삭제' : '장바구니 추가'}
+              />
+              <MainButton name={mealBox.price.toLocaleString('ko-KR') + '원'} />
+            </>
+          )}
+          <NotificationDiv add={notification && 1}>
+            {mealBox?.name}이(가) 장바구니에 추가되었습니다.
+            <TextButton className="linkstyle">장바구니로 이동하기</TextButton>
+          </NotificationDiv>
+        </MealBoxCardButtonDiv>
+      </MealBoxCardContainerDiv>
+    </li>
   );
 }
 
-export default MealBoxCardDiv;
+export default MealBoxCardLi;
 
 export const MealBoxCardContainerDiv = styled.div`
   width: 100%;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   border-radius: 4px;
   padding: 5%;
   background-color: var(--head_brown);
 `;
-const MealBoxImgDiv = styled.div`
+export const MealBoxImgDiv = styled.div`
   display: flex;
   align-items: center;
   position: relative;
   width: 100%;
   border-radius: 4px;
-  margin-bottom: 1rem;
   background-color: var(--white);
   padding-bottom: 100%;
+`;
+const MealBoxDesP = styled.p`
+  z-index: 10;
+  display: flex;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
 
-  > p {
-    z-index: 10;
-    display: flex;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    justify-content: flex-end;
-    margin-top: 0.5rem;
-
-    > span {
-      font-size: 0.8rem;
-      margin-right: 0.5rem;
-    }
+  > span {
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
   }
 `;
-const MealBoxImg = styled.img`
+export const MealBoxImg = styled.img`
   max-width: 100%;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   height: auto;
-  padding: 2rem;
 `;
 const MealBoxDesUl = styled.ul`
   z-index: 9;
@@ -168,8 +166,9 @@ const MealBoxDesLi = styled.h3`
 `;
 const MealBoxH3 = styled.h3`
   font-size: 1.3rem;
+  margin-top: 1rem;
   margin-bottom: 0.5rem;
-  text-align: ${(props) => props.custom && 'center'};
+  text-align: ${(props) => props.center && 'center'};
 `;
 const MealBoxCardButtonDiv = styled.div`
   position: relative;

@@ -1,15 +1,15 @@
 import styled from 'styled-components';
-import ConfirmEmailDiv from '../components/signup/ConfirmEmailDiv';
+import SignupCompleteDiv from '../components/signup/SignupCompleteDiv';
 
-function ConfirmEmail() {
+function SignupComplete() {
   return (
     <ContainerDiv className="margininside">
-      <ConfirmEmailDiv pathName="confirm" />
+      <SignupCompleteDiv />
     </ContainerDiv>
   );
 }
 
-export default ConfirmEmail;
+export default SignupComplete;
 
 const ContainerDiv = styled.div`
   min-height: 100vh;

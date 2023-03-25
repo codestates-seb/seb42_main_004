@@ -6,7 +6,6 @@ import OrderHistoryByOrderNumber from './OrderHistoryByOrderNumber';
 
 function OrderHistoryByDateDiv({ ordersPerDate }) {
   let { date, orders } = ordersPerDate;
-  console.log(date, orders);
 
   return (
     <HistoryByDateDiv>

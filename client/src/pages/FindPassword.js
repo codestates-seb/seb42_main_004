@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import GetTemplate from '../components/commons/GetTemplate';
 import MyInfoButton from '../components/myInfo/MyInfoButton';
 import InputDiv from '../components/signup/InputDiv';
 import patchData from '../util/postData';
@@ -42,8 +43,7 @@ function FindPassword() {
         email,
         mailKey,
         afterPassword: password,
-      }).then((res) => {
-        console.log(res.data);
+      }).then(() => {
         navigate('/login');
       });
     } else if (!isValid.password) {
@@ -54,35 +54,37 @@ function FindPassword() {
   };
 
   return (
-    <ContainerDiv className="margininside">
-      <PasswordDiv>
-        <div>
-          <InputDiv
-            id="password"
-            name="password"
-            labelName="비밀번호"
-            placeholder="영문, 숫자를 포함하여 8~20글자로 입력해주세요."
-            value={password}
-            inputRef={(el) => (inputRef.current[0] = el)}
-            validText={validText.password}
-            onChange={handleInput}
-          />
-          <InputDiv
-            id="passwordConfirm"
-            name="passwordConfirm"
-            labelName="비밀번호 확인"
-            placeholder="확인을 위해 비밀번호를 한번 더 입력해주세요."
-            value={passwordConfirm}
-            inputRef={(el) => (inputRef.current[1] = el)}
-            validText={validText.passwordConfirm}
-            onChange={handleInput}
-          />
+    <GetTemplate res="true" title="비밀번호 찾기">
+      <ContainerDiv className="margininside">
+        <PasswordDiv>
           <div>
-            <MyInfoButton onClick={handleClick} text="확인" />
+            <InputDiv
+              id="password"
+              name="password"
+              labelName="비밀번호"
+              placeholder="영문, 숫자를 포함하여 8~20글자로 입력해주세요."
+              value={password}
+              inputRef={(el) => (inputRef.current[0] = el)}
+              validText={validText.password}
+              onChange={handleInput}
+            />
+            <InputDiv
+              id="passwordConfirm"
+              name="passwordConfirm"
+              labelName="비밀번호 확인"
+              placeholder="확인을 위해 비밀번호를 한번 더 입력해주세요."
+              value={passwordConfirm}
+              inputRef={(el) => (inputRef.current[1] = el)}
+              validText={validText.passwordConfirm}
+              onChange={handleInput}
+            />
+            <div>
+              <MyInfoButton onClick={handleClick} text="확인" />
+            </div>
           </div>
-        </div>
-      </PasswordDiv>
-    </ContainerDiv>
+        </PasswordDiv>
+      </ContainerDiv>
+    </GetTemplate>
   );
 }
 

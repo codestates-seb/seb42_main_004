@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import NoResult from '../components/commons/NoResult';
+import NoResultDiv from '../components/commons/NoResultDiv';
 import CustomAside from '../components/custom/CustomAside';
 import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
@@ -60,9 +60,9 @@ function Custom() {
         <CustomSelectDiv>
           <ElementsContainerDiv>
             <FilterSearchDiv placeholder="고구마" {...toFilterSearchDiv} />
-            <BoxElementCardUl>
-              {products?.length !== 0 ? (
-                products?.map((product) => (
+            {products?.length !== 0 ? (
+              <BoxElementCardUl>
+                {products?.map((product) => (
                   <li key={product.productId}>
                     <BoxElementCardDiv
                       product={product}
@@ -73,17 +73,17 @@ function Custom() {
                       totalQuantity={totalQuantity}
                     />
                   </li>
-                ))
-              ) : (
-                <NoResult
-                  search={(word) =>
-                    setPath(`/products/search?page=1&name=${word}`)
-                  }
-                  errorWord={errorWord}
-                  replaceWord={'단백질쉐이크'}
-                />
-              )}
-            </BoxElementCardUl>
+                ))}
+              </BoxElementCardUl>
+            ) : (
+              <NoResultDiv
+                search={(word) =>
+                  setPath(`/products/search?page=1&name=${word}`)
+                }
+                errorWord={errorWord}
+                replaceWord={'단백질쉐이크'}
+              />
+            )}
             <PaginationUl
               page={res?.pageInfo?.page}
               totalpage={res?.pageInfo?.totalPages}

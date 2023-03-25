@@ -6,10 +6,13 @@ import LoginButton from './LoginButton';
 import { FcGoogle } from 'react-icons/fc';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import parseToken from '../../util/parseToken';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import setAuthorizationToken from '../../util/setAuthorizationToken';
 import { setAuth } from '../../reducers/authReducer';
+import GetTemplate from '../commons/GetTemplate';
 
 function LoginUl() {
+  const { mealboxes } = useSelector((state) => state.cartReducer.cart);
   const [showPwd, setShowPwd] = useState(false);
   const [inputValue, setInputValue] = useState({
     email: '',
@@ -19,10 +22,12 @@ function LoginUl() {
   const { email, password } = inputValue;
   const dispatch = useDispatch();
 
-  const login = (token) => {
+  const login = async (token) => {
     if (!localStorage.getItem('accessToken')) {
       localStorage.setItem('accessToken', token);
+      setAuthorizationToken(token);
       Auth();
+      addCart();
       window.location.reload();
     } else if (
       localStorage.getItem('accessToken') &&
@@ -30,7 +35,9 @@ function LoginUl() {
     ) {
       localStorage.removeItem('accessToken');
       localStorage.setItem('accessToken', token);
+      setAuthorizationToken(token);
       Auth();
+      addCart();
       window.location.reload();
     }
   };
@@ -48,6 +55,16 @@ function LoginUl() {
         admin: roles.includes('ADMIN'),
       })
     );
+  };
+
+  const addCart = () => {
+    mealboxes.forEach((el) => {
+      if (el.name === 'custom') {
+        postData('/users/cart/custom', el);
+      } else {
+        postData('/users/cart', { mealboxId: el.mealboxId });
+      }
+    });
   };
 
   const handleClick = () => {
@@ -80,77 +97,87 @@ function LoginUl() {
     setShowPwd(!showPwd);
   };
 
+  const handleKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      handleClick();
+    }
+  };
+
   return (
-    <ContainerUl>
-      <li>
-        <Title>
-          <h1>로그인</h1>
-        </Title>
-      </li>
-      <li>
-        <LoginDiv>
-          <label htmlFor="email">이메일</label>
-          <input
-            id="email"
-            name="email"
-            className="inputstyle"
-            placeholder="이메일"
-            ref={(el) => (inputRef.current[0] = el)}
-            value={email}
-            onChange={handleInput}
-          />
-        </LoginDiv>
-      </li>
-      <li>
-        <LoginDiv>
-          <label htmlFor="password">비밀번호</label>
-          <input
-            id="password"
-            name="password"
-            className="inputstyle"
-            type={showPwd ? 'text' : 'password'}
-            placeholder="비밀번호"
-            ref={(el) => (inputRef.current[1] = el)}
-            value={password}
-            onChange={handleInput}
-          />
-          {showPwd ? (
-            <IconDiv onClick={handlePasswordClick}>
-              <AiOutlineEye size={20} />
-            </IconDiv>
-          ) : (
-            <IconDiv onClick={handlePasswordClick}>
-              <AiOutlineEyeInvisible size={20} />
-            </IconDiv>
-          )}
-        </LoginDiv>
-      </li>
-      <li>
-        <CheckboxDiv>
-          <input type="checkbox" id="auto"></input>
-          <label htmlFor="auto">자동로그인</label>
-        </CheckboxDiv>
-      </li>
-      <li>
-        <LoginButton onClick={handleClick} name="로그인"></LoginButton>
-      </li>
-      <li>
-        <Div>
-          <LoginLink to="/email/send" className="linkstyle">
-            비밀번호 찾기
-          </LoginLink>
-          <LoginLink to="/signup" className="linkstyle">
-            회원가입
-          </LoginLink>
-        </Div>
-      </li>
-      <li>
-        <GoogleButton className="buttonstyle">
-          <FcGoogle size={25} />
-          <div>Sign in with Google</div>
-        </GoogleButton>
-      </li>
-    </ContainerUl>
+    <GetTemplate res="true" title="한끼밀 로그인">
+      <ContainerUl>
+        <li>
+          <Title>
+            <h1>로그인</h1>
+          </Title>
+        </li>
+        <li>
+          <LoginDiv>
+            <label htmlFor="email">이메일</label>
+            <input
+              id="email"
+              name="email"
+              className="inputstyle"
+              placeholder="이메일"
+              ref={(el) => (inputRef.current[0] = el)}
+              value={email}
+              onChange={handleInput}
+              onKeyUp={handleKeyUp}
+            />
+          </LoginDiv>
+        </li>
+        <li>
+          <LoginDiv>
+            <label htmlFor="password">비밀번호</label>
+            <input
+              id="password"
+              name="password"
+              className="inputstyle"
+              type={showPwd ? 'text' : 'password'}
+              placeholder="비밀번호"
+              ref={(el) => (inputRef.current[1] = el)}
+              value={password}
+              onChange={handleInput}
+              onKeyUp={handleKeyUp}
+            />
+            {showPwd ? (
+              <IconDiv onClick={handlePasswordClick}>
+                <AiOutlineEye size={20} />
+              </IconDiv>
+            ) : (
+              <IconDiv onClick={handlePasswordClick}>
+                <AiOutlineEyeInvisible size={20} />
+              </IconDiv>
+            )}
+          </LoginDiv>
+        </li>
+        <li>
+          <CheckboxDiv>
+            <input type="checkbox" id="auto"></input>
+            <label htmlFor="auto">자동로그인</label>
+          </CheckboxDiv>
+        </li>
+        <li>
+          <LoginButton onClick={handleClick} name="로그인"></LoginButton>
+        </li>
+        <li>
+          <Div>
+            <LoginLink to="/email/send" className="linkstyle">
+              비밀번호 찾기
+            </LoginLink>
+            <LoginLink to="/signup" className="linkstyle">
+              회원가입
+            </LoginLink>
+          </Div>
+        </li>
+        <li>
+          <GoogleButton className="buttonstyle">
+            <FcGoogle size={25} />
+            <div>Sign in with Google</div>
+          </GoogleButton>
+        </li>
+      </ContainerUl>
+    </GetTemplate>
   );
 }
 

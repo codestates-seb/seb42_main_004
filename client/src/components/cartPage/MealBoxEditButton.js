@@ -13,7 +13,6 @@ function MealBoxEditButton() {
   let { mealboxes } = useSelector((state) => state.cartReducer.cart);
   let customPageLink = (e) => {
     let cartMealboxId = e.target.parentElement.parentElement.parentElement.id;
-    console.log(e.target.parentElement.parentElement.parentElement.id);
 
     // 삭제
     isLogin && deleteData(`/users/cart/${cartMealboxId}`);

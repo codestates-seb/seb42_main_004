@@ -35,7 +35,6 @@ function SurveyPage1() {
 
   let regex = new RegExp(/^\d*(\.\d{0,1})?$/);
   let imsi = (value) => {
-    console.log(regex.test(value));
     if (regex.test(value)) {
       value = prev;
     } else {
