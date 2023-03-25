@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 function LoginButton({ name, onClick }) {
   return (
-    <Button onClick={onClick} className="buttonstyle">
+    <Button onClick={onClick} className="buttonstyle shadow">
       {name}
     </Button>
   );

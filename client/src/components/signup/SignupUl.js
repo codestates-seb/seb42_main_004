@@ -31,7 +31,6 @@ function SignupUl() {
   };
 
   const handleKeyUp = (e) => {
-    console.log('여기');
     if (e.key === 'Enter') {
       handleClick();
     }
@@ -131,7 +130,7 @@ function SignupUl() {
           />
         </li>
         <li>
-          <LoginButton onClick={handleClick} name="회원가입하기" />
+          <LoginButton onClick={handleClick} name="회원가입" />
         </li>
         <li>
           <LoginDiv onClick={() => navigate('/login')}>
