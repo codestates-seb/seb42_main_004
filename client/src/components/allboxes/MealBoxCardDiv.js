@@ -67,7 +67,7 @@ function MealBoxCardDiv({ mealBox, reload }) {
       <MealBoxCardButtonDiv custom={!mealBox && 1}>
         <MainButton
           handler={goToCustom(mealBox, admin)}
-          name={!admin || mealBox ? '밀박스 수정' : '커스텀 하기'}
+          name={!admin || !mealBox ? '커스텀 하기' : '밀박스 수정'}
         />
         {mealBox && (
           <>
