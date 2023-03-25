@@ -40,4 +40,8 @@ public class Cart extends BaseEntity {
         cartMealbox.getQuantity() * cartMealbox.getMealbox().getPrice())
             .sum();
   }
+
+  public void addCartMealbox(CartMealbox cartMealbox) {
+    this.cartMealboxes.add(cartMealbox);
+  }
 }

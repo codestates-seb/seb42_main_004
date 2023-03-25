@@ -59,7 +59,7 @@ public class ProductController {
     @DeleteMapping("/admin/products/{productId}")
     public ResponseEntity deleteAdminProduct(@PathVariable("productId") @Positive Long productId){
         log.info("--------deleteProduct-------");
-        productService.deleteProduct(productId);
+        productService.stopSellingProduct(productId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
