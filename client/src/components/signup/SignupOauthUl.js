@@ -13,18 +13,20 @@ function SignupOauthUl() {
     password: '',
     passwordConfirm: '',
   });
-  const [validText, isValid, setValidText] = useValid(inputValue);
+  const [validText, isValid, setValidText, setIsValid] = useValid(inputValue);
   const inputRef = useRef([]);
   const { name, email } = inputValue;
   const location = useLocation();
+  console.log(isValid);
 
   useEffect(() => {
     if (location.state) {
       setInputValue({
         ...inputValue,
         name: location.state.oauthName,
-        email: location.state.oauthMail,
+        email: location.state.oauthEmail,
       });
+      setIsValid({ ...isValid, name: true });
     }
   }, []);
 
@@ -51,7 +53,7 @@ function SignupOauthUl() {
     }
     setValidText({ ...validText, ...obj });
     if (isValid.name) {
-      console.log(name);
+      alert('곧 백엔드랑 연결시킬 예정입니당:)');
     } else if (!isValid.name) {
       inputRef.current[0].focus();
     }

@@ -15,7 +15,7 @@ function GoogleButton() {
       navigate('/signup/oauth', {
         state: {
           oauthName: userInfo.data.given_name,
-          oauthMail: userInfo.data.email,
+          oauthEmail: userInfo.data.email,
         },
       });
     },
