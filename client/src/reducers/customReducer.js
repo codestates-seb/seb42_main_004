@@ -46,7 +46,8 @@ const customSlice = createSlice({
       const { custom } = state;
       const product = action.payload;
       const { quantity } = product;
-      if (quantity > 0) {
+      if (quantity === 0) customSlice.caseReducers.deleteProduct(state, action);
+      else if (quantity > 0) {
         const idx = custom.products
           .map((product) => product.productId)
           .indexOf(product.productId);

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class ServerApplication {
 
   public static void main(String[] args) {
+    System.setProperty("user.timezone", "Asia/Seoul");
     SpringApplication.run(ServerApplication.class, args);
   }
 

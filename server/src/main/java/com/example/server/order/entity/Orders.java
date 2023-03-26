@@ -7,6 +7,7 @@ import com.example.server.user.entity.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +101,7 @@ public class Orders extends BaseEntity {
 
   public void completeDelivery() {
     this.status = OrderStatus.DELIVERY_COMPLETED;
-    deliveryDate = LocalDate.now();
+    deliveryDate = LocalDateTime.now().plusHours(9).toLocalDate();
   }
 
   public void applyRefund() {
@@ -116,7 +117,7 @@ public class Orders extends BaseEntity {
   }
 
   public void makeOrderNumber() {
-    String date = LocalDateTime.now().atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+    String date = ZonedDateTime.now(ZoneId.of("UTC")).plusHours(9).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     this.orderNumber = date + RandomStringUtils.randomNumeric(6);
   }
 }

@@ -22,10 +22,8 @@ function CustomAside({ custom }) {
         return { productId, quantity };
       });
       await postData(`/users/cart/custom`, data);
-    } else {
-      console.log({ ...data, quantity: 1 });
-      dispatch(addCartItem({ ...data, quantity: 1 }));
     }
+    dispatch(addCartItem({ ...data, quantity: 1 }));
 
     dispatch(initializeCustom());
     if (
@@ -39,11 +37,6 @@ function CustomAside({ custom }) {
 
   return (
     <AsideWrapper>
-      {/* <ModalDiv
-        mealBox={0}
-        boxElement={1}
-        closeModal={() => setOpenModal(false)}
-      /> */}
       {admin && openModal && (
         <ModalDiv mealBox={custom} closeModal={() => setOpenModal(false)} />
       )}
@@ -100,7 +93,7 @@ const InAsideBoxDiv = styled.div`
   border-radius: 10px 10px 0 0;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     border-radius: 0;
     box-shadow: -2px -2px 2px rgba(0, 0, 0, 0.4);
 
@@ -132,12 +125,12 @@ const InAsideH2 = styled.h2`
   color: var(--white);
   min-height: 1vh;
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
 const ElementInBucketUl = styled.ul`
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
@@ -149,6 +142,7 @@ const ElementInBucketLi = styled.li`
   > span {
     font-size: 0.8rem;
     margin-right: -2px;
+    word-break: keep-all;
 
     > button {
       margin-left: 0.5rem;
@@ -168,7 +162,7 @@ const InAsidePriceDiv = styled.div`
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     margin: 0;
   }
 `;

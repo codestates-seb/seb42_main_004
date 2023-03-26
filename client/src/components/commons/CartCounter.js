@@ -1,9 +1,17 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-
+import { useEffect, useState } from 'react';
 function CartCounter() {
-  let { mealboxes } = useSelector((state) => state.cartReducer.cart);
-  let count = mealboxes?.length || 0;
+  let { mealboxes } = useSelector((state) => state.cartReducer.cart) || {
+    mealboxes: [],
+  };
+
+  let [count, setCount] = useState(0);
+
+  useEffect(() => {
+    setCount(mealboxes?.length);
+  }, [mealboxes]);
+
   return (
     <Round>
       <Count>{count}</Count>

@@ -26,7 +26,7 @@ export const AsideWrapper = styled.aside`
   height: fit-content;
   font-weight: bold;
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     z-index: 19;
     position: fixed;
     top: auto;
@@ -34,7 +34,6 @@ export const AsideWrapper = styled.aside`
     width: 100%;
     margin: 0 -16px;
     min-width: 360px;
-    min-height: 80px;
   }
 `;
 export const AsideSignatureButton = styled.button`
@@ -47,7 +46,7 @@ export const AsideSignatureButton = styled.button`
   border-radius: 0 0 10px 10px;
   box-shadow: 0 0 0 2px var(--signature) inset, 2px 2px 2px rgba(0, 0, 0, 0.4);
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     border-radius: 0;
   }
 `;
@@ -55,13 +54,13 @@ const InnerDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 10vw;
+  /* height: 10vw; */
   padding: 1rem;
   border-radius: 10px 10px 0 0;
   background-color: var(--white_020);
   box-shadow: 0 0 0 2px var(--signature) inset, 2px 2px 2px rgba(0, 0, 0, 0.4);
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     border-radius: 0;
     background-color: var(--white);
     box-shadow: none;
@@ -76,7 +75,7 @@ const InnerPriceDiv = styled.div`
     font-size: 2rem;
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     width: 100%;
     flex-direction: row;
     justify-content: space-around !important;

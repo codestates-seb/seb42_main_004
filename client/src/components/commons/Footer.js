@@ -55,11 +55,11 @@ const FooterWrapper = styled.footer`
   z-index: 14;
 
   @media (max-width: 768px) {
+    display: ${(props) => (props.isVisible ? `flex` : `none`)};
     height: 230px;
   }
 
   @media (max-width: 480px) {
-    display: ${(props) => (props.isVisible ? `flex` : `none`)};
     height: 180px;
   }
 `;

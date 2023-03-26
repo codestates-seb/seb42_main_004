@@ -11,10 +11,12 @@ function MealBoxCounterDiv({ quantity }) {
     e.target.parentElement.parentElement.parentElement.parentElement.id;
 
   let handleMinus = (e) => {
-    let cartMealboxId = getCartMealboxId(e);
-    quantity && dispatch(setMinus(cartMealboxId));
-    isLogin &&
-      patchData('/users/cart', { cartMealboxId, quantity: quantity - 1 });
+    if (quantity > 1) {
+      let cartMealboxId = getCartMealboxId(e);
+      dispatch(setMinus(cartMealboxId));
+      isLogin &&
+        patchData('/users/cart', { cartMealboxId, quantity: quantity - 1 });
+    }
   };
 
   let handlePlus = (e) => {
