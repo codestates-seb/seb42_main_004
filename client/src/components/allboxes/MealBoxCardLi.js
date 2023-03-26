@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
@@ -8,7 +9,6 @@ import postData from '../../util/postData';
 import goToCustom from '../../util/goToCustom';
 import deleteSubject from '../../util/deleteSubject';
 import { addCartItem } from '../../reducers/cartReducer';
-import { useNavigate } from 'react-router-dom';
 
 function MealBoxCardLi({ mealBox, reload, title }) {
   const [notification, setNotification] = useState(false);
@@ -20,7 +20,6 @@ function MealBoxCardLi({ mealBox, reload, title }) {
     if (isLogin) {
       await postData(`/users/cart`, { mealboxId: mealBox.mealboxId });
     } else {
-      console.log({ ...mealBox, quantity: 1 });
       dispatch(addCartItem({ ...mealBox, quantity: 1 }));
     }
     setNotification(true);
