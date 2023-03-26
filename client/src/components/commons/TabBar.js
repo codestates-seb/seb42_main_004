@@ -88,7 +88,7 @@ const ContentDiv = styled.div`
   flex-grow: 1;
   display: flex;
   justify-content: center;
-  padding-top: 4rem;
+  padding: 4rem 0;
   border: 2px solid var(--product_cocoa);
   background-color: var(--white_020);
 `;
