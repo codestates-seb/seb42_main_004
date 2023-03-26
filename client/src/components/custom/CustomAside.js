@@ -23,7 +23,6 @@ function CustomAside({ custom }) {
       });
       await postData(`/users/cart/custom`, data);
     } else {
-      console.log({ ...data, quantity: 1 });
       dispatch(addCartItem({ ...data, quantity: 1 }));
     }
 
@@ -39,11 +38,6 @@ function CustomAside({ custom }) {
 
   return (
     <AsideWrapper>
-      {/* <ModalDiv
-        mealBox={0}
-        boxElement={1}
-        closeModal={() => setOpenModal(false)}
-      /> */}
       {admin && openModal && (
         <ModalDiv mealBox={custom} closeModal={() => setOpenModal(false)} />
       )}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
@@ -13,12 +14,12 @@ function MealBoxCardLi({ mealBox, reload, title }) {
   const [notification, setNotification] = useState(false);
   const { isLogin, admin } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const addToCart = async () => {
     if (isLogin) {
       await postData(`/users/cart`, { mealboxId: mealBox.mealboxId });
     } else {
-      console.log({ ...mealBox, quantity: 1 });
       dispatch(addCartItem({ ...mealBox, quantity: 1 }));
     }
     setNotification(true);
@@ -68,7 +69,7 @@ function MealBoxCardLi({ mealBox, reload, title }) {
                         deleteSubject(
                           'mealboxes',
                           mealBox.name,
-                          mealBox.id,
+                          mealBox.mealboxId,
                           reload
                         )
                     : addToCart
@@ -80,7 +81,9 @@ function MealBoxCardLi({ mealBox, reload, title }) {
           )}
           <NotificationDiv add={notification && 1}>
             {mealBox?.name}이(가) 장바구니에 추가되었습니다.
-            <TextButton className="linkstyle">장바구니로 이동하기</TextButton>
+            <TextButton className="linkstyle" onClick={() => navigate('/cart')}>
+              장바구니로 이동하기
+            </TextButton>
           </NotificationDiv>
         </MealBoxCardButtonDiv>
       </MealBoxCardContainerDiv>
@@ -92,6 +95,7 @@ export default MealBoxCardLi;
 
 export const MealBoxCardContainerDiv = styled.div`
   width: 100%;
+  min-width: fit-content;
   display: flex;
   flex-direction: column;
   border-radius: 4px;
