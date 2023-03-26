@@ -73,7 +73,8 @@ function ModalDiv({ closeModal, mealBox, product, reload }) {
         isMealBox && dispatch(initializeCustom());
         setSubjectInfo({ ...subject });
         alert(`${data.name}이(가) ${id ? '수정' : '추가'}되었습니다.`);
-        isMealBox ? navigate('/mealboxes') : closeModal(), reload();
+        if (isMealBox) navigate('/mealboxes');
+        else closeModal(), reload();
       }
     };
 

@@ -42,7 +42,7 @@ function ProductLi({ product, admin, reload }) {
           <TextButton onClick={() => setOpenModal(true)}>수정</TextButton>
           <TextButton
             onClick={() =>
-              deleteSubject('products', product.name, product.id, reload)
+              deleteSubject('products', product.name, product.productId, reload)
             }
           >
             삭제

@@ -69,7 +69,7 @@ function MealBoxCardLi({ mealBox, reload, title }) {
                         deleteSubject(
                           'mealboxes',
                           mealBox.name,
-                          mealBox.id,
+                          mealBox.mealboxId,
                           reload
                         )
                     : addToCart
