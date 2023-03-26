@@ -66,7 +66,6 @@ function LoginUl() {
   };
 
   const addItemsToAccountCart = async () => {
-    console.log(Array.isArray(mealboxes));
     let postReqData = mealboxes.reduce(
       (acc, cur) => {
         if (cur.name === 'custom') {
@@ -81,13 +80,12 @@ function LoginUl() {
       },
       { adminMadeMealboxes: [], customMealboxes: [] }
     );
-    console.log(postReqData);
+
     await postData('/users/cart/all', postReqData);
 
     let data = await getData('/users/cart');
-    console.log(data.data);
+
     dispatch(setCart(data.data));
-    console.log('end');
   };
 
   const handleClick = () => {

@@ -55,7 +55,6 @@ function SurveyPage1() {
 
   useEffect(() => {
     checkValid();
-    console.log(isValid);
   }, [age, weight, height]);
 
   return (
