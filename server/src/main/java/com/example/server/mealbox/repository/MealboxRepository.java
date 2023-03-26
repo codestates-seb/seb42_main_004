@@ -12,8 +12,8 @@ import java.util.List;
 public interface MealboxRepository extends JpaRepository<Mealbox, Long> {
     Page<Mealbox> findAllByForSaleIsTrueAndMealboxInfoIsNot(Pageable pageable, Mealbox.MealboxInfo mealboxInfo);
 
-    Page<Mealbox> findAllByForSaleIsTrueAndMealboxInfoIsNotAndNameContains(Pageable pageable, Mealbox.MealboxInfo mealboxInfo,
-                                                              String search);
+    Page<Mealbox> findAllByForSaleIsTrueAndMealboxInfoIsNotAndNameContains
+            (Pageable pageable, Mealbox.MealboxInfo mealboxInfo, String search);
 
     @Query("SELECT DISTINCT m FROM Mealbox m JOIN m.mealboxProducts mp JOIN mp.product p "
             + "WHERE (m.forSale IS TRUE AND m.mealboxInfo <> :mealboxInfo AND m.name LIKE %:name%) "
