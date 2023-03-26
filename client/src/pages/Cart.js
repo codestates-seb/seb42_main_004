@@ -7,7 +7,7 @@ import { setCart } from '../reducers/cartReducer';
 import postData from '../util/postData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import CartEmpty from '../components/cartPage/CartEmpty';
+import Empty from '../components/commons/Empty';
 function Cart() {
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -104,7 +104,7 @@ function Cart() {
           <CartAside totalPrice={renderPrice} buttonClick={purchaseHandler} />
         </CartPageContent>
       ) : (
-        <CartEmpty />
+        <Empty />
       )}
     </CartPageWrapper>
   );
