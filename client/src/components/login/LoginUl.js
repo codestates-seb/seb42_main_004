@@ -33,7 +33,7 @@ function LoginUl() {
       setAuthorizationToken(token);
       await Auth();
       await addItemsToAccountCart();
-      // window.location.reload();
+      window.location.reload();
     } else if (
       localStorage.getItem('accessToken') &&
       localStorage.getItem('accessToken') !== token
@@ -43,7 +43,7 @@ function LoginUl() {
       setAuthorizationToken(token);
       await Auth();
       await addItemsToAccountCart();
-      // window.location.reload();
+      window.location.reload();
     }
   };
 

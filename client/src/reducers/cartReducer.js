@@ -14,7 +14,19 @@ const cartSlice = createSlice({
       const { cart } = state;
       const mealBox = action.payload;
       let cartMealboxId = new Date().toString().split(' ').join('');
+      // let arr = cart.mealboxes.map(el => {
+      //   return el.cartMealboxId
+      // })
+      //       if()
+      //       cart.mealboxes = mealBox.map((el) => {
+      //         if (el.cartMealboxId === cartMealboxId) {
+      //           el.quantity++;
+      //         }
+      //         return el;
+      //       });
+
       cart.mealboxes.push({ ...mealBox, cartMealboxId });
+
       cart.totalPrice += mealBox.price;
     },
 

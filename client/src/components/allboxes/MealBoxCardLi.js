@@ -19,9 +19,9 @@ function MealBoxCardLi({ mealBox, reload, title }) {
   const addToCart = async () => {
     if (isLogin) {
       await postData(`/users/cart`, { mealboxId: mealBox.mealboxId });
-    } else {
-      dispatch(addCartItem({ ...mealBox, quantity: 1 }));
     }
+    dispatch(addCartItem({ ...mealBox, quantity: 1 }));
+
     setNotification(true);
     setTimeout(() => setNotification(false), 2000);
   };
