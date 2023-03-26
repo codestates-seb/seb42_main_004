@@ -18,7 +18,7 @@ function OrderHistory() {
     getData(admin ? `/admin/orders?page=${page}&date=${date}` : `/orders/user`)
       .then((res) => {
         setTotalPages(res?.pageInfo?.totalPages);
-        let filterByDateObj = res?.reduce((acc, cur) => {
+        let filterByDateObj = res.data.reduce((acc, cur) => {
           let orderDate = cur.createdAt.slice(0, 10);
           acc[orderDate] ? acc[orderDate].push(cur) : (acc[orderDate] = [cur]);
           return acc;
