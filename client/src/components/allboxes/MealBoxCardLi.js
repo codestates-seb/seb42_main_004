@@ -8,11 +8,13 @@ import postData from '../../util/postData';
 import goToCustom from '../../util/goToCustom';
 import deleteSubject from '../../util/deleteSubject';
 import { addCartItem } from '../../reducers/cartReducer';
+import { useNavigate } from 'react-router-dom';
 
 function MealBoxCardLi({ mealBox, reload, title }) {
   const [notification, setNotification] = useState(false);
   const { isLogin, admin } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const addToCart = async () => {
     if (isLogin) {
@@ -80,7 +82,9 @@ function MealBoxCardLi({ mealBox, reload, title }) {
           )}
           <NotificationDiv add={notification && 1}>
             {mealBox?.name}이(가) 장바구니에 추가되었습니다.
-            <TextButton className="linkstyle">장바구니로 이동하기</TextButton>
+            <TextButton className="linkstyle" onClick={() => navigate('/cart')}>
+              장바구니로 이동하기
+            </TextButton>
           </NotificationDiv>
         </MealBoxCardButtonDiv>
       </MealBoxCardContainerDiv>
@@ -92,6 +96,7 @@ export default MealBoxCardLi;
 
 export const MealBoxCardContainerDiv = styled.div`
   width: 100%;
+  min-width: fit-content;
   display: flex;
   flex-direction: column;
   border-radius: 4px;
