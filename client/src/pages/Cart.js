@@ -7,10 +7,11 @@ import { setCart } from '../reducers/cartReducer';
 import postData from '../util/postData';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import Empty from '../components/commons/Empty';
 function Cart() {
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  let { isLogin } = useSelector((state) => state.authReducer);
+  let { isLogin, admin } = useSelector((state) => state.authReducer);
   let { totalPrice, mealboxes } = useSelector(
     (state) => state.cartReducer.cart
   ) || { totalPrice: 0, mealboxes: [] };
@@ -74,6 +75,9 @@ function Cart() {
         dispatch(setCart(res.data));
       });
     }
+    if (admin) {
+      navigate('/mealboxes');
+    }
   }, []);
 
   useEffect(() => {
@@ -83,21 +87,25 @@ function Cart() {
   return (
     <CartPageWrapper className="margininside">
       <h1>장바구니</h1>
-      <CartPageContent>
-        <CartItemListUl>
-          {mealboxes?.map((el) => {
-            return (
-              <CartItemLi
-                key={el.cartMealboxId}
-                mealbox={el}
-                value={el.cartMealboxId}
-                calcRenderPrice={calcRenderPrice}
-              />
-            );
-          })}
-        </CartItemListUl>
-        <CartAside totalPrice={renderPrice} buttonClick={purchaseHandler} />
-      </CartPageContent>
+      {totalPrice ? (
+        <CartPageContent>
+          <CartItemListUl>
+            {mealboxes?.map((el) => {
+              return (
+                <CartItemLi
+                  key={el.cartMealboxId}
+                  mealbox={el}
+                  value={el.cartMealboxId}
+                  calcRenderPrice={calcRenderPrice}
+                />
+              );
+            })}
+          </CartItemListUl>
+          <CartAside totalPrice={renderPrice} buttonClick={purchaseHandler} />
+        </CartPageContent>
+      ) : (
+        <Empty />
+      )}
     </CartPageWrapper>
   );
 }
@@ -122,7 +130,7 @@ export const CartItemListUl = styled.ul`
     list-style: none;
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     width: 100%;
   }
 `;

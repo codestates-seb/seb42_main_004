@@ -65,6 +65,7 @@ const InnerDiv = styled.div`
     background-color: var(--white);
     box-shadow: none;
     border-top: 2px solid var(--signature);
+    height: 40px;
   }
 `;
 const InnerPriceDiv = styled.div`

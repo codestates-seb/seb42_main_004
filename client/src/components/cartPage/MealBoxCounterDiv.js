@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import { TextButton } from '../commons/ModalDiv';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMinus, setPlus } from '../../reducers/cartReducer';
+import { setMinus, setPlus, deleteCartItem } from '../../reducers/cartReducer';
 import patchData from '../../util/patchData';
+import deleteData from '../../util/deleteData';
 function MealBoxCounterDiv({ quantity }) {
   let { isLogin } = useSelector((state) => state.authReducer);
   let dispatch = useDispatch();
@@ -11,11 +12,17 @@ function MealBoxCounterDiv({ quantity }) {
     e.target.parentElement.parentElement.parentElement.parentElement.id;
 
   let handleMinus = (e) => {
+    let cartMealboxId = getCartMealboxId(e);
     if (quantity > 1) {
-      let cartMealboxId = getCartMealboxId(e);
       dispatch(setMinus(cartMealboxId));
       isLogin &&
         patchData('/users/cart', { cartMealboxId, quantity: quantity - 1 });
+    } else {
+      if (confirm('해당 밀박스를 장바구니에서 삭제하시겠습니까?')) {
+        isLogin && deleteData(`/users/cart/${cartMealboxId}`);
+        dispatch(deleteCartItem([cartMealboxId]));
+        alert('장바구니에서 삭제되었습니다.');
+      }
     }
   };
 
