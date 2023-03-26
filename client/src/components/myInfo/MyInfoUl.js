@@ -8,7 +8,7 @@ import GetTemplate from '../commons/GetTemplate';
 import useGET from '../../util/useGET';
 import patchData from '../../util/patchData';
 import postData from '../../util/postData';
-import EmainDiv from './EmailDiv';
+import EmailDiv from './EmailDiv';
 import DeliveryDiv from './DeliveryDiv';
 import deleteData from '../../util/deleteData';
 import { useDispatch } from 'react-redux';
@@ -134,7 +134,7 @@ function MyInfoUl({ pathName }) {
                 onInput={(e) => setImgInput(e.target.files[0])}
               />
               <ContentDiv name="닉네임" value={inputValue.username} />
-              <EmainDiv
+              <EmailDiv
                 name="이메일"
                 value={inputValue.email}
                 status={inputValue.status}

@@ -54,6 +54,7 @@ function App() {
           admin: roles.includes('ADMIN'),
         })
       );
+      dispatch(setEmail(''));
       const remainingTime = Math.floor(
         (new Date(exp * 1000).getTime() - new Date().getTime()) / (60 * 1000)
       );
@@ -124,7 +125,10 @@ function App() {
           />
           <Route path="/email/complete" element={<CompleteEmail />} />
           <Route path="/email/confirm" element={<ConfirmEmail />} />
-          <Route path="/email/request" element={<RequestEmail />} />
+          <Route
+            path="/email/request"
+            element={accessToken ? <RequestEmail /> : <Navigate to="/login" />}
+          />
           <Route path="/email/send" element={<SendEmail />} />
           <Route
             path="/email/send/signup"
