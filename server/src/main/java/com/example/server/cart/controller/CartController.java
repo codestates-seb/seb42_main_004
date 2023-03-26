@@ -1,6 +1,7 @@
 package com.example.server.cart.controller;
 
 import com.example.server.auth.details.PrincipalDetails;
+import com.example.server.cart.dto.CartAllPostDto;
 import com.example.server.cart.dto.CartPatchDto;
 import com.example.server.cart.dto.CartPostDto;
 
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -53,12 +55,24 @@ public class CartController {
     log.info("------createCustomMealboxAndAddCart------");
     Cart cart = userService.getUser(principalDetails.getId()).getCart();
     Mealbox mealbox = mealboxMapper.mealboxDtoToMealbox(mealboxDto, Mealbox.MealboxInfo.CUSTOM_MEALBOX);
-    cartService.createMealboxAndAddCart(cart, mealbox, mealboxDto.getProducts());
+    cartService.createCustomMealboxAndAddCart(cart, mealbox, mealboxDto.getProducts());
     return new ResponseEntity(HttpStatus.CREATED);
   }
 
-  //장바구니에서 밀박스 삭제 -> 커스텀밀박스면 cartMealbox, mealboxProduct와 mealbox삭제 -> 밀박스를 삭제+이후전이
-  //                        추천조합 밀박스면 cartMealbox만 삭제 -> cartMealbox만 삭제
+  //비로그인 -> 로그인 했을 때 장바구니에 전부 넣기
+  @PostMapping("/all")
+  public ResponseEntity addAllToCartWhenLogin(@AuthenticationPrincipal PrincipalDetails principalDetails,
+                                              @RequestBody @Valid CartAllPostDto cartAllPostDto) {
+    log.info("------addAllToCartWhenLogin------");
+    Cart cart = userService.getUser(principalDetails.getId()).getCart();
+    List<CartAllPostDto.CustomMealboxDto> customMealboxDtos = cartAllPostDto.getCustomMealboxes();
+    List<CartAllPostDto.AdminMadeMealboxDto> adminMadeMealboxDtos = cartAllPostDto.getAdminMadeMealboxes();
+
+    cartService.addAllMealboxes(cart, customMealboxDtos, adminMadeMealboxDtos);
+    return new ResponseEntity(HttpStatus.CREATED);
+  }
+
+  //장바구니에서 밀박스 삭제
   @DeleteMapping("/{cartMealboxId}")
   public ResponseEntity removeMealbox(@AuthenticationPrincipal PrincipalDetails principalDetails,
                                       @PathVariable("cartMealboxId") @Positive Long cartMealboxId){

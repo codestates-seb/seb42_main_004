@@ -41,9 +41,9 @@ public class CartMealboxService {
     cartMealboxRepository.save(cartMealbox);
   }
 
-  public void createCartMealbox(Cart cart, Mealbox mealbox){
+  public void createCartMealbox(Cart cart, Mealbox mealbox, int quantity){
     mealboxService.verifyDeletedMealbox(mealbox);
-    CartMealbox cartMealbox = CartMealbox.makeCartMealbox(cart, mealbox);
+    CartMealbox cartMealbox = CartMealbox.makeCartMealbox(cart, mealbox, quantity);
     cartMealboxRepository.save(cartMealbox);
   }
 
@@ -52,8 +52,8 @@ public class CartMealboxService {
     cartMealboxRepository.delete(cartMealbox);
   }
 
-  public void plusOneQuantity(CartMealbox cartMealbox){
-    cartMealbox.plusOneQuantity();
+  public void plusQuantity(CartMealbox cartMealbox, int quantity){
+    cartMealbox.plusQuantity(quantity);
     cartMealboxRepository.save(cartMealbox);
   }
 }
