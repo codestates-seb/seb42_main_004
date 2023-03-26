@@ -30,9 +30,7 @@ function Payment() {
     userZipCode: '',
     username: '',
   });
-  const checkedCartMealBoxId = location.state
-    ? location.state.checkedCartMealBoxId
-    : [];
+  const checkedCartMealBoxId = location.state || [];
   const [same, setSame] = useState(false);
   const [save, setSave] = useState(false);
   const [res, isPending, error] = useGET(`/orders/checkout/${orderId}`);

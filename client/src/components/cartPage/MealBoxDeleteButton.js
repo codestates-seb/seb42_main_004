@@ -9,7 +9,7 @@ function MealBoxDeleteButton() {
   let deleteHandler = (e) => {
     let cartMealboxId = e.target.parentElement.parentElement.parentElement.id;
 
-    if (confirm('장바구니에서 삭제하시겠습니까?')) {
+    if (confirm('해당 밀박스를 장바구니에서 삭제하시겠습니까?')) {
       isLogin && deleteData(`/users/cart/${cartMealboxId}`);
       dispatch(deleteCartItem([cartMealboxId]));
       alert('장바구니에서 삭제되었습니다.');

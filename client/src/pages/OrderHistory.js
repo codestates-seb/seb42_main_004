@@ -5,14 +5,19 @@ import OrderHistoryByDateDiv from '../components/orderHistory/OrderHistoryByDate
 import PaginationUl from '../components/commons/PaginationUl';
 import getData from '../util/getData';
 import { useSelector } from 'react-redux';
-
+import TabBar from '../components/commons/TabBar';
+import Empty from '../components/commons/Empty';
 function OrderHistory() {
   let { admin } = useSelector((state) => state.authReducer);
 
   let [page, setPage] = useState(1);
   let [totalPages, setTotalPages] = useState(1);
-  let [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   let [data, setData] = useState([]);
+  let [date, setDate] = useState(
+    new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
+      .toISOString()
+      .slice(0, 10)
+  );
 
   let render = () => {
     getData(admin ? `/admin/orders?page=${page}&date=${date}` : `/orders/user`)
@@ -49,24 +54,40 @@ function OrderHistory() {
   useEffect(() => {
     render();
   }, [page, admin, totalPages]);
-
+  console.log(data.length);
   return (
     <OrderHistoryPageWrapper className="margininside">
-      {admin && (
-        <ManagerMenuDiv>
-          <input type="date" onChange={dateHandler} value={date} />
-          <OrderHistoryPageButton
-            text={'확인'}
-            handler={adminGetOrderHistory}
-          />
-        </ManagerMenuDiv>
-      )}
-      {data?.map((el) => (
-        <OrderHistoryByDateDiv key={el.date} ordersPerDate={el} />
-      ))}
-      {admin && (
-        <PaginationUl page={page} totalpage={totalPages} setPage={setPage} />
-      )}
+      <TabBar pathName="Orders">
+        <InnerContent>
+          {admin && (
+            <ManagerMenuDiv>
+              <input type="date" onChange={dateHandler} value={date} />
+              <OrderHistoryPageButton
+                text={'확인'}
+                handler={adminGetOrderHistory}
+              />
+            </ManagerMenuDiv>
+          )}
+          {!data.length ? (
+            <Empty />
+          ) : (
+            <>
+              {data?.map((el) => {
+                return (
+                  <OrderHistoryByDateDiv key={el.date} ordersPerDate={el} />
+                );
+              })}
+              {admin && (
+                <PaginationUl
+                  page={page}
+                  totalpage={totalPages}
+                  setPage={setPage}
+                />
+              )}
+            </>
+          )}
+        </InnerContent>
+      </TabBar>
     </OrderHistoryPageWrapper>
   );
 }
@@ -86,6 +107,12 @@ const ManagerMenuDiv = styled.div`
 `;
 
 const OrderHistoryPageWrapper = styled.div`
+  position: relative;
   min-height: calc(100vh - 5rem - 50px);
   flex-direction: column;
+`;
+
+const InnerContent = styled.div`
+  width: 80%;
+  padding-bottom: 4rem;
 `;

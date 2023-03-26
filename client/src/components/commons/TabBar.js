@@ -38,7 +38,7 @@ const TabDiv = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
-
+  min-height: 90vh;
   @media (max-width: 768px) {
     flex-direction: column;
   }
