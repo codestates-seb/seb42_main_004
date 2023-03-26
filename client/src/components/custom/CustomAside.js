@@ -22,9 +22,8 @@ function CustomAside({ custom }) {
         return { productId, quantity };
       });
       await postData(`/users/cart/custom`, data);
-    } else {
-      dispatch(addCartItem({ ...data, quantity: 1 }));
     }
+    dispatch(addCartItem({ ...data, quantity: 1 }));
 
     dispatch(initializeCustom());
     if (

@@ -40,7 +40,7 @@ public class InitDB {
   private final InitMealbox initMealbox;
   private final InitMealboxSet initMealboxSet;
 
-//   @PostConstruct
+  @PostConstruct
   public void init() {
     initUser.UserInit();
     initProduct.ProductInit();
