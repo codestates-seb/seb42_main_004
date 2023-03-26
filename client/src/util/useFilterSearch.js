@@ -6,7 +6,7 @@ const useFilterSearch = (isMealBox, setPath) => {
 
   const [searchWord, setSearchWord] = useState('');
   const [sortBy, setSortBy] = useState(['id', 'DESC']);
-  const [errorWord, setErrorWord] = useState(searchWord);
+  const [notFoundWord, setNotFoundWord] = useState(searchWord);
 
   let { pathname, search } = useLocation();
   if (!search) search = '?page=1&sort=id&dir=DESC';
@@ -21,7 +21,7 @@ const useFilterSearch = (isMealBox, setPath) => {
   };
 
   const paginationUrl = (page) => {
-    setErrorWord(searchWord);
+    setNotFoundWord(searchWord);
     if (isMealBox) {
       return searchWord
         ? `/mealboxes/search/detail?page=${page}&name=${searchWord}`
@@ -41,14 +41,19 @@ const useFilterSearch = (isMealBox, setPath) => {
 
   useEffect(() => {
     if (setPath) setPath(paginationUrl(page));
-    else navigate(paginationUrl(1));
+    else if (search.includes('&sort=')) navigate(paginationUrl(1));
+    else if (searchWord === '') {
+      const word = decodeURI(search.split('&name=')[1]);
+      setSearchWord(word);
+      setNotFoundWord(word);
+    }
   }, [page, sortBy]);
 
   const toSearchBarDiv = { searchSubject, searchWord, setSearchWord };
   const toFilterSearchDiv = { sortSubject, toSearchBarDiv };
   const setUri = !setPath ? `${pathname}${search}` : setPage;
 
-  return [toFilterSearchDiv, errorWord, paginationUrl, setUri];
+  return [toFilterSearchDiv, notFoundWord, paginationUrl, setUri];
 };
 
 export default useFilterSearch;
