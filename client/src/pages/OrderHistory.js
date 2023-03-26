@@ -12,8 +12,12 @@ function OrderHistory() {
 
   let [page, setPage] = useState(1);
   let [totalPages, setTotalPages] = useState(1);
-  let [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   let [data, setData] = useState([]);
+  let [date, setDate] = useState(
+    new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)
+      .toISOString()
+      .slice(0, 10)
+  );
 
   let render = () => {
     getData(admin ? `/admin/orders?page=${page}&date=${date}` : `/orders/user`)
@@ -73,12 +77,13 @@ function OrderHistory() {
                   <OrderHistoryByDateDiv key={el.date} ordersPerDate={el} />
                 );
               })}
-              admin &&
-              <PaginationUl
-                page={page}
-                totalpage={totalPages}
-                setPage={setPage}
-              />
+              {admin && (
+                <PaginationUl
+                  page={page}
+                  totalpage={totalPages}
+                  setPage={setPage}
+                />
+              )}
             </>
           )}
         </InnerContent>
@@ -105,9 +110,9 @@ const OrderHistoryPageWrapper = styled.div`
   position: relative;
   min-height: calc(100vh - 5rem - 50px);
   flex-direction: column;
-  width: 80%;
 `;
 
 const InnerContent = styled.div`
   width: 80%;
+  padding-bottom: 4rem;
 `;

@@ -30,10 +30,7 @@ function Payment() {
     userZipCode: '',
     username: '',
   });
-  const checkedCartMealBoxId = location.state
-    ? location.state.checkedCartMealBoxId
-    : [];
-
+  const checkedCartMealBoxId = location.state || [];
   const [res, isPending, error] = useGET(`/orders/checkout/${orderId}`);
 
   useEffect(() => {
