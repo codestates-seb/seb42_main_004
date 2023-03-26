@@ -5,11 +5,12 @@ import InputLabelDiv from '../commons/InputLabelDiv';
 import PreAndNextButtons from './PreAndNextButtons';
 import { setProfile, setGender } from '../../reducers/surveyQuestionReducer';
 import SurveyBox from './SurveyBox';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 function SurveyPage1() {
   let navigate = useNavigate();
   let dispatch = useDispatch();
   let [alertMsg, setAlertMsg] = useState('잘못된 입력입니다.');
+  let [isValid, setValid] = useState(false);
 
   let { age, height, weight, gender } = useSelector(
     (state) => state.surveyQuestionReducer
@@ -17,8 +18,11 @@ function SurveyPage1() {
 
   let dispatchProfile = (e) => {
     let { id, value } = e.target;
-    imsi(value);
-    dispatch(setProfile({ id, value }));
+
+    let regex = new RegExp(/^\d*(\.\d{0,1})?$/);
+    if (regex.test(value)) {
+      dispatch(setProfile({ id, value }));
+    }
   };
 
   let dispatchGender = (e) => {
@@ -27,36 +31,32 @@ function SurveyPage1() {
   };
 
   let nextHandler = () => {
-    isValid() ? navigate(`/survey/question/2`) : alert(alertMsg);
+    if (isValid) {
+      navigate(`/survey/question/2`);
+    }
   };
 
-  let isValid = () => {
-    let ageValid = age >= 0 && age <= 100;
-    let weightValid = weight >= 0 && weight <= 150;
-    let heightValid = height >= 0 && height <= 200;
+  let checkValid = () => {
+    let ageValid = age > 0 && age <= 100;
+    let heightValid = height > 0 && height <= 200;
+    let weightValid = weight > 0 && weight <= 150;
 
     if (!ageValid) {
-      setAlertMsg('나이는 100세 이상이어야 합니다.');
+      setAlertMsg('나이는 100세 이하여야 합니다.');
     } else if (!heightValid) {
       setAlertMsg('신장은 200cm 이하여야 합니다.');
     } else if (!weightValid) {
-      setAlertMsg('몸무게는 150kg 이하여야 합니다.');
+      setAlertMsg('체중은 150kg 이하여야 합니다.');
     } else {
-      setAlertMsg('잘못된 입력입니다.');
+      setAlertMsg('');
     }
-    return ageValid && weightValid && heightValid;
+    ageValid && heightValid && weightValid ? setValid(true) : setValid(false);
   };
 
-  let prev = '';
-
-  let regex = new RegExp(/^\d*(\.\d{0,1})?$/);
-  let imsi = (value) => {
-    if (regex.test(value)) {
-      value = prev;
-    } else {
-      prev = value;
-    }
-  };
+  useEffect(() => {
+    checkValid();
+    console.log(isValid);
+  }, [age, weight, height]);
 
   return (
     <Article>
@@ -112,6 +112,7 @@ function SurveyPage1() {
           unit="kg"
           maxLength="4"
         />
+        <ValidMsg>{alertMsg}</ValidMsg>
         <PreAndNextButtons nextHandler={nextHandler} />
       </SurveyContentDiv>
     </Article>
@@ -178,4 +179,8 @@ const GenderOptionDiv = styled.div`
       }
     }
   }
+`;
+
+const ValidMsg = styled.div`
+  color: #d84b4b;
 `;

@@ -73,12 +73,13 @@ function OrderHistory() {
                   <OrderHistoryByDateDiv key={el.date} ordersPerDate={el} />
                 );
               })}
-              admin &&
-              <PaginationUl
-                page={page}
-                totalpage={totalPages}
-                setPage={setPage}
-              />
+              {admin && (
+                <PaginationUl
+                  page={page}
+                  totalpage={totalPages}
+                  setPage={setPage}
+                />
+              )}
             </>
           )}
         </InnerContent>
@@ -105,7 +106,6 @@ const OrderHistoryPageWrapper = styled.div`
   position: relative;
   min-height: calc(100vh - 5rem - 50px);
   flex-direction: column;
-  width: 80%;
 `;
 
 const InnerContent = styled.div`
