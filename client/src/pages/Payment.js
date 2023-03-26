@@ -33,7 +33,8 @@ function Payment() {
   const checkedCartMealBoxId = location.state
     ? location.state.checkedCartMealBoxId
     : [];
-
+  const [same, setSame] = useState(false);
+  const [save, setSave] = useState(false);
   const [res, isPending, error] = useGET(`/orders/checkout/${orderId}`);
 
   useEffect(() => {
@@ -56,14 +57,35 @@ function Payment() {
   }, []);
 
   const handleClick = () => {
-    onClickPayment();
-    patchData(`/orders/delivery/${orderId}`, {
-      addressee: inputValue.addressee,
-      zipCode: inputValue.deliveryZipCode,
-      simpleAddress: inputValue.deliverySimpleAddress,
-      detailAddress: inputValue.deliveryDetailAddress,
-      phoneNumber: inputValue.addresseePhoneNumber,
-    }).then((data) => console.log(data));
+    if (same) {
+      patchData(`/orders/delivery/${orderId}`, {
+        addressee: inputValue.username,
+        zipCode: inputValue.userZipCode,
+        simpleAddress: inputValue.userSimpleAddress,
+        detailAddress: inputValue.userDetailAddress,
+        phoneNumber: inputValue.userPhoneNumber,
+      }).then((data) => {
+        if (data.status === 200) {
+          onClickPayment();
+        } else {
+          alert('배송지 정보를 확인해주세요.');
+        }
+      });
+    } else {
+      patchData(`/orders/delivery/${orderId}`, {
+        addressee: inputValue.addressee,
+        zipCode: inputValue.deliveryZipCode,
+        simpleAddress: inputValue.deliverySimpleAddress,
+        detailAddress: inputValue.deliveryDetailAddress,
+        phoneNumber: inputValue.addresseePhoneNumber,
+      }).then((data) => {
+        if (data.status === 200) {
+          onClickPayment();
+        } else {
+          alert('배송지 정보를 확인해주세요.');
+        }
+      });
+    }
   };
 
   const onClickPayment = () => {
@@ -73,7 +95,7 @@ function Payment() {
       pg: 'html5_inicis',
       pay_method: 'card',
       merchant_uid: inputValue.orderNumber,
-      name: '밀박스',
+      name: '한끼밀 밀박스',
       amount: inputValue.totalPrice,
       buyer_name: inputValue.username,
       buyer_tel: inputValue.userPhoneNumber,
@@ -90,6 +112,45 @@ function Payment() {
         merchantUid: response.merchant_uid,
       }).then((data) => {
         if (data.status === 200) {
+          if (same && save) {
+            patchData('/users', {
+              name: inputValue.username,
+              phoneNumber: inputValue.userPhoneNumber,
+              address: {
+                zipCode: inputValue.userZipCode,
+                simpleAddress: inputValue.userSimpleAddress,
+                detailAddress: inputValue.userDetailAddress,
+              },
+              deliveryInformation: {
+                name: inputValue.username,
+                phoneNumber: inputValue.userPhoneNumber,
+                address: {
+                  zipCode: inputValue.userZipCode,
+                  simpleAddress: inputValue.userSimpleAddress,
+                  detailAddress: inputValue.userDetailAddress,
+                },
+              },
+            });
+          } else if (save) {
+            patchData('/users', {
+              name: inputValue.username,
+              phoneNumber: inputValue.userPhoneNumber,
+              address: {
+                zipCode: inputValue.userZipCode,
+                simpleAddress: inputValue.userSimpleAddress,
+                detailAddress: inputValue.userDetailAddress,
+              },
+              deliveryInformation: {
+                name: inputValue.addressee,
+                phoneNumber: inputValue.addresseePhoneNumber,
+                address: {
+                  zipCode: inputValue.deliveryZipCode,
+                  simpleAddress: inputValue.deliverySimpleAddress,
+                  detailAddress: inputValue.deliveryDetailAddress,
+                },
+              },
+            });
+          }
           dispatch(deleteCartItem(checkedCartMealBoxId));
           navigate('/myinfo/orderhistory');
         } else if (data.status === 409) {
@@ -104,10 +165,29 @@ function Payment() {
     }
   };
 
+  useEffect(() => {
+    if (inputValue.addresseePhoneNumber.length === 11) {
+      setInputValue({
+        ...inputValue,
+        ['addresseePhoneNumber']: inputValue.addresseePhoneNumber.replace(
+          /(\d{3})(\d{4})(\d{4})/,
+          '$1-$2-$3'
+        ),
+      });
+    }
+  }, [inputValue.addresseePhoneNumber]);
+
   return (
     <GetTemplate isPending={isPending} error={error} res={res} title="결제하기">
       <ContainerDiv className="margininside">
-        <PaymentUl inputValue={inputValue} setInputValue={setInputValue} />
+        <PaymentUl
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+          same={same}
+          setSame={setSame}
+          save={save}
+          setSave={setSave}
+        />
         <CartAside
           totalPrice={inputValue.totalPrice}
           buttonClick={handleClick}
