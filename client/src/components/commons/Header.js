@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import CartCounter from './CartCounter';
 import MainButton from './MainButton';
 import Navbar from './Navbar';
-import { setAuth } from '../../reducers/authReducer';
+import { setAuth, setEmail } from '../../reducers/authReducer';
 import { initializeCart } from '../../reducers/cartReducer';
 import { FaShoppingCart } from 'react-icons/fa';
 import { TfiMenu } from 'react-icons/tfi';
@@ -32,6 +32,7 @@ function Header() {
           roles: [],
         })
       );
+      dispatch(setEmail(''));
       dispatch(initializeCart());
       window.location.reload();
     } else {

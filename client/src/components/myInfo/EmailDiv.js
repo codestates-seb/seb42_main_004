@@ -3,7 +3,7 @@ import { AiOutlineCheckCircle } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import getData from '../../util/getData';
 
-function EmailDiv({ name, value, status }) {
+function EmailDiv({ name, value, status, request }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -14,10 +14,10 @@ function EmailDiv({ name, value, status }) {
 
   return (
     <ContainerDiv>
-      <TitleDiv>{name}</TitleDiv>
+      {name ? <TitleDiv>{name}</TitleDiv> : null}
       {status === 'USER_TMP' ? (
         <>
-          <div>{value}</div>
+          {request ? null : <div>{value}</div>}
           <ConfirmSpan>
             <button onClick={handleClick} className="buttonstyle shadow">
               인증하기

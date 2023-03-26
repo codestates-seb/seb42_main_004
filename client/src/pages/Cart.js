@@ -60,7 +60,11 @@ function Cart() {
       });
 
     postData('/orders', { mealboxes: postReqData }).then((res) => {
-      navigate(res.data, { state: checkedCartMealBoxId });
+      if (res.status === 403) {
+        navigate('/email/request');
+      } else {
+        navigate(res.data, { state: checkedCartMealBoxId });
+      }
     });
   };
 
