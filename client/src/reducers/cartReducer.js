@@ -13,20 +13,24 @@ const cartSlice = createSlice({
     addCartItem: (state, action) => {
       const { cart } = state;
       const mealBox = action.payload;
-      let cartMealboxId = new Date().toString().split(' ').join('');
-      // let arr = cart.mealboxes.map(el => {
-      //   return el.cartMealboxId
-      // })
-      //       if()
-      //       cart.mealboxes = mealBox.map((el) => {
-      //         if (el.cartMealboxId === cartMealboxId) {
-      //           el.quantity++;
-      //         }
-      //         return el;
-      //       });
+      const cartMealboxId = new Date().toString().split(' ').join('');
 
-      cart.mealboxes.push({ ...mealBox, cartMealboxId });
-
+      // 일반 밀박스 => mealboxId 있으면 quantity 추가, 없으면 배열에 추가
+      // 커스텀 => 추가
+      let arr = cart.mealboxes.map((el) => {
+        return el.mealboxId;
+      });
+      if (mealBox.name === 'custom') {
+        cart.mealboxes.push({ ...mealBox, cartMealboxId });
+      } else if (arr.includes(mealBox.mealboxId)) {
+        let idx = cart.mealboxes.findIndex((el) => {
+          return el.mealboxId === mealBox.mealboxId;
+        });
+        cart.mealboxes[idx].quantity += 1;
+      } else {
+        cart.mealboxes.push({ ...mealBox, cartMealboxId });
+      }
+      // cart.mealboxes.push({ ...mealBox, cartMealboxId });
       cart.totalPrice += mealBox.price;
     },
 
