@@ -2,11 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ContentDiv from './ContentDiv';
-import PasswordInputDiv from './PasswordInputDiv';
-import MyInfoButton from './MyInfoButton';
 import GetTemplate from '../commons/GetTemplate';
 import useGET from '../../util/useGET';
-import patchData from '../../util/patchData';
 import postData from '../../util/postData';
 import EmailDiv from './EmailDiv';
 import DeliveryDiv from './DeliveryDiv';
@@ -15,46 +12,15 @@ import { useDispatch } from 'react-redux';
 import { setAuth, setEmail } from '../../reducers/authReducer';
 import { initializeCart } from '../../reducers/cartReducer';
 import ProfileImg from './ProfileImg';
+import PasswordDiv from './PasswordDiv';
 
 function MyInfoUl({ pathName }) {
   const [inputValue, setInputValue] = useState({});
-  const [passwordInputValue, setPasswordInputValue] = useState({
-    password: '',
-    newPassword: '',
-    confirmNewPassword: '',
-  });
   const [imgInput, setImgInput] = useState();
   const [imgInputBuffer, setImgInputBuffer] = useState(inputValue?.imagePath);
   const [res, isPending, error] = useGET('/users');
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const handleInput = (e) => {
-    const { name, value } = e.target;
-    setPasswordInputValue({
-      ...passwordInputValue,
-      [name]: value,
-    });
-  };
-
-  const handleClick = () => {
-    patchData('/users/password', {
-      password: passwordInputValue.password,
-      afterPassword: passwordInputValue.newPassword,
-    }).then((data) => {
-      if (data.status === 200) {
-        alert('변경이 완료되었습니다.');
-        navigate('/myinfo');
-      } else {
-        alert('비밀번호를 다시 입력해주세요');
-        setPasswordInputValue({
-          password: '',
-          newPassword: '',
-          confirmNewPassword: '',
-        });
-      }
-    });
-  };
 
   useEffect(() => {
     if (res) {
@@ -152,32 +118,7 @@ function MyInfoUl({ pathName }) {
         </li>
         {pathName ? (
           <li>
-            <PasswordDiv>
-              <PasswordInputDiv
-                id="password"
-                name="password"
-                labelName="비밀번호"
-                value={passwordInputValue.password}
-                onChange={handleInput}
-              />
-              <PasswordInputDiv
-                id="newPassword"
-                name="newPassword"
-                labelName="새 비밀번호"
-                value={passwordInputValue.newPassword}
-                onChange={handleInput}
-              />
-              <PasswordInputDiv
-                id="confirmNewPassword"
-                name="confirmNewPassword"
-                labelName="새 비밀번호 확인"
-                value={passwordInputValue.confirmNewPassword}
-                onChange={handleInput}
-              />
-              <PasswordButtonDiv>
-                <MyInfoButton onClick={handleClick} text="변경완료" />
-              </PasswordButtonDiv>
-            </PasswordDiv>
+            <PasswordDiv />
           </li>
         ) : null}
         {pathName ? null : (
@@ -262,11 +203,6 @@ const ImgDiv = styled.div`
     height: 300px;
   }
 `;
-const PasswordDiv = styled.div`
-  padding-bottom: 50px;
-  margin-bottom: 2rem;
-  border-bottom: 1px solid var(--black);
-`;
 const ButtonDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -286,10 +222,4 @@ const ButtonDiv = styled.div`
       color: var(--input_blue);
     }
   }
-`;
-const PasswordButtonDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin-top: 2rem;
 `;

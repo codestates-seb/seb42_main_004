@@ -1,17 +1,29 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-function PasswordInputDiv({ id, name, labelName, value, onChange }) {
+function PasswordInputDiv({
+  id,
+  name,
+  labelName,
+  value,
+  inputRef,
+  validText,
+  onChange,
+}) {
   return (
     <ContainerDiv>
       <label htmlFor={id}>{labelName}</label>
-      <input
-        id={id}
-        name={name}
-        className="inputstyle"
-        type="password"
-        value={value}
-        onChange={onChange}
-      ></input>
+      <BottomDiv validText={validText}>
+        <input
+          id={id}
+          name={name}
+          className="inputstyle"
+          type="password"
+          ref={inputRef}
+          value={value}
+          onChange={onChange}
+        ></input>
+        <div>{validText}</div>
+      </BottomDiv>
     </ContainerDiv>
   );
 }
@@ -19,47 +31,47 @@ function PasswordInputDiv({ id, name, labelName, value, onChange }) {
 export default PasswordInputDiv;
 
 const ContainerDiv = styled.div`
-  height: 50px;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
 
   > label {
-    flex-basis: 90px;
-    margin-right: 1.5rem;
+    width: 110px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    margin-right: 1rem;
     font-family: 'IBM Plex Sans KR', sans-serif;
-
-    @media (max-width: 480px) {
-      width: 80%;
-      justify-content: flex-start;
-      margin-right: 0;
-    }
-
-    @media (min-width: 481px) and (max-width: 768px) {
-      width: 60%;
-      justify-content: flex-start;
-      margin-right: 0;
-    }
   }
+`;
+const BottomDiv = styled.div`
+  width: 100%;
+  flex-grow: 1;
 
   > input {
-    width: 50%;
+    width: 60%;
+    height: 35px;
+    ${({ validText }) =>
+      validText &&
+      css`
+        padding: 0.5rem 1.5rem;
+        border: 1px solid var(--red);
+        border-radius: 4px;
 
-    @media (max-width: 480px) {
+        &:focus,
+        :focus-within {
+          border: 2px solid var(--red);
+          outline: none;
+        }
+      `}
+
+    @media  (max-width: 768px) {
       width: 100%;
-    }
-
-    @media (min-width: 481px) and (max-width: 768px) {
-      width: 80%;
     }
   }
 
-  @media (max-width: 768px) {
-    height: 70px;
-    flex-direction: column;
-    justify-content: space-between;
+  > div {
+    padding: 0.5rem 0;
+    color: var(--red);
   }
 `;

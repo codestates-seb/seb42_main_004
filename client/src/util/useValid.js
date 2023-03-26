@@ -18,6 +18,9 @@ function useValid(InputValue) {
     if (InputValue.name.length >= 2 && InputValue.name.length <= 10) {
       setValidText({ ...validText, name: '' });
       setIsValid({ ...isValid, name: true });
+    } else if (!InputValue.name) {
+      setValidText({ ...validText, name: '' });
+      setIsValid({ ...isValid, name: false });
     } else if (InputValue.name.length < 2) {
       setValidText({ ...validText, name: '2자 이상 입력해주세요.' });
       setIsValid({ ...isValid, name: false });
@@ -33,6 +36,9 @@ function useValid(InputValue) {
     if (exp.test(InputValue.email)) {
       setValidText({ ...validText, email: '' });
       setIsValid({ ...isValid, email: true });
+    } else if (!InputValue.email) {
+      setValidText({ ...validText, email: '' });
+      setIsValid({ ...isValid, email: false });
     } else {
       setValidText({ ...validText, email: '이메일 형식이 올바르지 않습니다.' });
       setIsValid({ ...isValid, email: false });
@@ -50,6 +56,12 @@ function useValid(InputValue) {
     ) {
       objText = { ...objText, password: '' };
       objValid = { ...objValid, password: true };
+    } else if (!InputValue.password) {
+      objText = {
+        ...objText,
+        password: '',
+      };
+      objValid = { ...objValid, password: false };
     } else if (
       !exp.test(InputValue.password) ||
       InputValue.password.search(/[0-9]/g) < 0 ||
@@ -67,6 +79,12 @@ function useValid(InputValue) {
     ) {
       objText = { ...objText, passwordConfirm: '' };
       objValid = { ...objValid, passwordConfirm: true };
+    } else if (!InputValue.passwordConfirm) {
+      objText = {
+        ...objText,
+        passwordConfirm: '',
+      };
+      objValid = { ...objValid, passwordConfirm: false };
     } else if (
       InputValue.passwordConfirm &&
       InputValue.password !== InputValue.passwordConfirm
