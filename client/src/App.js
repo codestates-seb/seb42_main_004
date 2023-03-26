@@ -27,12 +27,12 @@ import SendEmail from './pages/SendEmail';
 import FindPassword from './pages/FindPassword';
 import SurveyHome from './pages/SurveyHome';
 import SignupComplete from './pages/SignupComplete';
+import RequestEmail from './pages/RequestEmail';
 import ToTopButton from './components/commons/ToTopButton';
 import { initializeCart } from './reducers/cartReducer';
 import setAuthorizationToken from './util/setAuthorizationToken';
 import parseToken from './util/parseToken';
 import checkFooter from './util/checkFooter';
-import RequestEmail from './pages/RequestEmail';
 
 function App() {
   const dispatch = useDispatch();

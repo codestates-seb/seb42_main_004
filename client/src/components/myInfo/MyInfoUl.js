@@ -12,7 +12,7 @@ import EmailDiv from './EmailDiv';
 import DeliveryDiv from './DeliveryDiv';
 import deleteData from '../../util/deleteData';
 import { useDispatch } from 'react-redux';
-import { setAuth } from '../../reducers/authReducer';
+import { setAuth, setEmail } from '../../reducers/authReducer';
 import { initializeCart } from '../../reducers/cartReducer';
 import ProfileImg from './ProfileImg';
 
@@ -204,6 +204,7 @@ function MyInfoUl({ pathName }) {
                           roles: [],
                         })
                       );
+                      dispatch(setEmail(''));
                       dispatch(initializeCart());
                       window.location.reload();
                     });
