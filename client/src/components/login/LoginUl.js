@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import postData from '../../util/postData';
 import LoginButton from './LoginButton';
-import { FcGoogle } from 'react-icons/fc';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import parseToken from '../../util/parseToken';
 import { useDispatch, useSelector } from 'react-redux';
 import setAuthorizationToken from '../../util/setAuthorizationToken';
 import { setAuth } from '../../reducers/authReducer';
 import GetTemplate from '../commons/GetTemplate';
+import GoogleButton from './GoogleButton';
 
 function LoginUl() {
   const { mealboxes } = useSelector((state) => state.cartReducer.cart);
@@ -104,7 +104,7 @@ function LoginUl() {
   };
 
   return (
-    <GetTemplate res="true" title="한끼밀 로그인">
+    <GetTemplate res="true" title="로그인">
       <ContainerUl>
         <li>
           <Title>
@@ -171,10 +171,7 @@ function LoginUl() {
           </Div>
         </li>
         <li>
-          <GoogleButton className="buttonstyle">
-            <FcGoogle size={25} />
-            <div>Sign in with Google</div>
-          </GoogleButton>
+          <GoogleButton />
         </li>
       </ContainerUl>
     </GetTemplate>
@@ -265,18 +262,6 @@ const Div = styled.div`
     &:hover {
       color: var(--input_blue);
     }
-  }
-`;
-const GoogleButton = styled.button`
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--black);
-  background-color: var(--white);
-
-  > div {
-    margin-left: 0.5rem;
   }
 `;
 const LoginLink = styled(Link)`

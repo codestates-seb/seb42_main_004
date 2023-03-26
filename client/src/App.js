@@ -146,16 +146,16 @@ export default App;
 const BodyMargin = styled.div`
   padding-top: calc(1rem + 50px);
   padding-bottom: 4rem;
-  min-height: calc(100vh - 330px - 5rem);
+  min-height: calc(100vh - 280px);
 
   @media screen and (max-width: 768px) {
-    min-height: calc(100vh - 280px - 5rem);
+    /* min-height: calc(100vh - 230px); */
+    min-height: calc(100vh - ${(props) => (props.height ? '0px' : '230px')});
+    padding-bottom: calc(${(props) => (props.height ? '90px' : '0px')} + 4rem);
   }
 
   @media screen and (max-width: 480px) {
-    min-height: calc(
-      100vh - ${(props) => (props.height ? '50px' : '230px')} - 5rem
-    );
-    padding-bottom: ${(props) => props.height && '76px'};
+    min-height: calc(100vh - ${(props) => (props.height ? '0px' : '180px')});
+    padding-bottom: calc(${(props) => (props.height ? '76px' : '0px')} + 4rem);
   }
 `;
