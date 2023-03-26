@@ -12,6 +12,8 @@ spring:
       hibernate:
         format_sql: true #To beautify or pretty print the SQL
         show_sql: true #show sql
+        jdbc:
+          time_zone: Asia/Seoul
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
