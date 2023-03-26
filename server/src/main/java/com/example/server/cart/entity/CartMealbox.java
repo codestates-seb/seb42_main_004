@@ -32,9 +32,9 @@ public class CartMealbox {
 
   /* ####### 편의 메서드 ####### */
 
-  public static CartMealbox makeCartMealbox(Cart cart, Mealbox mealbox) {
+  public static CartMealbox makeCartMealbox(Cart cart, Mealbox mealbox, int quantity) {
     CartMealbox cartMealbox = CartMealbox.builder()
-            .cart(cart).mealbox(mealbox).quantity(1).build();
+            .cart(cart).mealbox(mealbox).quantity(quantity).build();
     mealbox.addCartMealbox(cartMealbox);
     cart.addCartMealbox(cartMealbox);
     return cartMealbox;
@@ -51,8 +51,8 @@ public class CartMealbox {
     this.quantity = quantity;
   }
 
-  public void plusOneQuantity(){
-    this.quantity++;
+  public void plusQuantity(int quantity){
+    this.quantity = this.getQuantity() + quantity;
   }
 }
 
