@@ -12,7 +12,7 @@ import useFilterSearch from '../util/useFilterSearch';
 
 function Products() {
   const { admin } = useSelector((state) => state.authReducer);
-  const [toFilterSearchDiv, errorWord, paginationUrl, uri] =
+  const [toFilterSearchDiv, notFoundWord, paginationUrl, uri] =
     useFilterSearch(false);
   const [res, isPending, error, getData] = useGET(
     `${admin ? '/admin' : ''}${uri}`
@@ -29,7 +29,7 @@ function Products() {
       <MealBoxesWrapDiv className="margininside">
         <h1>구성품 설명</h1>
         <FilterSearchDiv placeholder="고구마" {...toFilterSearchDiv} />
-        {errorWord && (
+        {notFoundWord && (
           <SearchResultH3>
             검색결과 {res?.pageInfo?.totalElements?.toLocaleString('ko-KR')}개
           </SearchResultH3>
@@ -37,7 +37,7 @@ function Products() {
         {res.data?.length === 0 && (
           <NoResultDiv
             search={(word) => navigate(`/products/search?page=1&name=${word}`)}
-            errorWord={errorWord}
+            notFoundWord={notFoundWord}
             replaceWord={'단백질쉐이크'}
           />
         )}

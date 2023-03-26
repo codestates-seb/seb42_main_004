@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import postData from '../../util/postData';
 import LoginButton from './LoginButton';
-import { FcGoogle } from 'react-icons/fc';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import parseToken from '../../util/parseToken';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,12 +10,14 @@ import setAuthorizationToken from '../../util/setAuthorizationToken';
 import { setAuth } from '../../reducers/authReducer';
 import { setCart } from '../../reducers/cartReducer';
 import getData from '../../util/getData';
+import GetTemplate from '../commons/GetTemplate';
+import GoogleButton from './GoogleButton';
 
 function LoginUl() {
   const { mealboxes } = useSelector((state) => state.cartReducer.cart) || {
     mealboxes: [],
   };
-  console.log(mealboxes);
+
   const [showPwd, setShowPwd] = useState(false);
   const [inputValue, setInputValue] = useState({
     email: '',
@@ -32,7 +33,7 @@ function LoginUl() {
       setAuthorizationToken(token);
       await Auth();
       await addItemsToAccountCart();
-      window.location.reload();
+      // window.location.reload();
     } else if (
       localStorage.getItem('accessToken') &&
       localStorage.getItem('accessToken') !== token
@@ -42,7 +43,7 @@ function LoginUl() {
       setAuthorizationToken(token);
       await Auth();
       await addItemsToAccountCart();
-      window.location.reload();
+      // window.location.reload();
     }
   };
 
@@ -65,14 +66,23 @@ function LoginUl() {
   };
 
   const addItemsToAccountCart = async () => {
-    await mealboxes.forEach((el) => {
-      if (el.name === 'custom') {
-        console.log(el);
-        postData('/users/cart/custom', el);
-      } else {
-        postData('/users/cart', { mealboxId: el.mealboxId });
-      }
-    });
+    console.log(Array.isArray(mealboxes));
+    let postReqData = mealboxes.reduce(
+      (acc, cur) => {
+        if (cur.name === 'custom') {
+          acc.customMealboxes.push({ mealbox: cur });
+        } else {
+          acc.adminMadeMealboxes.push({
+            mealboxId: cur.mealboxId,
+            quantity: cur.quantity,
+          });
+        }
+        return acc;
+      },
+      { adminMadeMealboxes: [], customMealboxes: [] }
+    );
+    console.log(postReqData);
+    await postData('/users/cart/all', postReqData);
 
     let data = await getData('/users/cart');
     console.log(data.data);
@@ -110,77 +120,84 @@ function LoginUl() {
     setShowPwd(!showPwd);
   };
 
+  const handleKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      handleClick();
+    }
+  };
+
   return (
-    <ContainerUl>
-      <li>
-        <Title>
-          <h1>로그인</h1>
-        </Title>
-      </li>
-      <li>
-        <LoginDiv>
-          <label htmlFor="email">이메일</label>
-          <input
-            id="email"
-            name="email"
-            className="inputstyle"
-            placeholder="이메일"
-            ref={(el) => (inputRef.current[0] = el)}
-            value={email}
-            onChange={handleInput}
-          />
-        </LoginDiv>
-      </li>
-      <li>
-        <LoginDiv>
-          <label htmlFor="password">비밀번호</label>
-          <input
-            id="password"
-            name="password"
-            className="inputstyle"
-            type={showPwd ? 'text' : 'password'}
-            placeholder="비밀번호"
-            ref={(el) => (inputRef.current[1] = el)}
-            value={password}
-            onChange={handleInput}
-          />
-          {showPwd ? (
-            <IconDiv onClick={handlePasswordClick}>
-              <AiOutlineEye size={20} />
-            </IconDiv>
-          ) : (
-            <IconDiv onClick={handlePasswordClick}>
-              <AiOutlineEyeInvisible size={20} />
-            </IconDiv>
-          )}
-        </LoginDiv>
-      </li>
-      <li>
-        <CheckboxDiv>
-          <input type="checkbox" id="auto"></input>
-          <label htmlFor="auto">자동로그인</label>
-        </CheckboxDiv>
-      </li>
-      <li>
-        <LoginButton onClick={handleClick} name="로그인"></LoginButton>
-      </li>
-      <li>
-        <Div>
-          <LoginLink to="/email/send" className="linkstyle">
-            비밀번호 찾기
-          </LoginLink>
-          <LoginLink to="/signup" className="linkstyle">
-            회원가입
-          </LoginLink>
-        </Div>
-      </li>
-      <li>
-        <GoogleButton className="buttonstyle">
-          <FcGoogle size={25} />
-          <div>Sign in with Google</div>
-        </GoogleButton>
-      </li>
-    </ContainerUl>
+    <GetTemplate res="true" title="로그인">
+      <ContainerUl>
+        <li>
+          <Title>
+            <h1>로그인</h1>
+          </Title>
+        </li>
+        <li>
+          <LoginDiv>
+            <label htmlFor="email">이메일</label>
+            <input
+              id="email"
+              name="email"
+              className="inputstyle"
+              placeholder="이메일"
+              ref={(el) => (inputRef.current[0] = el)}
+              value={email}
+              onChange={handleInput}
+              onKeyUp={handleKeyUp}
+            />
+          </LoginDiv>
+        </li>
+        <li>
+          <LoginDiv>
+            <label htmlFor="password">비밀번호</label>
+            <input
+              id="password"
+              name="password"
+              className="inputstyle"
+              type={showPwd ? 'text' : 'password'}
+              placeholder="비밀번호"
+              ref={(el) => (inputRef.current[1] = el)}
+              value={password}
+              onChange={handleInput}
+              onKeyUp={handleKeyUp}
+            />
+            {showPwd ? (
+              <IconDiv onClick={handlePasswordClick}>
+                <AiOutlineEye size={20} />
+              </IconDiv>
+            ) : (
+              <IconDiv onClick={handlePasswordClick}>
+                <AiOutlineEyeInvisible size={20} />
+              </IconDiv>
+            )}
+          </LoginDiv>
+        </li>
+        <li>
+          <CheckboxDiv>
+            <input type="checkbox" id="auto"></input>
+            <label htmlFor="auto">자동로그인</label>
+          </CheckboxDiv>
+        </li>
+        <li>
+          <LoginButton onClick={handleClick} name="로그인"></LoginButton>
+        </li>
+        <li>
+          <Div>
+            <LoginLink to="/email/send" className="linkstyle">
+              비밀번호 찾기
+            </LoginLink>
+            <LoginLink to="/signup" className="linkstyle">
+              회원가입
+            </LoginLink>
+          </Div>
+        </li>
+        <li>
+          <GoogleButton />
+        </li>
+      </ContainerUl>
+    </GetTemplate>
   );
 }
 
@@ -268,18 +285,6 @@ const Div = styled.div`
     &:hover {
       color: var(--input_blue);
     }
-  }
-`;
-const GoogleButton = styled.button`
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--black);
-  background-color: var(--white);
-
-  > div {
-    margin-left: 0.5rem;
   }
 `;
 const LoginLink = styled(Link)`

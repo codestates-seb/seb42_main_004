@@ -28,7 +28,6 @@ function Header() {
         setAuth({
           isLogin: false,
           accessToken: '',
-          tokenExpirationDate: '',
           user: {},
           roles: [],
         })
@@ -70,14 +69,17 @@ function Header() {
           <IconsUl>
             <li>
               {isLogin ? (
-                <MainButton handler={handleLogout} name="Logout" />
+                <MainButton handler={handleLogout} name="로그아웃" />
               ) : (
-                <MainButton handler={() => navigate('/login')} name="Login" />
+                <MainButton handler={() => navigate('/login')} name="로그인" />
               )}
             </li>
             <li>
               {isLogin ? null : (
-                <MainButton handler={() => navigate('/signup')} name="Signup" />
+                <MainButton
+                  handler={() => navigate('/signup')}
+                  name="회원가입"
+                />
               )}
             </li>
             <li>

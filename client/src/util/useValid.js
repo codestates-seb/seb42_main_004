@@ -85,7 +85,7 @@ function useValid(InputValue) {
     });
   }, []);
 
-  return [validText, isValid, setValidText];
+  return [validText, isValid, setValidText, setIsValid];
 }
 
 export default useValid;

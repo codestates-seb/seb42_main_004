@@ -95,8 +95,8 @@ public class MealboxService {
 
         PageRequest pageRequest = PageRequest.of(page-1, size);
         return mealboxRepository
-                .findAllDistinctByForSaleIsTrueAndMealboxInfoIsNotAndNameContainingOrMealboxProductsProductNameContains
-                        (pageRequest, Mealbox.MealboxInfo.CUSTOM_MEALBOX, search, search);
+                .findAllByMealboxNameAndProductName
+                        (Mealbox.MealboxInfo.CUSTOM_MEALBOX, search, pageRequest);
     }
 
     public void uploadImage(Long mealboxId, MultipartFile file){

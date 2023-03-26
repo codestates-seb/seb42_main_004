@@ -1,33 +1,34 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import postData from '../../util/postData';
+import GetTemplate from '../commons/GetTemplate';
 import ContentInputDiv from '../myInfo/ContentInputDiv';
 import MyInfoButton from '../myInfo/MyInfoButton';
 
 function SendEmailDiv({ pathName }) {
-  const [email, setEmail] = useState('');
+  const [sendEmail, setSendEmail] = useState('');
   const [valid, setValid] = useState({
     text: '',
     isValid: false,
   });
-  const location = useLocation();
   const navigate = useNavigate();
-  const signupEmail = location.state ? location.state.email : '';
+  const { email } = useSelector((state) => state.authReducer);
 
   const handleChange = (e) => {
-    setEmail(e.target.value);
+    setSendEmail(e.target.value);
   };
 
   const handleSignupClick = () => {
     if (valid.isValid) {
       postData('/users/recovery/signup/send', {
-        emailSignUp: signupEmail,
-        emailNeedToSend: email,
+        emailSignUp: email,
+        emailNeedToSend: sendEmail,
       }).then(() => {
-        navigate('/email/confirm', { state: { email } });
+        navigate('/email/confirm', { state: { sendEmail: sendEmail } });
       });
-    } else if (!valid.isValid && !email) {
+    } else if (!valid.isValid && !sendEmail) {
       setValid({ text: '이메일을 입력해주세요.', isValid: false });
     }
   };
@@ -35,11 +36,11 @@ function SendEmailDiv({ pathName }) {
   const handleClick = () => {
     if (valid.isValid) {
       postData('/users/recovery/password/send', {
-        email,
+        email: sendEmail,
       }).then(() => {
-        navigate('/email/confirm', { state: { email } });
+        navigate('/email/confirm', { state: { sendEmail: sendEmail } });
       });
-    } else if (!valid.isValid && !email) {
+    } else if (!valid.isValid && !sendEmail) {
       setValid({ text: '이메일을 입력해주세요.', isValid: false });
     }
   };
@@ -47,40 +48,49 @@ function SendEmailDiv({ pathName }) {
   useEffect(() => {
     //eslint-disable-next-line
     const exp = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
-    if (exp.test(email)) {
+    if (exp.test(sendEmail)) {
       setValid({ text: '', isValid: true });
-    } else if (!email) {
+    } else if (!sendEmail) {
       setValid({ text: '', isValid: false });
     } else {
       setValid({ text: '이메일 형식이 올바르지 않습니다.', isValid: false });
     }
-  }, [email]);
+  }, [sendEmail]);
 
   return (
-    <SendDiv>
-      <div>
+    <GetTemplate res="true" title="계정 복구 이메일 보내기">
+      <SendDiv>
         <div>
-          계정 비밀번호를 잊으셨나요?
-          <br /> 이메일 주소를 입력하면 복구 링크를 보내드립니다.
-        </div>
-        <ContentInputDiv
-          id="email"
-          name="email"
-          labelName="이메일"
-          placeholder="example@email.com"
-          value={email}
-          onChange={handleChange}
-          validText={valid.text}
-        />
-        {valid.text ? <ValidDiv>{valid.text}</ValidDiv> : null}
-        <div>
-          <MyInfoButton
-            onClick={pathName ? handleSignupClick : handleClick}
-            text="이메일 발송"
+          {pathName ? (
+            <div>
+              계정 비밀번호를 잊으셨나요?
+              <br /> 이메일 주소를 입력하면 복구 링크를 보내드립니다.
+            </div>
+          ) : (
+            <div>
+              {`이미 가입된 계정입니다 :(`}
+              <br /> 이메일 주소를 입력하면 복구 링크를 보내드립니다.
+            </div>
+          )}
+          <ContentInputDiv
+            id="email"
+            name="email"
+            labelName="이메일"
+            placeholder="example@email.com"
+            value={sendEmail}
+            onChange={handleChange}
+            validText={valid.text}
           />
+          {valid.text ? <ValidDiv>{valid.text}</ValidDiv> : null}
+          <div>
+            <MyInfoButton
+              onClick={pathName ? handleSignupClick : handleClick}
+              text="이메일 발송"
+            />
+          </div>
         </div>
-      </div>
-    </SendDiv>
+      </SendDiv>
+    </GetTemplate>
   );
 }
 

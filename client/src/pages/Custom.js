@@ -19,7 +19,7 @@ function Custom() {
   const [path, setPath] = useState('/products?page=1&sort=id&dir=DESC');
   const [res, isPending, error] = useGET(path);
   const [openCustom, setOpenCustom] = useState(false);
-  const [toFilterSearchDiv, errorWord, , setPage] = useFilterSearch(
+  const [toFilterSearchDiv, notFoundWord, , setPage] = useFilterSearch(
     false,
     setPath
   );
@@ -80,7 +80,7 @@ function Custom() {
                 search={(word) =>
                   setPath(`/products/search?page=1&name=${word}`)
                 }
-                errorWord={errorWord}
+                notFoundWord={notFoundWord}
                 replaceWord={'단백질쉐이크'}
               />
             )}

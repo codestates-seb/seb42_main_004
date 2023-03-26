@@ -12,7 +12,7 @@ import useFilterSearch from '../util/useFilterSearch';
 
 function AllBoxes() {
   const { user } = useSelector((state) => state.authReducer);
-  const [toFilterSearchDiv, errorWord, paginationUrl, uri] =
+  const [toFilterSearchDiv, notFoundWord, paginationUrl, uri] =
     useFilterSearch(true);
   const [res, isPending, error, getData] = useGET(`${uri}`);
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ function AllBoxes() {
           placeholder="healthy day 밀박스"
           {...toFilterSearchDiv}
         />
-        {errorWord && (
+        {notFoundWord && (
           <SearchResultH3>
             검색결과 {res?.pageInfo?.totalElements?.toLocaleString('ko-KR')}개
           </SearchResultH3>
@@ -41,7 +41,7 @@ function AllBoxes() {
         {res.data?.length === 0 && (
           <NoResultDiv
             search={(word) => navigate(`/mealboxes/search?page=1&name=${word}`)}
-            errorWord={errorWord}
+            notFoundWord={notFoundWord}
             replaceWord={'고단백질 아침 세트'}
           />
         )}

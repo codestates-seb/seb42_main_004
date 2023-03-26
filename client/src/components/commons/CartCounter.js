@@ -5,6 +5,7 @@ function CartCounter() {
   let { mealboxes } = useSelector((state) => state.cartReducer.cart) || {
     mealboxes: [],
   };
+
   let [count, setCount] = useState(0);
 
   useEffect(() => {

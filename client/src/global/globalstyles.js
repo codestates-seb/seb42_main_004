@@ -93,6 +93,7 @@ const GlobalStyle = createGlobalStyle`
     --white: rgba(255, 255, 255, 1);
     --white_020: rgba(255, 255, 255, 0.2);
     --red: rgba(255, 0, 0, 1); 
+    --green: rgba(51,102,0,1)
   }
 `;
 

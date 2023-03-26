@@ -9,6 +9,8 @@ function InputDiv({
   inputRef,
   validText,
   onChange,
+  onKeyUp,
+  disabled,
 }) {
   return (
     <ContainerDiv validText={validText}>
@@ -22,6 +24,8 @@ function InputDiv({
         ref={inputRef}
         value={value}
         onChange={onChange}
+        onKeyUp={onKeyUp}
+        disabled={disabled}
       ></input>
       <div>{validText}</div>
     </ContainerDiv>
