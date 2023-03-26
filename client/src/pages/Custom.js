@@ -6,7 +6,7 @@ import CustomAside from '../components/custom/CustomAside';
 import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
 import FilterSearchDiv from '../components/commons/FilterSearchDiv';
-import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
+import BoxElementCardLi from '../components/custom/BoxElementCardLi';
 import { TextButton } from '../components/commons/ModalDiv';
 import { MealBoxesWrapDiv } from './AllBoxes';
 import useGET from '../util/useGET';
@@ -63,16 +63,15 @@ function Custom() {
             {products?.length !== 0 ? (
               <BoxElementCardUl>
                 {products?.map((product) => (
-                  <li key={product.productId}>
-                    <BoxElementCardDiv
-                      product={product}
-                      quantity={
-                        custom.products[productInCustom(product.productId)]
-                          ?.quantity
-                      }
-                      totalQuantity={totalQuantity}
-                    />
-                  </li>
+                  <BoxElementCardLi
+                    key={product.productId}
+                    product={product}
+                    quantity={
+                      custom.products[productInCustom(product.productId)]
+                        ?.quantity
+                    }
+                    totalQuantity={totalQuantity}
+                  />
                 ))}
               </BoxElementCardUl>
             ) : (
@@ -116,9 +115,9 @@ const ElementsContainerDiv = styled.div`
   display: flex;
   flex-direction: column;
   float: left;
-  width: 60%;
+  min-width: 60%;
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
     width: 100%;
   }
 `;

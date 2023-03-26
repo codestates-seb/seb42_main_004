@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { TextButton } from '../commons/ModalDiv';
-import { MealBoxCardContainerDiv } from '../allboxes/MealBoxCardLi';
 import { deleteProduct, setProduct } from '../../reducers/customReducer';
 
-function BoxElementCardDiv({ product, quantity, totalQuantity }) {
+function BoxElementCardLi({ product, quantity, totalQuantity }) {
   quantity = quantity || 0;
   const dispatch = useDispatch();
 
@@ -15,7 +14,7 @@ function BoxElementCardDiv({ product, quantity, totalQuantity }) {
   };
 
   const changeQuantity = (key) => () => {
-    if (key === 'minus' && quantity <= 1) return;
+    if (key === 'minus' && quantity < 1) return;
     else if (key === 'plus' && totalQuantity >= 10)
       return alert('구성품은 10개까지 추가할 수 있습니다');
 
@@ -25,7 +24,7 @@ function BoxElementCardDiv({ product, quantity, totalQuantity }) {
   };
 
   return (
-    <ProductContainerDiv
+    <ProductContainerLi
       onClick={cardClick}
       className="shadow"
       quantity={quantity}
@@ -53,15 +52,18 @@ function BoxElementCardDiv({ product, quantity, totalQuantity }) {
           +
         </TextButton>
       </ProductButtonDiv>
-    </ProductContainerDiv>
+    </ProductContainerLi>
   );
 }
 
-export default BoxElementCardDiv;
+export default BoxElementCardLi;
 
-const ProductContainerDiv = styled(MealBoxCardContainerDiv)`
+const ProductContainerLi = styled.li`
+  width: 100%;
+  display: flex;
+  border-radius: 4px;
   flex-direction: row;
-  padding: 5px 2rem;
+  padding: 5px 1.5rem;
   padding-right: 1.5rem;
   margin-bottom: 10px;
   background-color: var(
@@ -83,11 +85,8 @@ const ProductInfoDiv = styled.div`
   align-items: baseline;
 
   > h3 {
+    word-break: keep-all;
     margin-right: 8px;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
   }
 `;
 const ProductDetailDiv = styled.div`
@@ -96,6 +95,7 @@ const ProductDetailDiv = styled.div`
   > span {
     margin-right: 8px;
     font-size: 0.8rem;
+    word-break: keep-all;
   }
 `;
 const ProductQuantitySpan = styled.span`
