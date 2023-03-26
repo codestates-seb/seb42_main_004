@@ -7,7 +7,7 @@ import PreAndNextButtons from './PreAndNextButtons';
 import SurveyBox from './SurveyBox';
 import { SurveyH3 } from './SurveyPage1';
 
-function SurveyPage2({ name = '맹쥬' }) {
+function SurveyPage2({ name }) {
   let dispatch = useDispatch();
   let navigate = useNavigate();
 
@@ -31,7 +31,7 @@ function SurveyPage2({ name = '맹쥬' }) {
 
   return (
     <article>
-      <SurveyH3>{name}님의 활동량을 알려주세요</SurveyH3>
+      <SurveyH3>{name ? `${name}님` : `당신의`} 활동량을 알려주세요</SurveyH3>
       <ExplanationDiv>
         정확한 일일 권장 섭취량을 계산하는데 사용됩니다.
       </ExplanationDiv>
