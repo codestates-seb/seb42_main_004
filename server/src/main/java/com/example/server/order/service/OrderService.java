@@ -152,8 +152,8 @@ public class OrderService {
   public Page<Orders> getOrdersByDateToPage(String date, int page) {
     // 관리자 검증 해야함
     LocalDate localDate = changeStringToLocalDate(date);
-    LocalDateTime startDate = localDate.atStartOfDay();
-    LocalDateTime endDate = localDate.atTime(LocalTime.MAX);
+    LocalDateTime startDate = localDate.atStartOfDay().minusHours(9);
+    LocalDateTime endDate = localDate.atTime(LocalTime.MAX).minusHours(9);
     return orderRepository.findAllByCreatedDateBetweenAndStatusNot(startDate, endDate, OrderStatus.NOT_PAID, PageRequest.of(page, 5, Sort.by("createdDate").descending()));
   }
 
