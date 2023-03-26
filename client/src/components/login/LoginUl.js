@@ -9,9 +9,14 @@ import parseToken from '../../util/parseToken';
 import { useDispatch, useSelector } from 'react-redux';
 import setAuthorizationToken from '../../util/setAuthorizationToken';
 import { setAuth } from '../../reducers/authReducer';
+import { setCart } from '../../reducers/cartReducer';
+import getData from '../../util/getData';
 
 function LoginUl() {
-  const { mealboxes } = useSelector((state) => state.cartReducer.cart);
+  const { mealboxes } = useSelector((state) => state.cartReducer.cart) || {
+    mealboxes: [],
+  };
+  console.log(mealboxes);
   const [showPwd, setShowPwd] = useState(false);
   const [inputValue, setInputValue] = useState({
     email: '',
@@ -25,8 +30,8 @@ function LoginUl() {
     if (!localStorage.getItem('accessToken')) {
       localStorage.setItem('accessToken', token);
       setAuthorizationToken(token);
-      Auth();
-      addCart();
+      await Auth();
+      await addItemsToAccountCart();
       window.location.reload();
     } else if (
       localStorage.getItem('accessToken') &&
@@ -35,35 +40,44 @@ function LoginUl() {
       localStorage.removeItem('accessToken');
       localStorage.setItem('accessToken', token);
       setAuthorizationToken(token);
-      Auth();
-      addCart();
+      await Auth();
+      await addItemsToAccountCart();
       window.location.reload();
     }
   };
 
   const Auth = () => {
-    const { exp, principal, roles } = parseToken(
-      localStorage.getItem('accessToken')
-    );
-    dispatch(
-      setAuth({
-        isLogin: true,
-        accessToken: localStorage.getItem('accessToken'),
-        tokenExpirationDate: new Date(exp),
-        user: principal,
-        admin: roles.includes('ADMIN'),
-      })
-    );
+    return new Promise((resolve) => {
+      const { exp, principal, roles } = parseToken(
+        localStorage.getItem('accessToken')
+      );
+      dispatch(
+        setAuth({
+          isLogin: true,
+          accessToken: localStorage.getItem('accessToken'),
+          tokenExpirationDate: new Date(exp),
+          user: principal,
+          admin: roles.includes('ADMIN'),
+        })
+      );
+      resolve();
+    });
   };
 
-  const addCart = () => {
-    mealboxes.forEach((el) => {
+  const addItemsToAccountCart = async () => {
+    await mealboxes.forEach((el) => {
       if (el.name === 'custom') {
+        console.log(el);
         postData('/users/cart/custom', el);
       } else {
         postData('/users/cart', { mealboxId: el.mealboxId });
       }
     });
+
+    let data = await getData('/users/cart');
+    console.log(data.data);
+    dispatch(setCart(data.data));
+    console.log('end');
   };
 
   const handleClick = () => {
