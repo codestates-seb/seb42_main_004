@@ -13,7 +13,7 @@ function Cart() {
   let { isLogin } = useSelector((state) => state.authReducer);
   let { totalPrice, mealboxes } = useSelector(
     (state) => state.cartReducer.cart
-  );
+  ) || { totalPrice: 0, mealboxes: [] };
   let [renderPrice, setRenderPrice] = useState(totalPrice);
 
   let calcRenderPrice = () => {
@@ -66,8 +66,8 @@ function Cart() {
 
   useEffect(() => {
     if (isLogin) {
-      getData('/users/cart').then((data) => {
-        dispatch(setCart(data.data));
+      getData('/users/cart').then((res) => {
+        dispatch(setCart(res.data));
       });
     }
   }, []);

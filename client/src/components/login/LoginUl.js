@@ -8,11 +8,16 @@ import parseToken from '../../util/parseToken';
 import { useDispatch, useSelector } from 'react-redux';
 import setAuthorizationToken from '../../util/setAuthorizationToken';
 import { setAuth } from '../../reducers/authReducer';
+import { setCart } from '../../reducers/cartReducer';
+import getData from '../../util/getData';
 import GetTemplate from '../commons/GetTemplate';
 import GoogleButton from './GoogleButton';
 
 function LoginUl() {
-  const { mealboxes } = useSelector((state) => state.cartReducer.cart);
+  const { mealboxes } = useSelector((state) => state.cartReducer.cart) || {
+    mealboxes: [],
+  };
+
   const [showPwd, setShowPwd] = useState(false);
   const [inputValue, setInputValue] = useState({
     email: '',
@@ -26,9 +31,9 @@ function LoginUl() {
     if (!localStorage.getItem('accessToken')) {
       localStorage.setItem('accessToken', token);
       setAuthorizationToken(token);
-      Auth();
-      addCart();
-      window.location.reload();
+      await Auth();
+      await addItemsToAccountCart();
+      // window.location.reload();
     } else if (
       localStorage.getItem('accessToken') &&
       localStorage.getItem('accessToken') !== token
@@ -36,35 +41,53 @@ function LoginUl() {
       localStorage.removeItem('accessToken');
       localStorage.setItem('accessToken', token);
       setAuthorizationToken(token);
-      Auth();
-      addCart();
-      window.location.reload();
+      await Auth();
+      await addItemsToAccountCart();
+      // window.location.reload();
     }
   };
 
   const Auth = () => {
-    const { exp, principal, roles } = parseToken(
-      localStorage.getItem('accessToken')
-    );
-    dispatch(
-      setAuth({
-        isLogin: true,
-        accessToken: localStorage.getItem('accessToken'),
-        tokenExpirationDate: new Date(exp),
-        user: principal,
-        admin: roles.includes('ADMIN'),
-      })
-    );
+    return new Promise((resolve) => {
+      const { exp, principal, roles } = parseToken(
+        localStorage.getItem('accessToken')
+      );
+      dispatch(
+        setAuth({
+          isLogin: true,
+          accessToken: localStorage.getItem('accessToken'),
+          tokenExpirationDate: new Date(exp),
+          user: principal,
+          admin: roles.includes('ADMIN'),
+        })
+      );
+      resolve();
+    });
   };
 
-  const addCart = () => {
-    mealboxes.forEach((el) => {
-      if (el.name === 'custom') {
-        postData('/users/cart/custom', el);
-      } else {
-        postData('/users/cart', { mealboxId: el.mealboxId });
-      }
-    });
+  const addItemsToAccountCart = async () => {
+    console.log(Array.isArray(mealboxes));
+    let postReqData = mealboxes.reduce(
+      (acc, cur) => {
+        if (cur.name === 'custom') {
+          acc.customMealboxes.push({ mealbox: cur });
+        } else {
+          acc.adminMadeMealboxes.push({
+            mealboxId: cur.mealboxId,
+            quantity: cur.quantity,
+          });
+        }
+        return acc;
+      },
+      { adminMadeMealboxes: [], customMealboxes: [] }
+    );
+    console.log(postReqData);
+    await postData('/users/cart/all', postReqData);
+
+    let data = await getData('/users/cart');
+    console.log(data.data);
+    dispatch(setCart(data.data));
+    console.log('end');
   };
 
   const handleClick = () => {
