@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { setAuth } from './reducers/authReducer';
+import { setAuth, setEmail } from './reducers/authReducer';
 import Header from './components/commons/Header';
 import GlobalStyle from './global/globalstyles';
 import Footer from './components/commons/Footer';
@@ -32,6 +32,7 @@ import { initializeCart } from './reducers/cartReducer';
 import setAuthorizationToken from './util/setAuthorizationToken';
 import parseToken from './util/parseToken';
 import checkFooter from './util/checkFooter';
+import RequestEmail from './pages/RequestEmail';
 
 function App() {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ function App() {
           admin: roles.includes('ADMIN'),
         })
       );
+      dispatch(setEmail(''));
       const remainingTime = Math.floor(
         (new Date(exp * 1000).getTime() - new Date().getTime()) / (60 * 1000)
       );
@@ -66,6 +68,7 @@ function App() {
             roles: [],
           })
         );
+        dispatch(setEmail(''));
         dispatch(initializeCart());
         alert('자동 로그아웃되었습니다.');
         window.location.reload();
@@ -122,6 +125,10 @@ function App() {
           />
           <Route path="/email/complete" element={<CompleteEmail />} />
           <Route path="/email/confirm" element={<ConfirmEmail />} />
+          <Route
+            path="/email/request"
+            element={accessToken ? <RequestEmail /> : <Navigate to="/login" />}
+          />
           <Route path="/email/send" element={<SendEmail />} />
           <Route
             path="/email/send/signup"
