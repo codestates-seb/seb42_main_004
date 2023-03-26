@@ -51,7 +51,7 @@ public interface OrderMapper {
       OrderResponseDto orderResponseDto = new OrderResponseDto();
       orderResponseDto.setUsername(order.getUser().getName());
       orderResponseDto.setOrderNumber(order.getOrderNumber());
-      orderResponseDto.setCreatedAt(order.getCreatedDate());
+      orderResponseDto.setCreatedAt(order.getCreatedDate().plusHours(9));
       orderResponseDto.setOrderStatus(order.getStatus().getStatus());
       orderResponseDto.setDeliveryDate(order.getDeliveryDate());
       orderResponseDto.setTotalPrice(order.getTotalPrice());
