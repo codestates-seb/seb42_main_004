@@ -35,5 +35,9 @@ const ButtonWrapperDiv = styled.div`
     :last-child {
       margin-left: 5px;
     }
+
+    @media (max-width: 480px) {
+      padding: 20px 0;
+    }
   }
 `;

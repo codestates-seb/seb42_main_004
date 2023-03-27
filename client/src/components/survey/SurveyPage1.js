@@ -40,20 +40,34 @@ function SurveyPage1() {
     }
   };
 
+  // let checkValid = (min, max, val, set) => {
+  //   let valid = val >= min && val <= max;
+  //   valid ? set('') : set(`${min}에서 ${max} 사이의 값을 입력해주세요.`);
+  // };
+
+  // useEffect(() => {
+  //   checkValid(1, 100, age, setAgeValidMsg);
+  //   checkValid(20, 150, weight, setWeightValidMsg);
+  //   checkValid(120, 220, height, setHeightValid);
+  // }, [age, weight, height]);
+
   let checkValid = () => {
-    let ageValid = age > 0 && age <= 100;
+    let ageValid = age >= 1 && age <= 100;
     let heightValid = height >= 120 && height <= 220;
     let weightValid = weight >= 20 && weight <= 150;
 
-    if (!ageValid) {
-      setAgeValidMsg('1에서 100 사이의 값을 입력해주세요.');
-    }
-    if (!heightValid) {
-      setHeightValid('120에서 220 사이의 값을 입력해주세요.');
-    }
-    if (!weightValid) {
-      setWeightValidMsg('20에서 150 사이의 값을 입력해주세요.');
-    }
+    ageValid
+      ? setAgeValidMsg('')
+      : setAgeValidMsg('1에서 100 사이의 값을 입력해주세요.');
+
+    heightValid
+      ? setHeightValid('')
+      : setHeightValid('120에서 220 사이의 값을 입력해주세요.');
+
+    weightValid
+      ? setWeightValidMsg('')
+      : setWeightValidMsg('20에서 150 사이의 값을 입력해주세요.');
+
     return ageValid && heightValid && weightValid;
   };
 
@@ -78,7 +92,7 @@ function SurveyPage1() {
           unit="세"
           maxLength="3"
         />
-        <ValidMsg>{ageValidMsg}</ValidMsg>
+        {ageValidMsg && age && <ValidMsg>{ageValidMsg}</ValidMsg>}
         <div>
           <div>성별</div>
           <GenderOptionDiv>
@@ -107,7 +121,7 @@ function SurveyPage1() {
           unit="cm"
           maxLength="5"
         />
-        <ValidMsg>{heightValidMsg}</ValidMsg>
+        {heightValidMsg && height && <ValidMsg>{heightValidMsg}</ValidMsg>}
         <InputLabelDiv
           label="체중"
           id="weight"
@@ -117,7 +131,7 @@ function SurveyPage1() {
           unit="kg"
           maxLength="5"
         />
-        <ValidMsg>{weightValidMsg}</ValidMsg>
+        {weightValidMsg && weight && <ValidMsg>{weightValidMsg}</ValidMsg>}
         <PreAndNextButtons nextHandler={nextHandler} />
       </SurveyContentDiv>
     </Article>
@@ -153,12 +167,24 @@ const SurveyContentDiv = styled.div`
 
   input {
     padding: 15px;
-    font-size: medium;
+    font-size: 1.3rem;
   }
 
   span {
     margin-right: 15px;
-    font-size: medium;
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 480px) {
+    input {
+      padding: 8px;
+      font-size: 1rem;
+    }
+
+    span {
+      margin-right: 15px;
+      font-size: 1rem;
+    }
   }
 `;
 
@@ -187,5 +213,5 @@ const GenderOptionDiv = styled.div`
 `;
 
 const ValidMsg = styled.div`
-  color: #d84b4b;
+  color: var(--red);
 `;

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setMinus, setPlus, deleteCartItem } from '../../reducers/cartReducer';
 import patchData from '../../util/patchData';
 import deleteData from '../../util/deleteData';
+import { HiPlus, HiMinus } from 'react-icons/hi';
 function MealBoxCounterDiv({ quantity }) {
   let { isLogin } = useSelector((state) => state.authReducer);
   let dispatch = useDispatch();
@@ -36,11 +37,11 @@ function MealBoxCounterDiv({ quantity }) {
   return (
     <CounterDiv>
       <TextButton className="linkstyle" onClick={handleMinus}>
-        &#8722;
+        <HiMinus size="20" />
       </TextButton>
       <Count>{quantity}</Count>
       <TextButton className="linkstyle" onClick={handlePlus}>
-        &#43;
+        <HiPlus size="20" />
       </TextButton>
     </CounterDiv>
   );
@@ -55,6 +56,17 @@ const CounterDiv = styled.div`
     padding: 0 5px;
     height: fit-content;
   }
+
+  svg {
+    padding-top: 5px;
+    pointer-events: none;
+    @media (max-width: 480px) {
+      padding: 2.5px 0;
+    }
+  }
 `;
 
-const Count = styled.div``;
+const Count = styled.div`
+  font-size: 1.2rem;
+  height: fit-content;
+`;

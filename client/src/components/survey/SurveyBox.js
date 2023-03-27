@@ -42,11 +42,15 @@ const SurveyBoxLabel = styled.label`
   :hover {
     background-color: var(--bucket_brown_070);
   }
+
+  @media (max-width: 480px) {
+    padding: 8px;
+  }
 `;
 
 const Input = styled.input`
   position: absolute;
-  /* z-index: -999; */
+  z-index: -999;
   :checked + label {
     background-color: var(--signature);
     color: var(--white);

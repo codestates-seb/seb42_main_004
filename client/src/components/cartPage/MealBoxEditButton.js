@@ -27,7 +27,7 @@ function MealBoxEditButton() {
     navigate('/custom');
   };
 
-  return <Button onClick={customPageLink}>다시 담기</Button>;
+  return <Button onClick={customPageLink}>커스텀 하기</Button>;
 }
 
 export default MealBoxEditButton;
