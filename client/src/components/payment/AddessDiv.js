@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Post from './Post';
 
-function AddressDiv({ inputValue, onChange, setInputValue, user }) {
+function AddressDiv({ inputValue, onChange, setInputValue, user, pathName }) {
   const [popup, setPopup] = useState(false);
 
   const handleComplete = () => {
@@ -21,7 +21,15 @@ function AddressDiv({ inputValue, onChange, setInputValue, user }) {
             required={true}
             name={user ? 'zipCode' : 'deliveryZipCode'}
             onChange={onChange}
-            value={user ? inputValue.zipCode : inputValue.deliveryZipCode}
+            value={
+              pathName
+                ? user
+                  ? inputValue.zipCode
+                  : inputValue.deliveryZipCode
+                : user
+                ? inputValue.userZipCode
+                : inputValue.deliveryZipCode
+            }
             disabled
           />
           <AddressButton
@@ -46,7 +54,13 @@ function AddressDiv({ inputValue, onChange, setInputValue, user }) {
           name={user ? 'simpleAddress' : 'deliverySimpleAddress'}
           onChange={onChange}
           value={
-            user ? inputValue.simpleAddress : inputValue.deliverySimpleAddress
+            pathName
+              ? user
+                ? inputValue.simpleAddress
+                : inputValue.deliverySimpleAddress
+              : user
+              ? inputValue.userSimpleAddress
+              : inputValue.deliverySimpleAddress
           }
           disabled
         />
@@ -58,7 +72,13 @@ function AddressDiv({ inputValue, onChange, setInputValue, user }) {
           name={user ? 'detailAddress' : 'deliveryDetailAddress'}
           onChange={onChange}
           value={
-            user ? inputValue.detailAddress : inputValue.deliveryDetailAddress
+            pathName
+              ? user
+                ? inputValue.detailAddress
+                : inputValue.deliveryDetailAddress
+              : user
+              ? inputValue.userDetailAddress
+              : inputValue.deliveryDetailAddress
           }
         />
       </InputDiv>

@@ -4,7 +4,7 @@ import { MdOutlineBorderColor } from 'react-icons/md';
 import { useLocation } from 'react-router-dom';
 function Empty() {
   let location = useLocation();
-  console.log(location);
+
   let { pathname } = location;
   return (
     <CartEmptyDiv>

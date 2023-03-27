@@ -56,6 +56,7 @@ public class CartController {
     Cart cart = userService.getUser(principalDetails.getId()).getCart();
     Mealbox mealbox = mealboxMapper.mealboxDtoToMealbox(mealboxDto, Mealbox.MealboxInfo.CUSTOM_MEALBOX);
     cartService.createCustomMealboxAndAddCart(cart, mealbox, mealboxDto.getProducts());
+    log.info(String.valueOf(cart.getTotalPrice()));
     return new ResponseEntity(HttpStatus.CREATED);
   }
 
@@ -69,6 +70,7 @@ public class CartController {
     List<CartAllPostDto.AdminMadeMealboxDto> adminMadeMealboxDtos = cartAllPostDto.getAdminMadeMealboxes();
 
     cartService.addAllMealboxes(cart, customMealboxDtos, adminMadeMealboxDtos);
+    log.info(cart.toString());
     return new ResponseEntity(HttpStatus.CREATED);
   }
 
