@@ -41,7 +41,7 @@ function Custom() {
     >
       <CustomWrapDiv className="margininside">
         <CustomTitleDiv>
-          <h1>커스텀 밀박스</h1>
+          <h1>{admin && custom ? custom.name : '커스텀 밀박스'}</h1>
           <AsideButtonDiv>
             <TextButton
               onClick={() => setOpenCustom(!openCustom)}
