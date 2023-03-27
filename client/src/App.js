@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAuth, setEmail } from './reducers/authReducer';
 import Header from './components/commons/Header';
 import GlobalStyle from './global/globalstyles';
@@ -37,6 +37,7 @@ import { setImage } from './reducers/imageReducer';
 import getData from './util/getData';
 
 function App() {
+  const { admin } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem('accessToken');
 
@@ -86,7 +87,7 @@ function App() {
 
   return (
     <>
-      <GlobalStyle />
+      <GlobalStyle admin={admin && 1} />
       <Header />
       <BodyMargin className="marginbase" height={checkFooter() ? 1 : null}>
         <Routes>
