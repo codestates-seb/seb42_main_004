@@ -16,24 +16,29 @@ function DeliveryInputDiv({
     <ContainerDiv>
       <TopDiv>
         <h2>배송지 정보</h2>
-        <div>
-          <input
-            type="checkbox"
-            id="same"
-            checked={same}
-            onChange={({ target: { checked } }) => setSame(checked)}
-          ></input>
-          <label htmlFor="same">주문자와동일</label>
-        </div>
+        {inputValue.userZipCode &&
+        inputValue.userSimpleAddress &&
+        inputValue.userDetailAddress ? (
+          <div>
+            <input
+              type="checkbox"
+              id="same"
+              checked={same}
+              onChange={({ target: { checked } }) => setSame(checked)}
+            ></input>
+            <label htmlFor="same">주문자와동일</label>
+          </div>
+        ) : null}
       </TopDiv>
       <DeliveryDiv pathName={pathName}>
         <ContentInputDiv
           id="addressee"
           name="addressee"
           labelName="받는분"
-          placeholder="2~10글자"
+          placeholder="받는분"
           value={same ? inputValue.username : inputValue.addressee}
           onChange={handleInput}
+          noEdit={same ? true : false}
         />
         <ContentInputDiv
           id="addresseePhoneNumber"
@@ -44,6 +49,7 @@ function DeliveryInputDiv({
             same ? inputValue.userPhoneNumber : inputValue.addresseePhoneNumber
           }
           onChange={handleInput}
+          noEdit={same ? true : false}
         />
         <AddressDiv
           inputValue={inputValue}
@@ -51,6 +57,7 @@ function DeliveryInputDiv({
           setInputValue={setInputValue}
           user={same ? true : false}
           pathName={pathName}
+          same={same}
         />
         {pathName ? null : (
           <SaveDiv>

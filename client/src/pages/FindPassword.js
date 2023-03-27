@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import GetTemplate from '../components/commons/GetTemplate';
 import MyInfoButton from '../components/myInfo/MyInfoButton';
 import PasswordInputDiv from '../components/myInfo/PasswordInputDiv';
-import patchData from '../util/postData';
+import patchData from '../util/patchData';
 import useValid from '../util/useValid';
 
 function FindPassword() {

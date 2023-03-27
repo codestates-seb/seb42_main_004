@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Post from './Post';
 
-function AddressDiv({ inputValue, onChange, setInputValue, user }) {
+function AddressDiv({ inputValue, onChange, setInputValue, user, same }) {
   const [popup, setPopup] = useState(false);
 
   const handleComplete = () => {
@@ -24,12 +24,14 @@ function AddressDiv({ inputValue, onChange, setInputValue, user }) {
             value={user ? inputValue.userZipCode : inputValue.deliveryZipCode}
             disabled
           />
-          <AddressButton
-            className="buttonstyle shadow"
-            onClick={handleComplete}
-          >
-            주소검색
-          </AddressButton>
+          {same ? null : (
+            <AddressButton
+              className="buttonstyle shadow"
+              onClick={handleComplete}
+            >
+              주소검색
+            </AddressButton>
+          )}
         </ButtonDiv>
         {popup && (
           <Post
@@ -64,6 +66,7 @@ function AddressDiv({ inputValue, onChange, setInputValue, user }) {
               ? inputValue.userDetailAddress
               : inputValue.deliveryDetailAddress
           }
+          disabled={same && user ? true : false}
         />
       </InputDiv>
     </ContainerDiv>

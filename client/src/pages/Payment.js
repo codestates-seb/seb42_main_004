@@ -56,33 +56,53 @@ function Payment() {
 
   const handleClick = () => {
     if (same) {
-      patchData(`/orders/delivery/${orderId}`, {
-        addressee: inputValue.username,
-        zipCode: inputValue.userZipCode,
-        simpleAddress: inputValue.userSimpleAddress,
-        detailAddress: inputValue.userDetailAddress,
-        phoneNumber: inputValue.userPhoneNumber,
-      }).then((data) => {
-        if (data.status === 200) {
-          onClickPayment();
-        } else {
-          alert('배송지 정보를 확인해주세요.');
-        }
-      });
+      if (
+        !inputValue.username ||
+        !inputValue.userZipCode ||
+        !inputValue.userSimpleAddress ||
+        !inputValue.userDetailAddress ||
+        !inputValue.userPhoneNumber
+      ) {
+        alert('배송지 정보를 모두 채워주세요!');
+      } else {
+        patchData(`/orders/delivery/${orderId}`, {
+          addressee: inputValue.username,
+          zipCode: inputValue.userZipCode,
+          simpleAddress: inputValue.userSimpleAddress,
+          detailAddress: inputValue.userDetailAddress,
+          phoneNumber: inputValue.userPhoneNumber,
+        }).then((data) => {
+          if (data.status === 200) {
+            onClickPayment();
+          } else {
+            alert('배송지 정보를 확인해주세요.');
+          }
+        });
+      }
     } else {
-      patchData(`/orders/delivery/${orderId}`, {
-        addressee: inputValue.addressee,
-        zipCode: inputValue.deliveryZipCode,
-        simpleAddress: inputValue.deliverySimpleAddress,
-        detailAddress: inputValue.deliveryDetailAddress,
-        phoneNumber: inputValue.addresseePhoneNumber,
-      }).then((data) => {
-        if (data.status === 200) {
-          onClickPayment();
-        } else {
-          alert('배송지 정보를 확인해주세요.');
-        }
-      });
+      if (
+        !inputValue.addressee ||
+        !inputValue.deliveryZipCode ||
+        !inputValue.deliverySimpleAddress ||
+        !inputValue.deliveryDetailAddress ||
+        !inputValue.addresseePhoneNumber
+      ) {
+        alert('배송지 정보를 모두 채워주세요.');
+      } else {
+        patchData(`/orders/delivery/${orderId}`, {
+          addressee: inputValue.addressee,
+          zipCode: inputValue.deliveryZipCode,
+          simpleAddress: inputValue.deliverySimpleAddress,
+          detailAddress: inputValue.deliveryDetailAddress,
+          phoneNumber: inputValue.addresseePhoneNumber,
+        }).then((data) => {
+          if (data.status === 200) {
+            onClickPayment();
+          } else {
+            alert('전화번호가 형식에 맞지않습니다');
+          }
+        });
+      }
     }
   };
 
