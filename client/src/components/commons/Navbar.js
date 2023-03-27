@@ -1,44 +1,59 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { BsFillPersonFill } from 'react-icons/bs';
 import { IoIosArrowForward } from 'react-icons/io';
+import { FiLogOut } from 'react-icons/fi';
+import profile from '../../assets/profile.png';
 
-function Navbar({ isLogin, user, handleClick, handleLogout }) {
+function Navbar({ isLogin, user, handleClick, handleLogout, navigate }) {
   return (
     <ModalContainerDiv onClick={handleClick}>
       <NavDiv onClick={(e) => e.stopPropagation()}>
         <NavUl onClick={handleClick}>
           {isLogin ? (
             <li>
-              <HeaderLink to="/myinfo">
-                <BsFillPersonFill size={25} />
-                <IdDiv>{user.name}님</IdDiv>
+              <Button onClick={() => navigate('/myinfo')}>
+                <Img src={user.imagePath || profile} alt="profile" />
+                <IdDiv>
+                  <Name>{user.name}</Name>님
+                </IdDiv>
                 <IoIosArrowForward size={15} />
-              </HeaderLink>
+              </Button>
             </li>
           ) : (
             <li>
-              <HeaderLink to="/login">
+              <Button onClick={() => navigate('/login')}>
                 <BsFillPersonFill size={25} />
-                로그인 해주세요
-              </HeaderLink>
+                <IdDiv> 로그인 해주세요</IdDiv>
+                <IoIosArrowForward size={25} />
+              </Button>
             </li>
           )}
           <li>
-            <HeaderLink to="/survey/question/1">한끼밀 추천받기</HeaderLink>
+            <button onClick={() => navigate('/survey/question/1')}>
+              한끼밀 추천받기
+            </button>
           </li>
           <li>
-            <HeaderLink to="/custom">커스텀 밀박스 만들기</HeaderLink>
+            <button onClick={() => navigate('/custom')}>
+              커스텀 밀박스 만들기
+            </button>
           </li>
           <li>
-            <HeaderLink to="/mealboxes">전체 상품 보기</HeaderLink>
+            <button onClick={() => navigate('/mealboxes')}>
+              전체 상품 보기
+            </button>
           </li>
           <li>
-            <HeaderLink to="/products">구성품 알아보기</HeaderLink>
+            <button onClick={() => navigate('/products')}>
+              구성품 알아보기
+            </button>
           </li>
           {isLogin ? (
             <li>
-              <button onClick={handleLogout}>로그아웃</button>
+              <Button onClick={handleLogout}>
+                <FiLogOut size={25} />
+                <IdDiv>로그아웃</IdDiv>
+              </Button>
             </li>
           ) : (
             <li></li>
@@ -73,7 +88,7 @@ const NavDiv = styled.div`
   height: 100vh;
   position: fixed;
   z-index: 35;
-  padding-top: 70px;
+  padding-top: 50px;
   background-color: var(--head_brown);
   animation-name: nav;
   animation-duration: 250ms;
@@ -99,16 +114,14 @@ const NavUl = styled.ul`
 
   > li {
     width: 100%;
-    padding: 2rem;
+    height: 80px;
     display: flex;
     justify-content: center;
 
     &:first-child {
       align-items: center;
-      flex-basis: 120px;
-      padding: 40px;
+      flex-basis: 130px;
       border-bottom: 1px solid var(--black);
-      font-size: 1.5rem;
     }
 
     &:last-child {
@@ -119,19 +132,29 @@ const NavUl = styled.ul`
       width: 100%;
       border: none;
       background-color: transparent;
+      font-size: 1.1rem;
     }
   }
 `;
-const IdDiv = styled.div`
-  padding: 0px 1rem;
+const Button = styled.button`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`;
+const IdDiv = styled.span`
+  padding: 0px 0.5rem;
   font-family: 'IBM Plex Sans KR', sans-serif;
+  font-size: 1.3rem;
+`;
+const Name = styled.span`
+  font-family: 'IBM Plex Sans KR', sans-serif;
+  margin-right: 0.2rem;
   font-size: 1.5rem;
 `;
-const HeaderLink = styled(Link)`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  text-decoration: none;
-  color: var(--black);
-  font-family: 'IBM Plex Sans KR', sans-serif;
+const Img = styled.img`
+  width: 50px;
+  height: 50px;
 `;
