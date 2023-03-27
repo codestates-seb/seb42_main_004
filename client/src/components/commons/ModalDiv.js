@@ -109,7 +109,7 @@ function ModalDiv({ closeModal, mealBox, product, reload }) {
       subjectInfo.kcal === undefined ||
       subjectInfo.price === undefined
     )
-      return;
+      return alert('공란이 있는지 확인해 주세요');
 
     let data = { ...subjectInfo, imagePath: null };
     postPatchReq(data, false);

@@ -26,7 +26,12 @@ const GlobalStyle = createGlobalStyle`
 
   button {
     cursor: pointer;
-    color: var(--black)
+    color: var(--black);
+  }
+
+  select {
+    border: 1px solid var(--signature);
+    color: var(--black);
   }
 
   .marginbase {
