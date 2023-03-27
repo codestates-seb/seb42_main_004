@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Slf4j
 @Validated
@@ -26,8 +23,8 @@ public class SurveyController {
     @GetMapping("/survey")
     ResponseEntity doSurvey(@RequestParam @Positive @Max(100) int age,
                             @RequestParam Gender gender,
-                            @RequestParam @Positive @Max(200) int height,
-                            @RequestParam @Positive @Max(150) double weight,
+                            @RequestParam @Positive @Max(220) @Min(120)int height,
+                            @RequestParam @Positive @Max(150) @Min(20) double weight,
                             @RequestParam ActivityAmount activityAmount){
         double BMR = 0;
         if(gender==Gender.MALE){

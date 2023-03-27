@@ -13,6 +13,7 @@ import com.example.server.mealbox.mapper.MealboxMapper;
 import com.example.server.mealbox.service.MealboxService;
 import com.example.server.order.entity.OrdersMealbox;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CartService {
     private final CartRepository cartRepository;
     private final CartMealboxService cartMealboxService;
@@ -93,14 +95,16 @@ public class CartService {
     /* ####### private 메서드 ####### */
 
     private void createCartMealbox(Cart cart, Long mealboxId, int quantity) {
-        CartMealbox cartMealbox = findSameMealboxInCart(cart, mealboxId);
-        if(cartMealbox!=null) {
-            cartMealboxService.plusQuantity(cartMealbox, quantity);
+        CartMealbox findCartMealbox = findSameMealboxInCart(cart, mealboxId);
+        if(findCartMealbox!=null) {
+            cartMealboxService.plusQuantity(findCartMealbox, quantity);
         }
         else{
             Mealbox mealbox = mealboxService.findMealboxById(mealboxId);
 
-            cartMealboxService.createCartMealbox(cart, mealbox, quantity);
+            CartMealbox cartMealbox = cartMealboxService.createCartMealbox(cart, mealbox, quantity);
+            cart.addCartMealbox(cartMealbox);
+
         }
     }
 
@@ -121,13 +125,9 @@ public class CartService {
 
     //카트에 이미 있는 밀박스인지 조사하기 -> 리턴 : 해당 카트밀박스
     private CartMealbox findSameMealboxInCart(Cart cart, Long mealboxId){
-        List<CartMealbox> cartMealboxList = cart.getCartMealboxes().stream().map(cartMealbox -> {
-                    if (cartMealbox.getMealbox().getId() == mealboxId) {
-                        return cartMealbox;
-                    }
-                    return null;
-                }
-        ).filter(Objects::nonNull).collect(Collectors.toList());
+        List<CartMealbox> cartMealboxList = cart.getCartMealboxes().stream()
+                .filter(cartMealbox -> cartMealbox.getMealbox().getId() == mealboxId)
+                .collect(Collectors.toList());
 
         if(cartMealboxList.size()==1){
             return cartMealboxList.get(0);

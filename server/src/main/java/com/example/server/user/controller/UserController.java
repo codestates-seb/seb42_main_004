@@ -24,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -55,6 +54,8 @@ public class UserController {
     User user = mapper.userPostDtoToUser(postDto);
     User savedUser = userService.createUser(user);
     URI location = UriCreator.createUri(USER_DEFAULT_URL, savedUser.getId());
+
+    userService.sendEmail(savedUser.getEmail(), savedUser.getMailKey(), savedUser.getId());
 
     return ResponseEntity.created(location).build();
   }
@@ -109,8 +110,7 @@ public class UserController {
       HttpServletResponse response) throws IOException {
 
     userService.mailKeyAuth(id, mailKey);
-    //TODO 우리 홈페이지 uri로 변경
-    String redirectUri = "http://www.google.com";
+    String redirectUri = "http://seb42-main-004-bucket.s3-website.ap-northeast-2.amazonaws.com/email/complete";
     response.sendRedirect(redirectUri);
   }
 
@@ -121,7 +121,7 @@ public class UserController {
     log.info("### PW PATCH 시작합니다!");
     String password = passwordPatchDto.getPassword();
     String afterPassword = passwordPatchDto.getAfterPassword();
-    log.info("###PW = " + password + ", AFTER PW = "+ afterPassword);
+    log.info("###PW = " + password + ", AFTER PW = " + afterPassword);
     userService.updatePassword(principal.getName(), password, afterPassword);
 
     return ResponseEntity.ok().build();
@@ -165,7 +165,8 @@ public class UserController {
   public ResponseEntity resend(Principal principal)
       throws MessagingException, UnsupportedEncodingException {
     String email = principal.getName();
-    userService.resendEmail(email);
+    User findUser = userService.checkUserExist(email);
+    userService.sendEmail(email, findUser.getMailKey(), findUser.getId());
 
     return ResponseEntity.ok().build();
   }
