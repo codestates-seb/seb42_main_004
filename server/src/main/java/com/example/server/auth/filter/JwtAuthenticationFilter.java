@@ -87,8 +87,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     response.setContentType("application/json");
     response.setCharacterEncoding("utf-8");
 
-
-
     this.getSuccessHandler()
         .onAuthenticationSuccess(request, response, authResult); // 핸들러 불러옴 (실패 핸들러는 자동호출됨)
   }
@@ -97,6 +95,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   private String delegateAccessToken(User user) {
     Map<String, Object> claims = new HashMap<>();
     PrincipalDto principal = PrincipalDto.builder().id(user.getId()).email(user.getEmail())
+        .imagePath(user.getImage().getImageInfo().getFilePath())
         .name(user.getName()).build();
     claims.put("username", user.getEmail());
     claims.put("roles", user.getRoles());
