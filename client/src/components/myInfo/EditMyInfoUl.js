@@ -122,7 +122,7 @@ function EditMyInfoUl() {
             alert('수정이 완료되었습니다');
             navigate('/myinfo');
           } else if (data.status === 400) {
-            alert('닉네임과 연락처를 확인해주세요.');
+            alert('닉네임 또는 전화번호가 형식에 맞지않습니다');
           }
         });
       }
