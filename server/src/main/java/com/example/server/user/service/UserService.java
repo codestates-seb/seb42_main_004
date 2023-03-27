@@ -412,7 +412,7 @@ public class UserService {
   public void checkActive(User user) {
     if (user.getStatus() == UserStatus.USER_TMP) {
       throw new BusinessLogicException(UserException.NOT_YET_AUTHENTICATE_EMAIL);
-    } else if (user.getStatus() != UserStatus.USER_ACTiVE) {
+    } else if (user.getStatus() != UserStatus.USER_ACTiVE && user.getStatus() != UserStatus.USER_GOOGLE) {
       throw new BusinessLogicException(UserException.NOT_ACTIVE_USER);
     }
   }
@@ -425,7 +425,7 @@ public class UserService {
     List<String> roles = authorityUtils.createRoles(user.getEmail());
     user.setRoles(roles);
     user.setCart(Cart.builder().user(user).build());
-    user.setStatus(UserStatus.USER_ACTiVE);
+    user.setStatus(UserStatus.USER_GOOGLE);
 
     return userRepository.save(user);
   }
@@ -462,6 +462,12 @@ public class UserService {
         base64EncodedSecretKey);
 
     return refreshToken;
+  }
+
+  public void checkGoogleAuth(User user) {
+    if(!user.getStatus().equals(UserStatus.USER_GOOGLE)) {
+      throw new BusinessLogicException(UserException.NOT_GOOGLE_USER);
+    }
   }
 
 }
