@@ -12,6 +12,7 @@ import { TfiMenu } from 'react-icons/tfi';
 import logo from '../../assets/logo_black.png';
 import profile from '../../assets/profile.png';
 import { setImage } from '../../reducers/imageReducer';
+import goToCustom from '../../util/goToCustom';
 
 function Header() {
   const [isNav, setIsNav] = useState(false);
@@ -66,9 +67,7 @@ function Header() {
               </li>
             )}
             <li>
-              <button onClick={() => navigate('/custom')}>
-                커스텀 밀박스 만들기
-              </button>
+              <button onClick={goToCustom()}>커스텀 밀박스 만들기</button>
             </li>
             <li>
               <button onClick={() => navigate('/mealboxes')}>

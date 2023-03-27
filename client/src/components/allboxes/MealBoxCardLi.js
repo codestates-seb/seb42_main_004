@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
 import { TextButton } from '../commons/ModalDiv';
+import logo_black from '../../assets/logo_black.png';
 import blankbucket from '../../assets/blankbucket.png';
 import postData from '../../util/postData';
 import goToCustom from '../../util/goToCustom';
@@ -37,7 +38,16 @@ function MealBoxCardLi({ mealBox, reload, title }) {
               <span>{mealBox.kcal.toLocaleString('ko-KR')}kcal</span>
             </MealBoxDesP>
           )}
-          <MealBoxImg alt="" src={!mealBox ? blankbucket : mealBox.imagePath} />
+          <MealBoxImg
+            alt=""
+            src={
+              mealBox
+                ? mealBox?.imagePath
+                  ? mealBox.imagePath
+                  : logo_black
+                : blankbucket
+            }
+          />
           {mealBox && (
             <MealBoxDesUl>
               {mealBox.products.map((product) => (
@@ -57,7 +67,7 @@ function MealBoxCardLi({ mealBox, reload, title }) {
         </MealBoxH3>
         <MealBoxCardButtonDiv>
           <MainButton
-            handler={goToCustom(mealBox, admin)}
+            handler={goToCustom(mealBox)}
             name={!admin || !mealBox ? '커스텀 하기' : '밀박스 수정'}
           />
           {mealBox && (

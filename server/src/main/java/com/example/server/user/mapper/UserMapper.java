@@ -1,5 +1,6 @@
 package com.example.server.user.mapper;
 
+import com.example.server.user.dto.AuthLoginDto;
 import com.example.server.user.dto.UserPatchDto;
 import com.example.server.user.dto.UserPostDto;
 import com.example.server.user.dto.UserResponseDto;
@@ -22,4 +23,6 @@ public interface UserMapper {
   }
 
   UserResponseDto userToUserResponseDto(User user);
+
+  User AuthLoginDtoToUser(AuthLoginDto authLoginDto);
 }

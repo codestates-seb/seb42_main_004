@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import ModalDiv, { TextButton } from '../commons/ModalDiv';
+import logo_black from '../../assets/logo_black.png';
 import blankbucket from '../../assets/blankbucket.png';
 import deleteSubject from '../../util/deleteSubject';
 import { MealBoxImg, MealBoxImgDiv } from '../allboxes/MealBoxCardLi';
@@ -23,8 +24,14 @@ function ProductLi({ product, admin, reload }) {
       )}
       <MealBoxImgDiv>
         <ProductImg
-          src={product ? product.imagePath : blankbucket}
-          alt="blankbucket"
+          src={
+            product
+              ? product?.imagePath
+                ? product.imagePath
+                : logo_black
+              : blankbucket
+          }
+          alt=""
         />
       </MealBoxImgDiv>
       <ProductInfoDiv margin={!admin && 1}>

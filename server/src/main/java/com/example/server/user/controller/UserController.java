@@ -2,6 +2,7 @@ package com.example.server.user.controller;
 
 import com.example.server.auth.utils.UriCreator;
 import com.example.server.image.entity.ImageInfo;
+import com.example.server.user.dto.AuthLoginDto;
 import com.example.server.user.dto.PasswordPatchDto;
 import com.example.server.user.dto.RecoveryEmailSendDto;
 import com.example.server.user.dto.RecoveryPWEmailSendDto;
@@ -177,6 +178,23 @@ public class UserController {
     User findUser = userService.checkUserExist(principal.getName());
     userService.postUserImage(findUser.getId(), file);
     return new ResponseEntity(HttpStatus.CREATED);
+  }
+
+  @PostMapping("/oauth/login")
+  public ResponseEntity oAuth2Login(@RequestBody @Valid AuthLoginDto dto) {
+    log.info("### oauth2 login start! ###");
+    String accessToken = "";
+    String refreshToken = "";
+
+    User user = mapper.AuthLoginDtoToUser(dto);
+    if (!userService.existsByEmail(user.getEmail())) {
+      user = userService.authUserSave(user);
+    }
+
+    accessToken = userService.delegateAccessToken(user);
+    refreshToken = userService.delegateRefreshToken(user);
+    return ResponseEntity.ok().header("Authorization", "Bearer " + accessToken)
+        .header("Refresh", refreshToken).build();
   }
 
 }
