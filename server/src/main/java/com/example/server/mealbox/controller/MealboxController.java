@@ -77,17 +77,6 @@ public class MealboxController {
     }
 
     //추천조합 밀박스 검색하기
-    @GetMapping("/mealboxes/search")
-    public ResponseEntity getSearchedMealboxes(@RequestParam @Positive int page,
-                                               @RequestParam String name) {
-        log.info("------getSearchedMealboxList------");
-        Page<Mealbox> mealboxPage = mealboxService.getSearchedMealboxes(page,mealboxListSize, name);
-        List<Mealbox> mealboxes = mealboxPage.getContent();
-        List<OnlyMealboxResponseDto> response = mapper.mealboxListToMealboxResponseDtoList(mealboxes);
-
-        return new ResponseEntity(new MultiResponseDto(response, mealboxPage), HttpStatus.OK);
-    }
-
     @GetMapping("/mealboxes/search/detail")
     public ResponseEntity getDetailSearchedMealboxes(@RequestParam @Positive int page,
                                                      @RequestParam String name) {

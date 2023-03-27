@@ -1,6 +1,7 @@
 package com.example.server.mealbox.mapper;
 
 import com.example.server.image.entity.ImageInfo;
+import com.example.server.image.entity.ProductImage;
 import com.example.server.mealbox.dto.MealboxDto;
 import com.example.server.mealbox.dto.OnlyMealboxResponseDto;
 import com.example.server.mealbox.entity.Mealbox;
@@ -30,10 +31,9 @@ public interface MealboxMapper {
     }
 
     default OnlyMealboxResponseDto mealboxToMealboxResponseDto(Mealbox mealbox) {
-        //나중에 이거 다른곳으로 빼기(리팩토링)
         List<ProductResponseDto> productResponseDtos =
                 mealbox.getMealboxProducts().stream().map(mealboxProduct -> {
-                    return ProductResponseDto.builder()
+                    ProductResponseDto prd =  ProductResponseDto.builder()
                             .productId(mealboxProduct.getProduct().getId())
                             .name(mealboxProduct.getProduct().getName())
                             .price(mealboxProduct.getProduct().getPrice())
@@ -41,6 +41,15 @@ public interface MealboxMapper {
                             .kcal(mealboxProduct.getProduct().getKcal())
                             .quantity(mealboxProduct.getQuantity())
                             .build();
+
+                    ProductImage productImage = mealboxProduct.getProduct().getImage();
+
+                    if(productImage != null) {
+                        ImageInfo imageInfo = productImage.getImageInfo();
+                        prd.setImagePath(imageInfo.getBaseUrl()+imageInfo.getFilePath()+imageInfo.getImageName());
+                    }
+
+                    return prd;
                 }).collect(Collectors.toList());
 
         OnlyMealboxResponseDto responseDto = OnlyMealboxResponseDto.builder()

@@ -44,7 +44,7 @@ public class CartController {
     log.info("------RecMealboxAddCart------");
     Cart cart = userService.getUser(principalDetails.getId()).getCart();
     cartService.createCartMealboxAndAddMealbox(cart, cartPostDto.getMealboxId());
-    return new ResponseEntity(HttpStatus.OK);
+    return new ResponseEntity(HttpStatus.CREATED);
   }
 
 //  장바구니에 커스텀밀박스 생성 후 추가
