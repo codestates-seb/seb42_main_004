@@ -33,7 +33,7 @@ import { initializeCart } from './reducers/cartReducer';
 import setAuthorizationToken from './util/setAuthorizationToken';
 import parseToken from './util/parseToken';
 import checkFooter from './util/checkFooter';
-import { setImage } from './reducers/imageReducer';
+import { setProfile } from './reducers/userReducer';
 import getData from './util/getData';
 
 function App() {
@@ -59,7 +59,7 @@ function App() {
       );
       dispatch(setEmail(''));
       getData('/users').then((data) => {
-        dispatch(setImage(data.imagePath));
+        dispatch(setProfile({ imagePath: data.imagePath, name: data.name }));
       });
       const remainingTime = Math.floor(
         (new Date(exp * 1000).getTime() - new Date().getTime()) / (60 * 1000)
@@ -76,7 +76,7 @@ function App() {
         );
         dispatch(setEmail(''));
         dispatch(initializeCart());
-        dispatch(setImage(null));
+        dispatch(setProfile({ imagePath: null, name: '' }));
         alert('자동 로그아웃되었습니다.');
         window.location.reload();
       }, remainingTime * 60 * 1000);
@@ -141,7 +141,10 @@ function App() {
             path="/email/send/signup"
             element={<SendEmail pathName="signup" />}
           />
-          <Route path="/email/send/password" element={<FindPassword />} />
+          <Route
+            path="/email/send/password"
+            element={accessToken ? <FindPassword /> : <Navigate to="/login" />}
+          />
           <Route
             path="/cart/payment/:orderId"
             element={accessToken ? <Payment /> : <Navigate to="/login" />}

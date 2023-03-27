@@ -72,16 +72,9 @@ function EditMyInfoUl() {
   };
 
   const handleClick = () => {
-    if (same) {
-      patchData('/users', {
-        name: inputValue.name,
-        phoneNumber: inputValue.phoneNumber,
-        address: {
-          zipCode: inputValue.zipCode,
-          simpleAddress: inputValue.simpleAddress,
-          detailAddress: inputValue.detailAddress,
-        },
-        deliveryInformation: {
+    if (confirm('수정하시겠습니까?')) {
+      if (same) {
+        patchData('/users', {
           name: inputValue.name,
           phoneNumber: inputValue.phoneNumber,
           address: {
@@ -89,45 +82,54 @@ function EditMyInfoUl() {
             simpleAddress: inputValue.simpleAddress,
             detailAddress: inputValue.detailAddress,
           },
-        },
-      }).then((data) => {
-        if (data.status === 200) {
-          if (confirm('수정하시겠습니까?')) {
-            alert('수정이 완료되었습니다');
-            navigate('/myinfo');
-          } else {
-            return;
-          }
-        }
-      });
-    } else {
-      patchData('/users', {
-        name: inputValue.name,
-        phoneNumber: inputValue.phoneNumber,
-        address: {
-          zipCode: inputValue.zipCode,
-          simpleAddress: inputValue.simpleAddress,
-          detailAddress: inputValue.detailAddress,
-        },
-        deliveryInformation: {
-          name: inputValue.addressee,
-          phoneNumber: inputValue.addresseePhoneNumber,
-          address: {
-            zipCode: inputValue.deliveryZipCode,
-            simpleAddress: inputValue.deliverySimpleAddress,
-            detailAddress: inputValue.deliveryDetailAddress,
+          deliveryInformation: {
+            name: inputValue.name,
+            phoneNumber: inputValue.phoneNumber,
+            address: {
+              zipCode: inputValue.zipCode,
+              simpleAddress: inputValue.simpleAddress,
+              detailAddress: inputValue.detailAddress,
+            },
           },
-        },
-      }).then((data) => {
-        if (data.status === 200) {
-          if (confirm('수정하시겠습니까?')) {
+        }).then((data) => {
+          if (data.status === 200) {
             alert('수정이 완료되었습니다');
             navigate('/myinfo');
-          } else {
-            return;
           }
-        }
-      });
+        });
+      } else {
+        patchData('/users', {
+          name: inputValue.name,
+          phoneNumber: inputValue.phoneNumber,
+          address: {
+            zipCode: inputValue.zipCode,
+            simpleAddress: inputValue.simpleAddress,
+            detailAddress: inputValue.detailAddress,
+          },
+          deliveryInformation: {
+            name: inputValue.addressee,
+            phoneNumber: inputValue.addresseePhoneNumber,
+            address: {
+              zipCode: inputValue.deliveryZipCode,
+              simpleAddress: inputValue.deliverySimpleAddress,
+              detailAddress: inputValue.deliveryDetailAddress,
+            },
+          },
+        }).then((data) => {
+          if (data.status === 200) {
+            if (confirm('수정하시겠습니까?')) {
+              alert('수정이 완료되었습니다');
+              navigate('/myinfo');
+            } else {
+              return;
+            }
+          } else if (data.status === 400) {
+            alert('닉네임과 연락처를 확인해주세요.');
+          }
+        });
+      }
+    } else {
+      return;
     }
   };
 
@@ -170,7 +172,7 @@ function EditMyInfoUl() {
                 id="name"
                 name="name"
                 labelName="닉네임"
-                placeholder="닉네임"
+                placeholder="2~10글자"
                 value={inputValue.name}
                 onChange={handleInput}
               />
@@ -187,7 +189,7 @@ function EditMyInfoUl() {
                 id="phoneNumber"
                 name="phoneNumber"
                 labelName="연락처"
-                placeholder="연락처"
+                placeholder="01#-####-####"
                 value={inputValue.phoneNumber}
                 onChange={handleInput}
               />
@@ -261,6 +263,11 @@ const ImgDiv = styled.div`
   padding-bottom: 50px;
   display: flex;
   justify-content: center;
+
+  > img {
+    width: 300px;
+    height: 300px;
+  }
 `;
 const ButtonDiv = styled.div`
   display: flex;

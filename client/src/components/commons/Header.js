@@ -11,12 +11,12 @@ import { FaShoppingCart } from 'react-icons/fa';
 import { TfiMenu } from 'react-icons/tfi';
 import logo from '../../assets/logo_black.png';
 import profile from '../../assets/profile.png';
-import { setImage } from '../../reducers/imageReducer';
+import { setProfile } from '../../reducers/userReducer';
 
 function Header() {
   const [isNav, setIsNav] = useState(false);
-  const { isLogin, user, admin } = useSelector((state) => state.authReducer); // admin 삭제 예정
-  const { imagePath } = useSelector((state) => state.imageReducer);
+  const { isLogin, admin } = useSelector((state) => state.authReducer); // admin 삭제 예정
+  const { imagePath, name } = useSelector((state) => state.userReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -36,7 +36,7 @@ function Header() {
         })
       );
       dispatch(setEmail(''));
-      dispatch(setImage(null));
+      dispatch(setProfile({ imagePath: null, name: '' }));
       dispatch(initializeCart());
       window.location.reload();
     } else {
@@ -127,7 +127,7 @@ function Header() {
       {isNav ? (
         <Navbar
           isLogin={isLogin}
-          user={user}
+          name={name}
           imagePath={imagePath}
           handleClick={handleClick}
           handleLogout={handleLogout}

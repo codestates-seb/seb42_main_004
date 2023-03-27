@@ -13,7 +13,7 @@ import { setAuth, setEmail } from '../../reducers/authReducer';
 import { initializeCart } from '../../reducers/cartReducer';
 import ProfileImg from './ProfileImg';
 import PasswordDiv from './PasswordDiv';
-import { setImage } from '../../reducers/imageReducer';
+import { setProfile } from '../../reducers/userReducer';
 
 function MyInfoUl({ pathName }) {
   const [inputValue, setInputValue] = useState({});
@@ -54,7 +54,7 @@ function MyInfoUl({ pathName }) {
         status: res.status,
       });
       setImgInputBuffer(res.imagePath);
-      dispatch(setImage(res.imagePath));
+      dispatch(setProfile({ imagePath: res.imagePath, name: res.name }));
     }
   }, [res, imgInputBuffer]);
   useEffect(() => {
@@ -93,7 +93,7 @@ function MyInfoUl({ pathName }) {
           <h2>내 정보</h2>
           <OrderDiv>
             <ImgDiv>
-              <ProfileImg img={imgInputBuffer} />
+              <ProfileImg img={inputValue.imagePath} />
             </ImgDiv>
             <InfoDiv>
               <ContentDiv
