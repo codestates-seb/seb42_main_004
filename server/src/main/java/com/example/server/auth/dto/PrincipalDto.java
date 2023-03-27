@@ -1,12 +1,9 @@
 package com.example.server.auth.dto;
 
-import io.jsonwebtoken.Claims;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.Map;
 
 @Getter
 @Setter
@@ -16,10 +13,12 @@ public class PrincipalDto {
   private Long id;
   private String email;
   private String name;
+  private String imagePath;
   @Builder
-  public PrincipalDto(Long id, String email, String name) {
+  public PrincipalDto(Long id, String email, String name, String imagePath) {
     this.id = id;
     this.email = email;
     this.name = name;
+    this.imagePath = imagePath;
   }
 }

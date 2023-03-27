@@ -8,6 +8,7 @@ import GetTemplate from '../commons/GetTemplate';
 import useGET from '../../util/useGET';
 import patchData from '../../util/patchData';
 import ProfileImg from './ProfileImg';
+import DeliveryInputDiv from './DeliveryInputDiv';
 
 function EditMyInfoUl() {
   const [inputValue, setInputValue] = useState({
@@ -91,8 +92,12 @@ function EditMyInfoUl() {
         },
       }).then((data) => {
         if (data.status === 200) {
-          alert('수정이 완료되었습니다');
-          navigate('/myinfo');
+          if (confirm('수정하시겠습니까?')) {
+            alert('수정이 완료되었습니다');
+            navigate('/myinfo');
+          } else {
+            return;
+          }
         }
       });
     } else {
@@ -115,12 +120,36 @@ function EditMyInfoUl() {
         },
       }).then((data) => {
         if (data.status === 200) {
-          alert('수정이 완료되었습니다');
-          navigate('/myinfo');
+          if (confirm('수정하시겠습니까?')) {
+            alert('수정이 완료되었습니다');
+            navigate('/myinfo');
+          } else {
+            return;
+          }
         }
       });
     }
   };
+
+  useEffect(() => {
+    if (inputValue.phoneNumber.length === 11) {
+      setInputValue({
+        ...inputValue,
+        ['phoneNumber']: inputValue.phoneNumber.replace(
+          /(\d{3})(\d{4})(\d{4})/,
+          '$1-$2-$3'
+        ),
+      });
+    } else if (inputValue.addresseePhoneNumber.length === 11) {
+      setInputValue({
+        ...inputValue,
+        ['addresseePhoneNumber']: inputValue.addresseePhoneNumber.replace(
+          /(\d{3})(\d{4})(\d{4})/,
+          '$1-$2-$3'
+        ),
+      });
+    }
+  }, [inputValue.phoneNumber, inputValue.addresseePhoneNumber]);
 
   return (
     <GetTemplate
@@ -167,53 +196,27 @@ function EditMyInfoUl() {
                 onChange={handleInput}
                 setInputValue={setInputValue}
                 user={true}
+                pathName="MyInfo"
               />
             </InfoDiv>
           </OrderDiv>
         </li>
         <li>
-          <TopDiv>
-            <h2>배송지 정보</h2>
-            <div>
-              <input
-                type="checkbox"
-                id="same"
-                checked={same}
-                onChange={({ target: { checked } }) => setSame(checked)}
-              ></input>
-              <label htmlFor="same">주문자와동일</label>
-            </div>
-          </TopDiv>
-          <DeliveryDiv>
-            <ContentInputDiv
-              id="addressee"
-              name="addressee"
-              labelName="받는분"
-              placeholder="받는분"
-              value={same ? inputValue.name : inputValue.addressee}
-              onChange={handleInput}
-            />
-            <ContentInputDiv
-              id="addresseePhoneNumber"
-              name="addresseePhoneNumber"
-              labelName="연락처"
-              placeholder="받는분"
-              value={
-                same ? inputValue.phoneNumber : inputValue.addresseePhoneNumber
-              }
-              onChange={handleInput}
-            />
-            <AddressDiv
-              inputValue={inputValue}
-              onChange={handleInput}
-              setInputValue={setInputValue}
-              user={same ? true : false}
-            />
-          </DeliveryDiv>
+          <DeliveryInputDiv
+            same={same}
+            setSame={setSame}
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            handleInput={handleInput}
+            pathName="MyInfo"
+          />
         </li>
         <li>
           <ButtonDiv>
             <MyInfoButton onClick={handleClick} text="수정완료" />
+            <button onClick={() => navigate('/myinfo')} className="linkstyle">
+              취소
+            </button>
           </ButtonDiv>
         </li>
       </ContainerUl>
@@ -229,7 +232,7 @@ const ContainerUl = styled.ul`
   list-style: none;
 
   @media (max-width: 768px) {
-    width: 100%;
+    width: 90%;
   }
 `;
 const OrderDiv = styled.div`
@@ -259,39 +262,17 @@ const ImgDiv = styled.div`
   display: flex;
   justify-content: center;
 `;
-const TopDiv = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  div > * {
-    cursor: pointer;
-  }
-
-  input {
-    margin-right: 0.5rem;
-  }
-`;
-const DeliveryDiv = styled.div`
-  margin-top: 2rem;
-  padding-bottom: 50px;
-  margin-bottom: 2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  word-break: break-all;
-  border-bottom: 1px solid var(--black);
-
-  > div {
-    width: 60%;
-
-    @media (max-width: 768px) {
-      width: 100%;
-    }
-  }
-`;
 const ButtonDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
+  > * {
+    margin-top: 1rem;
+  }
+
+  button:last-child {
+    border: none;
+    background-color: transparent;
+  }
 `;

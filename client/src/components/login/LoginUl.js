@@ -69,14 +69,12 @@ function LoginUl() {
     let postReqData = mealboxes.reduce(
       (acc, cur) => {
         if (cur.name === 'custom') {
-          let quantity = cur.quantity;
-          // delete cur[quantity];
-          let mealbox = cur;
+          let box = cur.slice();
+          let quantity = box.quantity;
+          delete box.quantity;
+          let mealbox = box;
 
-          let d = { mealbox: mealbox, quantity: quantity };
-          console.log(d);
-
-          acc.customMealboxes.push(d);
+          acc.customMealboxes.push({ mealbox, quantity });
         } else {
           acc.adminMadeMealboxes.push({
             mealboxId: cur.mealboxId,
@@ -181,12 +179,12 @@ function LoginUl() {
             )}
           </LoginDiv>
         </li>
-        <li>
+        {/* <li>
           <CheckboxDiv>
             <input type="checkbox" id="auto"></input>
             <label htmlFor="auto">자동로그인</label>
           </CheckboxDiv>
-        </li>
+        </li> */}
         <li>
           <LoginButton onClick={handleClick} name="로그인"></LoginButton>
         </li>
@@ -265,23 +263,23 @@ const IconDiv = styled.div`
   right: 13px;
   cursor: pointer;
 `;
-const CheckboxDiv = styled.div`
-  display: flex;
-  align-items: flex-end;
+// const CheckboxDiv = styled.div`
+//   display: flex;
+//   align-items: flex-end;
 
-  > * {
-    cursor: pointer;
-  }
+//   > * {
+//     cursor: pointer;
+//   }
 
-  > input {
-    width: 15px;
-    height: 15px;
-  }
+//   > input {
+//     width: 15px;
+//     height: 15px;
+//   }
 
-  > label {
-    margin-left: 0.3rem;
-  }
-`;
+//   > label {
+//     margin-left: 0.3rem;
+//   }
+// `;
 const Div = styled.div`
   display: flex;
   justify-content: space-between;

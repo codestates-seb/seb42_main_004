@@ -1,6 +1,7 @@
 package com.example.server.payment.controller;
 
 import com.example.server.auth.details.PrincipalDetails;
+import com.example.server.cart.entity.Cart;
 import com.example.server.payment.dto.ValidatePaymentDto;
 import com.example.server.payment.service.PaymentService;
 import com.google.gson.Gson;
@@ -38,7 +39,8 @@ public class PaymentController { // IamPort 결제 검증 컨트롤러
       @AuthenticationPrincipal PrincipalDetails principalDetails)
       throws IamportResponseException, IOException {
     log.info("------------------- PAYMENT VALIDATION -------------------");
-    paymentService.validatePayment(dto.getImpUid(), dto.getMerchantUid(), principalDetails.getId());
+    Cart cart = paymentService.validatePayment(dto.getImpUid(), dto.getMerchantUid(), principalDetails.getId());
+    paymentService.refreshCartPrice(cart);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
