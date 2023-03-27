@@ -41,10 +41,10 @@ public class CartMealboxService {
     cartMealboxRepository.save(cartMealbox);
   }
 
-  public void createCartMealbox(Cart cart, Mealbox mealbox, int quantity){
+  public CartMealbox createCartMealbox(Cart cart, Mealbox mealbox, int quantity){
     mealboxService.verifyDeletedMealbox(mealbox);
     CartMealbox cartMealbox = CartMealbox.makeCartMealbox(cart, mealbox, quantity);
-    cartMealboxRepository.save(cartMealbox);
+    return cartMealboxRepository.save(cartMealbox);
   }
 
   public void deleteCartMealbox(Long cartMealboxId){

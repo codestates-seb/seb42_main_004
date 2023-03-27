@@ -1,8 +1,6 @@
 package com.example.server.cart.dto;
 
-import com.example.server.mealbox.dto.MealboxProductResponseDto;
 import com.example.server.mealbox.entity.Mealbox;
-import com.example.server.product.dto.ProductResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
