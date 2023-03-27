@@ -129,7 +129,8 @@ export const MealBoxImg = styled.img`
   max-width: 100%;
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) translateX(-50%);
+  left: 50%;
   height: auto;
 `;
 const MealBoxDesUl = styled.ul`
