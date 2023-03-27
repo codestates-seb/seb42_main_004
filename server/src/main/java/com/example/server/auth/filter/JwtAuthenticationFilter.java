@@ -95,8 +95,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
   private String delegateAccessToken(User user) {
     Map<String, Object> claims = new HashMap<>();
     PrincipalDto principal = PrincipalDto.builder().id(user.getId()).email(user.getEmail())
-        .imagePath(user.getImage().getImageInfo().getFilePath())
         .name(user.getName()).build();
+    if (user.getImage() != null) {
+      principal.setImagePath(user.getImage().getImageInfo().getFilePath());
+    }
     claims.put("username", user.getEmail());
     claims.put("roles", user.getRoles());
     claims.put("principal", principal);
