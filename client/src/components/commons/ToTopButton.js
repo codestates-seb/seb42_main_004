@@ -54,6 +54,10 @@ const Button = styled.button`
     fill: var(--white);
   }
 
+  @media screen and (max-width: 768px) {
+    bottom: calc(${(props) => (props.havefooter ? '90px' : '0px')} + 0.8rem);
+  }
+
   @media screen and (max-width: 480px) {
     bottom: calc(${(props) => (props.havefooter ? '76px' : '0px')} + 1rem);
   }
