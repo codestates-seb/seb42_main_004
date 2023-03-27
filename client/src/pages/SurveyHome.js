@@ -27,5 +27,6 @@ const Main = styled.main`
   justify-content: center;
   width: 100%;
   @media (max-width: 480px) {
+    height: 100%;
   }
 `;

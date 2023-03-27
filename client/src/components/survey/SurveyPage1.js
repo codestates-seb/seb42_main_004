@@ -9,8 +9,9 @@ import { useEffect, useState } from 'react';
 function SurveyPage1() {
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  let [alertMsg, setAlertMsg] = useState('잘못된 입력입니다.');
-  let [isValid, setValid] = useState(false);
+  let [ageValidMsg, setAgeValidMsg] = useState('');
+  let [weightValidMsg, setWeightValidMsg] = useState('');
+  let [heightValidMsg, setHeightValid] = useState('');
 
   let { age, height, weight, gender } = useSelector(
     (state) => state.surveyQuestionReducer
@@ -34,7 +35,7 @@ function SurveyPage1() {
   };
 
   let nextHandler = () => {
-    if (isValid) {
+    if (checkValid()) {
       navigate(`/survey/question/2`);
     }
   };
@@ -45,15 +46,15 @@ function SurveyPage1() {
     let weightValid = weight >= 20 && weight <= 150;
 
     if (!ageValid) {
-      setAlertMsg('1에서 100 사이의 값을 입력해주세요.');
-    } else if (!heightValid) {
-      setAlertMsg('120에서 220 사이의 값을 입력해주세요.');
-    } else if (!weightValid) {
-      setAlertMsg('20에서 150 사이의 값을 입력해주세요.');
-    } else {
-      setAlertMsg('');
+      setAgeValidMsg('1에서 100 사이의 값을 입력해주세요.');
     }
-    ageValid && heightValid ? setValid(true) : setValid(false);
+    if (!heightValid) {
+      setHeightValid('120에서 220 사이의 값을 입력해주세요.');
+    }
+    if (!weightValid) {
+      setWeightValidMsg('20에서 150 사이의 값을 입력해주세요.');
+    }
+    return ageValid && heightValid && weightValid;
   };
 
   useEffect(() => {
@@ -77,6 +78,7 @@ function SurveyPage1() {
           unit="세"
           maxLength="3"
         />
+        <ValidMsg>{ageValidMsg}</ValidMsg>
         <div>
           <div>성별</div>
           <GenderOptionDiv>
@@ -105,6 +107,7 @@ function SurveyPage1() {
           unit="cm"
           maxLength="5"
         />
+        <ValidMsg>{heightValidMsg}</ValidMsg>
         <InputLabelDiv
           label="체중"
           id="weight"
@@ -114,7 +117,7 @@ function SurveyPage1() {
           unit="kg"
           maxLength="5"
         />
-        <ValidMsg>{alertMsg}</ValidMsg>
+        <ValidMsg>{weightValidMsg}</ValidMsg>
         <PreAndNextButtons nextHandler={nextHandler} />
       </SurveyContentDiv>
     </Article>

@@ -88,7 +88,15 @@ export const CartItemBottomButtonsDiv = styled.div`
   }
 
   > div {
-    margin-right: 0.8rem;
+    margin-right: 8px;
+    :not(:first-child) {
+      margin-bottom: -0.14rem;
+    }
+  }
+
+  > button {
+    margin-bottom: -0.16rem;
+    padding: 0;
   }
 `;
 
