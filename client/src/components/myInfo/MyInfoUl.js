@@ -129,9 +129,11 @@ function MyInfoUl({ pathName }) {
               <button onClick={() => navigate('/myinfo/edit')}>
                 내 정보 수정
               </button>
-              <button onClick={() => navigate('/myinfo/edit/password')}>
-                비밀번호 수정
-              </button>
+              {inputValue.status === 'USER_GOOGLE' ? null : (
+                <button onClick={() => navigate('/myinfo/edit/password')}>
+                  비밀번호 수정
+                </button>
+              )}
               <button
                 onClick={() => {
                   if (confirm('정말 탈퇴하시겠습니까?')) {
