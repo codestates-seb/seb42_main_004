@@ -10,6 +10,5 @@ import javax.validation.constraints.Positive;
 @Getter
 public class CartPostDto {
   @Positive
-  @Max(100)
   private long mealboxId;
 }
