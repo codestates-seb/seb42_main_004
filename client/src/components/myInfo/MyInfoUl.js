@@ -13,6 +13,7 @@ import { setAuth, setEmail } from '../../reducers/authReducer';
 import { initializeCart } from '../../reducers/cartReducer';
 import ProfileImg from './ProfileImg';
 import PasswordDiv from './PasswordDiv';
+import { setImage } from '../../reducers/imageReducer';
 
 function MyInfoUl({ pathName }) {
   const [inputValue, setInputValue] = useState({});
@@ -53,9 +54,9 @@ function MyInfoUl({ pathName }) {
         status: res.status,
       });
       setImgInputBuffer(res.imagePath);
+      dispatch(setImage(res.imagePath));
     }
-  }, [res]);
-
+  }, [res, imgInputBuffer]);
   useEffect(() => {
     let reader = new FileReader();
     if (imgInput) {
@@ -69,6 +70,7 @@ function MyInfoUl({ pathName }) {
         postData('/users/image', formData).then((data) => {
           if (data.status === 201) {
             alert('사진이 변경되었습니다.');
+            window.location.reload();
           } else {
             alert('관리자에게 문의하세요.');
           }

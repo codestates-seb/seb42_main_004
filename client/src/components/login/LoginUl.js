@@ -12,6 +12,7 @@ import { setCart } from '../../reducers/cartReducer';
 import getData from '../../util/getData';
 import GetTemplate from '../commons/GetTemplate';
 import GoogleButton from './GoogleButton';
+import { setImage } from '../../reducers/imageReducer';
 
 function LoginUl() {
   const { mealboxes } = useSelector((state) => state.cartReducer.cart) || {
@@ -49,18 +50,20 @@ function LoginUl() {
 
   const Auth = () => {
     return new Promise((resolve) => {
-      const { exp, principal, roles } = parseToken(
+      const { principal, roles } = parseToken(
         localStorage.getItem('accessToken')
       );
       dispatch(
         setAuth({
           isLogin: true,
           accessToken: localStorage.getItem('accessToken'),
-          tokenExpirationDate: new Date(exp),
           user: principal,
           admin: roles.includes('ADMIN'),
         })
       );
+      getData('/users').then((data) => {
+        dispatch(setImage(data.imagePath));
+      });
       resolve();
     });
   };
