@@ -4,6 +4,7 @@ import com.example.server.exception.ExceptionCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+
 @Getter
 @RequiredArgsConstructor
 public enum UserException implements ExceptionCode {
@@ -13,7 +14,8 @@ public enum UserException implements ExceptionCode {
   INCORRECT_PASSWORD(HttpStatus.CONFLICT, "Password"),
   NOT_YET_AUTHENTICATE_EMAIL(HttpStatus.FORBIDDEN, "Do Not Authenticate Email Yet"),
   NOT_ACTIVE_USER(HttpStatus.FORBIDDEN, "This User Is Not Active"),
-  NOT_GOOGLE_USER(HttpStatus.NOT_FOUND, "Not Google User");
+  NOT_GOOGLE_USER(HttpStatus.CONFLICT, "Not Google User"),
+  GOOGLE_USER(HttpStatus.NOT_FOUND, "Google User");
 //  MEMBER_JWT_EXIST(HttpStatus.CONFLICT, "JWT Registry Member is Exist");
 
   private final HttpStatus status;
