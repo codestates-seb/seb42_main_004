@@ -200,7 +200,7 @@ public class UserController {
         .header("Refresh", refreshToken).build();
   }
 
-  @GetMapping("/oauth/exist")
+  @PostMapping("/oauth/exist")
   public ResponseEntity oauth2Exist(@RequestBody @Valid AuthExistDto dto) {
     log.info("### oauth2 Exist start! ###");
 
