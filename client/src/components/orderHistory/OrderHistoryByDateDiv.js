@@ -1,9 +1,6 @@
 import styled from 'styled-components';
 import OrderHistoryByOrderNumber from './OrderHistoryByOrderNumber';
 
-// import postData from '../../util/postData';
-// import deleteData from '../../util/deleteData';
-
 function OrderHistoryByDateDiv({ ordersPerDate }) {
   let { date, orders } = ordersPerDate;
 

@@ -19,7 +19,10 @@ function SurveyPage1() {
   let dispatchProfile = (e) => {
     let { id, value } = e.target;
 
-    let regex = new RegExp(/^\d*(\.\d{0,1})?$/);
+    let regexAge = new RegExp(/^\d*?$/);
+    let regexHW = new RegExp(/^\d*(\.\d{0,1})?$/);
+    let regex = id === 'age' ? regexAge : regexHW;
+
     if (regex.test(value)) {
       dispatch(setProfile({ id, value }));
     }
@@ -98,9 +101,9 @@ function SurveyPage1() {
           id="height"
           value={height}
           onChange={dispatchProfile}
-          placeholder="0"
+          placeholder="000.0"
           unit="cm"
-          maxLength="3"
+          maxLength="5"
         />
         <InputLabelDiv
           label="체중"
@@ -109,7 +112,7 @@ function SurveyPage1() {
           onChange={dispatchProfile}
           placeholder="00.0"
           unit="kg"
-          maxLength="4"
+          maxLength="5"
         />
         <ValidMsg>{alertMsg}</ValidMsg>
         <PreAndNextButtons nextHandler={nextHandler} />
