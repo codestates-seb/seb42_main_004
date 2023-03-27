@@ -98,7 +98,10 @@ function App() {
         <Routes>
           <Route path="/" element={<SurveyHome />} />
           <Route path="/mealboxes/*" element={<AllBoxes />} />
-          <Route path="/survey/question/:page" element={<Survey />} />
+          <Route
+            path="/survey/question/:page"
+            element={admin ? <AllBoxes /> : <Survey />}
+          />
           <Route path="/survey/result" element={<SurveyResult />} />
           <Route path="/custom" element={<Custom />} />
           <Route path="/cart" element={<Cart />} />

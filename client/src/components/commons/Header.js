@@ -58,11 +58,13 @@ function Header() {
             <LogoImg src={logo} alt="logo" onClick={() => navigate('/')} />
           </MenuDiv>
           <MenuUl>
-            <li>
-              <button onClick={() => navigate('/survey/question/1')}>
-                한끼밀 추천받기
-              </button>
-            </li>
+            {!admin && (
+              <li>
+                <button onClick={() => navigate('/survey/question/1')}>
+                  한끼밀 추천받기
+                </button>
+              </li>
+            )}
             <li>
               <button onClick={() => navigate('/custom')}>
                 커스텀 밀박스 만들기
@@ -113,14 +115,16 @@ function Header() {
                 </SignupSpan>
               )}
             </li>
-            <li>
-              <CartSpan>
-                <button onClick={() => navigate('/cart')}>
-                  <FaShoppingCart size={25} />
-                  <CartCounter />
-                </button>
-              </CartSpan>
-            </li>
+            {!admin && (
+              <li>
+                <CartSpan>
+                  <button onClick={() => navigate('/cart')}>
+                    <FaShoppingCart size={25} />
+                    <CartCounter />
+                  </button>
+                </CartSpan>
+              </li>
+            )}
           </IconsUl>
         </nav>
       </HeaderDiv>

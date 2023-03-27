@@ -54,8 +54,12 @@ function Footer() {
                   return (
                     <Member key={memberIdx}>
                       <div>{member.name}</div>
-                      <MemberInfo href={member.github}>GitHub</MemberInfo>
-                      <MemberInfo href={member.blog}>Blog</MemberInfo>
+                      <MemberInfo href={member.github} target="_blank">
+                        GitHub
+                      </MemberInfo>
+                      <MemberInfo href={member.blog} target="_blank">
+                        Blog
+                      </MemberInfo>
                     </Member>
                   );
                 })}

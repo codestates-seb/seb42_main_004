@@ -99,7 +99,7 @@ const GlobalStyle = createGlobalStyle`
     --body_beige: rgba(252, 246, 236, 1);
     --white: rgba(255, 255, 255, 1);
     --white_020: rgba(255, 255, 255, 0.2);
-    --red: rgba(255, 0, 0, 1); 
+    --red: rgba(216, 75, 75,1); 
     --green: rgba(51,102,0,1)
   }
 `;
