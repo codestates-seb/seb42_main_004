@@ -55,6 +55,7 @@ public class SecurityConfiguration {
             // 준성
             .antMatchers(HttpMethod.POST,"/users").permitAll()
             .antMatchers(HttpMethod.POST,"/users/oauth/**").permitAll()
+            .antMatchers(HttpMethod.GET,"/users/oauth/**").permitAll()
             .antMatchers(HttpMethod.PATCH,"/users/recovery").permitAll()
             .antMatchers(HttpMethod.POST,"/users/recovery/**").permitAll()
             .antMatchers(HttpMethod.GET,"/users/email_auth").permitAll()

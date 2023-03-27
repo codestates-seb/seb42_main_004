@@ -71,9 +71,13 @@ public class ProductController {
         Page<Product> productPage = productService.findProducts(page, productListSize, sort, dir, true);
 
         List<Product> products = productPage.getContent();
+
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
 
-        return new ResponseEntity(new MultiResponseDto(response,productPage), HttpStatus.OK);
+
+        PageInfo pageInfo = new PageInfo(productPage.getNumber()+1, productPage.getSize(),
+                (int) productPage.getTotalElements());
+        return new ResponseEntity(new MultiResponseDto(response,pageInfo), HttpStatus.OK);
     }
 
     @GetMapping("/admin/products/search")
@@ -99,9 +103,7 @@ public class ProductController {
         List<Product> products = productPage.getContent();
         List<ProductOnlyResponseDto> response = mapper.productsToProductOnlyResponseDtos(products);
 
-        PageInfo pageInfo = new PageInfo(productPage.getNumber()+1, productPage.getSize(),
-                (int) productPage.getTotalElements());
-        return new ResponseEntity(new MultiResponseDto(response,pageInfo), HttpStatus.OK);
+        return new ResponseEntity(new MultiResponseDto(response,productPage), HttpStatus.OK);
     }
 
     @GetMapping("/products/search")

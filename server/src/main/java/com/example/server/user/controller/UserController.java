@@ -2,6 +2,7 @@ package com.example.server.user.controller;
 
 import com.example.server.auth.utils.UriCreator;
 import com.example.server.image.entity.ImageInfo;
+import com.example.server.user.dto.AuthExistDto;
 import com.example.server.user.dto.AuthLoginDto;
 import com.example.server.user.dto.PasswordPatchDto;
 import com.example.server.user.dto.RecoveryEmailSendDto;
@@ -180,7 +181,7 @@ public class UserController {
     return new ResponseEntity(HttpStatus.CREATED);
   }
 
-  @PostMapping("/oauth/login")
+  @PostMapping("/oauth/signup")
   public ResponseEntity oAuth2Login(@RequestBody @Valid AuthLoginDto dto) {
     log.info("### oauth2 login start! ###");
     String accessToken = "";
@@ -189,6 +190,8 @@ public class UserController {
     User user = mapper.AuthLoginDtoToUser(dto);
     if (!userService.existsByEmail(user.getEmail())) {
       user = userService.authUserSave(user);
+    } else {
+      user = userService.checkUserExist(user.getEmail());
     }
 
     accessToken = userService.delegateAccessToken(user);
@@ -197,4 +200,17 @@ public class UserController {
         .header("Refresh", refreshToken).build();
   }
 
+  @PostMapping("/oauth/exist")
+  public ResponseEntity oauth2Exist(@RequestBody @Valid AuthExistDto dto) {
+    log.info("### oauth2 Exist start! ###");
+
+    User user = userService.checkUserExist(dto.getEmail());
+    userService.checkGoogleAuth(user);
+
+    String accessToken = userService.delegateAccessToken(user);
+    String refreshToken = userService.delegateRefreshToken(user);
+
+    return ResponseEntity.ok().header("Authorization", "Bearer " + accessToken)
+        .header("Refresh", refreshToken).build();
+  }
 }
