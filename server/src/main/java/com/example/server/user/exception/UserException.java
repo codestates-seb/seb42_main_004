@@ -12,7 +12,8 @@ public enum UserException implements ExceptionCode {
   MAILKEY_MISMATCH(HttpStatus.CONFLICT, "Incorrect password."),
   INCORRECT_PASSWORD(HttpStatus.CONFLICT, "Password"),
   NOT_YET_AUTHENTICATE_EMAIL(HttpStatus.FORBIDDEN, "Do Not Authenticate Email Yet"),
-  NOT_ACTIVE_USER(HttpStatus.FORBIDDEN, "This User Is Not Active");
+  NOT_ACTIVE_USER(HttpStatus.FORBIDDEN, "This User Is Not Active"),
+  NOT_GOOGLE_USER(HttpStatus.NOT_FOUND, "Not Google User");
 //  MEMBER_JWT_EXIST(HttpStatus.CONFLICT, "JWT Registry Member is Exist");
 
   private final HttpStatus status;

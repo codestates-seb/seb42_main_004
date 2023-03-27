@@ -39,14 +39,19 @@ const customSlice = createSlice({
       const idx = custom.products
         .map((product) => product.productId)
         .indexOf(productId);
-      const product = custom.products.splice(idx, 1)[0];
-      customSlice.caseReducers.updateInfo(custom, product, false, true);
+      if (idx !== -1) {
+        const product = custom.products.splice(idx, 1)[0];
+        customSlice.caseReducers.updateInfo(custom, product, false, true);
+      }
     },
     setProduct: (state, action) => {
       const { custom } = state;
       const product = action.payload;
       const { quantity } = product;
-      if (quantity === 0) customSlice.caseReducers.deleteProduct(state, action);
+      if (quantity === 0)
+        customSlice.caseReducers.deleteProduct(state, {
+          payload: product.productId,
+        });
       else if (quantity > 0) {
         const idx = custom.products
           .map((product) => product.productId)
