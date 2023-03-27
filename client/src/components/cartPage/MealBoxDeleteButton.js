@@ -27,4 +27,5 @@ export const DeleteButton = styled.button`
   background-color: transparent;
   border: none;
   height: fit-content;
+  margin-right: 4px;
 `;
