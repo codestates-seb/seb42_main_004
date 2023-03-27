@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Post from './Post';
 
-function AddressDiv({ inputValue, onChange, setInputValue, user, pathName }) {
+function AddressDiv({ inputValue, onChange, setInputValue, user }) {
   const [popup, setPopup] = useState(false);
 
   const handleComplete = () => {
@@ -19,17 +19,9 @@ function AddressDiv({ inputValue, onChange, setInputValue, user, pathName }) {
             placeholder="우편번호"
             type="text"
             required={true}
-            name={user ? 'zipCode' : 'deliveryZipCode'}
+            name={user ? 'userZipCode' : 'deliveryZipCode'}
             onChange={onChange}
-            value={
-              pathName
-                ? user
-                  ? inputValue.zipCode
-                  : inputValue.deliveryZipCode
-                : user
-                ? inputValue.userZipCode
-                : inputValue.deliveryZipCode
-            }
+            value={user ? inputValue.userZipCode : inputValue.deliveryZipCode}
             disabled
           />
           <AddressButton
@@ -51,14 +43,10 @@ function AddressDiv({ inputValue, onChange, setInputValue, user, pathName }) {
           placeholder="주소"
           type="text"
           required={true}
-          name={user ? 'simpleAddress' : 'deliverySimpleAddress'}
+          name={user ? 'userSimpleAddress' : 'deliverySimpleAddress'}
           onChange={onChange}
           value={
-            pathName
-              ? user
-                ? inputValue.simpleAddress
-                : inputValue.deliverySimpleAddress
-              : user
+            user
               ? inputValue.userSimpleAddress
               : inputValue.deliverySimpleAddress
           }
@@ -69,14 +57,10 @@ function AddressDiv({ inputValue, onChange, setInputValue, user, pathName }) {
           placeholder="상세주소"
           type="text"
           required={true}
-          name={user ? 'detailAddress' : 'deliveryDetailAddress'}
+          name={user ? 'userDetailAddress' : 'deliveryDetailAddress'}
           onChange={onChange}
           value={
-            pathName
-              ? user
-                ? inputValue.detailAddress
-                : inputValue.deliveryDetailAddress
-              : user
+            user
               ? inputValue.userDetailAddress
               : inputValue.deliveryDetailAddress
           }

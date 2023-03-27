@@ -20,9 +20,9 @@ const Post = ({ inputValue, setInputValue, user }) => {
       user
         ? setInputValue({
             ...inputValue,
-            simpleAddress: fullAddress,
-            zipCode: data.zonecode,
-            detailAddress: '',
+            userSimpleAddress: fullAddress,
+            userZipCode: data.zonecode,
+            userDetailAddress: '',
           })
         : setInputValue({
             ...inputValue,

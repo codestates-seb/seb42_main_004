@@ -12,17 +12,17 @@ import DeliveryInputDiv from './DeliveryInputDiv';
 
 function EditMyInfoUl() {
   const [inputValue, setInputValue] = useState({
-    name: '',
+    username: '',
     email: '',
-    phoneNumber: '',
+    userPhoneNumber: '',
     addressee: '',
     addresseePhoneNumber: '',
     deliveryDetailAddress: '',
     deliverySimpleAddress: '',
     deliveryZipCode: '',
-    detailAddress: '',
-    simpleAddress: '',
-    zipCode: '',
+    userDetailAddress: '',
+    userSimpleAddress: '',
+    userZipCode: '',
     imagePath: '',
   });
   const [res, isPending, error] = useGET('/users');
@@ -32,9 +32,9 @@ function EditMyInfoUl() {
   useEffect(() => {
     if (res) {
       setInputValue({
-        name: res.name || '',
+        username: res.name || '',
         email: res.email || '',
-        phoneNumber: res.phoneNumber || '',
+        userPhoneNumber: res.phoneNumber || '',
         addressee:
           (res.deliveryInformation && res.deliveryInformation.name) || '',
         addresseePhoneNumber:
@@ -55,9 +55,9 @@ function EditMyInfoUl() {
             res.deliveryInformation.address &&
             res.deliveryInformation.address.zipCode) ||
           '',
-        detailAddress: (res.address && res.address.detailAddress) || '',
-        simpleAddress: (res.address && res.address.simpleAddress) || '',
-        zipCode: (res.address && res.address.zipCode) || '',
+        userDetailAddress: (res.address && res.address.detailAddress) || '',
+        userSimpleAddress: (res.address && res.address.simpleAddress) || '',
+        userZipCode: (res.address && res.address.zipCode) || '',
         imagePath: res.imagePath || '',
       });
     }
@@ -75,36 +75,38 @@ function EditMyInfoUl() {
     if (confirm('수정하시겠습니까?')) {
       if (same) {
         patchData('/users', {
-          name: inputValue.name,
-          phoneNumber: inputValue.phoneNumber,
+          name: inputValue.username,
+          phoneNumber: inputValue.userPhoneNumber,
           address: {
-            zipCode: inputValue.zipCode,
-            simpleAddress: inputValue.simpleAddress,
-            detailAddress: inputValue.detailAddress,
+            zipCode: inputValue.userZipCode,
+            simpleAddress: inputValue.userSimpleAddress,
+            detailAddress: inputValue.userDetailAddress,
           },
           deliveryInformation: {
-            name: inputValue.name,
-            phoneNumber: inputValue.phoneNumber,
+            name: inputValue.username,
+            phoneNumber: inputValue.userPhoneNumber,
             address: {
-              zipCode: inputValue.zipCode,
-              simpleAddress: inputValue.simpleAddress,
-              detailAddress: inputValue.detailAddress,
+              zipCode: inputValue.userZipCode,
+              simpleAddress: inputValue.userSimpleAddress,
+              detailAddress: inputValue.userDetailAddress,
             },
           },
         }).then((data) => {
           if (data.status === 200) {
             alert('수정이 완료되었습니다');
             navigate('/myinfo');
+          } else if (data.status === 400) {
+            alert('닉네임과 연락처를 확인해주세요.');
           }
         });
       } else {
         patchData('/users', {
-          name: inputValue.name,
-          phoneNumber: inputValue.phoneNumber,
+          name: inputValue.username,
+          phoneNumber: inputValue.userPhoneNumber,
           address: {
             zipCode: inputValue.zipCode,
-            simpleAddress: inputValue.simpleAddress,
-            detailAddress: inputValue.detailAddress,
+            simpleAddress: inputValue.userSimpleAddress,
+            detailAddress: inputValue.userDetailAddress,
           },
           deliveryInformation: {
             name: inputValue.addressee,
@@ -117,12 +119,8 @@ function EditMyInfoUl() {
           },
         }).then((data) => {
           if (data.status === 200) {
-            if (confirm('수정하시겠습니까?')) {
-              alert('수정이 완료되었습니다');
-              navigate('/myinfo');
-            } else {
-              return;
-            }
+            alert('수정이 완료되었습니다');
+            navigate('/myinfo');
           } else if (data.status === 400) {
             alert('닉네임과 연락처를 확인해주세요.');
           }
@@ -134,7 +132,7 @@ function EditMyInfoUl() {
   };
 
   useEffect(() => {
-    if (inputValue.phoneNumber.length === 11) {
+    if (inputValue.userPhoneNumber.length === 11) {
       setInputValue({
         ...inputValue,
         ['phoneNumber']: inputValue.phoneNumber.replace(
@@ -151,7 +149,7 @@ function EditMyInfoUl() {
         ),
       });
     }
-  }, [inputValue.phoneNumber, inputValue.addresseePhoneNumber]);
+  }, [inputValue.userPhoneNumber, inputValue.addresseePhoneNumber]);
 
   return (
     <GetTemplate
@@ -169,11 +167,11 @@ function EditMyInfoUl() {
             </ImgDiv>
             <InfoDiv>
               <ContentInputDiv
-                id="name"
-                name="name"
+                id="username"
+                name="username"
                 labelName="닉네임"
                 placeholder="2~10글자"
-                value={inputValue.name}
+                value={inputValue.username}
                 onChange={handleInput}
               />
               <ContentInputDiv
@@ -186,11 +184,11 @@ function EditMyInfoUl() {
                 noEdit={true}
               />
               <ContentInputDiv
-                id="phoneNumber"
-                name="phoneNumber"
+                id="userPhoneNumber"
+                name="userPhoneNumber"
                 labelName="연락처"
                 placeholder="01#-####-####"
-                value={inputValue.phoneNumber}
+                value={inputValue.userPhoneNumber}
                 onChange={handleInput}
               />
               <AddressDiv

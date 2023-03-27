@@ -31,31 +31,17 @@ function DeliveryInputDiv({
           id="addressee"
           name="addressee"
           labelName="받는분"
-          placeholder="받는분"
-          value={
-            pathName
-              ? same
-                ? inputValue.name
-                : inputValue.addressee
-              : same
-              ? inputValue.username
-              : inputValue.addressee
-          }
+          placeholder="2~10글자"
+          value={same ? inputValue.username : inputValue.addressee}
           onChange={handleInput}
         />
         <ContentInputDiv
           id="addresseePhoneNumber"
           name="addresseePhoneNumber"
           labelName="연락처"
-          placeholder="연락처"
+          placeholder="01#-####-####"
           value={
-            pathName
-              ? same
-                ? inputValue.phoneNumber
-                : inputValue.addresseePhoneNumber
-              : same
-              ? inputValue.userPhoneNumber
-              : inputValue.addresseePhoneNumber
+            same ? inputValue.userPhoneNumber : inputValue.addresseePhoneNumber
           }
           onChange={handleInput}
         />
@@ -119,4 +105,8 @@ const DeliveryDiv = styled.div`
 `;
 const SaveDiv = styled.div`
   margin: 3rem 0 0 3rem;
+
+  > * {
+    cursor: pointer;
+  }
 `;
