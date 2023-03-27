@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import {
   addProductInBox,
@@ -6,7 +6,9 @@ import {
   setIdNameImage,
 } from '../reducers/customReducer';
 
-function goToCustom(mealBox, admin) {
+function goToCustom(mealBox) {
+  const { admin } = useSelector((state) => state.authReducer);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

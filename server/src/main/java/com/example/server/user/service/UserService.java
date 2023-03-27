@@ -1,5 +1,7 @@
 package com.example.server.user.service;
 
+import com.example.server.auth.dto.PrincipalDto;
+import com.example.server.auth.jwt.JwtTokenizer;
 import com.example.server.auth.utils.CustomAuthorityUtils;
 import com.example.server.cart.entity.Cart;
 import com.example.server.exception.BusinessLogicException;
@@ -10,7 +12,10 @@ import com.example.server.user.entity.User;
 import com.example.server.user.exception.UserException;
 import com.example.server.user.repository.UserRepository;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import javax.mail.MessagingException;
@@ -41,16 +46,18 @@ public class UserService {
   private final SpringTemplateEngine templateEngine;
   private final ApplicationEventPublisher publisher;
   private final ImageService imageService;
+  private final JwtTokenizer jwtTokenizer;
 
   public UserService(CustomAuthorityUtils authorityUtils, PasswordEncoder passwordEncoder,
       UserRepository userRepository, SpringTemplateEngine templateEngine,
-      ApplicationEventPublisher publisher, ImageService imageService) {
+      ApplicationEventPublisher publisher, ImageService imageService, JwtTokenizer jwtTokenizer) {
     this.authorityUtils = authorityUtils;
     this.passwordEncoder = passwordEncoder;
     this.userRepository = userRepository;
     this.templateEngine = templateEngine;
     this.publisher = publisher;
     this.imageService = imageService;
+    this.jwtTokenizer = jwtTokenizer;
   }
 
   public User createUser(User user) throws MessagingException, UnsupportedEncodingException {
@@ -405,8 +412,61 @@ public class UserService {
   public void checkActive(User user) {
     if (user.getStatus() == UserStatus.USER_TMP) {
       throw new BusinessLogicException(UserException.NOT_YET_AUTHENTICATE_EMAIL);
-    } else if (user.getStatus() != UserStatus.USER_ACTiVE) {
+    } else if (user.getStatus() != UserStatus.USER_ACTiVE && user.getStatus() != UserStatus.USER_GOOGLE) {
       throw new BusinessLogicException(UserException.NOT_ACTIVE_USER);
+    }
+  }
+
+  public Boolean existsByEmail(String email) {
+    return userRepository.existsByEmail(email);
+  }
+
+  public User authUserSave(User user) {
+    List<String> roles = authorityUtils.createRoles(user.getEmail());
+    user.setRoles(roles);
+    user.setCart(Cart.builder().user(user).build());
+    user.setStatus(UserStatus.USER_GOOGLE);
+
+    return userRepository.save(user);
+  }
+
+  public String delegateAccessToken(User user) {
+    Map<String, Object> claims = new HashMap<>();
+    PrincipalDto principal = PrincipalDto.builder().id(user.getId()).email(user.getEmail())
+        .name(user.getName()).build();
+    claims.put("username", user.getEmail());
+    claims.put("roles", user.getRoles());
+    claims.put("principal", principal);
+    log.info("###### principal = {} ", principal);
+
+    String subject = user.getEmail();
+    Date expiration = jwtTokenizer.getTokenExpiration(
+        jwtTokenizer.getAccessTokenExpirationMinutes());
+
+    String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+
+    String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration,
+        base64EncodedSecretKey);
+
+    return accessToken;
+  }
+
+  // (6)
+  public String delegateRefreshToken(User user) {
+    String subject = user.getEmail();
+    Date expiration = jwtTokenizer.getTokenExpiration(
+        jwtTokenizer.getRefreshTokenExpirationMinutes());
+    String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+
+    String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration,
+        base64EncodedSecretKey);
+
+    return refreshToken;
+  }
+
+  public void checkGoogleAuth(User user) {
+    if(!user.getStatus().equals(UserStatus.USER_GOOGLE)) {
+      throw new BusinessLogicException(UserException.NOT_GOOGLE_USER);
     }
   }
 

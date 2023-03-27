@@ -13,12 +13,10 @@ public class PrincipalDto {
   private Long id;
   private String email;
   private String name;
-  private String imagePath;
   @Builder
-  public PrincipalDto(Long id, String email, String name, String imagePath) {
+  public PrincipalDto(Long id, String email, String name) {
     this.id = id;
     this.email = email;
     this.name = name;
-    this.imagePath = imagePath;
   }
 }

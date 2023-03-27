@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import MainButton from '../commons/MainButton';
 import { TextButton } from '../commons/ModalDiv';
+import logo_black from '../../assets/logo_black.png';
 import blankbucket from '../../assets/blankbucket.png';
 import postData from '../../util/postData';
 import goToCustom from '../../util/goToCustom';
-import deleteSubject from '../../util/deleteSubject';
+import useDeleteSubject from '../../util/useDeleteSubject';
 import { addCartItem } from '../../reducers/cartReducer';
 
 function MealBoxCardLi({ mealBox, reload, title }) {
@@ -15,6 +16,7 @@ function MealBoxCardLi({ mealBox, reload, title }) {
   const { isLogin, admin } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const deleteSubject = useDeleteSubject('mealboxes');
 
   const addToCart = async () => {
     if (isLogin) {
@@ -37,7 +39,16 @@ function MealBoxCardLi({ mealBox, reload, title }) {
               <span>{mealBox.kcal.toLocaleString('ko-KR')}kcal</span>
             </MealBoxDesP>
           )}
-          <MealBoxImg alt="" src={!mealBox ? blankbucket : mealBox.imagePath} />
+          <MealBoxImg
+            alt=""
+            src={
+              mealBox
+                ? mealBox?.imagePath
+                  ? mealBox.imagePath
+                  : logo_black
+                : blankbucket
+            }
+          />
           {mealBox && (
             <MealBoxDesUl>
               {mealBox.products.map((product) => (
@@ -57,7 +68,7 @@ function MealBoxCardLi({ mealBox, reload, title }) {
         </MealBoxH3>
         <MealBoxCardButtonDiv>
           <MainButton
-            handler={goToCustom(mealBox, admin)}
+            handler={goToCustom(mealBox)}
             name={!admin || !mealBox ? '커스텀 하기' : '밀박스 수정'}
           />
           {mealBox && (
@@ -66,12 +77,7 @@ function MealBoxCardLi({ mealBox, reload, title }) {
                 handler={
                   admin
                     ? () =>
-                        deleteSubject(
-                          'mealboxes',
-                          mealBox.name,
-                          mealBox.mealboxId,
-                          reload
-                        )
+                        deleteSubject(mealBox.name, mealBox.mealboxId, reload)
                     : addToCart
                 }
                 name={admin ? '밀박스 삭제' : '장바구니 추가'}

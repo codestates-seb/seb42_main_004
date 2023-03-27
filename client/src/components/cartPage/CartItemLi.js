@@ -25,9 +25,9 @@ function CartItemLi({ mealbox, value, calcRenderPrice }) {
         />
         <h2>{name}</h2>
         <CartItemTopButtonsDiv>
-          <div>수량</div>
-          <MealBoxCounterDiv quantity={quantity} />
           <MealBoxDeleteButton />
+          {/* <div>수량</div> */}
+          <MealBoxCounterDiv quantity={quantity} />
         </CartItemTopButtonsDiv>
       </CartItemTopDiv>
       <CartItemBottomDiv>
@@ -82,13 +82,18 @@ export const CartItemBottomButtonsDiv = styled.div`
   display: flex;
   align-items: flex-end;
 
-  > *:not(:first-child) {
+  > *:last-child {
     font-size: 1.2rem;
     font-family: 'IBM Plex Sans KR', sans-serif;
   }
 
   > div {
-    margin-right: 0.8rem;
+    margin-right: 8px;
+  }
+
+  > button {
+    margin-bottom: -0.16rem;
+    padding: 0;
   }
 `;
 

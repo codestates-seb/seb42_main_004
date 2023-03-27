@@ -55,6 +55,7 @@ function OrderHistoryByOrderNumber({ orders }) {
       deleteData(`/orders/${orderNumber}`);
       alert('주문이 취소되었습니다.');
     }
+    window.location.reload();
   };
 
   useEffect(() => {

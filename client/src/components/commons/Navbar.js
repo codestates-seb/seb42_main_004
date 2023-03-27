@@ -3,6 +3,7 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { IoIosArrowForward } from 'react-icons/io';
 import { FiLogOut } from 'react-icons/fi';
 import profile from '../../assets/profile.png';
+import goToCustom from '../../util/goToCustom';
 
 function Navbar({
   isLogin,
@@ -41,9 +42,7 @@ function Navbar({
             </button>
           </li>
           <li>
-            <button onClick={() => navigate('/custom')}>
-              커스텀 밀박스 만들기
-            </button>
+            <button onClick={goToCustom()}>커스텀 밀박스 만들기</button>
           </li>
           <li>
             <button onClick={() => navigate('/mealboxes')}>

@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,6 +40,7 @@ function App() {
   const { admin } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem('accessToken');
+  const { pathname } = useLocation();
 
   if (accessToken) {
     setAuthorizationToken(accessToken);
@@ -89,11 +90,18 @@ function App() {
     <>
       <GlobalStyle admin={admin && 1} />
       <Header />
-      <BodyMargin className="marginbase" height={checkFooter() ? 1 : null}>
+      <BodyMargin
+        className="marginbase"
+        height={checkFooter() ? 1 : null}
+        pathname={pathname}
+      >
         <Routes>
           <Route path="/" element={<SurveyHome />} />
           <Route path="/mealboxes/*" element={<AllBoxes />} />
-          <Route path="/survey/question/:page" element={<Survey />} />
+          <Route
+            path="/survey/question/:page"
+            element={admin ? <AllBoxes /> : <Survey />}
+          />
           <Route path="/survey/result" element={<SurveyResult />} />
           <Route path="/custom" element={<Custom />} />
           <Route path="/cart" element={<Cart />} />
@@ -161,7 +169,8 @@ function App() {
 export default App;
 
 const BodyMargin = styled.div`
-  padding-top: calc(1rem + 50px);
+  padding-top: ${(props) =>
+    props.pathname === '/' ? '0' : 'calc(1rem + 50px)'};
   padding-bottom: 4rem;
   min-height: calc(100vh - 280px);
 
@@ -173,6 +182,9 @@ const BodyMargin = styled.div`
 
   @media screen and (max-width: 480px) {
     min-height: calc(100vh - ${(props) => (props.height ? '0px' : '180px')});
-    padding-bottom: calc(${(props) => (props.height ? '76px' : '0px')} + 4rem);
+    padding-bottom: ${(props) =>
+      props.pathname === '/'
+        ? '0'
+        : `calc(${(props) => (props.height ? '76px' : '0px')} + 4rem)`};
   }
 `;

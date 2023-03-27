@@ -42,6 +42,10 @@ const SurveyBoxLabel = styled.label`
   :hover {
     background-color: var(--bucket_brown_070);
   }
+
+  @media (max-width: 480px) {
+    padding: 8px;
+  }
 `;
 
 const Input = styled.input`

@@ -12,6 +12,7 @@ import { TfiMenu } from 'react-icons/tfi';
 import logo from '../../assets/logo_black.png';
 import profile from '../../assets/profile.png';
 import { setProfile } from '../../reducers/userReducer';
+import goToCustom from '../../util/goToCustom';
 
 function Header() {
   const [isNav, setIsNav] = useState(false);
@@ -58,15 +59,15 @@ function Header() {
             <LogoImg src={logo} alt="logo" onClick={() => navigate('/')} />
           </MenuDiv>
           <MenuUl>
+            {!admin && (
+              <li>
+                <button onClick={() => navigate('/survey/question/1')}>
+                  한끼밀 추천받기
+                </button>
+              </li>
+            )}
             <li>
-              <button onClick={() => navigate('/survey/question/1')}>
-                한끼밀 추천받기
-              </button>
-            </li>
-            <li>
-              <button onClick={() => navigate('/custom')}>
-                커스텀 밀박스 만들기
-              </button>
+              <button onClick={goToCustom()}>커스텀 밀박스 만들기</button>
             </li>
             <li>
               <button onClick={() => navigate('/mealboxes')}>
@@ -113,14 +114,16 @@ function Header() {
                 </SignupSpan>
               )}
             </li>
-            <li>
-              <CartSpan>
-                <button onClick={() => navigate('/cart')}>
-                  <FaShoppingCart size={25} />
-                  <CartCounter />
-                </button>
-              </CartSpan>
-            </li>
+            {!admin && (
+              <li>
+                <CartSpan>
+                  <button onClick={() => navigate('/cart')}>
+                    <FaShoppingCart size={25} />
+                    <CartCounter />
+                  </button>
+                </CartSpan>
+              </li>
+            )}
           </IconsUl>
         </nav>
       </HeaderDiv>
@@ -200,6 +203,7 @@ const MenuUl = styled.ul`
     height: 100%;
     display: flex;
     align-items: center;
+    white-space: nowrap;
   }
 
   button {

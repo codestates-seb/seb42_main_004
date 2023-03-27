@@ -29,7 +29,11 @@ function Footer() {
       github: 'https://github.com/Taeyang-Jin',
       blog: 'https://suns3t-cording.tistory.com/',
     },
-    { name: '주니', github: '', blog: '' },
+    {
+      name: '주니',
+      github: 'https://github.com/WiJunSeong',
+      blog: 'https://velog.io/@jsw4883',
+    },
     {
       name: '혀기',
       github: 'https://github.com/sanggur591',
@@ -50,8 +54,12 @@ function Footer() {
                   return (
                     <Member key={memberIdx}>
                       <div>{member.name}</div>
-                      <MemberInfo href={member.github}>GitHub</MemberInfo>
-                      <MemberInfo href={member.blog}>Blog</MemberInfo>
+                      <MemberInfo href={member.github} target="_blank">
+                        GitHub
+                      </MemberInfo>
+                      <MemberInfo href={member.blog} target="_blank">
+                        Blog
+                      </MemberInfo>
                     </Member>
                   );
                 })}
@@ -72,7 +80,8 @@ const FooterWrapper = styled.footer`
   height: 280px;
   background-color: var(--signature);
   color: var(--white);
-  z-index: 14;
+  position: relative;
+  z-index: -1;
 
   @media (max-width: 768px) {
     display: ${(props) => (props.isVisible ? `flex` : `none`)};
@@ -85,7 +94,6 @@ const FooterWrapper = styled.footer`
 `;
 
 const FooterContent = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-around;

@@ -9,8 +9,9 @@ import { useEffect, useState } from 'react';
 function SurveyPage1() {
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  let [alertMsg, setAlertMsg] = useState('잘못된 입력입니다.');
-  let [isValid, setValid] = useState(false);
+  let [ageValidMsg, setAgeValidMsg] = useState('');
+  let [weightValidMsg, setWeightValidMsg] = useState('');
+  let [heightValidMsg, setHeightValid] = useState('');
 
   let { age, height, weight, gender } = useSelector(
     (state) => state.surveyQuestionReducer
@@ -34,26 +35,40 @@ function SurveyPage1() {
   };
 
   let nextHandler = () => {
-    if (isValid) {
+    if (checkValid()) {
       navigate(`/survey/question/2`);
     }
   };
 
-  let checkValid = () => {
-    let ageValid = age > 0 && age <= 100;
-    let heightValid = height > 0 && height <= 200;
-    let weightValid = weight > 0 && weight <= 150;
+  // let checkValid = (min, max, val, set) => {
+  //   let valid = val >= min && val <= max;
+  //   valid ? set('') : set(`${min}에서 ${max} 사이의 값을 입력해주세요.`);
+  // };
 
-    if (!ageValid) {
-      setAlertMsg('나이는 100세 이하여야 합니다.');
-    } else if (!heightValid) {
-      setAlertMsg('신장은 200cm 이하여야 합니다.');
-    } else if (!weightValid) {
-      setAlertMsg('체중은 150kg 이하여야 합니다.');
-    } else {
-      setAlertMsg('');
-    }
-    ageValid && heightValid && weightValid ? setValid(true) : setValid(false);
+  // useEffect(() => {
+  //   checkValid(1, 100, age, setAgeValidMsg);
+  //   checkValid(20, 150, weight, setWeightValidMsg);
+  //   checkValid(120, 220, height, setHeightValid);
+  // }, [age, weight, height]);
+
+  let checkValid = () => {
+    let ageValid = age >= 1 && age <= 100;
+    let heightValid = height >= 120 && height <= 220;
+    let weightValid = weight >= 20 && weight <= 150;
+
+    ageValid
+      ? setAgeValidMsg('')
+      : setAgeValidMsg('1에서 100 사이의 값을 입력해주세요.');
+
+    heightValid
+      ? setHeightValid('')
+      : setHeightValid('120에서 220 사이의 값을 입력해주세요.');
+
+    weightValid
+      ? setWeightValidMsg('')
+      : setWeightValidMsg('20에서 150 사이의 값을 입력해주세요.');
+
+    return ageValid && heightValid && weightValid;
   };
 
   useEffect(() => {
@@ -77,6 +92,7 @@ function SurveyPage1() {
           unit="세"
           maxLength="3"
         />
+        {ageValidMsg && age && <ValidMsg>{ageValidMsg}</ValidMsg>}
         <div>
           <div>성별</div>
           <GenderOptionDiv>
@@ -105,6 +121,7 @@ function SurveyPage1() {
           unit="cm"
           maxLength="5"
         />
+        {heightValidMsg && height && <ValidMsg>{heightValidMsg}</ValidMsg>}
         <InputLabelDiv
           label="체중"
           id="weight"
@@ -114,7 +131,7 @@ function SurveyPage1() {
           unit="kg"
           maxLength="5"
         />
-        <ValidMsg>{alertMsg}</ValidMsg>
+        {weightValidMsg && weight && <ValidMsg>{weightValidMsg}</ValidMsg>}
         <PreAndNextButtons nextHandler={nextHandler} />
       </SurveyContentDiv>
     </Article>
@@ -150,12 +167,24 @@ const SurveyContentDiv = styled.div`
 
   input {
     padding: 15px;
-    font-size: medium;
+    font-size: 1.3rem;
   }
 
   span {
     margin-right: 15px;
-    font-size: medium;
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 480px) {
+    input {
+      padding: 8px;
+      font-size: 1rem;
+    }
+
+    span {
+      margin-right: 15px;
+      font-size: 1rem;
+    }
   }
 `;
 
@@ -184,5 +213,5 @@ const GenderOptionDiv = styled.div`
 `;
 
 const ValidMsg = styled.div`
-  color: #d84b4b;
+  color: var(--red);
 `;

@@ -15,6 +15,7 @@ import GoogleButton from './GoogleButton';
 import { setProfile } from '../../reducers/userReducer';
 
 function LoginUl() {
+  const { admin } = useSelector((state) => state.authReducer);
   const { mealboxes } = useSelector((state) => state.cartReducer.cart) || {
     mealboxes: [],
   };
@@ -33,7 +34,7 @@ function LoginUl() {
       localStorage.setItem('accessToken', token);
       setAuthorizationToken(token);
       await Auth();
-      await addItemsToAccountCart();
+      !admin && (await addItemsToAccountCart());
       window.location.reload();
     } else if (
       localStorage.getItem('accessToken') &&
@@ -43,7 +44,7 @@ function LoginUl() {
       localStorage.setItem('accessToken', token);
       setAuthorizationToken(token);
       await Auth();
-      await addItemsToAccountCart();
+      !admin && (await addItemsToAccountCart());
       window.location.reload();
     }
   };
