@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import NoResultDiv from '../components/commons/NoResultDiv';
@@ -27,10 +27,17 @@ function Custom() {
 
   const totalQuantity = custom.products.reduce((a, c) => a + c.quantity, 0);
   const productsId = custom.products.map((product) => product.productId);
+
   const productInCustom = (id) => {
     return productsId.indexOf(id);
   };
   const products = openCustom ? custom.products : res?.data;
+
+  useEffect(() => {
+    if (products?.length === 0) {
+      setOpenCustom(false);
+    }
+  }, [products]);
 
   return (
     <GetTemplate
@@ -61,19 +68,28 @@ function Custom() {
           <ElementsContainerDiv>
             <FilterSearchDiv placeholder="고구마" {...toFilterSearchDiv} />
             {products?.length !== 0 ? (
-              <BoxElementCardUl>
-                {products?.map((product) => (
-                  <BoxElementCardLi
-                    key={product.productId}
-                    product={product}
-                    quantity={
-                      custom.products[productInCustom(product.productId)]
-                        ?.quantity
-                    }
-                    totalQuantity={totalQuantity}
+              <>
+                <BoxElementCardUl>
+                  {products?.map((product) => (
+                    <BoxElementCardLi
+                      key={product.productId}
+                      product={product}
+                      quantity={
+                        custom.products[productInCustom(product.productId)]
+                          ?.quantity
+                      }
+                      totalQuantity={totalQuantity}
+                    />
+                  ))}
+                </BoxElementCardUl>
+                {!openCustom && (
+                  <PaginationUl
+                    page={res?.pageInfo?.page}
+                    totalpage={res?.pageInfo?.totalPages}
+                    setPage={setPage}
                   />
-                ))}
-              </BoxElementCardUl>
+                )}
+              </>
             ) : (
               <NoResultDiv
                 search={(word) =>
@@ -83,11 +99,6 @@ function Custom() {
                 replaceWord={'단백질쉐이크'}
               />
             )}
-            <PaginationUl
-              page={res?.pageInfo?.page}
-              totalpage={res?.pageInfo?.totalPages}
-              setPage={setPage}
-            />
           </ElementsContainerDiv>
           <CustomAside custom={custom} />
         </CustomSelectDiv>

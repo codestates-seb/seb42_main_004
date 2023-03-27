@@ -16,15 +16,19 @@ function DeliveryInputDiv({
     <ContainerDiv>
       <TopDiv>
         <h2>배송지 정보</h2>
-        <div>
-          <input
-            type="checkbox"
-            id="same"
-            checked={same}
-            onChange={({ target: { checked } }) => setSame(checked)}
-          ></input>
-          <label htmlFor="same">주문자와동일</label>
-        </div>
+        {inputValue.userZipCode &&
+        inputValue.userSimpleAddress &&
+        inputValue.userDetailAddress ? (
+          <div>
+            <input
+              type="checkbox"
+              id="same"
+              checked={same}
+              onChange={({ target: { checked } }) => setSame(checked)}
+            ></input>
+            <label htmlFor="same">주문자와동일</label>
+          </div>
+        ) : null}
       </TopDiv>
       <DeliveryDiv pathName={pathName}>
         <ContentInputDiv
@@ -32,32 +36,20 @@ function DeliveryInputDiv({
           name="addressee"
           labelName="받는분"
           placeholder="받는분"
-          value={
-            pathName
-              ? same
-                ? inputValue.name
-                : inputValue.addressee
-              : same
-              ? inputValue.username
-              : inputValue.addressee
-          }
+          value={same ? inputValue.username : inputValue.addressee}
           onChange={handleInput}
+          noEdit={same ? true : false}
         />
         <ContentInputDiv
           id="addresseePhoneNumber"
           name="addresseePhoneNumber"
           labelName="연락처"
-          placeholder="연락처"
+          placeholder="01#-####-####"
           value={
-            pathName
-              ? same
-                ? inputValue.phoneNumber
-                : inputValue.addresseePhoneNumber
-              : same
-              ? inputValue.userPhoneNumber
-              : inputValue.addresseePhoneNumber
+            same ? inputValue.userPhoneNumber : inputValue.addresseePhoneNumber
           }
           onChange={handleInput}
+          noEdit={same ? true : false}
         />
         <AddressDiv
           inputValue={inputValue}
@@ -65,6 +57,7 @@ function DeliveryInputDiv({
           setInputValue={setInputValue}
           user={same ? true : false}
           pathName={pathName}
+          same={same}
         />
         {pathName ? null : (
           <SaveDiv>
@@ -119,4 +112,8 @@ const DeliveryDiv = styled.div`
 `;
 const SaveDiv = styled.div`
   margin: 3rem 0 0 3rem;
+
+  > * {
+    cursor: pointer;
+  }
 `;

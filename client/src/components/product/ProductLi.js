@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import ModalDiv, { TextButton } from '../commons/ModalDiv';
+import { MealBoxImg, MealBoxImgDiv } from '../allboxes/MealBoxCardLi';
 import logo_black from '../../assets/logo_black.png';
 import blankbucket from '../../assets/blankbucket.png';
-import deleteSubject from '../../util/deleteSubject';
-import { MealBoxImg, MealBoxImgDiv } from '../allboxes/MealBoxCardLi';
+import useDeleteSubject from '../../util/useDeleteSubject';
 
 function ProductLi({ product, admin, reload }) {
   const [openModal, setOpenModal] = useState(false);
+  const deleteSubject = useDeleteSubject('products');
 
   return (
     <ContainerLi
@@ -49,7 +50,7 @@ function ProductLi({ product, admin, reload }) {
           <TextButton onClick={() => setOpenModal(true)}>수정</TextButton>
           <TextButton
             onClick={() =>
-              deleteSubject('products', product.name, product.productId, reload)
+              deleteSubject(product.name, product.productId, reload)
             }
           >
             삭제

@@ -7,7 +7,7 @@ import goToCustom from '../../util/goToCustom';
 
 function Navbar({
   isLogin,
-  user,
+  name,
   imagePath,
   handleClick,
   handleLogout,
@@ -22,7 +22,7 @@ function Navbar({
               <Button onClick={() => navigate('/myinfo')}>
                 <Img src={imagePath || profile} alt="profile" />
                 <IdDiv>
-                  <Name>{user.name}</Name>님
+                  <Name>{name}</Name>님
                 </IdDiv>
                 <IoIosArrowForward size={15} />
               </Button>
