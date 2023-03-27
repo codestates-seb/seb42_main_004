@@ -40,7 +40,7 @@ function App() {
   const { admin } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const accessToken = localStorage.getItem('accessToken');
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
 
   if (accessToken) {
     setAuthorizationToken(accessToken);
@@ -85,6 +85,10 @@ function App() {
       clearTimeout(logoutTimer);
     }
   }, [accessToken]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname, search]);
 
   return (
     <>
