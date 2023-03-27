@@ -19,7 +19,7 @@ function Custom() {
   const [path, setPath] = useState('/products?page=1&sort=id&dir=DESC');
   const [res, isPending, error] = useGET(path);
   const [openCustom, setOpenCustom] = useState(false);
-  const [toFilterSearchDiv, notFoundWord, , setPage] = useFilterSearch(
+  const [toFilterSearchDiv, notFoundWord, setPage] = useFilterSearch(
     false,
     setPath
   );
