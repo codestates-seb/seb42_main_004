@@ -63,8 +63,6 @@ public class UserService {
 
     User save = userRepository.save(user);
 
-    sendEmail(user.getEmail(), user.getMailKey(), user.getId());
-
     return save;
   }
 
@@ -143,7 +141,7 @@ public class UserService {
       throws MessagingException, UnsupportedEncodingException {
     String newMailKey = createCode();
     User findUser = userRepository.findByEmail(email).orElse(null);
-    if (findUser!=null) {
+    if (findUser != null) {
       findUser.setMailKey(newMailKey);
       userRepository.save(findUser);
       sendEmailRecovery(email, newMailKey);
@@ -187,7 +185,6 @@ public class UserService {
     user.setPassword(encryptedPassword);
     user.setMailKey(createCode());
     // db에 유저 role 저장
-//    TODO 시큐리티 비활성화
     List<String> roles = authorityUtils.createRoles(user.getEmail());
     user.setRoles(roles);
     log.info("member encryptedPassword = {}", encryptedPassword);
@@ -236,8 +233,7 @@ public class UserService {
 //    String setFrom = "hgm@hgm.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
     String toEmail = email; //받는 사람
     String title = "한끼밀 이메일 인증"; //제목
-    //TODO href 수정
-    String href = "http://localhost:8080/users/email_auth?id=" + id + "&mailKey=" + mailKey;
+    String href = "http://ec2-3-39-191-52.ap-northeast-2.compute.amazonaws.com:8080/users/email_auth?id=" + id + "&mailKey=" + mailKey;
 
     MimeMessage message = mailSender.createMimeMessage();
     message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
@@ -257,8 +253,9 @@ public class UserService {
 //    String setFrom = "hgm@hgm.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
     String toEmail = email; //받는 사람
     String title = "한끼밀 계정 복구 서비스입니다."; //제목
-    //TODO href 수정
-    String href = "http://localhost:8080/users/recovery?email=" + email + "&mailKey=" + mailKey;
+    String href =
+        "http://seb42-main-004-bucket.s3-website.ap-northeast-2.amazonaws.com/email/send/password?email="
+            + email + "&mailKey=" + mailKey;
 
     MimeMessage message = mailSender.createMimeMessage();
     message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
@@ -277,8 +274,7 @@ public class UserService {
 //    String setFrom = "hgm@hgm.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
     String toEmail = email; //받는 사람
     String title = "한끼밀 계정 복구 서비스입니다."; //제목
-    //TODO href 수정
-    String href = "http://localhost:8080/home";
+    String href = "http://seb42-main-004-bucket.s3-website.ap-northeast-2.amazonaws.com";
 
     MimeMessage message = mailSender.createMimeMessage();
     message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
@@ -297,8 +293,7 @@ public class UserService {
 //    String setFrom = "hgm@hgm.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
     String toEmail = email; //받는 사람
     String title = "한끼밀 계정 복구 서비스입니다."; //제목
-    //TODO href 수정
-    String href = "http://localhost:8080/home";
+    String href = "http://seb42-main-004-bucket.s3-website.ap-northeast-2.amazonaws.com";
 
     MimeMessage message = mailSender.createMimeMessage();
     message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
@@ -400,13 +395,6 @@ public class UserService {
 
   }
 
-  @Async
-  public void resendEmail(String email) throws MessagingException, UnsupportedEncodingException {
-    User findUser = checkUserExist(email);
-
-    sendEmail(email, findUser.getMailKey(), findUser.getId());
-  }
-
   public void postUserImage(Long id, MultipartFile file) {
     User user = getUser(id);
     UserImage userImage = imageService.uploadUserImage(file, user);
@@ -415,9 +403,9 @@ public class UserService {
   }
 
   public void checkActive(User user) {
-    if(user.getStatus() == UserStatus.USER_TMP) {
+    if (user.getStatus() == UserStatus.USER_TMP) {
       throw new BusinessLogicException(UserException.NOT_YET_AUTHENTICATE_EMAIL);
-    } else if(user.getStatus() != UserStatus.USER_ACTiVE) {
+    } else if (user.getStatus() != UserStatus.USER_ACTiVE) {
       throw new BusinessLogicException(UserException.NOT_ACTIVE_USER);
     }
   }

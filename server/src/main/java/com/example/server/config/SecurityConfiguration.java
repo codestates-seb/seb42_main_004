@@ -88,7 +88,6 @@ public class SecurityConfiguration {
     return PasswordEncoderFactories.createDelegatingPasswordEncoder();
   }// 패스워드 인코더 빈 객체 생성
 
-  //TODO 콜스에러 해결
 //  @Bean
 //  CorsConfigurationSource corsConfigurationSource() {
 //    CorsConfiguration configuration = new CorsConfiguration();
