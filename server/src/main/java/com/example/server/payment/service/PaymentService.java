@@ -48,7 +48,7 @@ public class PaymentService {
   }
 
   // 결제 사후 검증
-  public void validatePayment(String impUid, String orderNumber, long userId)
+  public Cart validatePayment(String impUid, String orderNumber, long userId)
       throws IamportResponseException, IOException {
     Orders order = orderService.findByOrderNumber(orderNumber);
     orderService.checkOrderHolder(order, userId);
@@ -73,7 +73,6 @@ public class PaymentService {
 //    log.info("Order, PayInfo 매핑 통과 / deleteCartMealbox 진입");
     // 장바구니에 담겨있던 물건 삭제
     List<Long> cartMealboxIds = order.getCartMealboxIds();
-    Cart cart = order.getUser().getCart();
     for (Long id : cartMealboxIds) {
 //      log.info("id : {}", id);
       // 수정한것 : 카트에서 밀박스를 지우는것이지만 사실상 카트밀박스를 지우는것이다 -> cartMelaboxService 이용
@@ -83,6 +82,11 @@ public class PaymentService {
 //    log.info("deleteCartMealbox 통과 / refreshPrice 진입");
 //    cartService.refreshTotalPrice(order.getUser().getCart());
 //    log.info("refreshPrice 통과");
+    return order.getUser().getCart();
+  }
+
+  public void refreshCartPrice(Cart cart) {
+    cartService.refreshTotalPrice(cart);
   }
 
   private void mappingOrderAndPayInfo(Orders order, String impUid) {
