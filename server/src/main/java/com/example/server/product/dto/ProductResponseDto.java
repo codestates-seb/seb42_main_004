@@ -17,4 +17,6 @@ public class ProductResponseDto {
     private int kcal;
     private int price;
     private int quantity;
+    @Setter
+    private String imagePath;
 }
