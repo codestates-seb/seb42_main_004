@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { setAuth } from '../../reducers/authReducer';
+import { setCart } from '../../reducers/cartReducer';
+import { setProfile } from '../../reducers/userReducer';
+import getData from '../../util/getData';
+import parseToken from '../../util/parseToken';
+import postData from '../../util/postData';
+import setAuthorizationToken from '../../util/setAuthorizationToken';
 import useValid from '../../util/useValid';
 import GetTemplate from '../commons/GetTemplate';
 import LoginButton from '../login/LoginButton';
@@ -17,6 +25,10 @@ function SignupOauthUl() {
   const inputRef = useRef([]);
   const { name, email } = inputValue;
   const location = useLocation();
+  const dispatch = useDispatch();
+  const { mealboxes } = useSelector((state) => state.cartReducer.cart) || {
+    mealboxes: [],
+  };
 
   useEffect(() => {
     if (location.state) {
@@ -43,6 +55,73 @@ function SignupOauthUl() {
     }
   };
 
+  const login = async (token) => {
+    if (!localStorage.getItem('accessToken')) {
+      localStorage.setItem('accessToken', token);
+      setAuthorizationToken(token);
+      await Auth();
+      await addItemsToAccountCart();
+      window.location.reload();
+    } else if (
+      localStorage.getItem('accessToken') &&
+      localStorage.getItem('accessToken') !== token
+    ) {
+      localStorage.removeItem('accessToken');
+      localStorage.setItem('accessToken', token);
+      setAuthorizationToken(token);
+      await Auth();
+      await addItemsToAccountCart();
+      window.location.reload();
+    }
+  };
+
+  const Auth = () => {
+    return new Promise((resolve) => {
+      const { principal, roles } = parseToken(
+        localStorage.getItem('accessToken')
+      );
+      dispatch(
+        setAuth({
+          isLogin: true,
+          accessToken: localStorage.getItem('accessToken'),
+          user: principal,
+          admin: roles.includes('ADMIN'),
+        })
+      );
+      getData('/users').then((data) => {
+        dispatch(setProfile({ imagePath: data.imagePath, name: data.name }));
+      });
+      resolve();
+    });
+  };
+
+  const addItemsToAccountCart = async () => {
+    let postReqData = mealboxes.reduce(
+      (acc, cur) => {
+        if (cur.name === 'custom') {
+          let box = Object.assign({}, cur);
+          let quantity = box.quantity;
+          delete box.cartMealboxId;
+          delete box.quantity;
+          let mealbox = box;
+
+          acc.customMealboxes.push({ mealbox, quantity });
+        } else {
+          acc.adminMadeMealboxes.push({
+            mealboxId: cur.mealboxId,
+            quantity: cur.quantity,
+          });
+        }
+        return acc;
+      },
+      { adminMadeMealboxes: [], customMealboxes: [] }
+    );
+
+    await postData('/users/cart/all', postReqData); // 여기
+    let data = await getData('/users/cart');
+    setCart(data.data);
+  };
+
   const handleClick = () => {
     let obj = {};
     for (const el in isValid) {
@@ -52,7 +131,13 @@ function SignupOauthUl() {
     }
     setValidText({ ...validText, ...obj });
     if (isValid.name) {
-      alert('곧 백엔드랑 연결시킬 예정입니당:)');
+      postData('/users/oauth/signup', { name, email }).then((res) => {
+        if (res.status === 200) {
+          if (res.headers.authorization) {
+            login(res.headers.authorization);
+          }
+        }
+      });
     } else if (!isValid.name) {
       inputRef.current[0].focus();
     }
