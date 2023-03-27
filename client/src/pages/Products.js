@@ -9,15 +9,27 @@ import FilterSearchDiv from '../components/commons/FilterSearchDiv';
 import { MealBoxesUl, MealBoxesWrapDiv, SearchResultH3 } from './AllBoxes';
 import useGET from '../util/useGET';
 import useFilterSearch from '../util/useFilterSearch';
+import { useEffect, useState } from 'react';
 
 function Products() {
-  const { admin } = useSelector((state) => state.authReducer);
+  const { isLogin, admin } = useSelector((state) => state.authReducer);
+  const [path, setPath] = useState(null);
   const [toFilterSearchDiv, notFoundWord, paginationUrl, uri] =
     useFilterSearch(false);
-  const [res, isPending, error, getData] = useGET(
-    `${admin ? '/admin' : ''}${uri}`
-  );
+
+  const [res, isPending, error, getData] = useGET(path);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken && !isLogin) {
+      setPath(null);
+    } else if (isLogin) {
+      setPath(`${admin ? '/admin' : ''}${uri}`);
+    } else {
+      setPath(uri);
+    }
+  }, [uri, isLogin]);
 
   return (
     <GetTemplate

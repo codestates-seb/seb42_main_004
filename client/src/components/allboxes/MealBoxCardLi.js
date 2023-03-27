@@ -80,7 +80,7 @@ function MealBoxCardLi({ mealBox, reload, title }) {
             </>
           )}
           <NotificationDiv add={notification && 1}>
-            {mealBox?.name}이(가) 장바구니에 추가되었습니다.
+            <p>{mealBox?.name}이(가) 장바구니에 추가되었습니다.</p>
             <TextButton className="linkstyle" onClick={() => navigate('/cart')}>
               장바구니로 이동하기
             </TextButton>

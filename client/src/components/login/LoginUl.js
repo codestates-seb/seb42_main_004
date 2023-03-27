@@ -69,7 +69,13 @@ function LoginUl() {
     let postReqData = mealboxes.reduce(
       (acc, cur) => {
         if (cur.name === 'custom') {
-          acc.customMealboxes.push({ mealbox: cur });
+          let box = Object.assign({}, cur);
+          let quantity = box.quantity;
+          delete box.cartMealboxId;
+          delete box.quantity;
+          let mealbox = box;
+
+          acc.customMealboxes.push({ mealbox, quantity });
         } else {
           acc.adminMadeMealboxes.push({
             mealboxId: cur.mealboxId,
@@ -81,7 +87,9 @@ function LoginUl() {
       { adminMadeMealboxes: [], customMealboxes: [] }
     );
 
-    await postData('/users/cart/all', postReqData);
+    console.log(postReqData);
+
+    await postData('/users/cart/all', postReqData); // 여기
 
     let data = await getData('/users/cart');
 
