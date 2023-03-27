@@ -97,7 +97,7 @@ function GoogleButton() {
         (res) => {
           if (res.status === 200) {
             login(res.headers.authorization);
-          } else if (res.status === 404) {
+          } else if (res.status === 409) {
             alert('구글 Oauth로 가입된 회원이 아닙니다.');
           } else {
             navigate('/signup/oauth', {
