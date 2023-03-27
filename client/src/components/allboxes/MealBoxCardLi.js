@@ -8,7 +8,7 @@ import logo_black from '../../assets/logo_black.png';
 import blankbucket from '../../assets/blankbucket.png';
 import postData from '../../util/postData';
 import goToCustom from '../../util/goToCustom';
-import deleteSubject from '../../util/deleteSubject';
+import useDeleteSubject from '../../util/useDeleteSubject';
 import { addCartItem } from '../../reducers/cartReducer';
 
 function MealBoxCardLi({ mealBox, reload, title }) {
@@ -16,6 +16,7 @@ function MealBoxCardLi({ mealBox, reload, title }) {
   const { isLogin, admin } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const deleteSubject = useDeleteSubject('mealboxes');
 
   const addToCart = async () => {
     if (isLogin) {
@@ -76,12 +77,7 @@ function MealBoxCardLi({ mealBox, reload, title }) {
                 handler={
                   admin
                     ? () =>
-                        deleteSubject(
-                          'mealboxes',
-                          mealBox.name,
-                          mealBox.mealboxId,
-                          reload
-                        )
+                        deleteSubject(mealBox.name, mealBox.mealboxId, reload)
                     : addToCart
                 }
                 name={admin ? '밀박스 삭제' : '장바구니 추가'}
