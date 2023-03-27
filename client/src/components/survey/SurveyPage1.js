@@ -41,19 +41,19 @@ function SurveyPage1() {
 
   let checkValid = () => {
     let ageValid = age > 0 && age <= 100;
-    let heightValid = height > 0 && height <= 200;
-    let weightValid = weight > 0 && weight <= 150;
+    let heightValid = height >= 120 && height <= 220;
+    let weightValid = weight >= 20 && weight <= 150;
 
     if (!ageValid) {
-      setAlertMsg('나이는 100세 이하여야 합니다.');
+      setAlertMsg('1에서 100 사이의 값을 입력해주세요.');
     } else if (!heightValid) {
-      setAlertMsg('신장은 200cm 이하여야 합니다.');
+      setAlertMsg('120에서 220 사이의 값을 입력해주세요.');
     } else if (!weightValid) {
-      setAlertMsg('체중은 150kg 이하여야 합니다.');
+      setAlertMsg('20에서 150 사이의 값을 입력해주세요.');
     } else {
       setAlertMsg('');
     }
-    ageValid && heightValid && weightValid ? setValid(true) : setValid(false);
+    ageValid && heightValid ? setValid(true) : setValid(false);
   };
 
   useEffect(() => {
