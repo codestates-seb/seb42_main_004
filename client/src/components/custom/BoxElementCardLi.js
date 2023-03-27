@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { TextButton } from '../commons/ModalDiv';
+import logo_black from '../../assets/logo_black.png';
 import { deleteProduct, setProduct } from '../../reducers/customReducer';
 
 function BoxElementCardLi({ product, quantity, totalQuantity }) {
@@ -29,7 +30,10 @@ function BoxElementCardLi({ product, quantity, totalQuantity }) {
       className="shadow"
       quantity={quantity}
     >
-      <ProductImg alt="" src={product.imagePath} />
+      <ProductImg
+        alt=""
+        src={product.imagePath ? product.imagePath : logo_black}
+      />
       <ProductInfoDiv>
         <h3>{product.name}</h3>
         <ProductDetailDiv>
