@@ -203,6 +203,7 @@ const MenuUl = styled.ul`
     height: 100%;
     display: flex;
     align-items: center;
+    white-space: nowrap;
   }
 
   button {
