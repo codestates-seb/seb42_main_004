@@ -44,7 +44,8 @@ const ContainerDiv = styled.div`
     margin-bottom: 0.5rem;
     font-size: 1.2rem;
     font-family: 'IBM Plex Sans KR', sans-serif;
-    color: ${({ validText }) => (validText ? `var(--red)` : `var(--black)`)};
+    color: ${({ validText }) =>
+      validText ? `rgba(216, 75, 75,1)` : `var(--black)`};
   }
 
   > input {
@@ -54,12 +55,12 @@ const ContainerDiv = styled.div`
       validText &&
       css`
         padding: 0.5rem 1.5rem;
-        border: 1px solid var(--red);
+        border: 1px solid rgba(216, 75, 75, 1);
         border-radius: 4px;
 
         &:focus,
         :focus-within {
-          border: 2px solid var(--red);
+          border: 2px solid rgba(216, 75, 75, 1);
           outline: none;
         }
       `}
@@ -67,6 +68,6 @@ const ContainerDiv = styled.div`
 
   > div {
     padding-top: 0.5rem;
-    color: var(--red);
+    color: rgba(216, 75, 75, 1);
   }
 `;

@@ -42,7 +42,8 @@ const ContainerDiv = styled.div`
     justify-content: flex-end;
     align-items: center;
     font-family: 'IBM Plex Sans KR', sans-serif;
-    color: ${({ validText }) => (validText ? `var(--red)` : `var(--black)`)};
+    color: ${({ validText }) =>
+      validText ? `rgba(216, 75, 75,1)` : `var(--black)`};
 
     @media (max-width: 480px) {
       width: 80%;
@@ -63,12 +64,12 @@ const ContainerDiv = styled.div`
       validText &&
       css`
         padding: 0.5rem 1.5rem;
-        border: 1px solid var(--red);
+        border: 1px solid rgba(216, 75, 75, 1);
         border-radius: 4px;
 
         &:focus,
         :focus-within {
-          border: 2px solid var(--red);
+          border: 2px solid rgba(216, 75, 75, 1);
           outline: none;
         }
       `}
