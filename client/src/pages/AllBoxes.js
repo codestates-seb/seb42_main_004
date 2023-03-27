@@ -14,7 +14,7 @@ function AllBoxes() {
   const { user } = useSelector((state) => state.authReducer);
   const [toFilterSearchDiv, notFoundWord, paginationUrl, uri] =
     useFilterSearch(true);
-  const [res, isPending, error, getData] = useGET(`${uri}`);
+  const [res, isPending, error, getData] = useGET(uri);
   const navigate = useNavigate();
 
   return (
