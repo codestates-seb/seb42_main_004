@@ -33,7 +33,7 @@ function LoginUl() {
       setAuthorizationToken(token);
       await Auth();
       await addItemsToAccountCart();
-      // window.location.reload();
+      window.location.reload();
     } else if (
       localStorage.getItem('accessToken') &&
       localStorage.getItem('accessToken') !== token
@@ -43,7 +43,7 @@ function LoginUl() {
       setAuthorizationToken(token);
       await Auth();
       await addItemsToAccountCart();
-      // window.location.reload();
+      window.location.reload();
     }
   };
 
@@ -69,8 +69,9 @@ function LoginUl() {
     let postReqData = mealboxes.reduce(
       (acc, cur) => {
         if (cur.name === 'custom') {
-          let box = cur.slice();
+          let box = Object.assign({}, cur);
           let quantity = box.quantity;
+          delete box.cartMealboxId;
           delete box.quantity;
           let mealbox = box;
 
@@ -88,7 +89,7 @@ function LoginUl() {
 
     console.log(postReqData);
 
-    await postData('/users/cart/all', postReqData);
+    await postData('/users/cart/all', postReqData); // 여기
 
     let data = await getData('/users/cart');
 
