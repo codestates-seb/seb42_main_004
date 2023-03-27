@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import CartCounter from './CartCounter';
@@ -10,6 +10,7 @@ import { initializeCart } from '../../reducers/cartReducer';
 import { FaShoppingCart } from 'react-icons/fa';
 import { TfiMenu } from 'react-icons/tfi';
 import logo from '../../assets/logo_black.png';
+import profile from '../../assets/profile.png';
 
 function Header() {
   const [isNav, setIsNav] = useState(false);
@@ -55,24 +56,48 @@ function Header() {
           </MenuDiv>
           <MenuUl>
             <li>
-              <HeaderLink to="/survey/question/1">한끼밀 추천받기</HeaderLink>
+              <button onClick={() => navigate('/survey/question/1')}>
+                한끼밀 추천받기
+              </button>
             </li>
             <li>
-              <HeaderLink to="/custom">커스텀 밀박스 만들기</HeaderLink>
+              <button onClick={() => navigate('/custom')}>
+                커스텀 밀박스 만들기
+              </button>
             </li>
             <li>
-              <HeaderLink to="/mealboxes">전체 상품 보기</HeaderLink>
+              <button onClick={() => navigate('/mealboxes')}>
+                전체 상품 보기
+              </button>
             </li>
             <li>
-              <HeaderLink to="/products">구성품 알아보기</HeaderLink>
+              <button onClick={() => navigate('/products')}>
+                구성품 알아보기
+              </button>
             </li>
           </MenuUl>
           <IconsUl>
             <li>
               {isLogin ? (
-                <MainButton handler={handleLogout} name="로그아웃" />
+                <ProfileSpan>
+                  <button onClick={() => navigate('/myinfo')}>
+                    <Img src={user.imagePath || profile} alt="profile" />
+                  </button>
+                </ProfileSpan>
+              ) : null}
+            </li>
+            <li>
+              {isLogin ? (
+                <LogoutSpan>
+                  <MainButton handler={handleLogout} name="로그아웃" />
+                </LogoutSpan>
               ) : (
-                <MainButton handler={() => navigate('/login')} name="로그인" />
+                <LoginSpan>
+                  <MainButton
+                    handler={() => navigate('/login')}
+                    name="로그인"
+                  />
+                </LoginSpan>
               )}
             </li>
             <li>
@@ -84,13 +109,12 @@ function Header() {
               )}
             </li>
             <li>
-              <FaShoppingCart
-                size={25}
-                onClick={() => {
-                  navigate('/cart');
-                }}
-              />
-              <CartCounter />
+              <CartSpan>
+                <button onClick={() => navigate('/cart')}>
+                  <FaShoppingCart size={25} />
+                </button>
+                <CartCounter />
+              </CartSpan>
             </li>
           </IconsUl>
         </nav>
@@ -101,6 +125,7 @@ function Header() {
           user={user}
           handleClick={handleClick}
           handleLogout={handleLogout}
+          navigate={navigate}
         />
       ) : null}
     </ContainerHeader>
@@ -165,9 +190,17 @@ const MenuUl = styled.ul`
   flex-grow: 1;
 
   > li {
+    flex-basis: 120px;
     height: 100%;
     display: flex;
     align-items: center;
+  }
+
+  button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
   }
 
   @media (max-width: 768px) {
@@ -177,32 +210,62 @@ const MenuUl = styled.ul`
 const IconsUl = styled.ul`
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
 
-  > * {
-    margin: 0px 8px;
-  }
-
-  > li:last-child {
-    position: relative;
-    height: 70px;
+  > li {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
-  }
-
-  button {
-    @media (max-width: 768px) {
-      display: none;
-    }
   }
 `;
-const HeaderLink = styled(Link)`
-  width: 100%;
+const ProfileSpan = styled.span`
+  width: 50px;
+  height: 100%;
+  margin-right: 1rem;
+
+  > button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const CartSpan = styled.span`
+  width: 50px;
+  height: 100%;
+  position: relative;
   display: flex;
+  align-items: center;
   justify-content: center;
-  text-decoration: none;
-  color: var(--black);
-  font-family: 'IBM Plex Sans KR', sans-serif;
+  margin-left: 1rem;
+
+  > button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+  }
+
+  > :last-child {
+    position: absolute;
+    top: 7px;
+    right: 6px;
+  }
+`;
+const LogoutSpan = styled.span`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+const LoginSpan = styled.span`
+  margin-right: 1rem;
+`;
+const Img = styled.img`
+  width: 50px;
+  height: 50px;
 `;

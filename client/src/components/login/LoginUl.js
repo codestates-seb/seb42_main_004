@@ -104,7 +104,9 @@ function LoginUl() {
           setInputValue({ ...inputValue, password: '' });
           inputRef.current[1].focus();
         } else {
-          login(res.headers.authorization);
+          if (res.headers.authorization) {
+            login(res.headers.authorization);
+          }
         }
       });
     } else if (!email) {
