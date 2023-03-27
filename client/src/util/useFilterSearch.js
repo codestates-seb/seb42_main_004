@@ -41,13 +41,16 @@ const useFilterSearch = (isMealBox, setPath) => {
 
   useEffect(() => {
     if (setPath) setPath(paginationUrl(page));
-    else if (search.includes('&sort=')) navigate(paginationUrl(1));
-    else if (searchWord === '') {
+    else navigate(paginationUrl(1));
+  }, [page, sortBy]);
+
+  useEffect(() => {
+    if (searchWord === '' && pathname.includes('search')) {
       const word = decodeURI(search.split('&name=')[1]);
       setSearchWord(word);
       setNotFoundWord(word);
     }
-  }, [page, sortBy]);
+  }, []);
 
   const toSearchBarDiv = { searchSubject, searchWord, setSearchWord };
   const toFilterSearchDiv = { sortSubject, toSearchBarDiv };
