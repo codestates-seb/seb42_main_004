@@ -29,7 +29,11 @@ function Footer() {
       github: 'https://github.com/Taeyang-Jin',
       blog: 'https://suns3t-cording.tistory.com/',
     },
-    { name: '주니', github: '', blog: '' },
+    {
+      name: '주니',
+      github: 'https://github.com/WiJunSeong',
+      blog: 'https://velog.io/@jsw4883',
+    },
     {
       name: '혀기',
       github: 'https://github.com/sanggur591',
