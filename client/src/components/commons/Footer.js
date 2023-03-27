@@ -80,7 +80,8 @@ const FooterWrapper = styled.footer`
   height: 280px;
   background-color: var(--signature);
   color: var(--white);
-  z-index: 14;
+  position: relative;
+  z-index: -1;
 
   @media (max-width: 768px) {
     display: ${(props) => (props.isVisible ? `flex` : `none`)};
@@ -93,7 +94,6 @@ const FooterWrapper = styled.footer`
 `;
 
 const FooterContent = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
