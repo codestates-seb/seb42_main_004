@@ -10,11 +10,11 @@ public class MealboxDto {
     @NotBlank(message = "이름은 공백일 수 없습니다.")
     @Size(min = 1, max = 15)
     private String name;
-    @Positive @Max(100000)
+    @Positive @Max(999999)
     private int price;
-    @Positive @Max(10000)
+    @Positive @Max(99999)
     private int kcal;
-    @Positive @Max(10000)
+    @Positive @Max(99999)
     private int weight;
     @NotEmpty
     private List<Product> products;
