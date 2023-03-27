@@ -11,10 +11,12 @@ import { FaShoppingCart } from 'react-icons/fa';
 import { TfiMenu } from 'react-icons/tfi';
 import logo from '../../assets/logo_black.png';
 import profile from '../../assets/profile.png';
+import { setImage } from '../../reducers/imageReducer';
 
 function Header() {
   const [isNav, setIsNav] = useState(false);
   const { isLogin, user, admin } = useSelector((state) => state.authReducer); // admin 삭제 예정
+  const { imagePath } = useSelector((state) => state.imageReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -34,6 +36,7 @@ function Header() {
         })
       );
       dispatch(setEmail(''));
+      dispatch(setImage(null));
       dispatch(initializeCart());
       window.location.reload();
     } else {
@@ -81,7 +84,7 @@ function Header() {
               {isLogin ? (
                 <ProfileSpan>
                   <button onClick={() => navigate('/myinfo')}>
-                    <Img src={user.imagePath || profile} alt="profile" />
+                    <Img src={imagePath || profile} alt="profile" />
                   </button>
                 </ProfileSpan>
               ) : null}
@@ -102,18 +105,20 @@ function Header() {
             </li>
             <li>
               {isLogin ? null : (
-                <MainButton
-                  handler={() => navigate('/signup')}
-                  name="회원가입"
-                />
+                <SignupSpan>
+                  <MainButton
+                    handler={() => navigate('/signup')}
+                    name="회원가입"
+                  />
+                </SignupSpan>
               )}
             </li>
             <li>
               <CartSpan>
                 <button onClick={() => navigate('/cart')}>
                   <FaShoppingCart size={25} />
+                  <CartCounter />
                 </button>
-                <CartCounter />
               </CartSpan>
             </li>
           </IconsUl>
@@ -123,6 +128,7 @@ function Header() {
         <Navbar
           isLogin={isLogin}
           user={user}
+          imagePath={imagePath}
           handleClick={handleClick}
           handleLogout={handleLogout}
           navigate={navigate}
@@ -249,12 +255,12 @@ const CartSpan = styled.span`
     height: 100%;
     border: none;
     background-color: transparent;
-  }
 
-  > :last-child {
-    position: absolute;
-    top: 7px;
-    right: 6px;
+    > :last-child {
+      position: absolute;
+      top: 7px;
+      right: 6px;
+    }
   }
 `;
 const LogoutSpan = styled.span`
@@ -264,8 +270,16 @@ const LogoutSpan = styled.span`
 `;
 const LoginSpan = styled.span`
   margin-right: 1rem;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+const SignupSpan = styled.span`
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 const Img = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
 `;

@@ -55,12 +55,12 @@ const BottomDiv = styled.div`
       validText &&
       css`
         padding: 0.5rem 1.5rem;
-        border: 1px solid var(--red);
+        border: 1px solid rgba(216, 75, 75, 1);
         border-radius: 4px;
 
         &:focus,
         :focus-within {
-          border: 2px solid var(--red);
+          border: 2px solid rgba(216, 75, 75, 1);
           outline: none;
         }
       `}
@@ -72,6 +72,6 @@ const BottomDiv = styled.div`
 
   > div {
     padding: 0.5rem 0;
-    color: var(--red);
+    color: rgba(216, 75, 75, 1);
   }
 `;

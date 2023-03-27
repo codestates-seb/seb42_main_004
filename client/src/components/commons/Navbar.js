@@ -4,7 +4,14 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { FiLogOut } from 'react-icons/fi';
 import profile from '../../assets/profile.png';
 
-function Navbar({ isLogin, user, handleClick, handleLogout, navigate }) {
+function Navbar({
+  isLogin,
+  user,
+  imagePath,
+  handleClick,
+  handleLogout,
+  navigate,
+}) {
   return (
     <ModalContainerDiv onClick={handleClick}>
       <NavDiv onClick={(e) => e.stopPropagation()}>
@@ -12,7 +19,7 @@ function Navbar({ isLogin, user, handleClick, handleLogout, navigate }) {
           {isLogin ? (
             <li>
               <Button onClick={() => navigate('/myinfo')}>
-                <Img src={user.imagePath || profile} alt="profile" />
+                <Img src={imagePath || profile} alt="profile" />
                 <IdDiv>
                   <Name>{user.name}</Name>님
                 </IdDiv>
@@ -155,6 +162,6 @@ const Name = styled.span`
   font-size: 1.5rem;
 `;
 const Img = styled.img`
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
 `;

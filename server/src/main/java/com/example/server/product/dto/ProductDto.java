@@ -13,12 +13,12 @@ public class ProductDto {
     @Size(min = 1, max = 15)
     private String name;
     @Positive
-    @Max(10000)
+    @Max(9999)
     private int weight;
     @Positive
-    @Max(10000)
+    @Max(9999)
     private int kcal;
     @Positive
-    @Max(100000)
+    @Max(99999)
     private int price;
 }
