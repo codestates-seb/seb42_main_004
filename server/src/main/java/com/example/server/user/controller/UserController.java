@@ -147,6 +147,11 @@ public class UserController {
     String email = dto.getEmail();
 
     userService.recoveryPWEmailSend(email);
+    log.info("if문 start!");
+    if (userService.existsByEmail(email)){
+      User findUser = userService.checkUserExist(email);
+      userService.checkNotGoogleAuth(findUser);
+    }
     return ResponseEntity.ok().build();
   }
 

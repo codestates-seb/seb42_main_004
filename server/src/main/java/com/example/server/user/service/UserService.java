@@ -144,8 +144,9 @@ public class UserService {
 
   // recovery PW email send
   @Async
-  public void recoveryPWEmailSend(String email)
+  public User recoveryPWEmailSend(String email)
       throws MessagingException, UnsupportedEncodingException {
+    log.info("recoveryPWEmailSend");
     String newMailKey = createCode();
     User findUser = userRepository.findByEmail(email).orElse(null);
     if (findUser != null) {
@@ -155,6 +156,7 @@ public class UserService {
     } else {
       sendEmailNoExist(email);
     }
+    return findUser;
 
   }
 
@@ -467,6 +469,13 @@ public class UserService {
   public void checkGoogleAuth(User user) {
     if(!user.getStatus().equals(UserStatus.USER_GOOGLE)) {
       throw new BusinessLogicException(UserException.NOT_GOOGLE_USER);
+    }
+  }
+  public void checkNotGoogleAuth(User user) {
+    log.info("### user.getStatus() = " + user.getStatus());
+    log.info(UserStatus.USER_GOOGLE.toString());
+    if(user.getStatus().equals(UserStatus.USER_GOOGLE)) {
+      throw new BusinessLogicException(UserException.GOOGLE_USER);
     }
   }
 
