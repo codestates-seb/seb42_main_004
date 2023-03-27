@@ -12,7 +12,7 @@ import { setCart } from '../../reducers/cartReducer';
 import getData from '../../util/getData';
 import GetTemplate from '../commons/GetTemplate';
 import GoogleButton from './GoogleButton';
-import { setImage } from '../../reducers/imageReducer';
+import { setProfile } from '../../reducers/userReducer';
 
 function LoginUl() {
   const { admin } = useSelector((state) => state.authReducer);
@@ -63,7 +63,7 @@ function LoginUl() {
         })
       );
       getData('/users').then((data) => {
-        dispatch(setImage(data.imagePath));
+        dispatch(setProfile({ imagePath: data.imagePath, name: data.name }));
       });
       resolve();
     });
