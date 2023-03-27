@@ -25,8 +25,8 @@ const Round = styled.div`
   position: absolute;
   top: 18px;
   right: -7px;
-  width: 15px;
-  height: 15px;
+  width: 17px;
+  height: 17px;
   background-color: red;
   border-radius: 100%;
 `;
@@ -37,7 +37,7 @@ const Count = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 900;
   color: var(--white);
 `;
