@@ -15,7 +15,7 @@ function EmailDiv({ name, value, status, request }) {
   return (
     <ContainerDiv>
       {name ? <TitleDiv>{name}</TitleDiv> : null}
-      {status === 'USER_TMP' ? (
+      {status === 'USER_TMP' || status === 'USER_GOOGLE' ? (
         <>
           {request ? null : <div>{value}</div>}
           <ConfirmSpan>
