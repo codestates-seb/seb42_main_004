@@ -136,6 +136,8 @@ function SignupOauthUl() {
           if (res.headers.authorization) {
             login(res.headers.authorization);
           }
+        } else if (res.status === 400) {
+          alert('닉네임을 2글자이상 10글자이하로 입력해주세요.');
         }
       });
     } else if (!isValid.name) {
