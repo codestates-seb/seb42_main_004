@@ -26,7 +26,6 @@ function CartItemLi({ mealbox, value, calcRenderPrice }) {
         <h2>{name}</h2>
         <CartItemTopButtonsDiv>
           <MealBoxDeleteButton />
-          {/* <div>수량</div> */}
           <MealBoxCounterDiv quantity={quantity} />
         </CartItemTopButtonsDiv>
       </CartItemTopDiv>

@@ -182,12 +182,6 @@ function LoginUl() {
             )}
           </LoginDiv>
         </li>
-        {/* <li>
-          <CheckboxDiv>
-            <input type="checkbox" id="auto"></input>
-            <label htmlFor="auto">자동로그인</label>
-          </CheckboxDiv>
-        </li> */}
         <li>
           <LoginButton onClick={handleClick} name="로그인"></LoginButton>
         </li>
