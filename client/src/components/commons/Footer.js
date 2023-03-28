@@ -81,7 +81,7 @@ const FooterWrapper = styled.footer`
   background-color: var(--signature);
   color: var(--white);
   position: relative;
-  z-index: -1;
+  /* z-index: -1; */
 
   @media (max-width: 768px) {
     display: ${(props) => (props.isVisible ? `flex` : `none`)};

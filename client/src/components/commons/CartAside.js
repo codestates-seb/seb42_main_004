@@ -21,6 +21,7 @@ export default CartAside;
 export const AsideWrapper = styled.aside`
   float: right;
   position: sticky;
+  z-index: auto;
   top: calc(70px + 2rem);
   min-width: 30%;
   height: fit-content;
