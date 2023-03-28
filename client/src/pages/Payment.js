@@ -118,6 +118,8 @@ function Payment() {
       buyer_name: inputValue.username,
       buyer_tel: inputValue.userPhoneNumber,
       buyer_email: inputValue.email,
+      m_redirect_url:
+        'http://seb42-main-004-bucket.s3-website.ap-northeast-2.amazonaws.com/myinfo/orderhistory',
     };
     IMP.request_pay(data, callback);
   };
