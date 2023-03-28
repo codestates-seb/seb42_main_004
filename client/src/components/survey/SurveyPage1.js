@@ -166,7 +166,7 @@ const SurveyContentDiv = styled.div`
   }
 
   input {
-    padding: 15px;
+    padding: 13px;
     font-size: 1.3rem;
   }
 
