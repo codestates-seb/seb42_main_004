@@ -21,6 +21,7 @@ function SurveyHome() {
 export default SurveyHome;
 
 const Main = styled.main`
+  padding-top: 50px;
   height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
