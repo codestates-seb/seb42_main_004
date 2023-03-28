@@ -23,5 +23,6 @@
     "react/jsx-uses-react": 0,
     "react/prop-types": "off",
     "import/no-unresolved": "off"
+
   }
 }

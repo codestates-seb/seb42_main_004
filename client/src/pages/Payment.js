@@ -118,6 +118,8 @@ function Payment() {
       buyer_name: inputValue.username,
       buyer_tel: inputValue.userPhoneNumber,
       buyer_email: inputValue.email,
+      m_redirect_url:
+        'http://seb42-main-004-bucket.s3-website.ap-northeast-2.amazonaws.com/myinfo/orderhistory',
     };
     IMP.request_pay(data, callback);
   };
@@ -132,13 +134,6 @@ function Payment() {
         if (data.status === 200) {
           if (same && save) {
             patchData('/users', {
-              name: inputValue.username,
-              phoneNumber: inputValue.userPhoneNumber,
-              address: {
-                zipCode: inputValue.userZipCode,
-                simpleAddress: inputValue.userSimpleAddress,
-                detailAddress: inputValue.userDetailAddress,
-              },
               deliveryInformation: {
                 name: inputValue.username,
                 phoneNumber: inputValue.userPhoneNumber,
@@ -151,13 +146,6 @@ function Payment() {
             });
           } else if (save) {
             patchData('/users', {
-              name: inputValue.username,
-              phoneNumber: inputValue.userPhoneNumber,
-              address: {
-                zipCode: inputValue.userZipCode,
-                simpleAddress: inputValue.userSimpleAddress,
-                detailAddress: inputValue.userDetailAddress,
-              },
               deliveryInformation: {
                 name: inputValue.addressee,
                 phoneNumber: inputValue.addresseePhoneNumber,
