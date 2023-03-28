@@ -54,7 +54,7 @@ function OrderHistory() {
   useEffect(() => {
     render();
   }, [page, admin, totalPages]);
-  console.log(data.length);
+
   return (
     <OrderHistoryPageWrapper className="margininside">
       <TabBar pathName="Orders">

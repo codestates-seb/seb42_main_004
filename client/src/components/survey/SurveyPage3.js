@@ -21,7 +21,6 @@ function SurveyPage3() {
   // 다이어트 플랜 상태 변경
   let dispatchPlan = (e) => {
     let { id } = e.target;
-    console.log(id);
     setDietPlan(id);
   };
 
@@ -36,7 +35,7 @@ function SurveyPage3() {
     } else if (dietPlan === 'Hard') {
       kcalPerDay = hard.kcal;
     }
-    console.log(kcalPerDay);
+
     getData(`/mealboxes/rec/survey?kcal=${kcalPerDay}`)
       .then((res) => {
         dispatch(setSurveyRcmd(res.data));

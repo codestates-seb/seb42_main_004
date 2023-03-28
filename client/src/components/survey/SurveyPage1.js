@@ -35,6 +35,7 @@ function SurveyPage1() {
   };
 
   let nextHandler = () => {
+    if (!age || !weight || !height) alert('잘못된 입력입니다.');
     if (checkValid()) {
       navigate(`/survey/question/2`);
     }
@@ -166,7 +167,7 @@ const SurveyContentDiv = styled.div`
   }
 
   input {
-    padding: 15px;
+    padding: 13px;
     font-size: 1.3rem;
   }
 
