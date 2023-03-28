@@ -12,6 +12,5 @@ function Signup() {
 export default Signup;
 
 const ContainerDiv = styled.div`
-  min-height: 100vh;
   justify-content: center;
 `;

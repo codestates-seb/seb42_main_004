@@ -219,6 +219,5 @@ function Payment() {
 export default Payment;
 
 const ContainerDiv = styled.div`
-  min-height: 100vh;
   justify-content: space-between;
 `;

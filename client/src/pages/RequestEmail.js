@@ -15,6 +15,5 @@ function RequestEmail() {
 export default RequestEmail;
 
 const ContainerDiv = styled.div`
-  min-height: 100vh;
   justify-content: center;
 `;

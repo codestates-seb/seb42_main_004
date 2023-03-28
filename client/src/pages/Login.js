@@ -12,6 +12,5 @@ function Login() {
 export default Login;
 
 const ContainerDiv = styled.div`
-  min-height: 100vh;
   justify-content: center;
 `;

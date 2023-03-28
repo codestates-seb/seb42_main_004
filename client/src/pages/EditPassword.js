@@ -15,6 +15,5 @@ function EditPassword() {
 export default EditPassword;
 
 const ContainerDiv = styled.div`
-  min-height: 100vh;
   justify-content: center;
 `;

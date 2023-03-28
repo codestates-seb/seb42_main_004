@@ -45,14 +45,13 @@ export default ConfirmEmailDiv;
 
 const ContentDiv = styled.div`
   width: 60%;
-  height: 85%;
   display: flex;
   flex-direction: column;
   justify-content: center;
 
   > div {
     width: 100%;
-    height: 30%;
+    height: 250px;
     display: flex;
     flex-direction: column;
     align-items: center;
