@@ -45,9 +45,6 @@ function Header() {
     }
   };
 
-  console.log(`로그인: ${isLogin}`); // 삭제 예정
-  console.log(`관리자: ${admin}`); // 삭제 예정
-
   return (
     <ContainerHeader>
       <HeaderDiv className="marginbase shadow">
