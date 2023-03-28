@@ -176,7 +176,6 @@ const BodyMargin = styled.div`
   min-height: calc(100vh - 280px);
 
   @media screen and (max-width: 768px) {
-    /* min-height: calc(100vh - 230px); */
     min-height: calc(100vh - ${(props) => (props.height ? '0px' : '230px')});
     padding-bottom: calc(${(props) => (props.height ? '90px' : '0px')} + 4rem);
   }
