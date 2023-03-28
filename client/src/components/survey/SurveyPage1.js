@@ -66,7 +66,7 @@ function SurveyPage1() {
   }, [age, weight, height]);
 
   return (
-    <Article>
+    <article>
       <SurveyH3>
         밀박스 추천을 위해
         <br />
@@ -124,17 +124,11 @@ function SurveyPage1() {
         {weightValidMsg && weight && <ValidMsg>{weightValidMsg}</ValidMsg>}
         <PreAndNextButtons nextHandler={nextHandler} />
       </SurveyContentDiv>
-    </Article>
+    </article>
   );
 }
 
 export default SurveyPage1;
-
-const Article = styled.article`
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
-`;
 
 export const SurveyH3 = styled.h3`
   margin-bottom: 1rem;

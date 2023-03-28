@@ -54,7 +54,6 @@ const InnerDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* height: 10vw; */
   padding: 1rem;
   border-radius: 10px 10px 0 0;
   background-color: var(--white_020);
