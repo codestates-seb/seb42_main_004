@@ -135,7 +135,7 @@ function EditMyInfoUl() {
     if (inputValue.userPhoneNumber.length === 11) {
       setInputValue({
         ...inputValue,
-        ['phoneNumber']: inputValue.phoneNumber.replace(
+        ['userPhoneNumber']: inputValue.userPhoneNumber.replace(
           /(\d{3})(\d{4})(\d{4})/,
           '$1-$2-$3'
         ),
