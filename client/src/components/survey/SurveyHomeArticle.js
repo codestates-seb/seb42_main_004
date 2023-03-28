@@ -34,6 +34,7 @@ const Article = styled.article`
   background-color: var(--signature);
   color: var(--white);
   width: 100%;
+
   span,
   div {
     font-size: 1.2rem;

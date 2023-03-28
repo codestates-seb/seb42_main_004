@@ -16,7 +16,7 @@ import goToCustom from '../../util/goToCustom';
 
 function Header() {
   const [isNav, setIsNav] = useState(false);
-  const { isLogin, admin } = useSelector((state) => state.authReducer); // admin 삭제 예정
+  const { isLogin, admin } = useSelector((state) => state.authReducer);
   const { imagePath, name } = useSelector((state) => state.userReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
