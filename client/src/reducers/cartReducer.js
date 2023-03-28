@@ -15,8 +15,6 @@ const cartSlice = createSlice({
       const mealBox = action.payload;
       const cartMealboxId = new Date().toString().split(' ').join('');
 
-      // 일반 밀박스 => mealboxId 있으면 quantity 추가, 없으면 배열에 추가
-      // 커스텀 => 추가
       let arr = cart.mealboxes.map((el) => {
         return el.mealboxId;
       });
@@ -30,7 +28,6 @@ const cartSlice = createSlice({
       } else {
         cart.mealboxes.push({ ...mealBox, cartMealboxId });
       }
-      // cart.mealboxes.push({ ...mealBox, cartMealboxId });
       cart.totalPrice += mealBox.price;
     },
 

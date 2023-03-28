@@ -26,7 +26,6 @@ function CartItemLi({ mealbox, value, calcRenderPrice }) {
         <h2>{name}</h2>
         <CartItemTopButtonsDiv>
           <MealBoxDeleteButton />
-          {/* <div>수량</div> */}
           <MealBoxCounterDiv quantity={quantity} />
         </CartItemTopButtonsDiv>
       </CartItemTopDiv>
@@ -49,16 +48,10 @@ const CheckBoxInput = styled.input`
 `;
 
 export const CartItemWrapperLi = styled.li`
-  /* width: 60%%; */
-  /* max-width: 645px; */
   height: fit-content;
   border-radius: 10px;
   background-color: var(--bucket_brown);
   padding: 15px;
-
-  @media (max-width: 480px) {
-    /* width: 323px; */
-  }
 `;
 
 export const CartItemTopDiv = styled.div`

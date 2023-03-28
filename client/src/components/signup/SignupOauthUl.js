@@ -117,7 +117,7 @@ function SignupOauthUl() {
       { adminMadeMealboxes: [], customMealboxes: [] }
     );
 
-    await postData('/users/cart/all', postReqData); // 여기
+    await postData('/users/cart/all', postReqData);
     let data = await getData('/users/cart');
     setCart(data.data);
   };

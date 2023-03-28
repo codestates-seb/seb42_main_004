@@ -91,7 +91,7 @@ function LoginUl() {
       { adminMadeMealboxes: [], customMealboxes: [] }
     );
 
-    await postData('/users/cart/all', postReqData); // 여기
+    await postData('/users/cart/all', postReqData);
     let data = await getData('/users/cart');
     dispatch(setCart(data.data));
   };
@@ -182,12 +182,6 @@ function LoginUl() {
             )}
           </LoginDiv>
         </li>
-        {/* <li>
-          <CheckboxDiv>
-            <input type="checkbox" id="auto"></input>
-            <label htmlFor="auto">자동로그인</label>
-          </CheckboxDiv>
-        </li> */}
         <li>
           <LoginButton onClick={handleClick} name="로그인"></LoginButton>
         </li>
@@ -265,20 +259,6 @@ const IconDiv = styled.div`
   right: 13px;
   cursor: pointer;
 `;
-// const CheckboxDiv = styled.div`
-//   display: flex;
-//   align-items: flex-end;
-//   > * {
-//     cursor: pointer;
-//   }
-//   > input {
-//     width: 15px;
-//     height: 15px;
-//   }
-//   > label {
-//     margin-left: 0.3rem;
-//   }
-// `;
 const Div = styled.div`
   display: flex;
   justify-content: space-between;
