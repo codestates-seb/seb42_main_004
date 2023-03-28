@@ -29,6 +29,5 @@ function CompleteEmail() {
 export default CompleteEmail;
 
 const ContainerDiv = styled.div`
-  min-height: 100vh;
   justify-content: center;
 `;

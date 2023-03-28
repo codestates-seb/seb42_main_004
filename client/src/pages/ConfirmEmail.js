@@ -12,6 +12,5 @@ function ConfirmEmail() {
 export default ConfirmEmail;
 
 const ContainerDiv = styled.div`
-  min-height: 100vh;
   justify-content: center;
 `;

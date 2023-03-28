@@ -149,7 +149,10 @@ public class UserService {
     log.info("recoveryPWEmailSend");
     String newMailKey = createCode();
     User findUser = userRepository.findByEmail(email).orElse(null);
-    if (findUser != null) {
+    if (findUser != null && findUser.getStatus().equals(UserStatus.USER_GOOGLE)) {
+      simpleEmailSend(email);
+
+    } else if (findUser != null) {
       findUser.setMailKey(newMailKey);
       userRepository.save(findUser);
       sendEmailRecovery(email, newMailKey);
@@ -200,12 +203,12 @@ public class UserService {
   }
 
   //simple email sender
-  private void signUpEmailSend() {
+  private void simpleEmailSend(String email) {
     //이메일 작성
     SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-    simpleMailMessage.setTo("baram2449@naver.com");
-    simpleMailMessage.setSubject("이메일 타이틀~");
-    simpleMailMessage.setText("이메일 내용~");
+    simpleMailMessage.setTo(email);
+    simpleMailMessage.setSubject("한끼밀입니다.");
+    simpleMailMessage.setText("google Oauth로 가입된 회원입니다.");
 
     //이메일 발신
     mailSender.send(simpleMailMessage);
@@ -242,7 +245,9 @@ public class UserService {
 //    String setFrom = "hgm@hgm.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
     String toEmail = email; //받는 사람
     String title = "한끼밀 이메일 인증"; //제목
-    String href = "http://ec2-3-39-191-52.ap-northeast-2.compute.amazonaws.com:8080/users/email_auth?id=" + id + "&mailKey=" + mailKey;
+    String href =
+        "http://ec2-3-39-191-52.ap-northeast-2.compute.amazonaws.com:8080/users/email_auth?id=" + id
+            + "&mailKey=" + mailKey;
 
     MimeMessage message = mailSender.createMimeMessage();
     message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
@@ -414,7 +419,8 @@ public class UserService {
   public void checkActive(User user) {
     if (user.getStatus() == UserStatus.USER_TMP) {
       throw new BusinessLogicException(UserException.NOT_YET_AUTHENTICATE_EMAIL);
-    } else if (user.getStatus() != UserStatus.USER_ACTiVE && user.getStatus() != UserStatus.USER_GOOGLE) {
+    } else if (user.getStatus() != UserStatus.USER_ACTiVE
+        && user.getStatus() != UserStatus.USER_GOOGLE) {
       throw new BusinessLogicException(UserException.NOT_ACTIVE_USER);
     }
   }
@@ -467,14 +473,15 @@ public class UserService {
   }
 
   public void checkGoogleAuth(User user) {
-    if(!user.getStatus().equals(UserStatus.USER_GOOGLE)) {
+    if (!user.getStatus().equals(UserStatus.USER_GOOGLE)) {
       throw new BusinessLogicException(UserException.NOT_GOOGLE_USER);
     }
   }
+
   public void checkNotGoogleAuth(User user) {
     log.info("### user.getStatus() = " + user.getStatus());
     log.info(UserStatus.USER_GOOGLE.toString());
-    if(user.getStatus().equals(UserStatus.USER_GOOGLE)) {
+    if (user.getStatus().equals(UserStatus.USER_GOOGLE)) {
       throw new BusinessLogicException(UserException.GOOGLE_USER);
     }
   }
