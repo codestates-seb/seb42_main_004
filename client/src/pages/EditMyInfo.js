@@ -15,6 +15,5 @@ function EditMyInfo() {
 export default EditMyInfo;
 
 const ContainerDiv = styled.div`
-  min-height: 100vh;
   justify-content: center;
 `;

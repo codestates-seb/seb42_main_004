@@ -146,7 +146,6 @@ export default SignupUl;
 
 const ContainerUl = styled.ul`
   width: 300px;
-  height: 85%;
   display: flex;
   flex-direction: column;
   justify-content: center;

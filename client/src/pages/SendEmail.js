@@ -12,6 +12,5 @@ function SendEmail({ pathName }) {
 export default SendEmail;
 
 const ContainerDiv = styled.div`
-  min-height: 100vh;
   justify-content: center;
 `;

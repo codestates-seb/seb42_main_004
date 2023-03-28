@@ -15,6 +15,5 @@ function MyInfo() {
 export default MyInfo;
 
 const ContainerDiv = styled.div`
-  min-height: 100vh;
   justify-content: center;
 `;

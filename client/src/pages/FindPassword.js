@@ -94,12 +94,10 @@ function FindPassword() {
 export default FindPassword;
 
 const ContainerDiv = styled.div`
-  min-height: 100vh;
   justify-content: center;
 `;
 const PasswordDiv = styled.div`
   width: 60%;
-  height: 85%;
   display: flex;
   flex-direction: column;
   justify-content: center;
