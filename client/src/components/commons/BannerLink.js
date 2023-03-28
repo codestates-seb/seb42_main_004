@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 function BannerLink() {
   return (
-    <BannerContainerLink className="shadow" to="/survey/0">
+    <BannerContainerLink className="shadow" to="/survey/question/1">
       다이어트용 밀박스를 추천 받으시겠습니까?
     </BannerContainerLink>
   );

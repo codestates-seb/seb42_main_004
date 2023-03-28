@@ -1,14 +1,15 @@
 import { useParams } from 'react-router-dom';
+import { BsFillCircleFill as Dot } from 'react-icons/bs';
 import styled from 'styled-components';
 import SurveyArticle from '../components/survey/SurveyArticle';
-import { BsFillCircleFill as Dot } from 'react-icons/bs';
 
 function Survey() {
   let { page } = useParams();
+  page = Number(page);
 
   return (
     <Main className="margininside" page={page}>
-      <Ul>
+      <Ul page={page}>
         <li>
           <Dot size="7" />
         </li>
@@ -27,7 +28,7 @@ function Survey() {
 export default Survey;
 
 const Main = styled.main`
-  height: calc(100vh - 115px);
+  /* height: calc(100vh - 115px); */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -43,5 +44,10 @@ const Ul = styled.ul`
 
   > li {
     margin: 2px;
+    color: var(--bucket_brown_070);
+
+    :nth-child(${(props) => props.page}) {
+      color: var(--signature);
+    }
   }
 `;

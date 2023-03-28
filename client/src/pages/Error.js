@@ -1,21 +1,19 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import HelmetTitle from '../components/commons/HelmetTitle';
+import checkFooter from '../util/checkFooter';
 
 function Error() {
-  let { pathname } = useLocation();
-
   return (
-    <ErrorBaseDiv
-      className="margininside"
-      fullh={pathname.includes('cart') || (pathname.includes('custom') && 1)}
-    >
+    <ErrorBaseDiv className="margininside" fullh={checkFooter() ? 1 : null}>
+      <HelmetTitle title="에러" />
       <ErrorWrapDiv>
         <h1 className="errorstyle">
           404
           <br />
           Page Not Found
         </h1>
-        <Link to="/" className="linkstyle">
+        <Link to="/mealboxes" className="linkstyle">
           메인으로 돌아가기
         </Link>
       </ErrorWrapDiv>
@@ -25,9 +23,10 @@ function Error() {
 
 export default Error;
 
-const ErrorBaseDiv = styled.div`
+export const ErrorBaseDiv = styled.div`
   margin: -1rem 0 -4rem;
   height: calc(100vh - 330px);
+
   @media screen and (max-width: 768px) {
     height: calc(100vh - 280px);
   }
@@ -36,12 +35,14 @@ const ErrorBaseDiv = styled.div`
     height: calc(
       ${(props) => (props.fullh ? '100vh - 50px' : '100vh - 230px')}
     );
+    margin-bottom: ${(props) => props.fullh && '-76px'};
   }
 `;
 const ErrorWrapDiv = styled.div`
   position: fixed;
   left: 0;
   width: 100vw;
+  min-width: 360px;
   height: inherit;
   display: flex;
   flex-direction: column;

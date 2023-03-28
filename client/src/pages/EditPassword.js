@@ -1,10 +1,13 @@
 import styled from 'styled-components';
+import TabBar from '../components/commons/TabBar';
 import MyInfoUl from '../components/myInfo/MyInfoUl';
 
 function EditPassword() {
   return (
     <ContainerDiv className="margininside">
-      <MyInfoUl pathName="password" />
+      <TabBar pathName="MyInfo">
+        <MyInfoUl pathName="password" />
+      </TabBar>
     </ContainerDiv>
   );
 }
@@ -12,6 +15,5 @@ function EditPassword() {
 export default EditPassword;
 
 const ContainerDiv = styled.div`
-  min-height: 100vh;
   justify-content: center;
 `;

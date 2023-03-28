@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Positive;
@@ -28,9 +28,8 @@ public class MealboxSetController {
     }
 
     //소비자가 추천조합 밀박스 추천받기
-    //그리고나서 requestBody에서 설문조사한 상태를 주면 DB에서 조사해서 뽑아서쓴다
-    @GetMapping("/mealboxes/rec/survey/{kcal}")
-    public ResponseEntity getSurveyMealboxSet(@Positive @PathVariable("kcal") int kcal) {
+    @GetMapping("/mealboxes/rec/survey")
+    public ResponseEntity getSurveyMealboxSet(@Positive @RequestParam("kcal") int kcal) {
         log.info("------getRecMealbox------");
         MealboxSet mealboxSet = mealboxSetService.findMealboxSet(kcal);
         MealboxSetResponseDto response = mapper.MealboxSetToResponseDto(mealboxSet);

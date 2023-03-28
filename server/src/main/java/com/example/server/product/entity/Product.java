@@ -1,11 +1,11 @@
 package com.example.server.product.entity;
 
-import com.example.server.image.entity.Image;
 import com.example.server.image.entity.ProductImage;
 import com.example.server.mealbox.entity.MealboxProduct;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,22 +26,34 @@ public class Product {
     private int kcal;
     @Column(nullable = false)
     private int price;
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean forSale = true;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<MealboxProduct> mealboxProducts;
+    /* ####### JPA 매핑 ####### */
 
-    @OneToOne(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    private List<MealboxProduct> mealboxProducts = new ArrayList<>();
+
+    @OneToOne(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter
     private ProductImage image;
+
+    /* ####### 편의 메서드 ####### */
 
     public void addMealboxProduct(MealboxProduct mealboxProduct){
         mealboxProducts.add(mealboxProduct);
     }
 
-    public void patchProduct(String name, int weight, int kcal, int price){
-        this.name = name;
-        this.weight = weight;
-        this.kcal = kcal;
-        this.price = price;
+    public void patchProduct(Product productPatcher){
+        this.name = productPatcher.getName();
+        this.weight = productPatcher.getWeight();
+        this.kcal = productPatcher.getKcal();
+        this.price = productPatcher.getPrice();
     }
 
+    public void deleteProduct(){
+        this.forSale = false;
+    }
 }

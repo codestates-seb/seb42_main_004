@@ -1,20 +1,52 @@
-import DietInfo from './DietInfo';
-import PreAndNextButtons from './PreAndNextButtons';
-import SurveyBox from './SurveyBox';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setReset } from '../../reducers/surveyQuestionReducer';
 import { Option, ExplanationDiv } from './SurveyPage2';
 import { SurveyH3 } from './SurveyPage1';
-// import { useEffect } from 'react';
-// import getData from '../../util/getData';
+import PreAndNextButtons from './PreAndNextButtons';
+import getData from '../../util/getData';
+import SurveyBox from './SurveyBox';
+import DietInfo from './DietInfo';
+import { setSurveyRcmd } from '../../reducers/surveyRcmdReducer';
+import { useState } from 'react';
 
 function SurveyPage3() {
-  console.log(window.location.href);
+  let { state } = useLocation();
+  let { easy, normal, hard } = state;
+  let [dietPlan, setDietPlan] = useState('Easy');
 
-  let api = `${process.env.REACT_APP_API_URL}`;
-  console.log(api);
+  let dispatch = useDispatch();
+  let navigate = useNavigate();
 
-  // useEffect(() => {
-  //   getData(api + ``);
-  // }, []);
+  // 다이어트 플랜 상태 변경
+  let dispatchPlan = (e) => {
+    let { id } = e.target;
+    setDietPlan(id);
+  };
+
+  // 설문 결과 get 요청 + 화면 전환
+
+  let nextHandler = () => {
+    let kcalPerDay = 0;
+    if (dietPlan === 'Easy') {
+      kcalPerDay = easy.kcal;
+    } else if (dietPlan === 'Normal') {
+      kcalPerDay = normal.kcal;
+    } else if (dietPlan === 'Hard') {
+      kcalPerDay = hard.kcal;
+    }
+
+    getData(`/mealboxes/rec/survey?kcal=${kcalPerDay}`)
+      .then((res) => {
+        dispatch(setSurveyRcmd(res.data));
+      })
+      .then(() => {
+        dispatch(setReset());
+        navigate(`/survey/result`);
+      });
+
+    dispatch(setReset());
+  };
 
   return (
     <article>
@@ -27,9 +59,18 @@ function SurveyPage3() {
       </ExplanationDiv>
       <Option>
         <SurveyBox
-          group="page3"
+          id="Easy"
           title="Easy"
-          info={<DietInfo kcal="1600" weight="00.0kg" target="1.6" />}
+          group="plan"
+          info={
+            <DietInfo
+              kcal={easy.kcal}
+              weight={easy.goalWeight}
+              target={easy.goalWeightLoss}
+            />
+          }
+          changeHandler={dispatchPlan}
+          checked={dietPlan === 'Easy'}
         >
           <div>
             다이어트는 너무 길어지면 힘들지만 무작정 빨리갈 수는 없어요.
@@ -37,18 +78,36 @@ function SurveyPage3() {
           <div>천천히 목표를 향해 나아가보아요.</div>
         </SurveyBox>
         <SurveyBox
-          group="page3"
+          id="Normal"
           title="Normal"
-          info={<DietInfo kcal="1200" weight="00.0kg" target="2.1" />}
+          group="plan"
+          info={
+            <DietInfo
+              kcal={normal.kcal}
+              weight={normal.goalWeight}
+              target={normal.goalWeightLoss}
+            />
+          }
+          changeHandler={dispatchPlan}
+          checked={dietPlan === 'Normal'}
         >
           <div>
             이왕 다이어트를 하는거라면 조금은 도전적인 선택도 좋을거예요!
           </div>
         </SurveyBox>
         <SurveyBox
-          group="page3"
+          id="Hard"
           title="Hard"
-          info={<DietInfo kcal="800" weight="00.0kg" target="2.9" />}
+          group="plan"
+          info={
+            <DietInfo
+              kcal={hard.kcal}
+              weight={hard.goalWeight}
+              target={hard.goalWeightLoss}
+            />
+          }
+          changeHandler={dispatchPlan}
+          checked={dietPlan === 'Hard'}
         >
           <div>
             다이어트에 대한 강한 의지나 다가오는 중요한 일정이 있으신가요?
@@ -56,7 +115,7 @@ function SurveyPage3() {
           <div>강도가 높아 지키기 힘들 수도 있어요.</div>
         </SurveyBox>
       </Option>
-      <PreAndNextButtons />
+      <PreAndNextButtons nextHandler={nextHandler} />
     </article>
   );
 }

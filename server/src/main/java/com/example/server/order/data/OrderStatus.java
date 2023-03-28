@@ -1,5 +1,6 @@
 package com.example.server.order.data;
 
+import java.util.Arrays;
 import lombok.Getter;
 
 public enum OrderStatus {
@@ -9,7 +10,8 @@ public enum OrderStatus {
   DELIVERY_IN_PROGRESS(3, "배송중"),
   DELIVERY_COMPLETED(4, "배송완료"),
   REFUND_APPLIED(5, "환불대기중"),
-  REFUNDED(6, "환불완료");
+  REFUNDED(6, "환불완료"),
+  PAYMENT_AMOUNT_WRONG(7, "결제오류");
 
   @Getter
   private int index;
@@ -19,5 +21,12 @@ public enum OrderStatus {
   OrderStatus(int index, String status) {
     this.index = index;
     this.status = status;
+  }
+
+  public static OrderStatus valueOfStatus(String status) {
+    return Arrays.stream(values())
+        .filter(value -> value.status.equals(status))
+        .findAny()
+        .orElse(null);
   }
 }

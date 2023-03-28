@@ -3,6 +3,7 @@ package com.example.server.product.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
@@ -16,4 +17,6 @@ public class ProductResponseDto {
     private int kcal;
     private int price;
     private int quantity;
+    @Setter
+    private String imagePath;
 }

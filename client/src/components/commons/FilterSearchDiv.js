@@ -2,11 +2,11 @@ import styled from 'styled-components';
 import FilterSelect from './FilterSelect';
 import SearchBarDiv from './SearchBarDiv';
 
-function FilterSearchDiv() {
+function FilterSearchDiv({ sortSubject, placeholder, toSearchBarDiv }) {
   return (
     <FilterSearchWrapDiv>
-      <FilterSelect />
-      <SearchBarDiv placeholder="고구마" />
+      <FilterSelect sortSubject={sortSubject} />
+      <SearchBarDiv placeholder={placeholder} {...toSearchBarDiv} />
     </FilterSearchWrapDiv>
   );
 }

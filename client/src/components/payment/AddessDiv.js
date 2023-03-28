@@ -2,22 +2,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Post from './Post';
 
-function AddressDiv() {
-  const [enroll_company, setEnroll_company] = useState({
-    zonecode: '',
-    address: '',
-    extra: '',
-  });
-
+function AddressDiv({ inputValue, onChange, setInputValue, user, same }) {
   const [popup, setPopup] = useState(false);
-
-  const handleInput = (e) => {
-    setEnroll_company({
-      ...enroll_company,
-      [e.target.name]: e.target.value,
-    });
-    console.log(enroll_company);
-  };
 
   const handleComplete = () => {
     setPopup(!popup);
@@ -33,37 +19,54 @@ function AddressDiv() {
             placeholder="우편번호"
             type="text"
             required={true}
-            name="zonecode"
-            onChange={handleInput}
-            value={enroll_company.zonecode}
+            name={user ? 'userZipCode' : 'deliveryZipCode'}
+            onChange={onChange}
+            value={user ? inputValue.userZipCode : inputValue.deliveryZipCode}
+            disabled
           />
-          <AddressButton
-            className="buttonstyle shadow"
-            onClick={handleComplete}
-          >
-            주소검색
-          </AddressButton>
+          {same ? null : (
+            <AddressButton
+              className="buttonstyle shadow"
+              onClick={handleComplete}
+            >
+              주소검색
+            </AddressButton>
+          )}
         </ButtonDiv>
         {popup && (
-          <Post company={enroll_company} setcompany={setEnroll_company}></Post>
+          <Post
+            inputValue={inputValue}
+            setInputValue={setInputValue}
+            user={user}
+          ></Post>
         )}
         <input
           className="inputstyle"
           placeholder="주소"
           type="text"
           required={true}
-          name="address"
-          onChange={handleInput}
-          value={enroll_company.address}
+          name={user ? 'userSimpleAddress' : 'deliverySimpleAddress'}
+          onChange={onChange}
+          value={
+            user
+              ? inputValue.userSimpleAddress
+              : inputValue.deliverySimpleAddress
+          }
+          disabled
         />
         <input
           className="inputstyle"
           placeholder="상세주소"
           type="text"
           required={true}
-          name="extra"
-          onChange={handleInput}
-          value={enroll_company.extra}
+          name={user ? 'userDetailAddress' : 'deliveryDetailAddress'}
+          onChange={onChange}
+          value={
+            user
+              ? inputValue.userDetailAddress
+              : inputValue.deliveryDetailAddress
+          }
+          disabled={same && user ? true : false}
         />
       </InputDiv>
     </ContainerDiv>
@@ -86,7 +89,7 @@ const TitleDiv = styled.div`
   margin-right: 1.5rem;
   display: flex;
   justify-content: flex-end;
-  font-family: 'IBM Plex Sans KR', sans- + serif;
+  font-family: 'IBM Plex Sans KR', sans-serif;
 
   @media (max-width: 480px) {
     width: 80%;

@@ -13,8 +13,14 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartMealbox {
   @Id
+  @Column(name = "CART_MEALBOX_ID")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long cartMealboxId;
+  private long id;
+
+  @Column(nullable = false)
+  private int quantity;
+
+  /* ####### JPA 매핑 ####### */
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cart_id")
@@ -24,14 +30,29 @@ public class CartMealbox {
   @JoinColumn(name = "mealbox_id")
   private Mealbox mealbox;
 
-  @Column(nullable = false)
-  private int quantity;
+  /* ####### 편의 메서드 ####### */
+
+  public static CartMealbox makeCartMealbox(Cart cart, Mealbox mealbox, int quantity) {
+    CartMealbox cartMealbox = CartMealbox.builder()
+            .cart(cart).mealbox(mealbox).quantity(quantity).build();
+    mealbox.addCartMealbox(cartMealbox);
+//    cart.addCartMealbox(cartMealbox);
+    return cartMealbox;
+  }
 
   public void setCart(Cart cart) {
     this.cart = cart;
     if (!cart.getCartMealboxes().contains(this)) {
       cart.getCartMealboxes().add(this);
     }
+  }
+
+  public void changeQuantity(int quantity){
+    this.quantity = quantity;
+  }
+
+  public void plusQuantity(int quantity){
+    this.quantity = this.getQuantity() + quantity;
   }
 }
 

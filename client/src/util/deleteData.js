@@ -5,15 +5,12 @@ async function deleteData(url) {
     const response = await axios.delete(
       `${process.env.REACT_APP_API_URL}${url}`,
       {
-        headers: {
-          'Content-Type': 'application/json',
-        },
         withCredentials: true,
       }
     );
-    return response.data;
+    return response;
   } catch (error) {
-    console.error(error);
+    return error.response;
   }
 }
 

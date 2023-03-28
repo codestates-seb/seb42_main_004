@@ -1,41 +1,80 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import InputLabelDiv from '../commons/InputLabelDiv';
-import MainButton from '../commons/MainButton';
 import PreAndNextButtons from './PreAndNextButtons';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  setAge,
-  setGender,
-  setHeight,
-  setWeight,
-} from '../../reducers/surveyQuestionReducer';
-
+import { setProfile, setGender } from '../../reducers/surveyQuestionReducer';
+import SurveyBox from './SurveyBox';
+import { useEffect, useState } from 'react';
 function SurveyPage1() {
+  let navigate = useNavigate();
   let dispatch = useDispatch();
-  const { age, gender, height, weight } = useSelector(
+  let [ageValidMsg, setAgeValidMsg] = useState('');
+  let [weightValidMsg, setWeightValidMsg] = useState('');
+  let [heightValidMsg, setHeightValid] = useState('');
+
+  let { age, height, weight, gender } = useSelector(
     (state) => state.surveyQuestionReducer
   );
 
-  let ageHandler = (e) => {
-    dispatch(setAge(e.target.value));
+  let dispatchProfile = (e) => {
+    let { id, value } = e.target;
+
+    let regexAge = new RegExp(/^\d*?$/);
+    let regexHW = new RegExp(/^\d*(\.\d{0,1})?$/);
+    let regex = id === 'age' ? regexAge : regexHW;
+
+    if (regex.test(value)) {
+      dispatch(setProfile({ id, value }));
+    }
   };
 
-  let maleHandler = (e) => {
-    dispatch(setGender(e.target.name));
-    console.log(gender);
+  let dispatchGender = (e) => {
+    const { id } = e.target;
+    dispatch(setGender(id));
   };
 
-  let femaleHandler = (e) => {
-    dispatch(setGender(e.target.name));
+  let nextHandler = () => {
+    if (!age || !weight || !height) alert('잘못된 입력입니다.');
+    if (checkValid()) {
+      navigate(`/survey/question/2`);
+    }
   };
 
-  let heightHandler = (e) => {
-    dispatch(setHeight(e.target.value));
+  // let checkValid = (min, max, val, set) => {
+  //   let valid = val >= min && val <= max;
+  //   valid ? set('') : set(`${min}에서 ${max} 사이의 값을 입력해주세요.`);
+  // };
+
+  // useEffect(() => {
+  //   checkValid(1, 100, age, setAgeValidMsg);
+  //   checkValid(20, 150, weight, setWeightValidMsg);
+  //   checkValid(120, 220, height, setHeightValid);
+  // }, [age, weight, height]);
+
+  let checkValid = () => {
+    let ageValid = age >= 1 && age <= 100;
+    let heightValid = height >= 120 && height <= 220;
+    let weightValid = weight >= 20 && weight <= 150;
+
+    ageValid
+      ? setAgeValidMsg('')
+      : setAgeValidMsg('1에서 100 사이의 값을 입력해주세요.');
+
+    heightValid
+      ? setHeightValid('')
+      : setHeightValid('120에서 220 사이의 값을 입력해주세요.');
+
+    weightValid
+      ? setWeightValidMsg('')
+      : setWeightValidMsg('20에서 150 사이의 값을 입력해주세요.');
+
+    return ageValid && heightValid && weightValid;
   };
 
-  let weightHandler = (e) => {
-    dispatch(setWeight(e.target.value));
-  };
+  useEffect(() => {
+    checkValid();
+  }, [age, weight, height]);
 
   return (
     <Article>
@@ -49,37 +88,52 @@ function SurveyPage1() {
           label="나이"
           id="age"
           value={age}
-          onChange={ageHandler}
+          onChange={dispatchProfile}
           placeholder="00"
           unit="세"
           maxLength="3"
         />
+        {ageValidMsg && age && <ValidMsg>{ageValidMsg}</ValidMsg>}
         <div>
           <div>성별</div>
           <GenderOptionDiv>
-            <MainButton name="남성" handler={maleHandler} />
-            <MainButton name="여성" handler={femaleHandler} />
+            <SurveyBox
+              id="MALE"
+              title="남성"
+              group="gender"
+              changeHandler={dispatchGender}
+              checked={gender === 'MALE'}
+            />
+            <SurveyBox
+              id="FEMALE"
+              title="여성"
+              group="gender"
+              changeHandler={dispatchGender}
+              checked={gender === 'FEMALE'}
+            />
           </GenderOptionDiv>
         </div>
         <InputLabelDiv
           label="신장"
           id="height"
           value={height}
-          onChange={heightHandler}
-          placeholder="0"
+          onChange={dispatchProfile}
+          placeholder="000.0"
           unit="cm"
-          maxLength="3"
+          maxLength="5"
         />
+        {heightValidMsg && height && <ValidMsg>{heightValidMsg}</ValidMsg>}
         <InputLabelDiv
           label="체중"
           id="weight"
           value={weight}
-          onChange={weightHandler}
-          placeholder="0"
+          onChange={dispatchProfile}
+          placeholder="00.0"
           unit="kg"
-          maxLength="3"
+          maxLength="5"
         />
-        <PreAndNextButtons />
+        {weightValidMsg && weight && <ValidMsg>{weightValidMsg}</ValidMsg>}
+        <PreAndNextButtons nextHandler={nextHandler} />
       </SurveyContentDiv>
     </Article>
   );
@@ -113,11 +167,25 @@ const SurveyContentDiv = styled.div`
   }
 
   input {
-    padding: 15px;
+    padding: 13px;
+    font-size: 1.3rem;
   }
 
   span {
     margin-right: 15px;
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 480px) {
+    input {
+      padding: 8px;
+      font-size: 1rem;
+    }
+
+    span {
+      margin-right: 15px;
+      font-size: 1rem;
+    }
   }
 `;
 
@@ -125,12 +193,7 @@ const GenderOptionDiv = styled.div`
   display: flex;
   justify-content: space-between;
 
-  *:not(:last-child) {
-    margin-bottom: 0.5rem;
-  }
-
-  > button {
-    padding: 30px 0;
+  > * {
     flex-grow: 1;
 
     :first-child {
@@ -139,5 +202,17 @@ const GenderOptionDiv = styled.div`
     :last-child {
       margin-left: 5px;
     }
+
+    > div {
+      margin: 0;
+
+      > h3 {
+        margin: 0 auto;
+      }
+    }
   }
+`;
+
+const ValidMsg = styled.div`
+  color: var(--red);
 `;

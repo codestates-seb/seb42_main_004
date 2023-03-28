@@ -1,10 +1,33 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-function InputDiv({ name, id, placeholder }) {
+function InputDiv({
+  id,
+  name,
+  labelName,
+  placeholder,
+  value,
+  inputRef,
+  validText,
+  onChange,
+  onKeyUp,
+  disabled,
+}) {
   return (
-    <ContainerDiv>
-      <label htmlFor={id}>{name}</label>
-      <input className="inputstyle" id={id} placeholder={placeholder}></input>
+    <ContainerDiv validText={validText}>
+      <label htmlFor={id}>{labelName}</label>
+      <input
+        id={id}
+        name={name}
+        className="inputstyle"
+        type={name && name.includes('password') ? 'password' : 'text'}
+        placeholder={placeholder}
+        ref={inputRef}
+        value={value}
+        onChange={onChange}
+        onKeyUp={onKeyUp}
+        disabled={disabled}
+      ></input>
+      <div>{validText}</div>
     </ContainerDiv>
   );
 }
@@ -12,18 +35,39 @@ function InputDiv({ name, id, placeholder }) {
 export default InputDiv;
 
 const ContainerDiv = styled.div`
-  height: 80px;
-  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
 
   > label {
     height: 20px;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    color: ${({ validText }) =>
+      validText ? `rgba(216, 75, 75,1)` : `var(--black)`};
   }
 
   > input {
     height: 48px;
     padding-right: 3rem;
+    ${({ validText }) =>
+      validText &&
+      css`
+        padding: 0.5rem 1.5rem;
+        border: 1px solid rgba(216, 75, 75, 1);
+        border-radius: 4px;
+
+        &:focus,
+        :focus-within {
+          border: 2px solid rgba(216, 75, 75, 1);
+          outline: none;
+        }
+      `}
+  }
+
+  > div {
+    padding-top: 0.5rem;
+    color: rgba(216, 75, 75, 1);
   }
 `;

@@ -14,6 +14,7 @@ import com.example.server.user.data.UserStatus;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
@@ -50,21 +51,22 @@ public class User extends BaseEntity {
   private String name;
   @Column(name = "phone_number")
   @Setter
-  private String phoneNumber;
-//  @Setter
-//  private String address;
+  @Default
+  private String phoneNumber = "";
   @Setter
   @Embedded
-  private Address address;
+  @Default
+  private Address address = new Address();
 
   @Setter
   @Embedded
+  @Default
   @AttributeOverride(name = "name", column = @Column(name = "addressee"))
   @AttributeOverride(name = "phoneNumber", column = @Column(name = "addresseePhoneNumber"))
   @AttributeOverride(name = "address.zipCode", column = @Column(name = "deliveryZipCode"))
   @AttributeOverride(name = "address.simpleAddress", column = @Column(name = "deliverySimpleAddress"))
   @AttributeOverride(name = "address.detailAddress", column = @Column(name = "deliveryDetailsAddress"))
-  private DeliveryInformation deliveryInformation;
+  private DeliveryInformation deliveryInformation = new DeliveryInformation();
 
   @ElementCollection(fetch = EAGER)
   @Setter
@@ -90,10 +92,12 @@ public class User extends BaseEntity {
   @Setter
   private String mailKey = "";
 
-  @OneToOne(mappedBy = "user")
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Setter
   private UserImage image;
 
-  @OneToOne(mappedBy = "user")
+  @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Setter
   private Cart cart;
 
   @OneToMany(mappedBy = "user")

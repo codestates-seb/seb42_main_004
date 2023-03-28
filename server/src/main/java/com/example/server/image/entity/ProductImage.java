@@ -1,13 +1,13 @@
 package com.example.server.image.entity;
 
 import com.example.server.product.entity.Product;
-import com.example.server.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
 @Getter
 @Entity
 public class ProductImage {
@@ -17,7 +17,9 @@ public class ProductImage {
     private Long id;
 
     @Embedded
-    private Image image;
+    private ImageInfo imageInfo;
+
+    /* ####### JPA 매핑 ####### */
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_ID")

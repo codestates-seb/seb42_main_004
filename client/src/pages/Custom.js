@@ -1,66 +1,134 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ModalDiv from '../components/commons/ModalDiv';
+import NoResultDiv from '../components/commons/NoResultDiv';
 import CustomAside from '../components/custom/CustomAside';
+import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
 import FilterSearchDiv from '../components/commons/FilterSearchDiv';
-import BoxElementCardDiv from '../components/custom/BoxElementCardDiv';
+import BoxElementCardLi from '../components/custom/BoxElementCardLi';
+import { TextButton } from '../components/commons/ModalDiv';
 import { MealBoxesWrapDiv } from './AllBoxes';
-// import useGET from '../util/useGET';
+import useGET from '../util/useGET';
+import useFilterSearch from '../util/useFilterSearch';
+import { initializeCustom } from '../reducers/customReducer';
 
-function Custom({ admin }) {
-  const [openModal, setOpenModal] = useState(false);
-  const [page, setPage] = useState(1);
-  // const [products, isPending, error] = useGET(`/products/${page}`);
-  const navigate = useNavigate();
+function Custom() {
+  const { custom } = useSelector((state) => state.customReducer);
+  const { admin } = useSelector((state) => state.authReducer);
+  const [path, setPath] = useState('/products?page=1&sort=id&dir=DESC');
+  const [res, isPending, error] = useGET(path);
+  const [openCustom, setOpenCustom] = useState(false);
+  const [toFilterSearchDiv, notFoundWord, setPage] = useFilterSearch(
+    false,
+    setPath
+  );
+  const dispatch = useDispatch();
+
+  const totalQuantity = custom.products.reduce((a, c) => a + c.quantity, 0);
+  const productsId = custom.products.map((product) => product.productId);
+
+  const productInCustom = (id) => {
+    return productsId.indexOf(id);
+  };
+  const products = openCustom ? custom.products : res?.data;
+
+  useEffect(() => {
+    if (products?.length === 0) {
+      setOpenCustom(false);
+    }
+  }, [products]);
 
   return (
-    <MealBoxesWrapDiv className="margininside">
-      {/* <ModalDiv
-        mealBox={0}
-        boxElement={1}
-        closeModal={() => setOpenModal(false)}
-      /> */}
-      {admin && openModal && (
-        <ModalDiv closeModal={() => setOpenModal(false)} />
-      )}
-      <h1>커스텀 밀박스</h1>
-      <CustomSelectDiv>
-        <ElementsContainerDiv>
-          <FilterSearchDiv />
-          <BoxElementCardUl>
-            <li>
-              <BoxElementCardDiv />
-            </li>
-          </BoxElementCardUl>
-          <PaginationUl page={page} totalpage={3} setPage={setPage} />
-        </ElementsContainerDiv>
-        <CustomAside
-          admin={0}
-          bucket={1}
-          buttonClick={
-            admin ? () => setOpenModal(true) : () => navigate('/cart')
-          }
-        />
-      </CustomSelectDiv>
-    </MealBoxesWrapDiv>
+    <GetTemplate
+      isPending={isPending}
+      error={error}
+      res={res.data}
+      title={`${admin ? '새로운' : '나만의'} 밀박스 만들기`}
+    >
+      <CustomWrapDiv className="margininside">
+        <CustomTitleDiv>
+          <h1>{admin && custom ? custom.name : '커스텀 밀박스'}</h1>
+          <AsideButtonDiv>
+            <TextButton
+              onClick={() => setOpenCustom(!openCustom)}
+              className="linkstyle"
+            >
+              선택된 목록 {openCustom ? '닫기' : '보기'}
+            </TextButton>
+            <TextButton
+              onClick={() => dispatch(initializeCustom())}
+              className="linkstyle"
+            >
+              다시 담기
+            </TextButton>
+          </AsideButtonDiv>
+        </CustomTitleDiv>
+        <CustomSelectDiv>
+          <ElementsContainerDiv>
+            <FilterSearchDiv placeholder="고구마" {...toFilterSearchDiv} />
+            {products?.length !== 0 ? (
+              <>
+                <BoxElementCardUl>
+                  {products?.map((product) => (
+                    <BoxElementCardLi
+                      key={product.productId}
+                      product={product}
+                      quantity={
+                        custom.products[productInCustom(product.productId)]
+                          ?.quantity
+                      }
+                      totalQuantity={totalQuantity}
+                    />
+                  ))}
+                </BoxElementCardUl>
+                {!openCustom && (
+                  <PaginationUl
+                    page={res?.pageInfo?.page}
+                    totalpage={res?.pageInfo?.totalPages}
+                    setPage={setPage}
+                  />
+                )}
+              </>
+            ) : (
+              <NoResultDiv
+                search={(word) =>
+                  setPath(`/products/search?page=1&name=${word}`)
+                }
+                notFoundWord={notFoundWord}
+                replaceWord={'단백질쉐이크'}
+              />
+            )}
+          </ElementsContainerDiv>
+          <CustomAside custom={custom} />
+        </CustomSelectDiv>
+      </CustomWrapDiv>
+    </GetTemplate>
   );
 }
 
 export default Custom;
 
+const CustomWrapDiv = styled(MealBoxesWrapDiv)`
+  position: relative;
+`;
 const CustomSelectDiv = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+const CustomTitleDiv = styled(CustomSelectDiv)`
+  align-items: flex-end;
+`;
+const AsideButtonDiv = styled(CustomSelectDiv)`
+  min-width: 30%;
 `;
 const ElementsContainerDiv = styled.div`
   display: flex;
   flex-direction: column;
   float: left;
-  width: 60%;
+  min-width: 60%;
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 768px) {
     width: 100%;
   }
 `;

@@ -1,16 +1,19 @@
 package com.example.server.mealbox.entity;
 
+import com.example.server.cart.entity.CartMealbox;
 import com.example.server.image.entity.MealboxImage;
-import com.example.server.mealboxSet.entity.MealboxSet;
+import com.example.server.mealboxSet.entity.MealboxSetter;
 import com.example.server.order.entity.OrdersMealbox;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Builder
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Mealbox {
@@ -27,36 +30,11 @@ public class Mealbox {
     @Column(nullable = false)
     private int weight;
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private MealboxInfo mealboxInfo;
-
-    @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MealboxProduct> mealboxProducts;
-
-    @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL)
-    private List<OrdersMealbox> ordersMealboxes;
-
-    @OneToOne(mappedBy = "mealbox")
-    private MealboxImage image;
-
-    @ManyToOne
-    @JoinColumn(name = "MEALBOX_SETS_ID")
-    private MealboxSet mealboxSet;
-
-    public void addMealboxProduct(MealboxProduct mealboxProduct) {
-        mealboxProducts.add(mealboxProduct);
-    }
-
-    public void addOrderMealbox(OrdersMealbox ordersMealbox) {
-        ordersMealboxes.add(ordersMealbox);
-    }
-
-    public void patchMealbox(String name, int price, int kcal, int weight){
-        this.name = name;
-        this.price = price;
-        this.kcal = kcal;
-        this.weight = weight;
-        this.mealboxProducts.clear();
-    }
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean forSale = true;
 
     @Getter
     @AllArgsConstructor
@@ -67,5 +45,62 @@ public class Mealbox {
         LUNCH_REC_MEALBOX("Lunch Rec Mealbox"),
         DINNER_REC_MEALBOX("Dinner Rec Mealbox");
         private String info;
+    }
+
+    /* ####### JPA 매핑 ####### */
+
+    @OneToMany(mappedBy = "mealbox", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<MealboxProduct> mealboxProducts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "mealbox", cascade = CascadeType.PERSIST)
+    @Builder.Default
+    private List<OrdersMealbox> ordersMealboxes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "mealbox", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    private List<CartMealbox> cartMealboxes = new ArrayList<>();
+
+    @OneToOne(mappedBy = "mealbox", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter
+    private MealboxImage image;
+
+    @OneToMany(mappedBy = "mealbox", orphanRemoval = true)
+    @Builder.Default
+    private List<MealboxSetter> mealboxSetters = new ArrayList<>();
+
+    /* ####### 편의 메서드 ####### */
+
+    public void addMealboxProduct(MealboxProduct mealboxProduct) {
+        mealboxProducts.add(mealboxProduct);
+    }
+
+    public void addCartMealbox(CartMealbox cartMealbox) {
+        cartMealboxes.add(cartMealbox);
+    }
+
+    public void addMealboxSetter(MealboxSetter mealboxSetter){
+        mealboxSetters.add(mealboxSetter);
+    }
+
+    public void patchMealbox(Mealbox mealboxPatcher){
+        this.name = mealboxPatcher.getName();
+        this.price = mealboxPatcher.getPrice();
+        this.kcal = mealboxPatcher.getKcal();
+        this.weight = mealboxPatcher.getWeight();
+        this.mealboxProducts.clear();
+    }
+
+    public void calculateDetails() {
+        this.weight = mealboxProducts.stream().mapToInt(mealboxProduct->
+                mealboxProduct.getProduct().getWeight()*mealboxProduct.getQuantity()).sum();
+        this.price = mealboxProducts.stream().mapToInt(mealboxProduct->
+                mealboxProduct.getProduct().getPrice()*mealboxProduct.getQuantity()).sum();
+        this.kcal = mealboxProducts.stream().mapToInt(mealboxProduct->
+                mealboxProduct.getProduct().getKcal()*mealboxProduct.getQuantity()).sum();
+    }
+
+    public void deleteMealbox() {
+        this.forSale = false;
     }
 }
