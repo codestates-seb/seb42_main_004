@@ -1,5 +1,6 @@
 package com.example.server.user.mapper;
 
+import com.example.server.user.dto.AuthLoginDto;
 import com.example.server.user.dto.UserPatchDto;
 import com.example.server.user.dto.UserPostDto;
 import com.example.server.user.dto.UserResponseDto;
@@ -13,7 +14,7 @@ public interface UserMapper {
   User userPostDtoToUser(UserPostDto userPostDto);
 
   default User userPatchDtoToUser(UserPatchDto patchDto) {
-    return User.builder().id(patchDto.getId())
+    return User.builder()
         .name(patchDto.getName())
         .phoneNumber(patchDto.getPhoneNumber())
         .address(patchDto.getAddress())
@@ -22,4 +23,6 @@ public interface UserMapper {
   }
 
   UserResponseDto userToUserResponseDto(User user);
+
+  User AuthLoginDtoToUser(AuthLoginDto authLoginDto);
 }

@@ -1,10 +1,13 @@
 import styled from 'styled-components';
+import TabBar from '../components/commons/TabBar';
 import EditMyInfoUl from '../components/myInfo/EditMyInfoUl';
 
 function EditMyInfo() {
   return (
     <ContainerDiv className="margininside">
-      <EditMyInfoUl />
+      <TabBar pathName="MyInfo">
+        <EditMyInfoUl />
+      </TabBar>
     </ContainerDiv>
   );
 }
@@ -12,6 +15,5 @@ function EditMyInfo() {
 export default EditMyInfo;
 
 const ContainerDiv = styled.div`
-  min-height: 100vh;
   justify-content: center;
 `;

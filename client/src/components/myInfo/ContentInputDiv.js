@@ -1,20 +1,28 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-function ContentInputDiv({ id, labelName, value, onChange }) {
+function ContentInputDiv({
+  id,
+  name,
+  labelName,
+  placeholder,
+  value,
+  onChange,
+  validText,
+  noEdit,
+}) {
   return (
-    <ContainerDiv>
+    <ContainerDiv validText={validText}>
       <label htmlFor={id}>{labelName}</label>
-      {labelName && labelName === '프로필 사진' ? (
-        <button className="buttonstyle shadow">{value}</button>
-      ) : (
-        <input
-          id={id}
-          className="inputstyle"
-          type="text"
-          value={value}
-          onChange={onChange}
-        ></input>
-      )}
+      <input
+        id={id}
+        name={name}
+        className="inputstyle"
+        type="text"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        disabled={noEdit}
+      ></input>
     </ContainerDiv>
   );
 }
@@ -34,6 +42,8 @@ const ContainerDiv = styled.div`
     justify-content: flex-end;
     align-items: center;
     font-family: 'IBM Plex Sans KR', sans-serif;
+    color: ${({ validText }) =>
+      validText ? `rgba(216, 75, 75,1)` : `var(--black)`};
 
     @media (max-width: 480px) {
       width: 80%;
@@ -50,6 +60,19 @@ const ContainerDiv = styled.div`
 
   > input {
     width: 60%;
+    ${({ validText }) =>
+      validText &&
+      css`
+        padding: 0.5rem 1.5rem;
+        border: 1px solid rgba(216, 75, 75, 1);
+        border-radius: 4px;
+
+        &:focus,
+        :focus-within {
+          border: 2px solid rgba(216, 75, 75, 1);
+          outline: none;
+        }
+      `}
 
     @media (max-width: 480px) {
       width: 80%;

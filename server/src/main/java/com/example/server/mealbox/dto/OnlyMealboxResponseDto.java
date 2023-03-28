@@ -5,6 +5,7 @@ import com.example.server.product.dto.ProductResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public class OnlyMealboxResponseDto {
     private int weight;
     private int kcal;
     private int price;
+    @Setter
+    private String imagePath;
 }

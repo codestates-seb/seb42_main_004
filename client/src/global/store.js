@@ -1,15 +1,41 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import exampleReducer from '../reducers/exampleReducer';
 import customReducer from '../reducers/customReducer';
 import surveyRcmdReducer from '../reducers/surveyRcmdReducer';
 import surveyQuestionReducer from '../reducers/surveyQuestionReducer';
-const store = configureStore({
-  reducer: {
-    exampleReducer,
-    customReducer,
-    surveyRcmdReducer,
-    surveyQuestionReducer,
-  },
+import { persistReducer } from 'redux-persist';
+import storageSession from 'redux-persist/lib/storage/session';
+import thunk from 'redux-thunk';
+import authReducer from '../reducers/authReducer';
+import cartReducer from '../reducers/cartReducer';
+import userReducer from '../reducers/userReducer';
+
+const persistConfig = {
+  key: 'root',
+  storage: storageSession,
+  whitelist: [
+    'customReducer',
+    'surveyRcmdReducer',
+    'surveyQuestionReducer',
+    'cartReducer',
+    'userReducer',
+  ],
+};
+
+export const rootReducer = combineReducers({
+  exampleReducer,
+  customReducer,
+  surveyRcmdReducer,
+  surveyQuestionReducer,
+  authReducer,
+  cartReducer,
+  userReducer,
 });
 
-export default store;
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  devTools: process.env.NODE_ENV !== 'production',
+  middleware: [thunk],
+});

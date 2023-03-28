@@ -1,24 +1,17 @@
 import styled from 'styled-components';
 
-function MealBoxItemsDiv() {
+function MealBoxItemsDiv({ products }) {
   return (
     <ItemsDiv>
-      <div>
-        <div>고구마</div>
-        <div>X1</div>
-      </div>
-      <div>
-        <div>고구마</div>
-        <div>X1</div>
-      </div>
-      <div>
-        <div>고구마</div>
-        <div>X1</div>
-      </div>
-      <div>
-        <div>고구마</div>
-        <div>X1</div>
-      </div>
+      {products.map((el, idx) => {
+        let { name, quantity } = el;
+        return (
+          <div key={idx}>
+            <div>{name}</div>
+            <div>{`X${quantity}`}</div>
+          </div>
+        );
+      })}
     </ItemsDiv>
   );
 }

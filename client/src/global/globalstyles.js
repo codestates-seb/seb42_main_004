@@ -26,11 +26,12 @@ const GlobalStyle = createGlobalStyle`
 
   button {
     cursor: pointer;
+    color: var(--black);
   }
 
-  .bodymargin {
-    padding-top: calc(1rem + 50px);
-    padding-bottom: 4rem;
+  select {
+    border: 1px solid var(--signature);
+    color: var(--black);
   }
 
   .marginbase {
@@ -79,7 +80,7 @@ const GlobalStyle = createGlobalStyle`
     color: var(--black);
     cursor: pointer;
     :hover {
-      color: var(--signature)
+      color: var(--input_blue)
     }
   }
 
@@ -88,7 +89,8 @@ const GlobalStyle = createGlobalStyle`
     --input_blue : rgba(59, 152, 185, 1);
     --signature: rgba(88, 97, 92, 1);
     --signature_070: rgba(88, 97, 92, 0.7);
-    --bucket_brown: rgba(215, 184, 140, 1);
+    --bucket_brown: ${(props) =>
+      props.admin ? 'rgba(132, 184, 199, 1)' : 'rgba(215, 184, 140, 1)'};
     --bucket_brown_070: rgba(215, 184, 140, 0.7);
     --product_cocoa: rgba(232, 213, 196, 1);
     --gray: rgba(238, 238, 238, 1);
@@ -97,7 +99,8 @@ const GlobalStyle = createGlobalStyle`
     --body_beige: rgba(252, 246, 236, 1);
     --white: rgba(255, 255, 255, 1);
     --white_020: rgba(255, 255, 255, 0.2);
-    --red: rgba(255, 0, 0, 1); 
+    --red: rgba(216, 75, 75,1); 
+    --green: rgba(51,102,0,1)
   }
 `;
 

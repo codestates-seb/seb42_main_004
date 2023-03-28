@@ -1,38 +1,60 @@
 import styled from 'styled-components';
 
-function SurveyBox({ group, title, info, detail, children }) {
+function SurveyBox({
+  id,
+  title,
+  group,
+  info,
+  detail,
+  children,
+  changeHandler,
+  checked,
+}) {
   return (
-    <SurveyBoxWrapper>
-      <label htmlFor={title}>
-        <Input type="radio" name={group} id={title} />
+    <>
+      <Input
+        type="radio"
+        name={group}
+        id={id}
+        title={title}
+        onChange={changeHandler}
+        checked={checked}
+      />
+      <SurveyBoxLabel htmlFor={id}>
         <BoxTop>
           <h3>{title}</h3>
           {info}
         </BoxTop>
         <div>{detail ? detail : children}</div>
-      </label>
-    </SurveyBoxWrapper>
+      </SurveyBoxLabel>
+    </>
   );
 }
 
 export default SurveyBox;
 
-const SurveyBoxWrapper = styled.div`
-  background-color: ${(props) =>
-    props.check ? `var(--signature)` : `var(--product_cocoa)`};
+const SurveyBoxLabel = styled.label`
+  display: block;
+  background-color: var(--product_cocoa);
   border-radius: 10px;
   padding: 15px;
 
-  :hover,
-  :focus-within {
-    background-color: var(--signature);
-    color: var(--white);
+  :hover {
+    background-color: var(--bucket_brown_070);
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px;
   }
 `;
 
 const Input = styled.input`
   position: absolute;
-  /* z-index: -999; */
+  z-index: -999;
+  :checked + label {
+    background-color: var(--signature);
+    color: var(--white);
+  }
 `;
 
 const BoxTop = styled.div`

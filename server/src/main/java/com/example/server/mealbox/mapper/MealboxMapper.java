@@ -1,7 +1,8 @@
 package com.example.server.mealbox.mapper;
 
-import com.example.server.mealbox.dto.MealboxPatchDto;
-import com.example.server.mealbox.dto.MealboxPostDto;
+import com.example.server.image.entity.ImageInfo;
+import com.example.server.image.entity.ProductImage;
+import com.example.server.mealbox.dto.MealboxDto;
 import com.example.server.mealbox.dto.OnlyMealboxResponseDto;
 import com.example.server.mealbox.entity.Mealbox;
 import com.example.server.product.dto.ProductResponseDto;
@@ -12,29 +13,27 @@ import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface MealboxMapper {
-    default Mealbox mealboxPostDtoToMealbox(MealboxPostDto mealboxPostDto, Mealbox.MealboxInfo mealboxInfo){
-        return Mealbox.builder().name(mealboxPostDto.getName())
-                .price(mealboxPostDto.getPrice())
-                .kcal(mealboxPostDto.getKcal())
-                .weight(mealboxPostDto.getWeight())
+    default Mealbox mealboxDtoToMealbox(MealboxDto mealboxDto, Mealbox.MealboxInfo mealboxInfo){
+        return Mealbox.builder().name(mealboxDto.getName())
+                .price(mealboxDto.getPrice())
+                .kcal(mealboxDto.getKcal())
+                .weight(mealboxDto.getWeight())
                 .mealboxInfo(mealboxInfo)
                 .build();
     }
 
-    default Mealbox mealboxPatchDtoToMealbox(MealboxPatchDto mealboxPatchDto){
-        return Mealbox.builder()
-                .name(mealboxPatchDto.getName())
-                .price(mealboxPatchDto.getPrice())
-                .kcal(mealboxPatchDto.getKcal())
-                .weight(mealboxPatchDto.getWeight())
+    default Mealbox mealboxDtoToMealboxPatcher(MealboxDto mealboxDto){
+        return Mealbox.builder().name(mealboxDto.getName())
+                .price(mealboxDto.getPrice())
+                .kcal(mealboxDto.getKcal())
+                .weight(mealboxDto.getWeight())
                 .build();
     }
 
     default OnlyMealboxResponseDto mealboxToMealboxResponseDto(Mealbox mealbox) {
-        //나중에 이거 다른곳으로 빼기(리팩토링)
         List<ProductResponseDto> productResponseDtos =
                 mealbox.getMealboxProducts().stream().map(mealboxProduct -> {
-                    return ProductResponseDto.builder()
+                    ProductResponseDto prd =  ProductResponseDto.builder()
                             .productId(mealboxProduct.getProduct().getId())
                             .name(mealboxProduct.getProduct().getName())
                             .price(mealboxProduct.getProduct().getPrice())
@@ -42,9 +41,18 @@ public interface MealboxMapper {
                             .kcal(mealboxProduct.getProduct().getKcal())
                             .quantity(mealboxProduct.getQuantity())
                             .build();
+
+                    ProductImage productImage = mealboxProduct.getProduct().getImage();
+
+                    if(productImage != null) {
+                        ImageInfo imageInfo = productImage.getImageInfo();
+                        prd.setImagePath(imageInfo.getBaseUrl()+imageInfo.getFilePath()+imageInfo.getImageName());
+                    }
+
+                    return prd;
                 }).collect(Collectors.toList());
 
-        return OnlyMealboxResponseDto.builder()
+        OnlyMealboxResponseDto responseDto = OnlyMealboxResponseDto.builder()
                 .mealboxId(mealbox.getId())
                 .name(mealbox.getName())
                 .mealboxInfo(mealbox.getMealboxInfo())
@@ -53,6 +61,13 @@ public interface MealboxMapper {
                 .price(mealbox.getPrice())
                 .products(productResponseDtos)
                 .build();
+
+        if(mealbox.getImage()!=null) {
+            ImageInfo imageInfo = mealbox.getImage().getImageInfo();
+            responseDto.setImagePath(imageInfo.getBaseUrl()+imageInfo.getFilePath()+imageInfo.getImageName());
+        }
+
+        return responseDto;
     }
 
     default List<OnlyMealboxResponseDto> mealboxListToMealboxResponseDtoList(List<Mealbox> mealboxList) {

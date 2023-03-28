@@ -1,52 +1,69 @@
-// import { useState } from 'react';
-// import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import MealBoxCardDiv from '../components/allboxes/MealBoxCardDiv';
+import NoResultDiv from '../components/commons/NoResultDiv';
 import BannerLink from '../components/commons/BannerLink';
+import GetTemplate from '../components/commons/GetTemplate';
 import PaginationUl from '../components/commons/PaginationUl';
-import SearchBarDiv from '../components/commons/SearchBarDiv';
-// import useGET from '../util/useGET';
+import MealBoxCardLi from '../components/allboxes/MealBoxCardLi';
+import FilterSearchDiv from '../components/commons/FilterSearchDiv';
+import useGET from '../util/useGET';
+import useFilterSearch from '../util/useFilterSearch';
 
 function AllBoxes() {
-  // const { page } = useParams();
-  // const [data, isPending, error] = useGET(`/mealboxes/${page}`)
+  const { user, admin } = useSelector((state) => state.authReducer);
+  const [toFilterSearchDiv, notFoundWord, paginationUrl, uri] =
+    useFilterSearch(true);
+  const [res, isPending, error, getData] = useGET(uri);
+  const navigate = useNavigate();
 
   return (
-    <MealBoxesWrapDiv className="margininside">
-      <BannerLink />
-      <h1>{'맹쥬'}님 오늘도 건강한 하루되세요(｡•̀ᴗ-)✧</h1>
-      <SearchBarDiv placeholder="healthy day 밀박스" />
-      <MealBoxesUl>
-        <li>
-          <MealBoxCardDiv custom={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-        <li>
-          <MealBoxCardDiv mealBox={1} />
-        </li>
-      </MealBoxesUl>
-      <PaginationUl page={4} totalpage={7} url="" />
-    </MealBoxesWrapDiv>
+    <GetTemplate
+      isPending={isPending}
+      error={error}
+      res={res?.data}
+      title="밀박스 목록 보기"
+    >
+      <MealBoxesWrapDiv className="margininside">
+        {!admin && <BannerLink />}
+        <h1>
+          {user?.name && `${user.name}님 `}오늘도 건강한 하루되세요(｡•̀ᴗ-)✧
+        </h1>
+        <FilterSearchDiv
+          placeholder="healthy day 밀박스"
+          {...toFilterSearchDiv}
+        />
+        {notFoundWord && (
+          <SearchResultH3>
+            검색결과 {res?.pageInfo?.totalElements?.toLocaleString('ko-KR')}개
+          </SearchResultH3>
+        )}
+        {res.data?.length === 0 && (
+          <NoResultDiv
+            search={(word) => navigate(`/mealboxes/search?page=1&name=${word}`)}
+            notFoundWord={notFoundWord}
+            replaceWord={'고단백질 아침 세트'}
+          />
+        )}
+        <MealBoxesUl>
+          {((uri.includes('?page=1&') && !uri.includes('search')) ||
+            res.data?.length === 0) && <MealBoxCardLi />}
+          {res.data?.length !== 0 &&
+            res.data?.map((mealbox) => (
+              <MealBoxCardLi
+                key={mealbox.mealboxId}
+                mealBox={mealbox}
+                reload={getData}
+              />
+            ))}
+        </MealBoxesUl>
+        <PaginationUl
+          page={res?.pageInfo?.page}
+          totalpage={res?.pageInfo?.totalPages}
+          url={paginationUrl}
+        />
+      </MealBoxesWrapDiv>
+    </GetTemplate>
   );
 }
 
@@ -54,7 +71,9 @@ export default AllBoxes;
 
 export const MealBoxesWrapDiv = styled.div`
   flex-direction: column;
-  min-height: calc(100vh - 330px - 5rem);
+`;
+export const SearchResultH3 = styled.h3`
+  margin-bottom: 0.5rem;
 `;
 export const MealBoxesUl = styled.ul`
   display: grid;

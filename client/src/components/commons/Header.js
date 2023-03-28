@@ -1,17 +1,48 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import CartCounter from './CartCounter';
 import MainButton from './MainButton';
-import logo from '../../assets/logo_black.png';
+import Navbar from './Navbar';
+import { setAuth, setEmail } from '../../reducers/authReducer';
+import { initializeCart } from '../../reducers/cartReducer';
 import { FaShoppingCart } from 'react-icons/fa';
-import { BsFillPersonFill } from 'react-icons/bs';
 import { TfiMenu } from 'react-icons/tfi';
-import { IoIosArrowForward } from 'react-icons/io';
+import logo from '../../assets/logo_black.png';
+import profile from '../../assets/profile.png';
+import { setProfile } from '../../reducers/userReducer';
+import goToCustom from '../../util/goToCustom';
 
 function Header() {
   const [isNav, setIsNav] = useState(false);
+  const { isLogin, admin } = useSelector((state) => state.authReducer); // admin 삭제 예정
+  const { imagePath, name } = useSelector((state) => state.userReducer);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClick = () => {
     setIsNav(!isNav);
+  };
+
+  const handleLogout = () => {
+    if (confirm('정말 로그아웃하시겠습니까?')) {
+      localStorage.removeItem('accessToken');
+      dispatch(
+        setAuth({
+          isLogin: false,
+          accessToken: '',
+          user: {},
+          roles: [],
+        })
+      );
+      dispatch(setEmail(''));
+      dispatch(setProfile({ imagePath: null, name: '' }));
+      dispatch(initializeCart());
+      window.location.reload();
+    } else {
+      return;
+    }
   };
 
   return (
@@ -22,45 +53,86 @@ function Header() {
             <MenuIcon onClick={handleClick}>
               <TfiMenu size={25} />
             </MenuIcon>
-            <LogoImg src={logo} alt="logo" />
+            <LogoImg src={logo} alt="logo" onClick={() => navigate('/')} />
           </MenuDiv>
           <MenuUl>
-            <li>한끼밀 추천받기</li>
-            <li>커스텀 밀박스 만들기</li>
-            <li>전체 상품 보기</li>
-            <li>구성품 알아보기</li>
+            {!admin && (
+              <li>
+                <button onClick={() => navigate('/survey/question/1')}>
+                  한끼밀 추천받기
+                </button>
+              </li>
+            )}
+            <li>
+              <button onClick={goToCustom()}>커스텀 밀박스 만들기</button>
+            </li>
+            <li>
+              <button onClick={() => navigate('/mealboxes')}>
+                전체 상품 보기
+              </button>
+            </li>
+            <li>
+              <button onClick={() => navigate('/products')}>
+                구성품 알아보기
+              </button>
+            </li>
           </MenuUl>
           <IconsUl>
             <li>
-              <MainButton name="Login" />
-              {/* <MainButton name="Logout" /> */}
+              {isLogin ? (
+                <ProfileSpan>
+                  <button onClick={() => navigate('/myinfo')}>
+                    <Img src={imagePath || profile} alt="profile" />
+                  </button>
+                </ProfileSpan>
+              ) : null}
             </li>
             <li>
-              <MainButton name="Signup" />
-              {/* <BsFillPersonFill size={25} /> */}
+              {isLogin ? (
+                <LogoutSpan>
+                  <MainButton handler={handleLogout} name="로그아웃" />
+                </LogoutSpan>
+              ) : (
+                <LoginSpan>
+                  <MainButton
+                    handler={() => navigate('/login')}
+                    name="로그인"
+                  />
+                </LoginSpan>
+              )}
             </li>
             <li>
-              <FaShoppingCart size={25} />
+              {isLogin ? null : (
+                <SignupSpan>
+                  <MainButton
+                    handler={() => navigate('/signup')}
+                    name="회원가입"
+                  />
+                </SignupSpan>
+              )}
             </li>
+            {!admin && (
+              <li>
+                <CartSpan>
+                  <button onClick={() => navigate('/cart')}>
+                    <FaShoppingCart size={25} />
+                    <CartCounter />
+                  </button>
+                </CartSpan>
+              </li>
+            )}
           </IconsUl>
         </nav>
       </HeaderDiv>
       {isNav ? (
-        <NavDiv>
-          <NavUl>
-            {/* <li>로그인 해주세요</li> */}
-            <li>
-              <BsFillPersonFill size={25} />
-              <IdDiv>맹쥬님</IdDiv>
-              <IoIosArrowForward size={15} />
-            </li>
-            <li>한끼밀 추천받기</li>
-            <li>커스텀 밀박스 만들기</li>
-            <li>전체 상품 보기</li>
-            <li>구성품 알아보기</li>
-            <li>로그아웃</li>
-          </NavUl>
-        </NavDiv>
+        <Navbar
+          isLogin={isLogin}
+          name={name}
+          imagePath={imagePath}
+          handleClick={handleClick}
+          handleLogout={handleLogout}
+          navigate={navigate}
+        />
       ) : null}
     </ContainerHeader>
   );
@@ -73,7 +145,7 @@ const ContainerHeader = styled.header`
     padding: 0;
     list-style: none;
 
-    > li {
+    > li > * {
       cursor: pointer;
       font-family: 'IBM Plex Sans KR', sans-serif;
     }
@@ -86,7 +158,7 @@ const HeaderDiv = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  z-index: 30;
+  z-index: 36;
 
   > nav {
     flex-direction: row;
@@ -116,43 +188,6 @@ const LogoImg = styled.img`
   width: 50px;
   height: 50px;
 `;
-const NavDiv = styled.div`
-  width: 50vw;
-  height: 100vh;
-  position: fixed;
-  z-index: 29;
-  padding-top: 70px;
-  background-color: var(--head_brown);
-
-  @media (min-width: 768px) {
-    display: none;
-  }
-`;
-const NavUl = styled.ul`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-
-  > li {
-    width: 100%;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-
-    &:first-child {
-      align-items: center;
-      flex-basis: 120px;
-      padding: 40px;
-      border-bottom: 1px solid var(--black);
-      font-size: 1.5rem;
-    }
-
-    &:last-child {
-      margin: 40px 0px;
-    }
-  }
-`;
 const MenuUl = styled.ul`
   display: flex;
   flex-direction: row;
@@ -161,9 +196,18 @@ const MenuUl = styled.ul`
   flex-grow: 1;
 
   > li {
+    flex-basis: 120px;
     height: 100%;
     display: flex;
     align-items: center;
+    white-space: nowrap;
+  }
+
+  button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
   }
 
   @media (max-width: 768px) {
@@ -173,28 +217,70 @@ const MenuUl = styled.ul`
 const IconsUl = styled.ul`
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
 
-  > * {
-    margin: 0px 8px;
-  }
-
-  > li:last-child {
-    height: 70px;
+  > li {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+  }
+`;
+const ProfileSpan = styled.span`
+  width: 50px;
+  height: 100%;
+  margin-right: 1rem;
+
+  > button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
   }
 
-  button {
-    @media (max-width: 768px) {
-      display: none;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const CartSpan = styled.span`
+  width: 50px;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1rem;
+
+  > button {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: transparent;
+
+    > :last-child {
+      position: absolute;
+      top: 7px;
+      right: 6px;
     }
   }
 `;
-const IdDiv = styled.div`
-  padding: 0px 1rem;
-  font-family: 'IBM Plex Sans KR', sans-serif;
-  font-size: 1.5rem;
+const LogoutSpan = styled.span`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+const LoginSpan = styled.span`
+  margin-right: 1rem;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+const SignupSpan = styled.span`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+const Img = styled.img`
+  width: 30px;
+  height: 30px;
 `;

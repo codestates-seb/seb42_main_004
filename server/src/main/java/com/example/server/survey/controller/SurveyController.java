@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 
 @Slf4j
 @Validated
 @RestController
 public class SurveyController {
-    static final int[] kcalUnitList = new int[]{2000, 1700, 1400, 1200, 1000, 800};
+    static final int[] kcalUnitList = new int[]{2000, 1600, 1400, 1200, 1000, 800};
 //나이, 성별, 신장, 체중  /비활동적, 저활동적, 활동적, 매우 활동적
     @GetMapping("/survey")
-    ResponseEntity doSurvey(@Positive @RequestParam int age,
+    ResponseEntity doSurvey(@RequestParam @Positive @Max(100) int age,
                             @RequestParam Gender gender,
-                            @Positive @RequestParam int height,
-                            @Positive @RequestParam double weight,
+                            @RequestParam @Positive @Max(220) @Min(120)int height,
+                            @RequestParam @Positive @Max(150) @Min(20) double weight,
                             @RequestParam ActivityAmount activityAmount){
         double BMR = 0;
         if(gender==Gender.MALE){
@@ -41,20 +41,23 @@ public class SurveyController {
         SurveyResponseDto response = SurveyResponseDto.builder()
                 .easy(SurveyResponseDto.Diet.builder().kcal(easyGoalKcal)
                         .goalWeightLoss(calculateWeightLoss(currentKcal, easyGoalKcal))
-                        .goalWeight(weight-calculateWeightLoss(currentKcal, easyGoalKcal)).build()
+                        .goalWeight(calculateWeight(weight, calculateWeightLoss(currentKcal, easyGoalKcal))).build()
                 ).normal(SurveyResponseDto.Diet.builder().kcal(normalGoalKcal)
                         .goalWeightLoss(calculateWeightLoss(currentKcal, normalGoalKcal))
-                        .goalWeight((weight-calculateWeightLoss(currentKcal, normalGoalKcal))).build()
+                        .goalWeight(calculateWeight(weight, calculateWeightLoss(currentKcal, normalGoalKcal))).build()
                 ).hard(SurveyResponseDto.Diet.builder().kcal(hardGoalKcal)
                 .goalWeightLoss(calculateWeightLoss(currentKcal, hardGoalKcal))
-                .goalWeight((weight-calculateWeightLoss(currentKcal, hardGoalKcal))).build()).build();
+                .goalWeight(calculateWeight(weight, calculateWeightLoss(currentKcal, hardGoalKcal))).build()).build();
 
         return new ResponseEntity(new SingleResponseDto(response), HttpStatus.OK);
     }
 
-
     private static double calculateWeightLoss(int currentKcal, int goalKcal){
         return ((currentKcal-goalKcal)*14/700)/10.0;
+    }
+
+    private static double calculateWeight(double weight, double weightLoss){
+        return Math.round((weight-weightLoss)*10)/10.0;
     }
 
     private static int calculateGoalKcal(int currentKcal) {

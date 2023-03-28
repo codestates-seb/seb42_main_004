@@ -1,44 +1,83 @@
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import ModalDiv, { TextButton } from '../commons/ModalDiv';
+import postData from '../../util/postData';
 import { AsideSignatureButton, AsideWrapper } from '../commons/CartAside';
-import { TextButton } from '../commons/ModalDiv';
+import { deleteProduct, initializeCustom } from '../../reducers/customReducer';
+import { addCartItem } from '../../reducers/cartReducer';
 
-function CustomAside({ admin, bucket, buttonClick }) {
+function CustomAside({ custom }) {
+  const { isLogin, admin } = useSelector((state) => state.authReducer);
+  const [openModal, setOpenModal] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const addCustomToCart = async () => {
+    const data = { ...custom };
+    if (isLogin) {
+      data.products = data.products.map((product) => {
+        const { productId, quantity } = product;
+        return { productId, quantity };
+      });
+      await postData(`/users/cart/custom`, data);
+    }
+    dispatch(addCartItem({ ...data, quantity: 1 }));
+
+    dispatch(initializeCustom());
+    if (
+      window.confirm(
+        'Custom 밀박스가 장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?'
+      )
+    ) {
+      navigate('/cart');
+    } else navigate('/mealboxes');
+  };
+
   return (
     <AsideWrapper>
+      {admin && openModal && (
+        <ModalDiv mealBox={custom} closeModal={() => setOpenModal(false)} />
+      )}
       <InAsideBoxDiv>
-        <TriangleDiv />
-        <InAsideTitleDiv className="hidden">
-          <h2>Custom</h2>
-          <span>99,999kcal</span>
-        </InAsideTitleDiv>
-        {bucket && (
-          <ul>
-            <ElementInBucketLi>
-              <span>{`${'오렌지주스'}`}</span>
-              <span>
-                {`${1}`}
-                <TextButton className="linkstyle">&#10005;</TextButton>
-              </span>
-            </ElementInBucketLi>
-            <ElementInBucketLi>
-              <span>{`${'오렌지주스'}`}</span>
-              <span>
-                {`${1}`}
-                <TextButton className="linkstyle">&#10005;</TextButton>
-              </span>
-            </ElementInBucketLi>
-          </ul>
+        <InAsideH2 className="hidden">
+          {custom?.id ? custom.name : 'Custom'}
+        </InAsideH2>
+        {custom && (
+          <ElementInBucketUl>
+            {custom.products.map((product) => (
+              <ElementInBucketLi key={product.productId}>
+                <span>{`${product.name}`}</span>
+                <span>
+                  {`${product.quantity}`}
+                  <TextButton
+                    onClick={() => dispatch(deleteProduct(product.productId))}
+                    className="linkstyle"
+                  >
+                    &#10005;
+                  </TextButton>
+                </span>
+              </ElementInBucketLi>
+            ))}
+          </ElementInBucketUl>
         )}
         <InAsidePriceDiv>
-          <span>합계</span>
-          <span>{`${'19,900'}원`}</span>
+          <span>
+            합계 <span>({custom.kcal?.toLocaleString('ko-KR')}kcal)</span>
+          </span>
+          <span>{`${custom.price?.toLocaleString('ko-KR')}원`}</span>
         </InAsidePriceDiv>
       </InAsideBoxDiv>
-
-      <AsideSignatureButton onClick={buttonClick}>
+      <AsideSignatureButton
+        onClick={() =>
+          custom.products.length !== 0 &&
+          (admin ? setOpenModal(true) : addCustomToCart())
+        }
+      >
         {!admin
           ? '장바구니 담기'
-          : bucket?.id
+          : custom?.mealboxId
           ? '밀박스 수정 진행하기'
           : '밀박스 생성 진행하기'}
       </AsideSignatureButton>
@@ -52,67 +91,47 @@ const InAsideBoxDiv = styled.div`
   background-color: var(--bucket_brown);
   padding: 1rem;
   border-radius: 10px 10px 0 0;
-  box-shadow: 0 0 0 2px var(--bucket_brown) inset,
-    2px 2px 2px rgba(0, 0, 0, 0.4);
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     border-radius: 0;
+    box-shadow: -2px -2px 2px rgba(0, 0, 0, 0.4);
 
-    .hidden,
-    > ul {
-      display: none;
-    }
-
-    > div {
-      margin: 0;
+    ::before {
+      content: '';
+      border-bottom: calc(4px * 1.732) solid var(--bucket_brown);
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      position: absolute;
+      top: -6.4px;
+      left: 50%;
     }
 
     :hover {
       border-radius: 10px 10px 0 0;
 
-      div:first-child {
+      ::before {
         display: none;
       }
 
-      .hidden {
-        display: flex;
-      }
-
+      > h2,
       > ul {
         display: block;
       }
     }
   }
 `;
-const TriangleDiv = styled.div`
-  display: none;
-  width: 0;
-  height: 0;
-  border-bottom: calc(4px * 1.732) solid var(--bucket_brown);
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  position: absolute;
-  top: -6.4px;
-  left: 50%;
+const InAsideH2 = styled.h2`
+  color: var(--white);
+  min-height: 1vh;
 
-  @media (max-width: 480px) {
-    display: block;
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
-const InAsideTitleDiv = styled.div`
-  display: flex;
-  align-items: baseline;
-
-  > span {
-    font-size: 0.8rem;
-    margin-left: 0.5rem;
-    font-weight: normal;
-  }
-
-  > h2 {
-    color: var(--white);
-    list-style: none;
-    min-height: 1vh;
+const ElementInBucketUl = styled.ul`
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 const ElementInBucketLi = styled.li`
@@ -123,6 +142,7 @@ const ElementInBucketLi = styled.li`
   > span {
     font-size: 0.8rem;
     margin-right: -2px;
+    word-break: keep-all;
 
     > button {
       margin-left: 0.5rem;
@@ -132,6 +152,17 @@ const ElementInBucketLi = styled.li`
 const InAsidePriceDiv = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 1rem;
   margin-bottom: -0.5rem;
+
+  > span {
+    > span {
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    margin: 0;
+  }
 `;

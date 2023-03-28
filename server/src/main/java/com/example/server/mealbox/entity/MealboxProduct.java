@@ -19,6 +19,8 @@ public class MealboxProduct {
     @Column(nullable = false)
     private int quantity;
 
+    /* ####### JPA 매핑 ####### */
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="PRODUCT_ID")
     private Product product;
@@ -27,15 +29,12 @@ public class MealboxProduct {
     @JoinColumn(name="MEALBOX_ID")
     private Mealbox mealbox;
 
-    public MealboxProduct(int quantity, Product product, Mealbox mealbox) {
-        this.quantity = quantity;
-        this.product = product;
-        this.mealbox = mealbox;
-        product.addMealboxProduct(this);
-        mealbox.addMealboxProduct(this);
-    }
+    /* ####### 편의 메서드 ####### */
 
-    public void changeQuantity(int quantity){
-        this.quantity = quantity;
+    public static void makeMealboxProduct(int quantity, Product product, Mealbox mealbox) {
+        MealboxProduct mealboxProduct =
+                MealboxProduct.builder().quantity(quantity).product(product).mealbox(mealbox).build();
+        mealbox.addMealboxProduct(mealboxProduct);
+        product.addMealboxProduct(mealboxProduct);
     }
 }

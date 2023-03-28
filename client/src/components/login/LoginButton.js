@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 
-function LoginButton({ name }) {
-  return <Button className="buttonstyle">{name}</Button>;
+function LoginButton({ name, onClick }) {
+  return (
+    <Button onClick={onClick} className="buttonstyle shadow">
+      {name}
+    </Button>
+  );
 }
 
 export default LoginButton;

@@ -2,32 +2,33 @@ package com.example.server.order.service;
 
 import com.example.server.exception.BusinessLogicException;
 import com.example.server.mealbox.entity.Mealbox;
+import com.example.server.mealbox.entity.MealboxProduct;
 import com.example.server.mealbox.service.MealboxService;
 import com.example.server.order.data.OrderStatus;
-import com.example.server.order.dto.OrderGetDto;
 import com.example.server.order.dto.OrderMealboxPostDto;
 import com.example.server.order.dto.OrderPatchDeliveryDto;
+import com.example.server.order.dto.OrderPatchStatusDto;
 import com.example.server.order.dto.OrderPostDto;
 import com.example.server.order.entity.Orders;
 import com.example.server.order.entity.OrdersMealbox;
+import com.example.server.order.entity.OrdersProduct;
 import com.example.server.order.exception.OrderException;
 import com.example.server.order.repository.OrderMealboxRepository;
+import com.example.server.order.repository.OrderProductRepository;
 import com.example.server.order.repository.OrderRepository;
-import com.example.server.payment.controller.PaymentController;
-import com.example.server.payment.dto.PreparePostDto;
+import com.example.server.payment.service.PaymentService;
 import com.example.server.user.entity.User;
 import com.example.server.user.service.UserService;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -36,93 +37,123 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+@Slf4j
 public class OrderService {
   private final OrderRepository orderRepository;
   private final OrderMealboxRepository orderMealboxRepository;
   private final MealboxService mealboxService;
   private final UserService userService;
-  private final PaymentController paymentController;
+  private final PaymentService paymentService;
+  private final OrderProductRepository orderProductRepository;
 
-  public Orders createOrder(Orders order, OrderPostDto orderPostDto) throws IamportResponseException, IOException {
+  public OrderService(OrderRepository orderRepository,
+      OrderMealboxRepository orderMealboxRepository, OrderProductRepository orderProductRepository,
+      MealboxService mealboxService, UserService userService, @Lazy PaymentService paymentService) {
+    this.orderRepository = orderRepository;
+    this.orderMealboxRepository = orderMealboxRepository;
+    this.mealboxService = mealboxService;
+    this.userService = userService;
+    this.paymentService = paymentService;
+    this.orderProductRepository = orderProductRepository;
+  }
+
+  public Orders createOrder(Orders order, OrderPostDto orderPostDto, long userId) throws IamportResponseException, IOException {
     order.makeOrderNumber();
 //    orderRepository.save(order);
-    order.addUser(userService.getUser(orderPostDto.getUserId()));
+    User user = userService.getUser(userId);
+    userService.checkActive(user);
+    order.addUser(user);
     orderRepository.save(order);
+    log.info("------------------- CREATE OrderMealboxes -------------------");
     OrderMealboxPostDtoToOrdersMealbox(orderPostDto.getMealboxes(), order);
-    //결제 사전 정보
-    PreparePostDto preparePostDto = new PreparePostDto(order.getOrderNumber(), new BigDecimal(order.getTotalPrice()));
-    paymentController.postPrepare(preparePostDto);
+    order.setTotalPrice(order.getOrdersMealboxes().stream().
+        mapToInt(ordersMealbox -> ordersMealbox.getPrice() * ordersMealbox.getQuantity()).sum());
+    paymentService.postPrepare(order.getOrderNumber(), order.getTotalPrice());
     return orderRepository.save(order);
   }
 
   // MealboxId 와 quantity, user로 OrdersMealbox를 저장
-  private List<OrdersMealbox> OrderMealboxPostDtoToOrdersMealbox(List<OrderMealboxPostDto> orderMealboxPostDtos, Orders order) {
-    List<OrdersMealbox> ordersMealboxList = orderMealboxPostDtos.stream().map(orderMealboxPostDto -> {
+  private void OrderMealboxPostDtoToOrdersMealbox(List<OrderMealboxPostDto> orderMealboxPostDtos, Orders order) {
+    orderMealboxPostDtos.stream().forEach(orderMealboxPostDto -> {
       Mealbox mealbox = mealboxService.findMealboxById(orderMealboxPostDto.getMealboxId());
       int quantity = orderMealboxPostDto.getQuantity();
-      OrdersMealbox ordersMealbox = new OrdersMealbox(quantity, mealbox);
+      OrdersMealbox ordersMealbox = new OrdersMealbox(quantity, mealbox, mealbox.getName());
       ordersMealbox.addOrders(order);
       ordersMealbox.setPrice(mealbox.getPrice());
-      return orderMealboxRepository.save(ordersMealbox);
-    }).collect(Collectors.toList());
-    return ordersMealboxList;
+      ordersMealbox.setKcal(mealbox.getKcal());
+      OrdersMealbox savedOrdersMealbox = orderMealboxRepository.save(ordersMealbox);
+      setOrdersProductFromMealbox(savedOrdersMealbox);
+      orderMealboxRepository.save(ordersMealbox);
+    });
   }
 
-  public Orders cancelOrder(long orderId) {
-    Orders order = findVerifiedOrder(orderId);
+  private void setOrdersProductFromMealbox(OrdersMealbox ordersMealbox) {
+    Mealbox mealbox = ordersMealbox.getMealbox();
+    List<MealboxProduct> mealboxProductList = mealbox.getMealboxProducts();
+    for (MealboxProduct mealboxProduct : mealboxProductList) {
+      OrdersProduct ordersProduct = new OrdersProduct(mealboxProduct.getProduct().getName(), mealboxProduct.getQuantity());
+      ordersProduct.addOrdersMealbox(ordersMealbox);
+      orderProductRepository.save(ordersProduct);
+    }
+  }
+
+  public void cancelOrder(String orderNumber) {
+    Orders order = findByOrderNumber(orderNumber);
     int index = order.getStatus().getIndex();
-    if(index == 3) {
-      order.applyRefund();
-    } else if (index == 4 & LocalDate.now().isAfter(order.getDeliveryDate().plusDays(1))) {
+    if ((order.getDeliveryDate() != null) && LocalDate.now().isAfter(order.getDeliveryDate().plusDays(1))) {
       throw new BusinessLogicException(OrderException.NOT_REFUNDABLE_DATE);
-    } else if (index == 4) {
+    } else if (index == 4 || index == 3) {
       order.applyRefund();
     } else if (index == 1) {
       // 주문 취소 메서드 필요 (아임포트)
       order.cancelOrder();
+    } else if (index == 5) {
+      throw new BusinessLogicException(OrderException.ALREADY_APPLIED_REFUND);
+    } else if (index == 2) {
+      throw new BusinessLogicException(OrderException.ALREADY_CANCELED);
+    } else {
+      throw new BusinessLogicException(OrderException.NOT_YET_PAID);
     }
-    return orderRepository.save(order);
+    orderRepository.save(order);
   }
 
-  //추후 관리자가 주문 상태 변경시 사용할 예정
-  public Orders completeDelivery(long orderId) {
-    Orders order = findVerifiedOrder(orderId);
-    int index = order.getStatus().getIndex();
-    if(index != 3) {
-      throw new BusinessLogicException(OrderException.DELIVERY_IS_NOT_IN_PROGRESS);
+  public void changeStatus(String orderNumber, OrderPatchStatusDto dto) {
+    Orders order = findByOrderNumber(orderNumber);
+    if(dto.getStatus().equals("배송완료")) {
+      order.completeDelivery();
+    } else {
+      order.setStatus(OrderStatus.valueOfStatus(dto.getStatus()));
     }
-    order.completeDelivery();
-    return orderRepository.save(order);
-  }
 
-  public Orders findOrder(long orderId) {
-    return findVerifiedOrder(orderId);
+    orderRepository.save(order);
   }
 
   // 주문번호로 주문 찾기
   public Orders findByOrderNumber(String orderNumber) {
     Optional<Orders> order = orderRepository.findByOrderNumber(orderNumber);
-    Orders findOrder = order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
-    return findOrder;
+    return order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
   }
 
-  private Orders findVerifiedOrder(long orderId) {
+  public Orders findOrder(long orderId) {
     Optional<Orders> order = orderRepository.findById(orderId);
-    Orders findOrder = order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
-    return findOrder;
+    return order.orElseThrow(() -> new BusinessLogicException(OrderException.ORDER_NOT_FOUND));
   }
 
-  public Orders paidOrder(Orders order) {
+  public void paidOrder(Orders order) {
     order.paid();
-    return orderRepository.save(order);
+    orderRepository.save(order);
   }
 
-  public Page<Orders> getOrdersByDateToPage(OrderGetDto orderGetDto, int page) {
+  public void errorWhilePaying(Orders order) {
+    order.errorWhilePaying();
+    orderRepository.save(order);
+  }
+
+  public Page<Orders> getOrdersByDateToPage(String date, int page) {
     // 관리자 검증 해야함
-    LocalDate localDate = changeStringToLocalDate(orderGetDto.getDate());
-    LocalDateTime startDate = localDate.atStartOfDay();
-    LocalDateTime endDate = localDate.atTime(LocalTime.MAX);
+    LocalDate localDate = changeStringToLocalDate(date);
+    LocalDateTime startDate = localDate.atStartOfDay().minusHours(9);
+    LocalDateTime endDate = localDate.atTime(LocalTime.MAX).minusHours(9);
     return orderRepository.findAllByCreatedDateBetweenAndStatusNot(startDate, endDate, OrderStatus.NOT_PAID, PageRequest.of(page, 5, Sort.by("createdDate").descending()));
   }
 
@@ -136,12 +167,35 @@ public class OrderService {
     return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
   }
 
-  public Orders setDeliveryAddress(OrderPatchDeliveryDto orderPatchDeliveryDto, long orderId) {
-    Orders order = findVerifiedOrder(orderId);
+  public void setDeliveryAddress(OrderPatchDeliveryDto orderPatchDeliveryDto, long orderId) {
+    Orders order = findOrder(orderId);
     order.setAddressee(orderPatchDeliveryDto.getAddressee());
     order.setZipCode(orderPatchDeliveryDto.getZipCode());
     order.setSimpleAddress(orderPatchDeliveryDto.getSimpleAddress());
     order.setDetailAddress(orderPatchDeliveryDto.getDetailAddress());
-    return orderRepository.save(order);
+    order.setPhoneNumber(orderPatchDeliveryDto.getPhoneNumber());
+    orderRepository.save(order);
+  }
+
+  // 로그인한 유저가 주문자인지 확인
+  public void checkOrderHolder(Orders order, long userId) {
+    long orderHolderId = order.getUser().getId();
+    if(orderHolderId != userId) {
+      throw new BusinessLogicException(OrderException.NOT_ORDER_HOLDER);
+    }
+  }
+
+  public void checkOrderHolder(long orderId, long userId) {
+    long orderHolderId = findOrder(orderId).getUser().getId();
+    if(orderHolderId != userId) {
+      throw new BusinessLogicException(OrderException.NOT_ORDER_HOLDER);
+    }
+  }
+
+  public void checkOrderHolder(String orderNumber, long userId) {
+    long orderHolderId = findByOrderNumber(orderNumber).getUser().getId();
+    if(orderHolderId != userId) {
+      throw new BusinessLogicException(OrderException.NOT_ORDER_HOLDER);
+    }
   }
 }

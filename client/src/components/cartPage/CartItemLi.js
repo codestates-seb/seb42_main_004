@@ -1,26 +1,41 @@
-import MealBoxEditLink from './MealBoxEditLink';
+import MealBoxEditButton from './MealBoxEditButton';
 import MealBoxDeleteButton from './MealBoxDeleteButton';
 import MealBoxCounterDiv from './MealBoxCounterDiv';
 import MealBoxItemsDiv from './MealBoxItemsDiv';
 import styled from 'styled-components';
+import { useState } from 'react';
 
-function CartItemLi() {
+function CartItemLi({ mealbox, value, calcRenderPrice }) {
+  let { name, kcal, price, quantity, products } = mealbox;
+  let [isChecked, setIsChecked] = useState(true);
+
+  let IsCheckedHandler = () => {
+    setIsChecked(!isChecked);
+    calcRenderPrice();
+  };
+
   return (
-    <CartItemWrapperLi>
+    <CartItemWrapperLi id={value}>
       <CartItemTopDiv>
-        <CheckBoxInput type={'checkbox'} checked />
-        <h2>Custom</h2>
+        <CheckBoxInput
+          id={value}
+          type="checkbox"
+          onChange={IsCheckedHandler}
+          checked={isChecked}
+        />
+        <h2>{name}</h2>
         <CartItemTopButtonsDiv>
-          <div>수량</div>
-          <MealBoxCounterDiv />
           <MealBoxDeleteButton />
+          {/* <div>수량</div> */}
+          <MealBoxCounterDiv quantity={quantity} />
         </CartItemTopButtonsDiv>
       </CartItemTopDiv>
       <CartItemBottomDiv>
-        <MealBoxItemsDiv />
+        <MealBoxItemsDiv products={products} />
         <CartItemBottomButtonsDiv>
-          <div>17,000원</div>
-          <MealBoxEditLink />
+          <div>{`${kcal}kcal`}</div>
+          <div>{`${price}원`}</div>
+          <MealBoxEditButton />
         </CartItemBottomButtonsDiv>
       </CartItemBottomDiv>
     </CartItemWrapperLi>
@@ -53,6 +68,7 @@ export const CartItemTopDiv = styled.div`
 
   > h2 {
     color: var(--white);
+    font-family: 'IBM Plex Sans KR', sans-serif;
   }
 `;
 
@@ -65,10 +81,29 @@ export const CartItemBottomDiv = styled.div`
 export const CartItemBottomButtonsDiv = styled.div`
   display: flex;
   align-items: flex-end;
+
+  > *:last-child {
+    font-size: 1.2rem;
+    font-family: 'IBM Plex Sans KR', sans-serif;
+  }
+
+  > div {
+    margin-right: 8px;
+  }
+
+  > button {
+    margin-bottom: -0.16rem;
+    padding: 0;
+  }
 `;
 
 const CartItemTopButtonsDiv = styled.div`
   flex-grow: 1;
   display: flex;
   justify-content: end;
+
+  > div {
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-size: 1.2rem;
+  }
 `;
