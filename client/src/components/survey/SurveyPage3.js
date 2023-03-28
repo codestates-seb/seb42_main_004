@@ -25,7 +25,6 @@ function SurveyPage3() {
   };
 
   // 설문 결과 get 요청 + 화면 전환
-
   let nextHandler = () => {
     let kcalPerDay = 0;
     if (dietPlan === 'Easy') {
