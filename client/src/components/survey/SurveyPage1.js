@@ -41,17 +41,6 @@ function SurveyPage1() {
     }
   };
 
-  // let checkValid = (min, max, val, set) => {
-  //   let valid = val >= min && val <= max;
-  //   valid ? set('') : set(`${min}에서 ${max} 사이의 값을 입력해주세요.`);
-  // };
-
-  // useEffect(() => {
-  //   checkValid(1, 100, age, setAgeValidMsg);
-  //   checkValid(20, 150, weight, setWeightValidMsg);
-  //   checkValid(120, 220, height, setHeightValid);
-  // }, [age, weight, height]);
-
   let checkValid = () => {
     let ageValid = age >= 1 && age <= 100;
     let heightValid = height >= 120 && height <= 220;

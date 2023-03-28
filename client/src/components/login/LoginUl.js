@@ -91,7 +91,7 @@ function LoginUl() {
       { adminMadeMealboxes: [], customMealboxes: [] }
     );
 
-    await postData('/users/cart/all', postReqData); // 여기
+    await postData('/users/cart/all', postReqData);
     let data = await getData('/users/cart');
     dispatch(setCart(data.data));
   };
@@ -265,20 +265,6 @@ const IconDiv = styled.div`
   right: 13px;
   cursor: pointer;
 `;
-// const CheckboxDiv = styled.div`
-//   display: flex;
-//   align-items: flex-end;
-//   > * {
-//     cursor: pointer;
-//   }
-//   > input {
-//     width: 15px;
-//     height: 15px;
-//   }
-//   > label {
-//     margin-left: 0.3rem;
-//   }
-// `;
 const Div = styled.div`
   display: flex;
   justify-content: space-between;

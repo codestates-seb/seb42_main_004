@@ -81,7 +81,7 @@ function GoogleButton() {
       { adminMadeMealboxes: [], customMealboxes: [] }
     );
 
-    await postData('/users/cart/all', postReqData); // 여기
+    await postData('/users/cart/all', postReqData);
     let data = await getData('/users/cart');
     setCart(data.data);
   };
@@ -109,24 +109,6 @@ function GoogleButton() {
           }
         }
       );
-
-      // getData('/users/oauth/login', {
-      //   name: userInfo.data.given_name,
-      //   email: userInfo.data.email,
-      // }).then((res) => {
-      //   if (res.status === 200) {
-      //     if (res.headers.authorization) {
-      //       login(res.headers.authorization);
-      //     } else {
-      //       navigate('/signup/oauth', {
-      //         state: {
-      //           oauthName: userInfo.data.given_name,
-      //           oauthEmail: userInfo.data.email,
-      //         },
-      //       });
-      //     }
-      //   }
-      // });
     },
     onError: (errorResponse) => console.log(errorResponse),
   });
