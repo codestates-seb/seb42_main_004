@@ -59,3 +59,14 @@
 |comment | 필요한 주석 추가 및 변경|
 |rename | 파일 혹은 폴더명을 수정하거나 옮기는 작업만인 경우|
 |remove | 파일을 삭제하는 작업만 수행한 경우|
+
+
+
+
+![web_관리자 주문내역 페이지](https://user-images.githubusercontent.com/96197310/228750027-24b87eb6-2eb8-4597-aec6-f98a611baa53.gif)
+![web_구성품 페이지](https://user-images.githubusercontent.com/96197310/228750042-bb1d447b-0d85-4d8d-9540-7f775b829a2f.gif)
+![web_설문 페이지](https://user-images.githubusercontent.com/96197310/228750068-4dd4d018-b088-4767-b558-6cf014e5bc5d.gif)
+![web_장바구니 페이지](https://user-images.githubusercontent.com/96197310/228750174-2ac77956-fbe9-4adc-94b4-33c4cce271c1.gif)
+
+
+
