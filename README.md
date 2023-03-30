@@ -69,4 +69,7 @@
 ![web_장바구니 페이지](https://user-images.githubusercontent.com/96197310/228750174-2ac77956-fbe9-4adc-94b4-33c4cce271c1.gif)
 
 
+![관리자-주문내역](https://user-images.githubusercontent.com/115714974/228753293-629cab04-9fd0-4029-b049-caa60af49678.gif)
+![설문조사](https://user-images.githubusercontent.com/115714974/228753316-a3c5543a-06fe-490b-9fc2-ce9171fa0d42.gif)
+![장바구니(2)](https://user-images.githubusercontent.com/115714974/228753353-0d2ffaa7-381d-49da-8023-1ab101b72ab9.gif)
 
