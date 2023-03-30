@@ -43,7 +43,6 @@
 |프로필사진 수정|프로필사진 수정|
 |<img src="https://user-images.githubusercontent.com/113083398/228759296-b929d224-5ff0-41a1-808a-a68c60755f48.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228790035-4fd98f3b-2131-40a7-bf2a-272fddaa51fa.gif" width="200px" height="300px">|
 <br/>
-
 ### 소비자
 |WEB|MOBILE|
 |:---:|:---:|
@@ -59,8 +58,8 @@
 |<img src="https://user-images.githubusercontent.com/113083398/228759981-97a90a85-b210-40c0-80e6-a2717ce2be20.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228802856-8627265d-bc23-4718-9891-027f61822bc4.gif" width="200px" height="300px">|
 |결제|결제|
 |<img src="https://user-images.githubusercontent.com/113083398/228759279-4592ffe9-a67e-4738-8c39-a8137597bf21.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228790031-58592a74-28bc-488c-8662-a7661d5115b7.gif" width="200px" height="300px">|
-<br/>
 
+<br/>
 ### 관리자
 |WEB|MOBILE|
 |:---:|:---:|
@@ -76,9 +75,9 @@
 |<img src="https://user-images.githubusercontent.com/113083398/228759948-69618a2a-90fa-4c93-865a-8ca8e2a83e39.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228802744-44513230-b15c-4680-8385-cedaf261976b.gif" width="200px" height="300px">|
 |구성품 삭제|구성품 삭제|
 |<img src="https://user-images.githubusercontent.com/113083398/228759973-a5865926-1231-47c0-ac84-f42ac89309a3.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228785969-307b2206-5f97-4a97-8039-18aaee55abfb.gif" width="200px" height="300px">|
-<br/>
 
-### 기타
+<br/>
+### 
 |WEB|MOBILE|
 |:---:|:---:|
 |로딩|로딩|
@@ -138,8 +137,15 @@
 
 
 #########################################
+![관리자구성품삭제](https://user-images.githubusercontent.com/115924970/228889023-32c46e87-d707-4f07-9017-d501ee4bf780.gif)
+![소비자커스텀밀박스만들기](https://user-images.githubusercontent.com/115924970/228889073-3ac9be8f-0e5a-4df0-b271-e88e0e73f3e5.gif)
+![소비자구성품검색,정렬,페이지](https://user-images.githubusercontent.com/115924970/228889162-ae85cbbb-c4a3-4c23-9e42-3663869c1212.gif)
+![관리자밀박스추가-](https://user-images.githubusercontent.com/115924970/228890133-2017afad-c7f9-4740-bcc5-cea51a944683.gif)
 
+![관리자밀박스삭제](https://user-images.githubusercontent.com/115924970/228889370-a91c83df-91b1-40c7-83a3-25e55d3ff34e.gif)
+![관리자구성품추가](https://user-images.githubusercontent.com/115924970/228889385-25abe10e-f39b-4afd-8bb8-ce09b2e32cb5.gif)
 
+![에러페이지](https://user-images.githubusercontent.com/115924970/228890192-d4d6cb06-5cf7-46b6-9bf7-2900497e98cf.PNG)
 
 
 
