@@ -62,9 +62,9 @@
 
 
 
-|결제페이지 웹| 결제페이지 모바일|
-|:---:ㅣ:---:|
-|![결제](https://user-images.githubusercontent.com/113083398/228759279-4592ffe9-a67e-4738-8c39-a8137597bf21.gif)|![결제](https://user-images.githubusercontent.com/96197310/228790031-58592a74-28bc-488c-8662-a7661d5115b7.gif)|
+|결제 웹|결제 모바일|
+|:---:|:---:|
+|![결제](https://user-images.githubusercontent.com/113083398/228759279-4592ffe9-a67e-4738-8c39-a8137597bf21.gif)|![결제](https://user-images.githubusercontent.com/96197310/228790031-58592a74-28bc-488c-8662-a7661d5115b7.gif)
 
 
 
