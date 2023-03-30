@@ -82,6 +82,17 @@
 ![결제](https://user-images.githubusercontent.com/113083398/228759279-4592ffe9-a67e-4738-8c39-a8137597bf21.gif)
 
 
+![회원수정](https://user-images.githubusercontent.com/96197310/228789992-99270978-6167-4d48-b61b-20a9983867f8.gif)
+![회원조회](https://user-images.githubusercontent.com/96197310/228790012-f5f35a1d-2ff7-4622-8e79-05c2137f5620.gif)
+![Oauth](https://user-images.githubusercontent.com/96197310/228790017-1a75e092-bc61-4c26-b8d9-52a7faa70847.gif)
+![회원가입](https://user-images.githubusercontent.com/96197310/228790021-55dbfd07-4441-4f2f-b55a-8dc78d1f9447.gif)
+![웹Oauth](https://user-images.githubusercontent.com/96197310/228790029-0e35839d-1ba0-49cd-b323-85f2765a9717.gif)
+![결제](https://user-images.githubusercontent.com/96197310/228790031-58592a74-28bc-488c-8662-a7661d5115b7.gif)
+![프로필사진](https://user-images.githubusercontent.com/96197310/228790035-4fd98f3b-2131-40a7-bf2a-272fddaa51fa.gif)
+
+
+
+
 ![밀박스_장바구니](https://user-images.githubusercontent.com/113083398/228759981-97a90a85-b210-40c0-80e6-a2717ce2be20.gif)
 ![소비자장바구니담기](https://user-images.githubusercontent.com/115924970/228786085-5af2b90a-d903-4674-91db-74f1e8600ee3.gif)
 
