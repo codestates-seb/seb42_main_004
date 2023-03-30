@@ -85,9 +85,17 @@
 |<img src="https://user-images.githubusercontent.com/113083398/228772126-2c10e7c6-85cc-4717-90fd-a94810df59ce.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/113083398/228772129-253dc505-478a-4433-85a5-2d63b5e7ba35.gif" width="200px" height="300px">|
 |에러|에러|
 |<img src="https://user-images.githubusercontent.com/113083398/228759967-13a564bf-4bdc-4472-83e1-9c71d4958a8a.png" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228890192-d4d6cb06-5cf7-46b6-9bf7-2900497e98cf.PNG" width="200px" height="300px">>|
-
-
 <br/>
+
+## 📚 Documents
+
+📓 [서비스 메뉴얼](https://github.com/codestates-seb/seb42_main_004/files/11113725/SEB42_Main_004_.pdf)<br/>
+📕 [사용자 요구사항 정의서](https://github.com/codestates-seb/seb42_main_004/files/11113679/SEB42_Main_004_.pdf)<br/>
+📗 [화면 정의서](https://www.figma.com/file/VLez74UYpLu4z9jsIbQG5E/SEB42_main_004_화면정의서?node-id=0%3A1&t=2dIjyQsJ2kl9Lbhe-0)<br/>
+📘 [테이블 명세서](https://docs.google.com/spreadsheets/d/1VQ-U7I5jfZDzH7NZHk9odsXCkmhdhPuhlkvAYOdyg6s/edit?usp=sharing)<br/>
+📙 [ERD](https://dbdiagram.io/d/642197585758ac5f172473a0)<br/>
+📔 [API 정의서](https://documenter.getpostman.com/view/24689330/2s93JzMLpN)<br/>
+📒 [개발자 테스트 체크리스트](https://docs.google.com/spreadsheets/d/16ytAkiKtmNh-2G7F7dsOAshTR7eL-YmNxBAPGBZoaZ4/edit?usp=sharing)<br/>
 
 ## ⚙ Tech Stack
 ### 👩‍👧‍👧 Front-end
