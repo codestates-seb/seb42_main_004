@@ -33,7 +33,7 @@
 |WEB|MOBILE|
 |:---:|:---:|
 |회원가입|회원가입|
-|<img src="https://user-images.githubusercontent.com/113083398/228759298-6b033b12-6bf5-44ce-b1d3-a7f300c66561.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228790021-55dbfd07-4441-4f2f-b55a-8dc78d1f9447.gif" width="200px" height="300px">|
+|<img src="https://user-images.githubusercontent.com/113083398/228759298-6b033b12-6bf5-44ce-b1d3-a7f300c66561.gif" width="500px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228790021-55dbfd07-4441-4f2f-b55a-8dc78d1f9447.gif" width="200px" height="300px">|
 |Oauth 회원가입|Oauth 회원가입|
 |<img src="https://user-images.githubusercontent.com/96197310/228790029-0e35839d-1ba0-49cd-b323-85f2765a9717.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228790017-1a75e092-bc61-4c26-b8d9-52a7faa70847.gif" width="200px" height="300px">|
 |회원정보 & 주문내역 조회|회원정보 & 주문내역 조회|
