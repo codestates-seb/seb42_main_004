@@ -91,11 +91,12 @@
 
 📓 [서비스 메뉴얼](https://github.com/codestates-seb/seb42_main_004/files/11113725/SEB42_Main_004_.pdf)<br/>
 📕 [사용자 요구사항 정의서](https://github.com/codestates-seb/seb42_main_004/files/11113679/SEB42_Main_004_.pdf)<br/>
-📗 [화면 정의서](https://www.figma.com/file/VLez74UYpLu4z9jsIbQG5E/SEB42_main_004_화면정의서?node-id=0%3A1&t=2dIjyQsJ2kl9Lbhe-0)<br/>
+📗 [화면 정의서](https://www.figma.com/file/U9LrqRIeUqKFycNacYe39z/%ED%99%94%EB%A9%B4%EC%A0%95%EC%9D%98%EC%84%9C(Main_004)?node-id=0-1&t=vwt1dB9mrNO3vo9u-0)<br/>
 📘 [테이블 명세서](https://docs.google.com/spreadsheets/d/1VQ-U7I5jfZDzH7NZHk9odsXCkmhdhPuhlkvAYOdyg6s/edit?usp=sharing)<br/>
 📙 [ERD](https://dbdiagram.io/d/642197585758ac5f172473a0)<br/>
 📔 [API 정의서](https://documenter.getpostman.com/view/24689330/2s93JzMLpN)<br/>
 📒 [개발자 테스트 체크리스트](https://docs.google.com/spreadsheets/d/16ytAkiKtmNh-2G7F7dsOAshTR7eL-YmNxBAPGBZoaZ4/edit?usp=sharing)<br/>
+<br/>
 
 ## ⚙ Tech Stack
 ### 👩‍👧‍👧 Front-end
