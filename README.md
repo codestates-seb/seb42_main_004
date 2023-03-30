@@ -62,6 +62,13 @@
 
 
 
+|결제페이지 웹| 결제페이지 모바일|
+|:---:ㅣ:---:|
+|![결제](https://user-images.githubusercontent.com/113083398/228759279-4592ffe9-a67e-4738-8c39-a8137597bf21.gif)|![결제](https://user-images.githubusercontent.com/96197310/228790031-58592a74-28bc-488c-8662-a7661d5115b7.gif)|
+
+
+
+
 
 ![web_관리자 주문내역 페이지](https://user-images.githubusercontent.com/96197310/228750027-24b87eb6-2eb8-4597-aec6-f98a611baa53.gif)
 ![web_구성품 페이지](https://user-images.githubusercontent.com/96197310/228750042-bb1d447b-0d85-4d8d-9540-7f775b829a2f.gif)
@@ -88,10 +95,6 @@
 ![회원가입](https://user-images.githubusercontent.com/96197310/228790021-55dbfd07-4441-4f2f-b55a-8dc78d1f9447.gif)
 ![결제](https://user-images.githubusercontent.com/96197310/228790031-58592a74-28bc-488c-8662-a7661d5115b7.gif)
 ![프로필사진](https://user-images.githubusercontent.com/96197310/228790035-4fd98f3b-2131-40a7-bf2a-272fddaa51fa.gif)
-
-|![결제](https://user-images.githubusercontent.com/113083398/228759279-4592ffe9-a67e-4738-8c39-a8137597bf21.gif)|![결제](https://user-images.githubusercontent.com/96197310/228790031-58592a74-28bc-488c-8662-a7661d5115b7.gif)|
-|:---:ㅣ:---:|
-|||
 
 
 ![밀박스_장바구니](https://user-images.githubusercontent.com/113083398/228759981-97a90a85-b210-40c0-80e6-a2717ce2be20.gif)
