@@ -94,5 +94,7 @@
 ![에러](https://user-images.githubusercontent.com/113083398/228759967-13a564bf-4bdc-4472-83e1-9c71d4958a8a.png)
 
 
+![로딩](https://user-images.githubusercontent.com/113083398/228763176-da11b9d8-3647-4f09-a824-8574b5c36930.png)
+![모바일_로딩](https://user-images.githubusercontent.com/113083398/228763167-7b5d33dc-3a14-4378-a1f3-4f5dbff846b1.png)
 
 
