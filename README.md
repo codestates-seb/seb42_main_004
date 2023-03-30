@@ -16,7 +16,7 @@
 |<img src="https://avatars.githubusercontent.com/u/96197310?v=4" width="200px" height="200px">|<img src="https://avatars.githubusercontent.com/u/113083398?v=4" width="200px" height="200px">|<img src="https://avatars.githubusercontent.com/u/113837605?v=4" width="200px" height="200px">|
 |:---:|:---:|:---:|
 |[강명주<br/>(@myungju030)](https://github.com/myungju030)|[조윤희<br/>(@YUNH7)](https://github.com/YUNH7)|[함소희<br/>(@qwerty00ui88)](https://github.com/qwerty00ui88)|
-|- 회원가입(+Oauth),로그인,로그아웃 기능 및 페이지 구현<br/>- 회원정보 조회,수정,삭제 기능 및 페이지 구현<br/>- 결제 기능 및 페이지 구현<br/>- 주소 검색 기능 구현<br/>- Header,Loading 페이지 구현|- 밀박스 등록,조회,수정,삭제 기능 및 페이지(관리자,사용자), Modal 구현 <br/>- 구성품 등록,조회,수정,삭제 기능 및 페이지(관리자,사용자), Modal 구현 <br/>- 커스텀 밀박스 만들기 기능 및 페이지 구현 <br/>- 장바구니 추가 기능 구현<br/>- Error 페이지 구현|- 설문조사, 식단추천결과 기능 및 페이지 구현 <br/>- 장바구니 기능 및 페이지 구현 <br/>- 전체 사용자 주문 내역 조회 및 주문 상태관리 기능 및 페이지(관리자) 구현 <br/>- 주문 내역 조회 기능 및 페이지(사용자) 구현 <br/> - Footer 구현|
+|- 회원가입(+Oauth),로그인,로그아웃 기능 및 페이지 구현<br/>- 회원정보 조회,수정,삭제 기능 및 페이지 구현<br/>- 결제 기능 및 페이지 구현<br/>- 주소 검색 기능 구현<br/>- Header,Loading 페이지 구현|- 밀박스 등록,조회,수정,삭제 기능 및 페이지(관리자,사용자), Modal 구현 <br/>- 구성품 등록,조회,수정,삭제 기능 및 페이지(관리자,사용자), Modal 구현 <br/>- 커스텀 밀박스 만들기 기능 및 페이지 구현 <br/>- 장바구니 추가 기능 구현<br/>- Error 페이지 구현|- 설문조사, 식단추천결과 기능 및 페이지 구현 <br/>- 장바구니 기능 및 페이지 구현 <br/>- 전체 사용자 주문 내역 조회, 주문 상태관리 기능 및 페이지(관리자) 구현 <br/>- 주문 내역 조회 기능 및 페이지(사용자) 구현 <br/> - Footer 구현|
 ### 👨‍👦‍👦 Back-end
 
 |<img src="https://avatars.githubusercontent.com/u/115714974?v=4" width="200px" height="200px">|<img src="https://avatars.githubusercontent.com/u/115924970?v=4" width="200px" height="200px">|<img src="https://avatars.githubusercontent.com/u/116072178?v=4" width="200px" height="200px">|
