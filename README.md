@@ -84,17 +84,21 @@
 ![밀박스_장바구니](https://user-images.githubusercontent.com/113083398/228759981-97a90a85-b210-40c0-80e6-a2717ce2be20.gif)
 ![밀박스_커스텀_장바구니](https://user-images.githubusercontent.com/113083398/228759965-aeb0ee40-f76a-4bd0-a687-98b171d3d7bb.gif)
 
-![admin_밀박스-추가](https://user-images.githubusercontent.com/113083398/228759959-e56b94e8-3800-4d4e-9242-a3a606c89af7.gif)
+
+![admin_밀박스-추가](https://user-images.githubusercontent.com/113083398/228771554-7f572b2b-8aad-4140-8f82-701bdf0fb873.gif)
 ![admin_밀박스-삭제](https://user-images.githubusercontent.com/113083398/228759975-8376fe39-f9af-490a-95dd-ef9627329a54.gif)
 
+![admin_구성품-추가](https://user-images.githubusercontent.com/113083398/228759985-6400a558-4630-4c80-96b2-03a408dd7ae4.gif)
 ![admin_구성품-수정](https://user-images.githubusercontent.com/113083398/228759948-69618a2a-90fa-4c93-865a-8ca8e2a83e39.gif)
 ![admin_구성품-삭제](https://user-images.githubusercontent.com/113083398/228759973-a5865926-1231-47c0-ac84-f42ac89309a3.gif)
-![admin_구성품-추가](https://user-images.githubusercontent.com/113083398/228759985-6400a558-4630-4c80-96b2-03a408dd7ae4.gif)
+
 
 ![에러](https://user-images.githubusercontent.com/113083398/228759967-13a564bf-4bdc-4472-83e1-9c71d4958a8a.png)
 
 
-![로딩](https://user-images.githubusercontent.com/113083398/228763176-da11b9d8-3647-4f09-a824-8574b5c36930.png)
-![모바일_로딩](https://user-images.githubusercontent.com/113083398/228763167-7b5d33dc-3a14-4378-a1f3-4f5dbff846b1.png)
+![로딩](https://user-images.githubusercontent.com/113083398/228772126-2c10e7c6-85cc-4717-90fd-a94810df59ce.gif)
+![모바일_로딩](https://user-images.githubusercontent.com/113083398/228772129-253dc505-478a-4433-85a5-2d63b5e7ba35.gif)
+
+
 
 
