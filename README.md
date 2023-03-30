@@ -38,9 +38,9 @@
 |<img src="https://user-images.githubusercontent.com/96197310/228790029-0e35839d-1ba0-49cd-b323-85f2765a9717.gif" width="550px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228790017-1a75e092-bc61-4c26-b8d9-52a7faa70847.gif" width="200px" height="300px">|
 |회원정보 & 주문내역 조회|회원정보 & 주문내역 조회|
 |<img src="https://user-images.githubusercontent.com/113083398/228759295-1db07b57-d977-41dd-b598-bb114df1f338.gif" width="550px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228790012-f5f35a1d-2ff7-4622-8e79-05c2137f5620.gif" width="200px" height="300px">|
-|회원정보 & 비밀번호 변경|회원정보 & 비밀번호 변경|
+|회원정보 수정 & 비밀번호 변경|회원정보 수정 & 비밀번호 변경|
 |<img src="https://user-images.githubusercontent.com/113083398/228759855-aadf3a9a-a40c-4c9f-b4c8-e875d65e7471.gif" width="550px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228789992-99270978-6167-4d48-b61b-20a9983867f8.gif" width="200px" height="300px">|
-|프로필사진 수정|프로필사진 수정|
+|프로필사진 변경|프로필사진 변경|
 |<img src="https://user-images.githubusercontent.com/113083398/228759296-b929d224-5ff0-41a1-808a-a68c60755f48.gif" width="550px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228790035-4fd98f3b-2131-40a7-bf2a-272fddaa51fa.gif" width="200px" height="300px">|
 <br/>
 
