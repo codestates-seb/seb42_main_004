@@ -27,6 +27,65 @@
 
 <br/>
 
+## 📄 Pages
+
+### 회원
+|WEB|MOBILE|
+|:---:|:---:|
+|회원가입|회원가입|
+|<img src="https://user-images.githubusercontent.com/113083398/228759298-6b033b12-6bf5-44ce-b1d3-a7f300c66561.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228790021-55dbfd07-4441-4f2f-b55a-8dc78d1f9447.gif" width="200px" height="300px">|
+|Oauth 회원가입|Oauth 회원가입|
+|<img src="https://user-images.githubusercontent.com/96197310/228790029-0e35839d-1ba0-49cd-b323-85f2765a9717.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228790017-1a75e092-bc61-4c26-b8d9-52a7faa70847.gif" width="200px" height="300px">|
+|회원정보 & 주문내역 조회|회원정보 & 주문내역 조회|
+|<img src="https://user-images.githubusercontent.com/113083398/228759295-1db07b57-d977-41dd-b598-bb114df1f338.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228790012-f5f35a1d-2ff7-4622-8e79-05c2137f5620.gif" width="200px" height="300px">|
+|회원정보 수정|회원정보 수정|
+|<img src="https://user-images.githubusercontent.com/113083398/228759855-aadf3a9a-a40c-4c9f-b4c8-e875d65e7471.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228789992-99270978-6167-4d48-b61b-20a9983867f8.gif" width="200px" height="300px">|
+|프로필사진 수정|프로필사진 수정|
+|<img src="https://user-images.githubusercontent.com/113083398/228759296-b929d224-5ff0-41a1-808a-a68c60755f48.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228790035-4fd98f3b-2131-40a7-bf2a-272fddaa51fa.gif" width="200px" height="300px">|
+<br/>
+### 소비자
+|WEB|MOBILE|
+|:---:|:---:|
+|설문조사 & 식단추천|설문조사 & 식단추천|
+|<img src="https://user-images.githubusercontent.com/96197310/228750068-4dd4d018-b088-4767-b558-6cf014e5bc5d.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115714974/228753316-a3c5543a-06fe-490b-9fc2-ce9171fa0d42.gif" width="200px" height="300px">|
+|밀박스 조회 & 장바구니 바로가기|밀박스 조회 & 장바구니 바로가기|
+|<img src="https://user-images.githubusercontent.com/96197310/228750174-2ac77956-fbe9-4adc-94b4-33c4cce271c1.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115714974/228753353-0d2ffaa7-381d-49da-8023-1ab101b72ab9.gif" width="200px" height="300px">|
+|커스텀 밀박스 생성|커스텀 밀박스 생성|
+|<img src="https://user-images.githubusercontent.com/113083398/228759965-aeb0ee40-f76a-4bd0-a687-98b171d3d7bb.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228786131-eb7b1b58-abc9-4559-ab8b-518186fd25af.gif" width="200px" height="300px">|
+|구성품 조회|구성품 조회|
+|<img src="https://user-images.githubusercontent.com/96197310/228750042-bb1d447b-0d85-4d8d-9540-7f775b829a2f.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228788450-c6ce2ec9-47b1-408d-b326-4d0d788968ba.gif" width="200px" height="300px">|
+|장바구니 담기|장바구니 담기|
+|<img src="https://user-images.githubusercontent.com/113083398/228759981-97a90a85-b210-40c0-80e6-a2717ce2be20.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228802856-8627265d-bc23-4718-9891-027f61822bc4.gif" width="200px" height="300px">|
+|결제|결제|
+|<img src="https://user-images.githubusercontent.com/113083398/228759279-4592ffe9-a67e-4738-8c39-a8137597bf21.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/96197310/228790031-58592a74-28bc-488c-8662-a7661d5115b7.gif" width="200px" height="300px">|
+
+<br/>
+### 관리자
+|WEB|MOBILE|
+|:---:|:---:|
+|주문내역 관리|주문내역 관리|
+|<img src="https://user-images.githubusercontent.com/96197310/228750027-24b87eb6-2eb8-4597-aec6-f98a611baa53.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115714974/228753293-629cab04-9fd0-4029-b049-caa60af49678.gif" width="200px" height="300px">|
+|밀박스 추가|밀박스 추가|
+|<img src="https://user-images.githubusercontent.com/113083398/228771554-7f572b2b-8aad-4140-8f82-701bdf0fb873.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228785501-a84b8b20-3993-4149-bce6-7e8da5050211.gif" width="200px" height="300px">|
+|밀박스 삭제|관리자 밀박스 삭제|
+|<img src="https://user-images.githubusercontent.com/113083398/228759975-8376fe39-f9af-490a-95dd-ef9627329a54.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228785556-d0753a03-0898-42e6-a106-4a01023616ab.gif" width="200px" height="300px">|
+|구성품 추가|구성품 추가|
+|<img src="https://user-images.githubusercontent.com/113083398/228759985-6400a558-4630-4c80-96b2-03a408dd7ae4.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228785851-35536e76-7611-4177-b161-462b49cc65d6.gif" width="200px" height="300px">|
+|구성품 수정|구성품 수정|
+|<img src="https://user-images.githubusercontent.com/113083398/228759948-69618a2a-90fa-4c93-865a-8ca8e2a83e39.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228802744-44513230-b15c-4680-8385-cedaf261976b.gif" width="200px" height="300px">|
+|구성품 삭제|구성품 삭제|
+|<img src="https://user-images.githubusercontent.com/113083398/228759973-a5865926-1231-47c0-ac84-f42ac89309a3.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228785969-307b2206-5f97-4a97-8039-18aaee55abfb.gif" width="200px" height="300px">|
+
+<br/>
+### 
+|WEB|MOBILE|
+|:---:|:---:|
+|로딩|로딩|
+|<img src="https://user-images.githubusercontent.com/113083398/228772126-2c10e7c6-85cc-4717-90fd-a94810df59ce.gif" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/113083398/228772129-253dc505-478a-4433-85a5-2d63b5e7ba35.gif" width="200px" height="300px">|
+|에러|에러|
+|<img src="https://user-images.githubusercontent.com/113083398/228759967-13a564bf-4bdc-4472-83e1-9c71d4958a8a.png" width="600px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228786189-9bded687-6103-4559-af7e-51ad3938e1de.PNG" width="200px" height="300px">|
+
+
 <br/>
 
 ## ⚙ Tech Stack
@@ -62,10 +121,40 @@
 
 
 
-|결제 웹|결제 모바일|
-|:---:|:---:|
-|<img src="https://user-images.githubusercontent.com/113083398/228759279-4592ffe9-a67e-4738-8c39-a8137597bf21.gif" width="200px" height="200px">|<img src="https://user-images.githubusercontent.com/96197310/228790031-58592a74-28bc-488c-8662-a7661d5115b7.gif" width="200px" height="200px">|
-|![결제](https://user-images.githubusercontent.com/113083398/228759279-4592ffe9-a67e-4738-8c39-a8137597bf21.gif)|![결제](https://user-images.githubusercontent.com/96197310/228790031-58592a74-28bc-488c-8662-a7661d5115b7.gif)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#########################################
+
+
+
+
+
+
+
+########################################
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -81,6 +170,7 @@
 ![관리자-주문내역](https://user-images.githubusercontent.com/115714974/228753293-629cab04-9fd0-4029-b049-caa60af49678.gif)
 ![설문조사](https://user-images.githubusercontent.com/115714974/228753316-a3c5543a-06fe-490b-9fc2-ce9171fa0d42.gif)
 ![장바구니(2)](https://user-images.githubusercontent.com/115714974/228753353-0d2ffaa7-381d-49da-8023-1ab101b72ab9.gif)
+
 
 
 ![유저_회원가입](https://user-images.githubusercontent.com/113083398/228759298-6b033b12-6bf5-44ce-b1d3-a7f300c66561.gif)
@@ -127,7 +217,3 @@
 
 ![로딩](https://user-images.githubusercontent.com/113083398/228772126-2c10e7c6-85cc-4717-90fd-a94810df59ce.gif)
 ![모바일_로딩](https://user-images.githubusercontent.com/113083398/228772129-253dc505-478a-4433-85a5-2d63b5e7ba35.gif)
-
-
-
-
