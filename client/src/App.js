@@ -69,7 +69,6 @@ function App() {
       logoutTimer = setTimeout(() => {
         initialize().then(() => {
           alert('자동 로그아웃되었습니다.');
-          window.location.reload();
         });
       }, remainingTime * 60 * 1000);
     } else {
