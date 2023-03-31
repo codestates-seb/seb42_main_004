@@ -18,13 +18,14 @@ function GoogleButton() {
   const { mealboxes } = useSelector((state) => state.cartReducer.cart) || {
     mealboxes: [],
   };
+  const { admin } = useSelector((state) => state.authReducer);
 
   const login = async (token) => {
     if (!localStorage.getItem('accessToken')) {
       localStorage.setItem('accessToken', token);
       setAuthorizationToken(token);
       await Auth();
-      await addItemsToAccountCart();
+      !admin && (await addItemsToAccountCart());
       window.location.reload();
     } else if (
       localStorage.getItem('accessToken') &&
@@ -34,7 +35,7 @@ function GoogleButton() {
       localStorage.setItem('accessToken', token);
       setAuthorizationToken(token);
       await Auth();
-      await addItemsToAccountCart();
+      !admin && (await addItemsToAccountCart());
       window.location.reload();
     }
   };
@@ -83,7 +84,7 @@ function GoogleButton() {
 
     await postData('/users/cart/all', postReqData);
     let data = await getData('/users/cart');
-    setCart(data.data);
+    dispatch(setCart(data.data));
   };
 
   const googleLogin = useGoogleLogin({
