@@ -101,6 +101,7 @@ export default MealBoxCardLi;
 
 export const MealBoxCardContainerDiv = styled.div`
   width: 100%;
+  height: 100%;
   min-width: fit-content;
   display: flex;
   flex-direction: column;
@@ -176,10 +177,13 @@ const MealBoxDesLi = styled.h3`
   }
 `;
 const MealBoxH3 = styled.h3`
+  flex: 1;
+  display: flex;
+  align-items: center;
   font-size: 1.3rem;
   margin-top: 1rem;
   margin-bottom: 0.5rem;
-  text-align: ${(props) => props.center && 'center'};
+  justify-content: ${(props) => props.center && 'center'};
 `;
 const MealBoxCardButtonDiv = styled.div`
   position: relative;
@@ -187,23 +191,25 @@ const MealBoxCardButtonDiv = styled.div`
   width: 100%;
 
   > button {
-    margin-right: 0.5rem;
+    flex: 1;
+    margin-left: 0.5rem;
     font-size: 1rem !important;
-    width: 100%;
+    width: fit-content;
     padding: 0.7rem;
     height: auto;
     max-height: 3.5rem;
     word-break: keep-all;
   }
 
-  > button:not(:last-child) {
-    flex: 1;
+  > button:first-child {
+    margin-left: 0;
   }
 
-  button:nth-child(3) {
+  > button:nth-child(3) {
     flex: 0.7;
+    min-width: 5.5rem;
+    padding: 0;
     cursor: default;
-    margin-right: 0;
 
     :active {
       box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.4);
