@@ -51,6 +51,11 @@ const ContainerDiv = styled.div`
   > input {
     height: 48px;
     padding-right: 3rem;
+
+    ::placeholder {
+      font-size: 0.85rem;
+    }
+
     ${({ validText }) =>
       validText &&
       css`

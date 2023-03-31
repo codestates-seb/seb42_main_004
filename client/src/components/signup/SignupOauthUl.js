@@ -29,6 +29,7 @@ function SignupOauthUl() {
   const { mealboxes } = useSelector((state) => state.cartReducer.cart) || {
     mealboxes: [],
   };
+  const { admin } = useSelector((state) => state.authReducer);
 
   useEffect(() => {
     if (location.state) {
@@ -60,7 +61,7 @@ function SignupOauthUl() {
       localStorage.setItem('accessToken', token);
       setAuthorizationToken(token);
       await Auth();
-      await addItemsToAccountCart();
+      !admin && (await addItemsToAccountCart());
       window.location.reload();
     } else if (
       localStorage.getItem('accessToken') &&
@@ -70,7 +71,7 @@ function SignupOauthUl() {
       localStorage.setItem('accessToken', token);
       setAuthorizationToken(token);
       await Auth();
-      await addItemsToAccountCart();
+      !admin && (await addItemsToAccountCart());
       window.location.reload();
     }
   };
@@ -119,7 +120,7 @@ function SignupOauthUl() {
 
     await postData('/users/cart/all', postReqData);
     let data = await getData('/users/cart');
-    setCart(data.data);
+    dispatch(setCart(data.data));
   };
 
   const handleClick = () => {
