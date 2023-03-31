@@ -85,6 +85,8 @@
 |<img src="https://user-images.githubusercontent.com/113083398/228772126-2c10e7c6-85cc-4717-90fd-a94810df59ce.gif" width="550px" height="300px">|<img src="https://user-images.githubusercontent.com/113083398/228772129-253dc505-478a-4433-85a5-2d63b5e7ba35.gif" width="200px" height="300px">|
 |에러|에러|
 |<img src="https://user-images.githubusercontent.com/113083398/228759967-13a564bf-4bdc-4472-83e1-9c71d4958a8a.png" width="550px" height="300px">|<img src="https://user-images.githubusercontent.com/115924970/228890192-d4d6cb06-5cf7-46b6-9bf7-2900497e98cf.PNG" width="200px" height="300px">|
+|카카오톡 공유|디스코드 공유|
+|![카카오톡공유](https://user-images.githubusercontent.com/113083398/229083464-779ffa8c-0136-44cf-9044-5ea666664df3.png)|![디스코드공유](https://user-images.githubusercontent.com/113083398/229083498-a6074b33-9d12-4f96-bac4-76d0dca75fcb.png)|
 <br/>
 
 ## 📚 Documents
