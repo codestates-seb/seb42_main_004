@@ -29,16 +29,17 @@ import SurveyHome from './pages/SurveyHome';
 import SignupComplete from './pages/SignupComplete';
 import RequestEmail from './pages/RequestEmail';
 import ToTopButton from './components/commons/ToTopButton';
-import { initializeCart } from './reducers/cartReducer';
 import setAuthorizationToken from './util/setAuthorizationToken';
 import parseToken from './util/parseToken';
 import checkFooter from './util/checkFooter';
 import { setProfile } from './reducers/userReducer';
 import getData from './util/getData';
+import useInitialize from './util/useInitialize';
 
 function App() {
   const { admin } = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
+  const initialize = useInitialize();
   const accessToken = localStorage.getItem('accessToken');
   const { pathname, search } = useLocation();
 
@@ -66,20 +67,10 @@ function App() {
         (new Date(exp * 1000).getTime() - new Date().getTime()) / (60 * 1000)
       );
       logoutTimer = setTimeout(() => {
-        localStorage.removeItem('accessToken');
-        dispatch(
-          setAuth({
-            isLogin: false,
-            accessToken: '',
-            user: {},
-            roles: [],
-          })
-        );
-        dispatch(setEmail(''));
-        dispatch(initializeCart());
-        dispatch(setProfile({ imagePath: null, name: '' }));
-        alert('자동 로그아웃되었습니다.');
-        window.location.reload();
+        initialize().then(() => {
+          alert('자동 로그아웃되었습니다.');
+          window.location.reload();
+        });
       }, remainingTime * 60 * 1000);
     } else {
       clearTimeout(logoutTimer);
@@ -176,7 +167,6 @@ const BodyMargin = styled.div`
   min-height: calc(100vh - 280px);
 
   @media screen and (max-width: 768px) {
-    /* min-height: calc(100vh - 230px); */
     min-height: calc(100vh - ${(props) => (props.height ? '0px' : '230px')});
     padding-bottom: calc(${(props) => (props.height ? '90px' : '0px')} + 4rem);
   }
