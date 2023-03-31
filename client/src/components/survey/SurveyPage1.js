@@ -22,7 +22,7 @@ function SurveyPage1() {
 
     let regexAge = new RegExp(/^\d*?$/);
     let regexHW = new RegExp(/^\d*(\.\d{0,1})?$/);
-    let regex = id === 'age' ? regexAge : regexHW;
+    let regex = id !== 'weight' ? regexAge : regexHW;
 
     if (regex.test(value)) {
       dispatch(setProfile({ id, value }));
@@ -107,9 +107,9 @@ function SurveyPage1() {
           id="height"
           value={height}
           onChange={dispatchProfile}
-          placeholder="000.0"
+          placeholder="000"
           unit="cm"
-          maxLength="5"
+          maxLength="3"
         />
         {heightValidMsg && height && <ValidMsg>{heightValidMsg}</ValidMsg>}
         <InputLabelDiv
