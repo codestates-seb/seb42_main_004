@@ -1,25 +1,23 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import CartCounter from './CartCounter';
 import MainButton from './MainButton';
 import Navbar from './Navbar';
-import { setAuth, setEmail } from '../../reducers/authReducer';
-import { initializeCart } from '../../reducers/cartReducer';
 import { FaShoppingCart } from 'react-icons/fa';
 import { TfiMenu } from 'react-icons/tfi';
 import logo from '../../assets/logo_black.png';
 import profile from '../../assets/profile.png';
-import { setProfile } from '../../reducers/userReducer';
 import goToCustom from '../../util/goToCustom';
+import useInitialize from '../../util/useInitialize';
 
 function Header() {
   const [isNav, setIsNav] = useState(false);
   const { isLogin, admin } = useSelector((state) => state.authReducer);
   const { imagePath, name } = useSelector((state) => state.userReducer);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const initialize = useInitialize();
 
   const handleClick = () => {
     setIsNav(!isNav);
@@ -27,23 +25,7 @@ function Header() {
 
   const handleLogout = () => {
     if (confirm('정말 로그아웃하시겠습니까?')) {
-      const initialize = new Promise((resolve) => {
-        localStorage.removeItem('accessToken');
-        dispatch(
-          setAuth({
-            isLogin: false,
-            accessToken: '',
-            user: {},
-            roles: [],
-          })
-        );
-        dispatch(setEmail(''));
-        dispatch(setProfile({ imagePath: null, name: '' }));
-        dispatch(initializeCart());
-        resolve();
-      });
-
-      initialize.then(() => window.location.reload());
+      initialize().then(() => window.location.reload());
     } else {
       return;
     }
