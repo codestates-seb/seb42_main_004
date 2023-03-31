@@ -27,19 +27,23 @@ function Header() {
 
   const handleLogout = () => {
     if (confirm('정말 로그아웃하시겠습니까?')) {
-      localStorage.removeItem('accessToken');
-      dispatch(
-        setAuth({
-          isLogin: false,
-          accessToken: '',
-          user: {},
-          roles: [],
-        })
-      );
-      dispatch(setEmail(''));
-      dispatch(setProfile({ imagePath: null, name: '' }));
-      dispatch(initializeCart());
-      window.location.reload();
+      const initialize = new Promise((resolve) => {
+        localStorage.removeItem('accessToken');
+        dispatch(
+          setAuth({
+            isLogin: false,
+            accessToken: '',
+            user: {},
+            roles: [],
+          })
+        );
+        dispatch(setEmail(''));
+        dispatch(setProfile({ imagePath: null, name: '' }));
+        dispatch(initializeCart());
+        resolve();
+      });
+
+      initialize.then(() => window.location.reload());
     } else {
       return;
     }
