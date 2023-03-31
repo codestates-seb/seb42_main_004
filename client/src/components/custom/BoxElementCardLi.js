@@ -86,7 +86,8 @@ const ProductInfoDiv = styled.div`
   flex: 1;
   padding: 0 2%;
   display: flex;
-  align-items: baseline;
+  flex-direction: column;
+  align-items: flex-start;
 
   > h3 {
     word-break: keep-all;
