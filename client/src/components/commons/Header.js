@@ -144,7 +144,6 @@ const ContainerHeader = styled.header`
   ul {
     padding: 0;
     list-style: none;
-
     > li > * {
       cursor: pointer;
       font-family: 'IBM Plex Sans KR', sans-serif;
@@ -159,7 +158,6 @@ const HeaderDiv = styled.div`
   left: 0;
   right: 0;
   z-index: 36;
-
   > nav {
     flex-direction: row;
     justify-content: space-between;
@@ -168,7 +166,6 @@ const HeaderDiv = styled.div`
 const MenuDiv = styled.div`
   display: flex;
   align-items: center;
-
   > * {
     cursor: pointer;
   }
@@ -179,7 +176,6 @@ const MenuIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   @media (min-width: 768px) {
     display: none;
   }
@@ -194,7 +190,6 @@ const MenuUl = styled.ul`
   align-items: center;
   justify-content: space-around;
   flex-grow: 1;
-
   > li {
     flex-basis: 120px;
     height: 100%;
@@ -202,14 +197,12 @@ const MenuUl = styled.ul`
     align-items: center;
     white-space: nowrap;
   }
-
   button {
     width: 100%;
     height: 100%;
     border: none;
     background-color: transparent;
   }
-
   @media (max-width: 768px) {
     display: none;
   }
@@ -217,7 +210,6 @@ const MenuUl = styled.ul`
 const IconsUl = styled.ul`
   display: flex;
   flex-direction: row;
-
   > li {
     width: 100%;
     height: 100%;
@@ -229,14 +221,12 @@ const ProfileSpan = styled.span`
   width: 50px;
   height: 100%;
   margin-right: 1rem;
-
   > button {
     width: 100%;
     height: 100%;
     border: none;
     background-color: transparent;
   }
-
   @media (max-width: 768px) {
     display: none;
   }
@@ -250,13 +240,11 @@ const CartSpan = styled.span`
   align-items: center;
   justify-content: center;
   margin-left: 1rem;
-
   > button {
     width: 100%;
     height: 100%;
     border: none;
     background-color: transparent;
-
     > :last-child {
       position: absolute;
       top: 7px;
