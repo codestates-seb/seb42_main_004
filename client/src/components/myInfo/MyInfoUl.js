@@ -144,12 +144,12 @@ function MyInfoUl({ pathName }) {
                         setAuth({
                           isLogin: false,
                           accessToken: '',
-                          tokenExpirationDate: '',
                           user: {},
                           roles: [],
                         })
                       );
                       dispatch(setEmail(''));
+                      dispatch(setProfile({ imagePath: null, name: '' }));
                       dispatch(initializeCart());
                       window.location.reload();
                     });
