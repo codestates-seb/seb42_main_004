@@ -29,7 +29,7 @@ function MealBoxCardLi({ mealBox, reload, title }) {
   };
 
   return (
-    <li>
+    <Li>
       {title && <h2>{title}</h2>}
       <MealBoxCardContainerDiv className="shadow">
         <MealBoxImgDiv className="shadow">
@@ -93,12 +93,16 @@ function MealBoxCardLi({ mealBox, reload, title }) {
           </NotificationDiv>
         </MealBoxCardButtonDiv>
       </MealBoxCardContainerDiv>
-    </li>
+    </Li>
   );
 }
 
 export default MealBoxCardLi;
 
+export const Li = styled.li`
+  display: flex;
+  flex-direction: column;
+`;
 export const MealBoxCardContainerDiv = styled.div`
   width: 100%;
   height: 100%;
