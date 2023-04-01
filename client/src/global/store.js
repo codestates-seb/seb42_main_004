@@ -2,12 +2,20 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import customReducer from '../reducers/customReducer';
 import surveyRcmdReducer from '../reducers/surveyRcmdReducer';
 import surveyQuestionReducer from '../reducers/surveyQuestionReducer';
-import { persistReducer } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session';
-import thunk from 'redux-thunk';
 import authReducer from '../reducers/authReducer';
 import cartReducer from '../reducers/cartReducer';
 import userReducer from '../reducers/userReducer';
+import {
+  persistStore,
+  persistReducer,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
 
 const persistConfig = {
   key: 'root',
@@ -20,8 +28,7 @@ const persistConfig = {
     'userReducer',
   ],
 };
-
-export const rootReducer = combineReducers({
+const rootReducer = combineReducers({
   customReducer,
   surveyRcmdReducer,
   surveyQuestionReducer,
@@ -29,11 +36,16 @@ export const rootReducer = combineReducers({
   cartReducer,
   userReducer,
 });
-
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  devTools: process.env.NODE_ENV !== 'production',
-  middleware: [thunk],
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
 });
+
+export const persistor = persistStore(store);

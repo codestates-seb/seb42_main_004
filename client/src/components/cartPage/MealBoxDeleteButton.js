@@ -28,4 +28,5 @@ export const DeleteButton = styled.button`
   border: none;
   height: fit-content;
   margin-right: 4px;
+  white-space: nowrap;
 `;

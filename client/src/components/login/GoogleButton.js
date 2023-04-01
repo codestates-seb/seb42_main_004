@@ -26,7 +26,6 @@ function GoogleButton() {
       setAuthorizationToken(token);
       await Auth();
       !admin && (await addItemsToAccountCart());
-      window.location.reload();
     } else if (
       localStorage.getItem('accessToken') &&
       localStorage.getItem('accessToken') !== token
@@ -36,7 +35,6 @@ function GoogleButton() {
       setAuthorizationToken(token);
       await Auth();
       !admin && (await addItemsToAccountCart());
-      window.location.reload();
     }
   };
 
