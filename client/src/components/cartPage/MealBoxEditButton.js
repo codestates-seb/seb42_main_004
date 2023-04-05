@@ -17,7 +17,7 @@ function MealBoxEditButton() {
     });
     let mealBoxData = mealboxes[idx].products;
     dispatch(addProductInBox(mealBoxData));
-    navigate('/custom', { state: true });
+    navigate('/custom', { state: cartMealboxId });
   };
 
   return <Button onClick={customPageLink}>커스텀 하기</Button>;
