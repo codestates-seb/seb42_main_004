@@ -15,9 +15,13 @@ function MealBoxEditButton() {
     let idx = mealboxes.findIndex((el) => {
       return String(el.cartMealboxId) === String(cartMealboxId);
     });
-    let mealBoxData = mealboxes[idx].products;
+    let [mealBoxData, quantity] = [
+      mealboxes[idx].products,
+      mealboxes[idx].quantity,
+    ];
+
     dispatch(addProductInBox(mealBoxData));
-    navigate('/custom', { state: cartMealboxId });
+    navigate('/custom', { state: { cartMealboxId, quantity } });
   };
 
   return <Button onClick={customPageLink}>커스텀 하기</Button>;
