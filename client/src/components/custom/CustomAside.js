@@ -1,31 +1,59 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ModalDiv, { TextButton } from '../commons/ModalDiv';
 import postData from '../../util/postData';
 import { AsideSignatureButton, AsideWrapper } from '../commons/CartAside';
 import { deleteProduct, initializeCustom } from '../../reducers/customReducer';
-import { addCartItem } from '../../reducers/cartReducer';
+import { addCartItem, deleteCartItem } from '../../reducers/cartReducer';
+import deleteData from '../../util/deleteData';
 
 function CustomAside({ custom }) {
   const { isLogin, admin } = useSelector((state) => state.authReducer);
+  const { cartMealboxId, quantity } = useLocation().state;
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const addCustomToCart = async () => {
+    if (cartMealboxId) {
+      isLogin &&
+        (await deleteData(`/users/cart/${cartMealboxId}`).then((res) => {
+          if (res?.status !== 200) {
+            alert(
+              `장바구니 추가 작업이 실패했습니다(1)\n관리자에게 문의해주세요.`
+            );
+          }
+          return;
+        }));
+      dispatch(deleteCartItem([cartMealboxId]));
+    }
+
     const data = { ...custom };
+
     if (isLogin) {
       data.products = data.products.map((product) => {
         const { productId, quantity } = product;
         return { productId, quantity };
       });
-      await postData(`/users/cart/custom`, data);
+      const postReqData = {
+        adminMadeMealboxes: [],
+        customMealboxes: [{ mealbox: data, quantity: quantity || 1 }],
+      };
+      await postData(`/users/cart/all`, postReqData).then((res) => {
+        if (res?.status !== 201) {
+          alert(
+            `장바구니 추가 작업이 실패했습니다(2)\n관리자에게 문의해주세요.`
+          );
+        }
+        return;
+      });
     }
-    dispatch(addCartItem({ ...data, quantity: 1 }));
 
+    dispatch(addCartItem({ ...data, quantity: quantity || 1 }));
     dispatch(initializeCustom());
+
     if (
       window.confirm(
         'Custom 밀박스가 장바구니에 추가되었습니다.\n장바구니로 이동하시겠습니까?'
