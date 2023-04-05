@@ -21,6 +21,7 @@ const useGET = (url) => {
 
   useEffect(() => {
     if (url) {
+      setIsPending(true);
       getData();
     }
   }, [url]);
