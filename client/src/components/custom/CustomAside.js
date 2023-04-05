@@ -3,35 +3,42 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ModalDiv, { TextButton } from '../commons/ModalDiv';
-import postData from '../../util/postData';
 import { AsideSignatureButton, AsideWrapper } from '../commons/CartAside';
 import { deleteProduct, initializeCustom } from '../../reducers/customReducer';
 import { addCartItem, deleteCartItem } from '../../reducers/cartReducer';
+import postData from '../../util/postData';
 import deleteData from '../../util/deleteData';
 
 function CustomAside({ custom }) {
   const { isLogin, admin } = useSelector((state) => state.authReducer);
-  const { cartMealboxId, quantity } = useLocation().state;
+  const { state } = useLocation();
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const addCustomToCart = async () => {
+    let error = false;
+    const errorFunc = (res, errorCode, order) => {
+      if (res?.status !== errorCode) {
+        alert(
+          `장바구니 추가 작업이 실패했습니다(${order})\n관리자에게 문의해주세요.`
+        );
+        error = true;
+      }
+    };
+
+    const { cartMealboxId } = state;
     if (cartMealboxId) {
       isLogin &&
         (await deleteData(`/users/cart/${cartMealboxId}`).then((res) => {
-          if (res?.status !== 200) {
-            alert(
-              `장바구니 추가 작업이 실패했습니다(1)\n관리자에게 문의해주세요.`
-            );
-          }
-          return;
+          errorFunc(res, 200, 1);
         }));
+      if (error) return;
       dispatch(deleteCartItem([cartMealboxId]));
     }
 
     const data = { ...custom };
-
+    const quantity = state.quantity || 1;
     if (isLogin) {
       data.products = data.products.map((product) => {
         const { productId, quantity } = product;
@@ -39,19 +46,14 @@ function CustomAside({ custom }) {
       });
       const postReqData = {
         adminMadeMealboxes: [],
-        customMealboxes: [{ mealbox: data, quantity: quantity || 1 }],
+        customMealboxes: [{ mealbox: data, quantity }],
       };
       await postData(`/users/cart/all`, postReqData).then((res) => {
-        if (res?.status !== 201) {
-          alert(
-            `장바구니 추가 작업이 실패했습니다(2)\n관리자에게 문의해주세요.`
-          );
-        }
-        return;
+        errorFunc(res, 201, 2);
       });
+      if (error) return;
     }
-
-    dispatch(addCartItem({ ...data, quantity: quantity || 1 }));
+    dispatch(addCartItem({ ...data, quantity: quantity }));
     dispatch(initializeCustom());
 
     if (
