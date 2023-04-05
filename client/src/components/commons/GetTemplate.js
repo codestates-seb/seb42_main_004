@@ -6,7 +6,7 @@ function GetTemplate({ isPending, error, res, children, title }) {
   return (
     <>
       {title && <HelmetTitle title={title} />}
-      {res ? children : error ? <Error /> : isPending && <Loading />}
+      {isPending ? <Loading /> : error ? <Error /> : res ? children : <Error />}
     </>
   );
 }
