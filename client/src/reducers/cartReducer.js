@@ -13,8 +13,8 @@ const cartSlice = createSlice({
     addCartItem: (state, action) => {
       const { cart } = state;
       const mealBox = action.payload;
-      const cartMealboxId = new Date().toString().split(' ').join('');
-
+      const cartMealboxId = new Date().getTime();
+      console.log(cartMealboxId);
       let arr = cart.mealboxes.map((el) => {
         return el.mealboxId;
       });

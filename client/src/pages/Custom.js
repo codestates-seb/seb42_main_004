@@ -12,8 +12,11 @@ import { MealBoxesWrapDiv } from './AllBoxes';
 import useGET from '../util/useGET';
 import useFilterSearch from '../util/useFilterSearch';
 import { initializeCustom } from '../reducers/customReducer';
+import { useLocation } from 'react-router-dom';
 
 function Custom() {
+  let { state } = useLocation();
+  console.log(state);
   const { custom } = useSelector((state) => state.customReducer);
   const { admin } = useSelector((state) => state.authReducer);
   const [path, setPath] = useState('/products?page=1&sort=id&dir=DESC');
