@@ -32,8 +32,8 @@ function CartItemLi({ mealbox, value, calcRenderPrice }) {
       <CartItemBottomDiv>
         <MealBoxItemsDiv products={products} />
         <CartItemBottomButtonsDiv>
-          <div>{`${kcal}kcal`}</div>
-          <div>{`${price}원`}</div>
+          <div>{`${kcal.toLocaleString()}kcal`}</div>
+          <div>{`${price.toLocaleString()}원`}</div>
           <MealBoxEditButton />
         </CartItemBottomButtonsDiv>
       </CartItemBottomDiv>
