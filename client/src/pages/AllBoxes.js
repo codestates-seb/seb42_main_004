@@ -40,7 +40,9 @@ function AllBoxes() {
         )}
         {res.data?.length === 0 && (
           <NoResultDiv
-            search={(word) => navigate(`/mealboxes/search?page=1&name=${word}`)}
+            search={(word) =>
+              navigate(`/mealboxes/search/detail?page=1&name=${word}`)
+            }
             notFoundWord={notFoundWord}
             replaceWord={'고단백질 아침 세트'}
           />
