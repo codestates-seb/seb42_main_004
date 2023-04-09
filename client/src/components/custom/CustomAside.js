@@ -27,18 +27,18 @@ function CustomAside({ custom }) {
       }
     };
 
-    const { cartMealboxId } = state;
-    if (cartMealboxId) {
+    if (state?.cartMealboxId) {
+      const { cartMealboxId } = state;
       isLogin &&
         (await deleteData(`/users/cart/${cartMealboxId}`).then((res) => {
-          errorFunc(res, 200, 1);
+          errorFunc(res, 200, '기존 밀박스 삭제');
         }));
       if (error) return;
       dispatch(deleteCartItem([cartMealboxId]));
     }
 
     const data = { ...custom };
-    const quantity = state.quantity || 1;
+    const quantity = state?.quantity || 1;
     if (isLogin) {
       data.products = data.products.map((product) => {
         const { productId, quantity } = product;
@@ -49,7 +49,7 @@ function CustomAside({ custom }) {
         customMealboxes: [{ mealbox: data, quantity }],
       };
       await postData(`/users/cart/all`, postReqData).then((res) => {
-        errorFunc(res, 201, 2);
+        errorFunc(res, 201, '커스텀 밀박스 추가');
       });
       if (error) return;
     }
