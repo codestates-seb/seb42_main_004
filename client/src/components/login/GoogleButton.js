@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
 import styled from 'styled-components';
 import axios from 'axios';
-import { FcGoogle } from 'react-icons/fc';
+import { FcGoogle } from '@react-icons/all-files/fc/FcGoogle.esm';
 import postData from '../../util/postData';
 import setAuthorizationToken from '../../util/setAuthorizationToken';
 import parseToken from '../../util/parseToken';

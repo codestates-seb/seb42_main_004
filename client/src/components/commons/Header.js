@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import CartCounter from './CartCounter';
 import MainButton from './MainButton';
 import Navbar from './Navbar';
-import { FaShoppingCart } from 'react-icons/fa';
-import { TfiMenu } from 'react-icons/tfi';
+import { FaShoppingCart } from '@react-icons/all-files/fa/FaShoppingCart.esm';
+import { HiOutlineMenu } from '@react-icons/all-files/hi/HiOutlineMenu.esm';
 import logo from '../../assets/logo_black.png';
 import profile from '../../assets/profile.png';
 import goToCustom from '../../util/goToCustom';
@@ -37,7 +37,7 @@ function Header() {
         <nav className="margininside">
           <MenuDiv>
             <MenuIcon onClick={handleClick}>
-              <TfiMenu size={25} />
+              <HiOutlineMenu size={30} />
             </MenuIcon>
             <LogoImg src={logo} alt="logo" onClick={() => navigate('/')} />
           </MenuDiv>
