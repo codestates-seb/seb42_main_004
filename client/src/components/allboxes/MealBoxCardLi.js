@@ -23,7 +23,6 @@ function MealBoxCardLi({ mealBox, reload, title }) {
       await postData(`/users/cart`, { mealboxId: mealBox.mealboxId });
     }
     dispatch(addCartItem({ ...mealBox, quantity: 1 }));
-
     setNotification(true);
     setTimeout(() => setNotification(false), 2000);
   };
