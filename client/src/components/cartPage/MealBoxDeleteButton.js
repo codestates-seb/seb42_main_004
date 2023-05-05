@@ -1,17 +1,16 @@
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { deleteCartItem } from '../../reducers/cartReducer';
-import { useDispatch, useSelector } from 'react-redux';
 import deleteData from '../../util/deleteData';
 
-function MealBoxDeleteButton() {
+function MealBoxDeleteButton({ cartMealboxId }) {
   let { isLogin } = useSelector((state) => state.authReducer);
   let dispatch = useDispatch();
-  let deleteHandler = (e) => {
-    let cartMealboxId = e.target.parentElement.parentElement.parentElement.id;
 
+  let deleteHandler = () => {
     if (confirm('해당 밀박스를 장바구니에서 삭제하시겠습니까?')) {
-      isLogin && deleteData(`/users/cart/${cartMealboxId}`);
       dispatch(deleteCartItem([cartMealboxId]));
+      isLogin && deleteData(`/users/cart/${cartMealboxId}`);
       alert('장바구니에서 삭제되었습니다.');
     }
   };

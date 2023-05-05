@@ -1,9 +1,9 @@
+import { useState } from 'react';
+import styled from 'styled-components';
 import MealBoxEditButton from './MealBoxEditButton';
 import MealBoxDeleteButton from './MealBoxDeleteButton';
 import MealBoxCounterDiv from './MealBoxCounterDiv';
 import MealBoxItemsDiv from './MealBoxItemsDiv';
-import styled from 'styled-components';
-import { useState } from 'react';
 
 function CartItemLi({ mealbox, value, calcRenderPrice }) {
   let { name, kcal, price, quantity, products } = mealbox;
@@ -25,16 +25,16 @@ function CartItemLi({ mealbox, value, calcRenderPrice }) {
         />
         <h2>{name}</h2>
         <CartItemTopButtonsDiv>
-          <MealBoxDeleteButton />
-          <MealBoxCounterDiv quantity={quantity} />
+          <MealBoxDeleteButton cartMealboxId={value} />
+          <MealBoxCounterDiv cartMealboxId={value} quantity={quantity} />
         </CartItemTopButtonsDiv>
       </CartItemTopDiv>
       <CartItemBottomDiv>
         <MealBoxItemsDiv products={products} />
         <CartItemBottomButtonsDiv>
-          <div>{`${kcal.toLocaleString()}kcal`}</div>
-          <div>{`${price.toLocaleString()}원`}</div>
-          <MealBoxEditButton />
+          <div>{kcal.toLocaleString()}kcal</div>
+          <div>{price.toLocaleString()}원</div>
+          <MealBoxEditButton cartMealboxId={value} />
         </CartItemBottomButtonsDiv>
       </CartItemBottomDiv>
     </CartItemWrapperLi>

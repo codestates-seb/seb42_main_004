@@ -1,17 +1,18 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import CartItemLi from '../components/cartPage/CartItemLi';
 import CartAside from '../components/commons/CartAside';
-import getData from '../util/getData';
-import { useSelector, useDispatch } from 'react-redux';
+import Empty from '../components/commons/Empty';
 import { setCart } from '../reducers/cartReducer';
 import postData from '../util/postData';
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import Empty from '../components/commons/Empty';
+import getData from '../util/getData';
+
 function Cart() {
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  let { isLogin, admin } = useSelector((state) => state.authReducer);
+  let { isLogin } = useSelector((state) => state.authReducer);
   let { totalPrice, mealboxes } = useSelector(
     (state) => state.cartReducer.cart
   ) || { totalPrice: 0, mealboxes: [] };
@@ -27,11 +28,9 @@ function Cart() {
     );
 
     let checkedPrice = mealboxes?.reduce((acc, cur) => {
-      if (checkedCartMealBoxId.includes(String(cur.cartMealboxId))) {
-        return acc + cur.price * cur.quantity;
-      } else {
-        return acc;
-      }
+      return checkedCartMealBoxId.includes(String(cur.cartMealboxId))
+        ? acc + cur.price * cur.quantity
+        : acc;
     }, 0);
 
     setRenderPrice(checkedPrice);
@@ -40,7 +39,6 @@ function Cart() {
   let purchaseHandler = () => {
     if (!isLogin) {
       return navigate('/login');
-      // session의 물품 장바구니에 추가 요청
     }
 
     let checkedItem = document.querySelectorAll(
@@ -52,9 +50,7 @@ function Cart() {
     );
 
     let postReqData = mealboxes
-      .filter((el) => {
-        return checkedCartMealBoxId.includes(String(el.cartMealboxId));
-      })
+      .filter((el) => checkedCartMealBoxId.includes(String(el.cartMealboxId)))
       .map((el) => {
         let { cartMealboxId, mealboxId, quantity } = el;
         return { cartMealboxId, mealboxId, quantity };
@@ -70,19 +66,15 @@ function Cart() {
   };
 
   useEffect(() => {
-    if (isLogin) {
+    calcRenderPrice();
+  }, [mealboxes]);
+
+  useEffect(() => {
+    isLogin &&
       getData('/users/cart').then((res) => {
         dispatch(setCart(res.data));
       });
-    }
-    if (admin) {
-      navigate('/mealboxes');
-    }
   }, []);
-
-  useEffect(() => {
-    calcRenderPrice();
-  }, [mealboxes]);
 
   return (
     <CartPageWrapper className="margininside">
@@ -90,16 +82,14 @@ function Cart() {
       {totalPrice ? (
         <CartPageContent>
           <CartItemListUl>
-            {mealboxes?.map((el) => {
-              return (
-                <CartItemLi
-                  key={el.cartMealboxId}
-                  mealbox={el}
-                  value={el.cartMealboxId}
-                  calcRenderPrice={calcRenderPrice}
-                />
-              );
-            })}
+            {mealboxes?.map((el) => (
+              <CartItemLi
+                key={el.cartMealboxId}
+                mealbox={el}
+                value={el.cartMealboxId}
+                calcRenderPrice={calcRenderPrice}
+              />
+            ))}
           </CartItemListUl>
           <CartAside totalPrice={renderPrice} buttonClick={purchaseHandler} />
         </CartPageContent>
