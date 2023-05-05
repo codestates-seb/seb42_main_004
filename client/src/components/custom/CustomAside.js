@@ -52,6 +52,8 @@ function CustomAside({ custom }) {
         errorFunc(res, 201, '커스텀 밀박스 추가');
       });
       if (error) return;
+    } else {
+      data.cartMealboxId = new Date().getTime();
     }
     dispatch(addCartItem({ ...data, quantity: quantity }));
     dispatch(initializeCustom());
