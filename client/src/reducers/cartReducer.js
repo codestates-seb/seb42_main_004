@@ -18,18 +18,17 @@ const cartSlice = createSlice({
       const { cart } = state;
       const newMealbox = action.payload;
 
-      let isExist = false;
-      for (let i = 0; i < cart.mealboxes.length; i++) {
-        const mealbox = cart.mealboxes[i];
-        if (mealbox.mealboxId === newMealbox.mealboxId) {
-          isExist = true;
-          mealbox.quantity += 1;
-          break;
-        }
+      const existingMealbox = cart.mealboxes.find(
+        (mealbox) => mealbox.mealboxId === newMealbox.mealboxId
+      );
+
+      if (existingMealbox) {
+        existingMealbox.quantity++;
+      } else {
+        cart.mealboxes.push(newMealbox);
       }
 
-      !isExist && cart.mealboxes.push(newMealbox);
-      cart.totalPrice += newMealbox.price * newMealbox.quantity;
+      cart.totalPrice += newMealbox.price;
     },
 
     deleteCartItem: (state, action) => {
