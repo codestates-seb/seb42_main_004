@@ -44,14 +44,6 @@ const cartSlice = createSlice({
         return true;
       });
       cart.totalPrice += totalPriceChange;
-      // const { cart } = state;
-      // const deleteIds = action.payload;
-      // deleteIds?.forEach((id) => {
-      //   const idx = findIdx(cart.mealboxes, 'cartMealboxId', id);
-      //   const deleteItem = cart.mealboxes[idx];
-      //   cart.totalPrice -= deleteItem.price * deleteItem.quantity;
-      //   cart.mealboxes.splice(idx, 1);
-      // });
     },
 
     setQuantity: (state, action) => {
