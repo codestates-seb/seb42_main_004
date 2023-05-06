@@ -16,22 +16,19 @@ const cartSlice = createSlice({
 
     addCartItem: (state, action) => {
       const { cart } = state;
-      const newMealbox = action.payload;
-
-      newMealbox.cartMealboxId =
-        newMealbox.cartMealboxId || new Date().getTime();
-
+      const newItem = action.payload;
       const existingMealbox = cart.mealboxes.find(
-        (mealbox) => mealbox.mealboxId === newMealbox.mealboxId
+        (mealbox) => mealbox.mealboxId === newItem.mealboxId
       );
 
       if (existingMealbox) {
         existingMealbox.quantity++;
       } else {
-        cart.mealboxes.push(newMealbox);
+        newItem.cartMealboxId = newItem.cartMealboxId || new Date().getTime();
+        cart.mealboxes.push(newItem);
       }
 
-      cart.totalPrice += newMealbox.price;
+      cart.totalPrice += newItem.price * newItem.quantity;
     },
 
     deleteCartItem: (state, action) => {
