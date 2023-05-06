@@ -17,12 +17,13 @@ const cartSlice = createSlice({
     addCartItem: (state, action) => {
       const { cart } = state;
       const newItem = action.payload;
-      const existingMealbox = cart.mealboxes.find(
-        (mealbox) => mealbox.mealboxId === newItem.mealboxId
+      const idx = cart.mealboxes.findIndex(
+        (mealbox) =>
+          mealbox.mealboxId && mealbox.mealboxId === newItem.mealboxId
       );
 
-      if (existingMealbox) {
-        existingMealbox.quantity++;
+      if (idx !== -1) {
+        cart.mealboxes[idx].quantity++;
       } else {
         newItem.cartMealboxId = newItem.cartMealboxId || new Date().getTime();
         cart.mealboxes.push(newItem);
@@ -34,19 +35,30 @@ const cartSlice = createSlice({
     deleteCartItem: (state, action) => {
       const { cart } = state;
       const deleteIds = action.payload;
-      deleteIds?.forEach((id) => {
-        const idx = findIdx(cart.mealboxes, 'cartMealboxId', id);
-        const deleteItem = cart.mealboxes[idx];
-        cart.totalPrice -= deleteItem.price * deleteItem.quantity;
-        cart.mealboxes.splice(idx, 1);
+      let totalPriceChange = 0;
+      cart.mealboxes = cart.mealboxes.filter((mealbox) => {
+        if (deleteIds.includes(mealbox.cartMealboxId)) {
+          totalPriceChange -= mealbox.price * mealbox.quantity;
+          return false;
+        }
+        return true;
       });
+      cart.totalPrice += totalPriceChange;
+      // const { cart } = state;
+      // const deleteIds = action.payload;
+      // deleteIds?.forEach((id) => {
+      //   const idx = findIdx(cart.mealboxes, 'cartMealboxId', id);
+      //   const deleteItem = cart.mealboxes[idx];
+      //   cart.totalPrice -= deleteItem.price * deleteItem.quantity;
+      //   cart.mealboxes.splice(idx, 1);
+      // });
     },
 
     setQuantity: (state, action) => {
       const { cart } = state;
-      const idx = findIdx(cart.mealboxes, 'cartMealboxId', action.payload.id);
+      const { id, amount } = action.payload;
+      const idx = findIdx(cart.mealboxes, 'cartMealboxId', id);
       const item = cart.mealboxes[idx];
-      const amount = action.payload.amount;
       item.quantity += amount;
       cart.totalPrice += item.price * amount;
     },
