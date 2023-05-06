@@ -18,6 +18,9 @@ const cartSlice = createSlice({
       const { cart } = state;
       const newMealbox = action.payload;
 
+      newMealbox.cartMealboxId =
+        newMealbox.cartMealboxId || new Date().getTime();
+
       const existingMealbox = cart.mealboxes.find(
         (mealbox) => mealbox.mealboxId === newMealbox.mealboxId
       );
@@ -42,20 +45,13 @@ const cartSlice = createSlice({
       });
     },
 
-    setMinus: (state, action) => {
+    setQuantity: (state, action) => {
       const { cart } = state;
-      const idx = findIdx(cart.mealboxes, 'cartMealboxId', action.payload);
-      const minusItem = cart.mealboxes[idx];
-      minusItem.quantity--;
-      cart.totalPrice -= minusItem.price;
-    },
-
-    setPlus: (state, action) => {
-      const { cart } = state;
-      const idx = findIdx(cart.mealboxes, 'cartMealboxId', action.payload);
-      const plusItem = cart.mealboxes[idx];
-      plusItem.quantity++;
-      cart.totalPrice += plusItem.price;
+      const idx = findIdx(cart.mealboxes, 'cartMealboxId', action.payload.id);
+      const item = cart.mealboxes[idx];
+      const amount = action.payload.amount;
+      item.quantity += amount;
+      cart.totalPrice += item.price * amount;
     },
 
     initializeCart: () => initialState,
@@ -66,8 +62,7 @@ export const {
   setCart,
   addCartItem,
   deleteCartItem,
-  setMinus,
-  setPlus,
+  setQuantity,
   initializeCart,
 } = cartSlice.actions;
 

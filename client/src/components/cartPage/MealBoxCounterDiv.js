@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { TextButton } from '../commons/ModalDiv';
 import { HiPlus, HiMinus } from 'react-icons/hi';
-import { setMinus, setPlus, deleteCartItem } from '../../reducers/cartReducer';
+import { setQuantity, deleteCartItem } from '../../reducers/cartReducer';
 import patchData from '../../util/patchData';
 import deleteData from '../../util/deleteData';
 
@@ -12,7 +12,7 @@ function MealBoxCounterDiv({ cartMealboxId, quantity }) {
 
   let handleMinus = () => {
     if (quantity > 1) {
-      dispatch(setMinus(cartMealboxId));
+      dispatch(setQuantity({ id: cartMealboxId, amount: -1 }));
       isLogin &&
         patchData('/users/cart', { cartMealboxId, quantity: quantity - 1 });
     } else if (confirm('해당 밀박스를 장바구니에서 삭제하시겠습니까?')) {
@@ -23,7 +23,7 @@ function MealBoxCounterDiv({ cartMealboxId, quantity }) {
   };
 
   let handlePlus = () => {
-    dispatch(setPlus(cartMealboxId));
+    dispatch(setQuantity({ id: cartMealboxId, amount: 1 }));
     isLogin &&
       patchData('/users/cart', { cartMealboxId, quantity: quantity + 1 });
   };
