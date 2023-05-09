@@ -12,6 +12,7 @@ import deleteData from '../../util/deleteData';
 function CustomAside({ custom }) {
   const { isLogin, admin } = useSelector((state) => state.authReducer);
   const { state } = useLocation();
+
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ function CustomAside({ custom }) {
       });
       if (error) return;
     }
+
     dispatch(addCartItem({ ...data, quantity: quantity }));
     dispatch(initializeCustom());
 

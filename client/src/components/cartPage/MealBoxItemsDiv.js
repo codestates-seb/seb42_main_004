@@ -7,8 +7,7 @@ function MealBoxItemsDiv({ products }) {
         let { name, quantity } = el;
         return (
           <div key={idx}>
-            <div>{name}</div>
-            <div>{`X${quantity}`}</div>
+            {name}&#215;{quantity}
           </div>
         );
       })}

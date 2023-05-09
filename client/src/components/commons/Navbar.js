@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { BsFillPersonFill } from 'react-icons/bs';
-import { IoIosArrowForward } from 'react-icons/io';
-import { FiLogOut } from 'react-icons/fi';
+import { BsFillPersonFill } from '@react-icons/all-files/bs/BsFillPersonFill.esm';
+import { IoIosArrowForward } from '@react-icons/all-files/io/IoIosArrowForward.esm';
+import { FiLogOut } from '@react-icons/all-files/fi/FiLogOut.esm';
 import profile from '../../assets/profile.png';
 import goToCustom from '../../util/goToCustom';
 

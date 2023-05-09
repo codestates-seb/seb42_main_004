@@ -1,6 +1,6 @@
-import { BsCart4 } from 'react-icons/bs';
+import { FaShoppingBasket } from '@react-icons/all-files/fa/FaShoppingBasket.esm';
 import styled from 'styled-components';
-import { MdOutlineBorderColor } from 'react-icons/md';
+import { GoNote } from '@react-icons/all-files/go/GoNote.esm';
 import { useLocation } from 'react-router-dom';
 function Empty() {
   let location = useLocation();
@@ -8,7 +8,7 @@ function Empty() {
   let { pathname } = location;
   return (
     <CartEmptyDiv>
-      {pathname === '/cart' ? <BsCart4 /> : <MdOutlineBorderColor />}
+      {pathname === '/cart' ? <FaShoppingBasket /> : <GoNote />}
       <Text>
         {pathname === '/cart'
           ? '장바구니가 비었습니다.'

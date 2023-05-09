@@ -12,7 +12,6 @@ import { useState } from 'react';
 
 function SurveyPage3() {
   let { state } = useLocation();
-  console.log(state);
   let { easy, normal, hard } = state;
   let [dietPlan, setDietPlan] = useState('Easy');
 

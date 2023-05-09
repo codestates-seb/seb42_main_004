@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { AiOutlineCheckCircle } from 'react-icons/ai';
+import { AiOutlineCheckCircle } from '@react-icons/all-files/ai/AiOutlineCheckCircle.esm';
 import { useNavigate } from 'react-router-dom';
 import getData from '../../util/getData';
 

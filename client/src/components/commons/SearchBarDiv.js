@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BiSearchAlt } from 'react-icons/bi';
+import { BiSearchAlt } from '@react-icons/all-files/bi/BiSearchAlt.esm';
 import OrderHistoryPageButton from '../orderHistory/OrderHistoryPageButton';
 
 function SearchBarDiv({

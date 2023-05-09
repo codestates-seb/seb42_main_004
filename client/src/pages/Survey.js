@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { BsFillCircleFill as Dot } from 'react-icons/bs';
+import { BsFillCircleFill as Dot } from '@react-icons/all-files/bs/BsFillCircleFill.esm';
 import styled from 'styled-components';
 import SurveyArticle from '../components/survey/SurveyArticle';
 
@@ -29,10 +29,10 @@ export default Survey;
 
 const Main = styled.main`
   height: calc(100vh - 115px);
+  width: 600px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 600px;
 `;
 
 const Article = styled(SurveyArticle)``;
