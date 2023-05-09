@@ -17,16 +17,16 @@ const cartSlice = createSlice({
     addCartItem: (state, action) => {
       const { cart } = state;
       const newItem = action.payload;
-      const idx = cart.mealboxes.findIndex(
-        (mealbox) =>
-          mealbox.mealboxId && mealbox.mealboxId === newItem.mealboxId
-      );
+      const existingIdx =
+        newItem.name !== 'custom'
+          ? findIdx(cart.mealboxes, 'mealboxId', newItem.mealboxId)
+          : -1;
 
-      if (idx !== -1) {
-        cart.mealboxes[idx].quantity++;
-      } else {
+      if (existingIdx === -1) {
         newItem.cartMealboxId = newItem.cartMealboxId || new Date().getTime();
         cart.mealboxes.push(newItem);
+      } else {
+        cart.mealboxes[existingIdx].quantity++;
       }
 
       cart.totalPrice += newItem.price * newItem.quantity;
