@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-function DietInfo({ kcal, weight, target }) {
+function DietInfo({ plan }) {
+  let { kcal, goalWeight, goalWeightLoss } = plan;
+
   return (
     <DietInfoWrapper>
       <Info>
@@ -9,11 +11,11 @@ function DietInfo({ kcal, weight, target }) {
       </Info>
       <Info>
         <div>예상 체중</div>
-        <div>{weight}kg</div>
+        <div>{goalWeight}kg</div>
       </Info>
       <Info>
         <div>목표 감량</div>
-        <div>{target}kg</div>
+        <div>{goalWeightLoss}kg</div>
       </Info>
     </DietInfoWrapper>
   );

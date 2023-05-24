@@ -13,8 +13,7 @@ function SurveyPage2({ name }) {
 
   // 활동량 상태 변경
   let dispatchActive = (e) => {
-    let { id } = e.target;
-    dispatch(setActive(id));
+    dispatch(setActive(e.target.id));
   };
 
   // 다이어트 플랜 get 요청 + 화면 전환
@@ -29,46 +28,41 @@ function SurveyPage2({ name }) {
     });
   };
 
+  let explanation = {
+    NOT_ACTIVE: { active: '비활동적', detail: '대부분 앉아있는 직장인 등' },
+    LOW_ACTIVE: { active: '저활동적', detail: '주 1~3회 가벼운 운동' },
+    NORMAL_ACTIVE: {
+      active: '활동적',
+      detail: '주로 선수, 거의 매일 2회 운동',
+    },
+    HIGH_ACTIVE: {
+      active: '매우 활동적',
+      detail: '주로 선수, 거의 매일 2회 운동',
+    },
+  };
+
+  let optionItem = Object.keys(explanation).map((act) => {
+    return (
+      <SurveyBox
+        key={act}
+        id={act}
+        title={explanation[act].active}
+        group="active"
+        changeHandler={dispatchActive}
+        checked={active === act}
+      >
+        <div>{explanation[act].detail}</div>
+      </SurveyBox>
+    );
+  });
+
   return (
     <article>
       <SurveyH3>{name ? `${name}님` : `당신의`} 활동량을 알려주세요</SurveyH3>
       <ExplanationDiv>
         정확한 일일 권장 섭취량을 계산하는데 사용됩니다.
       </ExplanationDiv>
-      <Option>
-        <SurveyBox
-          id="NOT_ACTIVE"
-          title="비활동적"
-          group="active"
-          detail="대부분 앉아있는 직장인 등"
-          changeHandler={dispatchActive}
-          checked={active === 'NOT_ACTIVE'}
-        />
-        <SurveyBox
-          id="LOW_ACTIVE"
-          title="저활동적"
-          group="active"
-          detail="주 1~3회 가벼운 운동"
-          changeHandler={dispatchActive}
-          checked={active === 'LOW_ACTIVE'}
-        />
-        <SurveyBox
-          id="NORMAL_ACTIVE"
-          title="활동적"
-          group="active"
-          detail="매일 30분 이상 자발적 운동"
-          changeHandler={dispatchActive}
-          checked={active === 'NORMAL_ACTIVE'}
-        />
-        <SurveyBox
-          id="HIGH_ACTIVE"
-          title="매우 활동적"
-          group="active"
-          detail="주로 선수, 거의 매일 2회 운동"
-          changeHandler={dispatchActive}
-          checked={active === 'HIGH_ACTIVE'}
-        />
-      </Option>
+      <Option>{optionItem}</Option>
       <PreAndNextButtons nextHandler={nextHandler} />
     </article>
   );

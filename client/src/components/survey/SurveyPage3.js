@@ -11,31 +11,20 @@ import { setSurveyRcmd } from '../../reducers/surveyRcmdReducer';
 import { useState } from 'react';
 
 function SurveyPage3() {
-  let { state } = useLocation();
-  let { easy, normal, hard } = state;
-  let [dietPlan, setDietPlan] = useState('Easy');
-
   let dispatch = useDispatch();
   let navigate = useNavigate();
+  let { state } = useLocation();
+  let [dietPlan, setDietPlan] = useState({ plan: 'easy', ...state['easy'] });
 
   // 다이어트 플랜 상태 변경
   let dispatchPlan = (e) => {
-    let { id } = e.target;
-    setDietPlan(id);
+    let plan = e.target.id;
+    setDietPlan({ plan, ...state[plan] });
   };
 
   // 설문 결과 get 요청 + 화면 전환
   let nextHandler = () => {
-    let kcalPerDay = 0;
-    if (dietPlan === 'Easy') {
-      kcalPerDay = easy.kcal;
-    } else if (dietPlan === 'Normal') {
-      kcalPerDay = normal.kcal;
-    } else if (dietPlan === 'Hard') {
-      kcalPerDay = hard.kcal;
-    }
-
-    getData(`/mealboxes/rec/survey?kcal=${kcalPerDay}`)
+    getData(`/mealboxes/rec/survey?kcal=${dietPlan.kcal}`)
       .then((res) => {
         dispatch(setSurveyRcmd(res.data));
       })
@@ -43,9 +32,37 @@ function SurveyPage3() {
         dispatch(setReset());
         navigate(`/survey/result`);
       });
-
-    dispatch(setReset());
   };
+
+  let explanation = {
+    easy: [
+      '다이어트는 너무 길어지면 힘들지만 무작정 빨리갈 수는 없어요.',
+      '천천히 목표를 향해 나아가보아요.',
+    ],
+    normal: ['이왕 다이어트를 하는거라면 조금은 도전적인 선택도 좋을거예요!'],
+    hard: [
+      '다이어트에 대한 강한 의지나 다가오는 중요한 일정이 있으신가요?',
+      '강도가 높아 지키기 힘들 수도 있어요.',
+    ],
+  };
+
+  let optionItem = Object.keys(explanation).map((plan) => {
+    return (
+      <SurveyBox
+        key={plan}
+        id={plan}
+        title={plan.replace(/^[a-z]/, (char) => char.toUpperCase())}
+        group="plan"
+        info={<DietInfo plan={state[plan]} />}
+        changeHandler={dispatchPlan}
+        checked={plan === dietPlan.plan}
+      >
+        {explanation[plan].map((sentence, idx) => (
+          <div key={idx}>{sentence}</div>
+        ))}
+      </SurveyBox>
+    );
+  });
 
   return (
     <article>
@@ -56,64 +73,7 @@ function SurveyPage3() {
       <ExplanationDiv>
         선택한 플랜에 따라 일일 칼로리 및 예상 체중이 조정됩니다.
       </ExplanationDiv>
-      <Option>
-        <SurveyBox
-          id="Easy"
-          title="Easy"
-          group="plan"
-          info={
-            <DietInfo
-              kcal={easy.kcal}
-              weight={easy.goalWeight}
-              target={easy.goalWeightLoss}
-            />
-          }
-          changeHandler={dispatchPlan}
-          checked={dietPlan === 'Easy'}
-        >
-          <div>
-            다이어트는 너무 길어지면 힘들지만 무작정 빨리갈 수는 없어요.
-          </div>
-          <div>천천히 목표를 향해 나아가보아요.</div>
-        </SurveyBox>
-        <SurveyBox
-          id="Normal"
-          title="Normal"
-          group="plan"
-          info={
-            <DietInfo
-              kcal={normal.kcal}
-              weight={normal.goalWeight}
-              target={normal.goalWeightLoss}
-            />
-          }
-          changeHandler={dispatchPlan}
-          checked={dietPlan === 'Normal'}
-        >
-          <div>
-            이왕 다이어트를 하는거라면 조금은 도전적인 선택도 좋을거예요!
-          </div>
-        </SurveyBox>
-        <SurveyBox
-          id="Hard"
-          title="Hard"
-          group="plan"
-          info={
-            <DietInfo
-              kcal={hard.kcal}
-              weight={hard.goalWeight}
-              target={hard.goalWeightLoss}
-            />
-          }
-          changeHandler={dispatchPlan}
-          checked={dietPlan === 'Hard'}
-        >
-          <div>
-            다이어트에 대한 강한 의지나 다가오는 중요한 일정이 있으신가요?
-          </div>
-          <div>강도가 높아 지키기 힘들 수도 있어요.</div>
-        </SurveyBox>
-      </Option>
+      <Option>{optionItem}</Option>
       <PreAndNextButtons nextHandler={nextHandler} />
     </article>
   );
