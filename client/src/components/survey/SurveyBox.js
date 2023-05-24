@@ -5,7 +5,6 @@ function SurveyBox({
   title,
   group,
   info,
-  detail,
   children,
   changeHandler,
   checked,
@@ -16,7 +15,6 @@ function SurveyBox({
         type="radio"
         name={group}
         id={id}
-        title={title}
         onChange={changeHandler}
         checked={checked}
       />
@@ -25,7 +23,7 @@ function SurveyBox({
           <h3>{title}</h3>
           {info}
         </BoxTop>
-        <div>{detail ? detail : children}</div>
+        {children}
       </SurveyBoxLabel>
     </>
   );
