@@ -10,7 +10,6 @@ function useFilterSearch(isMealBox, setPath) {
 
   let { pathname, search } = useLocation();
   if (!search) search = '?page=1&sort=id&dir=DESC';
-
   const [page, setPage] = useState(1);
 
   const searchSubject = () => {
@@ -51,6 +50,9 @@ function useFilterSearch(isMealBox, setPath) {
         setSearchWord(word);
         setNotFoundWord(word);
       }
+    } else {
+      setSearchWord('');
+      setNotFoundWord('');
     }
   }, [search]);
 
