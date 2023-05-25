@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setReset } from '../../reducers/surveyQuestionReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPlan, setReset } from '../../reducers/surveyQuestionReducer';
 import { Option, ExplanationDiv } from './SurveyPage2';
 import { SurveyH3 } from './SurveyPage1';
 import PreAndNextButtons from './PreAndNextButtons';
@@ -8,23 +8,21 @@ import getData from '../../util/getData';
 import SurveyBox from './SurveyBox';
 import DietInfo from './DietInfo';
 import { setSurveyRcmd } from '../../reducers/surveyRcmdReducer';
-import { useState } from 'react';
 
 function SurveyPage3() {
   let dispatch = useDispatch();
   let navigate = useNavigate();
   let { state } = useLocation();
-  let [dietPlan, setDietPlan] = useState({ plan: 'easy', ...state['easy'] });
+  let { plan } = useSelector((state) => state.surveyQuestionReducer);
 
   // 다이어트 플랜 상태 변경
   let dispatchPlan = (e) => {
-    let plan = e.target.id;
-    setDietPlan({ plan, ...state[plan] });
+    dispatch(setPlan(e.target.id));
   };
 
   // 설문 결과 get 요청 + 화면 전환
   let nextHandler = () => {
-    getData(`/mealboxes/rec/survey?kcal=${dietPlan.kcal}`)
+    getData(`/mealboxes/rec/survey?kcal=${state[plan].kcal}`)
       .then((res) => {
         dispatch(setSurveyRcmd(res.data));
       })
@@ -46,18 +44,18 @@ function SurveyPage3() {
     ],
   };
 
-  let optionItem = Object.keys(explanation).map((plan) => {
+  let optionItem = Object.keys(explanation).map((p) => {
     return (
       <SurveyBox
-        key={plan}
-        id={plan}
-        title={plan.replace(/^[a-z]/, (char) => char.toUpperCase())}
+        key={p}
+        id={p}
+        title={p.replace(/^[a-z]/, (char) => char.toUpperCase())}
         group="plan"
-        info={<DietInfo plan={state[plan]} />}
+        info={<DietInfo plan={state[p]} />}
         changeHandler={dispatchPlan}
-        checked={plan === dietPlan.plan}
+        checked={p === plan}
       >
-        {explanation[plan].map((sentence, idx) => (
+        {explanation[p].map((sentence, idx) => (
           <div key={idx}>{sentence}</div>
         ))}
       </SurveyBox>

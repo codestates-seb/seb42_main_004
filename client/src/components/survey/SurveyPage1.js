@@ -30,8 +30,7 @@ function SurveyPage1() {
   };
 
   let dispatchGender = (e) => {
-    const { id } = e.target;
-    dispatch(setGender(id));
+    dispatch(setGender(e.target.id));
   };
 
   let nextHandler = () => {
