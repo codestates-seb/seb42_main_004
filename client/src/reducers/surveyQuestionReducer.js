@@ -6,6 +6,7 @@ const initialState = {
   height: '',
   weight: '',
   active: 'NOT_ACTIVE',
+  plan: 'easy',
 };
 
 const surveyQuestionSlice = createSlice({
@@ -24,10 +25,14 @@ const surveyQuestionSlice = createSlice({
       state.active = action.payload;
     },
 
+    setPlan: (state, action) => {
+      state.plan = action.payload;
+    },
+
     setReset: () => initialState,
   },
 });
 
-export const { setProfile, setGender, setActive, setReset } =
+export const { setProfile, setGender, setActive, setPlan, setReset } =
   surveyQuestionSlice.actions;
 export default surveyQuestionSlice.reducer;
